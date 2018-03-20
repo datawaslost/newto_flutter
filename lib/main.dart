@@ -44,6 +44,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  final TextEditingController _controller = new TextEditingController();
+
   void _login() {
 	Navigator.of(context).push(
 		new MaterialPageRoute(
@@ -52,7 +54,67 @@ class _MyHomePageState extends State<MyHomePage> {
 		      appBar: new AppBar(
 		        title: new Text('Login'),
 		      ),
-		      // body: 
+		      body: new Container(
+			    padding: new EdgeInsets.all(20.0),
+			    child: new Column(
+					mainAxisSize: MainAxisSize.min,
+					children: <Widget>[
+						new Text(
+							'1/3',
+							style: new TextStyle(
+								fontFamily: 'Montserrat',
+								fontWeight: FontWeight.w800,
+								fontSize: 14.0,
+							),
+						),
+						new Text(
+							'Tell us your school email.'.toUpperCase(),
+							style: new TextStyle(
+								fontFamily: 'Montserrat',
+								fontWeight: FontWeight.w800,
+								fontSize: 38.0,
+								height: 1.0,
+							),
+						),
+						new Text(
+							'Email'.toUpperCase(),
+							style: new TextStyle(
+								fontFamily: 'Montserrat',
+								fontWeight: FontWeight.w800,
+								fontSize: 14.0,
+							),
+						),
+				        new TextField(
+				          controller: _controller,
+				          decoration: new InputDecoration(
+				            fillColor: const Color(0x66E0E1EA),
+				            filled: true,
+				          ),
+				        ),
+						new Text(
+							'We’ll send you a confirmation email to confirm you school account.',
+							style: new TextStyle(
+								color: const Color(0xFF2D2D2F),
+								fontFamily: 'Montserrat',
+								fontWeight: FontWeight.w300,
+								fontSize: 14.0,
+							),
+						),
+				        new RaisedButton(
+				          onPressed: () {
+				            showDialog(
+				              context: context,
+				              child: new AlertDialog(
+				                title: new Text('What you typed:'),
+				                content: new Text(_controller.text),
+				              ),
+				            );
+				          },
+				          child: new Text('DONE'),
+				        ),
+				      ],
+				)
+			  )
 		    );
 		  },
 		),
