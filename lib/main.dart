@@ -96,7 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
 						children: <Widget>[
 							new Expanded(
 								child: new RaisedButton(
-									onPressed: _incrementCounter,   
+									onPressed: _incrementCounter,
+									padding: new EdgeInsets.all(14.0),  
 									color: const Color(0xFF1033FF),
 									textColor: const Color(0xFFFFFFFF),
 									child: new Text(
@@ -110,18 +111,22 @@ class _MyHomePageState extends State<MyHomePage> {
 							)
 						]
 					),
-					new Text(
-						'Already a member?',
-						style: new TextStyle(
-							color: const Color(0xFFFFFFFF),
-							fontFamily: 'Montserrat',
+					new Container(
+						padding: new EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 10.0),
+						child: new Text(
+							'Already a member?',
+							style: new TextStyle(
+								color: const Color(0xFFFFFFFF),
+								fontFamily: 'Montserrat',
+							),
 						),
 					),
 					new Row(
 						children: <Widget>[
 							new Expanded(
 								child: new RaisedButton(
-									onPressed: _incrementCounter,   
+									onPressed: _incrementCounter,
+									padding: new EdgeInsets.all(14.0),  
 									color: const Color(0xFFE3F5FF),
 									textColor: const Color(0xFF2D2D2F),
 									child: new Text(
