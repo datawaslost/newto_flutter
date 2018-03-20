@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'NewTo Home Page'),
+      home: new MyHomePage(),
     );
   }
 }
@@ -43,33 +43,45 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  void _login() {
+	Navigator.of(context).push(
+		new MaterialPageRoute(
+		  builder: (context) {
+		    return new Scaffold(
+		      appBar: new AppBar(
+		        title: new Text('Login'),
+		      ),
+		      // body: 
+		    );
+		  },
+		),
+	);
   }
 
+  void _createAccount() {
+	Navigator.of(context).push(
+		new MaterialPageRoute(
+		  builder: (context) {
+		    return new Scaffold(
+		      appBar: new AppBar(
+		        title: new Text('Create Account'),
+		      ),
+		      // body: 
+		    );
+		  },
+		),
+	);
+  }
+    
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
+    // This method is rerun every time setState is called
     //
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return new Scaffold(
-      // appBar: new AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-      //   title: new Text(widget.title),
-      // ),
       body: new Container(
 	    padding: new EdgeInsets.all(40.0),
         decoration: new BoxDecoration(
@@ -96,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
 						children: <Widget>[
 							new Expanded(
 								child: new RaisedButton(
-									onPressed: _incrementCounter,
+									onPressed: _createAccount,
 									padding: new EdgeInsets.all(14.0),  
 									color: const Color(0xFF1033FF),
 									textColor: const Color(0xFFFFFFFF),
@@ -125,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
 						children: <Widget>[
 							new Expanded(
 								child: new RaisedButton(
-									onPressed: _incrementCounter,
+									onPressed: _login,
 									padding: new EdgeInsets.all(14.0),  
 									color: const Color(0xFFE3F5FF),
 									textColor: const Color(0xFF2D2D2F),
