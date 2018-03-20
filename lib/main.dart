@@ -99,14 +99,23 @@ class _MyHomePageState extends State<MyHomePage> {
 									onPressed: _incrementCounter,   
 									color: const Color(0xFF1033FF),
 									textColor: const Color(0xFFFFFFFF),
-									child: const Text('Create Account'),
+									child: new Text(
+										'CREATE ACCOUNT',
+										style: new TextStyle(
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+										),
+									),
 								),
 							)
 						]
 					),
 					new Text(
-						'Craft beautiful UIs',
-						style: new TextStyle(color: const Color(0xFFFFFFFF)),
+						'Already a member?',
+						style: new TextStyle(
+							color: const Color(0xFFFFFFFF),
+							fontFamily: 'Montserrat',
+						),
 					),
 					new Row(
 						children: <Widget>[
@@ -115,7 +124,13 @@ class _MyHomePageState extends State<MyHomePage> {
 									onPressed: _incrementCounter,   
 									color: const Color(0xFFE3F5FF),
 									textColor: const Color(0xFF2D2D2F),
-									child: const Text('Login'),
+									child: new Text(
+										'LOGIN',
+										style: new TextStyle(
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+										),
+									),
 								),
 							)
 						]
