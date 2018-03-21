@@ -45,7 +45,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-	final TextEditingController _controller = new TextEditingController();
+	final TextEditingController _emailController = new TextEditingController();
 
 	void _createAccount() {
 		Navigator.of(context).push(
@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
 								new Container(
 									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
 							        child: new TextField(
-							        	controller: _controller,
+							        	controller: _emailController,
 										style: new TextStyle(
 											color: const Color(0xFF000000),
 											fontFamily: 'Montserrat',
@@ -156,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
 																context: context,
 																child: new AlertDialog(
 																	title: new Text('What you typed:'),
-																	content: new Text(_controller.text),
+																	content: new Text(_emailController.text),
 																),
 															);
 														},
@@ -184,25 +184,137 @@ class _MyHomePageState extends State<MyHomePage> {
 		);
 	}
 
-  void _login() {
-	Navigator.of(context).push(
-		new MaterialPageRoute(
-		  builder: (context) {
-		    return new Scaffold(
-		      appBar: new AppBar(
-		        title: new Text('Login'),
-		      ),
-		      // body: 
-		    );
-		  },
-		),
-	);
-  }
+	void _login() {
+		Navigator.of(context).push(
+			new MaterialPageRoute(
+				builder: (context) {
+					return new Scaffold(
+						body: new Column(
+							mainAxisSize: MainAxisSize.min,
+							children: <Widget>[
+								new Row (
+									children: <Widget>[
+										new BackButton(),
+										new Expanded(
+											child: new Container(
+												padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
+												alignment: Alignment.topRight,
+												child: new Text(
+													'Login'.toUpperCase(),
+													style: new TextStyle(
+														color: const Color(0xFF1033FF),
+														fontFamily: 'Montserrat',
+														fontWeight: FontWeight.w800,
+														fontSize: 14.0,
+													),
+												),
+											),
+										),
+									]
+								),
+								new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+									alignment: Alignment.topLeft,
+									child: new Text(
+										'Email'.toUpperCase(),
+										style: new TextStyle(
+											color: const Color(0xFF838383),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 14.0,
+										),
+									),
+								),
+								new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+							        child: new TextField(
+							        	controller: _emailController,
+										style: new TextStyle(
+											color: const Color(0xFF000000),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 18.0,
+										),
+										decoration: new InputDecoration(
+							            	fillColor: const Color(0x66E0E1EA),
+											filled: true,
+										),
+										keyboardType: TextInputType.emailAddress,
+							        ),
+								),
+								new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+									alignment: Alignment.topLeft,
+									child: new Text(
+										'Password'.toUpperCase(),
+										style: new TextStyle(
+											color: const Color(0xFF838383),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 14.0,
+										),
+									),
+								),
+								new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+							        child: new TextField(
+							        	obscureText: true,
+										style: new TextStyle(
+											color: const Color(0xFF000000),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 18.0,
+										),
+										decoration: new InputDecoration(
+							            	fillColor: const Color(0x66E0E1EA),
+											filled: true,
+										),
+										keyboardType: TextInputType.emailAddress,
+							        ),
+								),
+								new Expanded(
+									child: new Align(
+										alignment: Alignment.bottomCenter,
+										child: new Row(children: <Widget>[
+											new Expanded(
+												child: new RaisedButton(
+														onPressed: () {
+															showDialog(
+																context: context,
+																child: new AlertDialog(
+																	title: new Text('What you typed:'),
+																	content: new Text(_emailController.text),
+																),
+															);
+														},
+														padding: new EdgeInsets.all(14.0),  
+														color: const Color(0xFF1033FF),
+														textColor: const Color(0xFFFFFFFF),
+														child: new Text(
+															'Login'.toUpperCase(),
+															style: new TextStyle(
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w800,
+															),
+														),
+													),
+												)
+											]
+										),
+									),
+								),
+						    ],
+						),
+					);
+				},
+			),
+		);
+	}
     
-  @override
-  Widget build(BuildContext context) {
+	@override
+	Widget build(BuildContext context) {
 	  
-	  SystemChrome.setEnabledSystemUIOverlays([]);
+		SystemChrome.setEnabledSystemUIOverlays([]);
 	  
     // This method is rerun every time setState is called
     //
