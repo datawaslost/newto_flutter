@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
 							mainAxisSize: MainAxisSize.min,
 							children: <Widget>[
 								new LinearProgressIndicator(
-									value: 0.3,
+									value: 0.33,
 									backgroundColor: const Color(0xFFFFFFFF),
 								),
 								new Row (
@@ -202,15 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
 										child: new Row(children: <Widget>[
 											new Expanded(
 												child: new RaisedButton(
-														onPressed: () {
-															showDialog(
-																context: context,
-																child: new AlertDialog(
-																	title: new Text('What you typed:'),
-																	content: new Text(_emailController.text),
-																),
-															);
-														},
+														onPressed: _createAccount2,
 														padding: new EdgeInsets.all(14.0),  
 														color: const Color(0xFF1033FF),
 														textColor: const Color(0xFFFFFFFF),
@@ -243,13 +235,231 @@ class _MyHomePageState extends State<MyHomePage> {
 						body: new Column(
 							mainAxisSize: MainAxisSize.min,
 							children: <Widget>[
-								
+								new LinearProgressIndicator(
+									value: 0.66,
+									backgroundColor: const Color(0xFFFFFFFF),
+								),
+								new Row (
+									children: <Widget>[
+										new BackButton(),
+										new Expanded(
+											child: new Container(
+												alignment: Alignment.topRight,
+												child: new FlatButton(
+													onPressed: _login,
+													child: new Text(
+														'Login'.toUpperCase(),
+														style: new TextStyle(
+															color: const Color(0xFF1033FF),
+															fontFamily: 'Montserrat',
+															fontWeight: FontWeight.w800,
+															fontSize: 14.0,
+														),
+													),
+												),
+											),
+										),
+									]
+								),
+								new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+									alignment: Alignment.topLeft,
+									child: new Text(
+										'2/3',
+										style: new TextStyle(
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 14.0,
+										),
+									),
+								),
+								new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+									alignment: Alignment.topLeft,
+									child: new Text(
+										'Create your password.'.toUpperCase(),
+										style: new TextStyle(
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 38.0,
+											height: 1.0,
+										),
+									),
+								),
+								new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+									alignment: Alignment.topLeft,
+									child: new Text(
+										'Password'.toUpperCase(),
+										style: new TextStyle(
+											color: const Color(0xFF838383),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 14.0,
+										),
+									),
+								),
+								new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+							        child: new PasswordField(),
+								),
+								new Expanded(
+									child: new Align(
+										alignment: Alignment.bottomCenter,
+										child: new Row(
+											children: <Widget>[
+												new Expanded(
+													child: new RaisedButton(
+														onPressed: _createAccount3,
+														padding: new EdgeInsets.all(14.0),  
+														color: const Color(0xFF1033FF),
+														textColor: const Color(0xFFFFFFFF),
+														child: new Text(
+															'Next Step'.toUpperCase(),
+															style: new TextStyle(
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w800,
+															),
+														),
+													),
+												)
+											]
+										),
+									),
+								),
 							]
 						),
-					),
-				}
-			)
-		)
+					);
+				},
+			),
+		);
+	}
+
+	void _createAccount3() {
+		Navigator.of(context).push(
+			new MaterialPageRoute(
+				builder: (context) {
+					return new Scaffold(
+						body: new Column(
+							mainAxisSize: MainAxisSize.min,
+							children: <Widget>[
+								new LinearProgressIndicator(
+									value: 1.0,
+									backgroundColor: const Color(0xFFFFFFFF),
+								),
+								new Row (
+									children: <Widget>[
+										new BackButton(),
+										new Expanded(
+											child: new Container(
+												alignment: Alignment.topRight,
+												child: new FlatButton(
+													onPressed: _login,
+													child: new Text(
+														'Login'.toUpperCase(),
+														style: new TextStyle(
+															color: const Color(0xFF1033FF),
+															fontFamily: 'Montserrat',
+															fontWeight: FontWeight.w800,
+															fontSize: 14.0,
+														),
+													),
+												),
+											),
+										),
+									]
+								),
+								new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+									alignment: Alignment.topLeft,
+									child: new Text(
+										'3/3',
+										style: new TextStyle(
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 14.0,
+										),
+									),
+								),
+								new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+									alignment: Alignment.topLeft,
+									child: new Text(
+										'What is your hometown?'.toUpperCase(),
+										style: new TextStyle(
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 38.0,
+											height: 1.0,
+										),
+									),
+								),
+								new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+									alignment: Alignment.topLeft,
+									child: new Text(
+										"I'm From".toUpperCase(),
+										style: new TextStyle(
+											color: const Color(0xFF838383),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 14.0,
+										),
+									),
+								),
+								new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+							        child: new TextField(
+										style: new TextStyle(
+											color: const Color(0xFF000000),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 18.0,
+										),
+										decoration: new InputDecoration(
+							            	fillColor: const Color(0x66E0E1EA),
+											filled: true,
+										),
+							        ),
+								),
+								new Expanded(
+									child: new Align(
+										alignment: Alignment.bottomCenter,
+										child: new Row(
+											children: <Widget>[
+												new Expanded(
+													child: new RaisedButton(
+														onPressed: () {
+															showDialog(
+																context: context,
+																child: new AlertDialog(
+																	title: new Text('What you typed:'),
+																	content: new Text(_emailController.text),
+																),
+															);
+														},
+														padding: new EdgeInsets.all(14.0),  
+														color: const Color(0xFF1033FF),
+														textColor: const Color(0xFFFFFFFF),
+														child: new Text(
+															'Complete Sign Up'.toUpperCase(),
+															style: new TextStyle(
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w800,
+															),
+														),
+													),
+												)
+											]
+										),
+									),
+								),
+							]
+						),
+					);
+				},
+			),
+		);
 	}
 			
 	void _login() {
