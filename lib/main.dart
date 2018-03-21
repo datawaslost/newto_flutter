@@ -43,6 +43,54 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
+class PasswordField extends StatefulWidget {
+  const PasswordField({
+    this.onSaved,
+    this.validator,
+    this.onFieldSubmitted,
+  });
+
+  final FormFieldSetter<String> onSaved;
+  final FormFieldValidator<String> validator;
+  final ValueChanged<String> onFieldSubmitted;
+
+  @override
+  _PasswordFieldState createState() => new _PasswordFieldState();
+}
+
+class _PasswordFieldState extends State<PasswordField> {
+	bool _obscureText = true;
+	
+	@override
+	Widget build(BuildContext context) {
+		return new TextFormField(
+			obscureText: _obscureText,
+			onSaved: widget.onSaved,
+			validator: widget.validator,
+			onFieldSubmitted: widget.onFieldSubmitted,
+			style: new TextStyle(
+				color: const Color(0xFF000000),
+				fontFamily: 'Montserrat',
+				fontWeight: FontWeight.w800,
+				fontSize: 18.0,
+			),
+			decoration: new InputDecoration(
+				fillColor: const Color(0x66E0E1EA),
+				filled: true,
+				suffixIcon: new GestureDetector(
+				  onTap: () {
+				    setState(() {
+				      _obscureText = !_obscureText;
+				    });
+				  },
+				  child: new Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+				),
+			),
+		);
+	}
+}
+
+
 class _MyHomePageState extends State<MyHomePage> {
 
 	final TextEditingController _emailController = new TextEditingController();
@@ -64,15 +112,17 @@ class _MyHomePageState extends State<MyHomePage> {
 										new BackButton(),
 										new Expanded(
 											child: new Container(
-												padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
 												alignment: Alignment.topRight,
-												child: new Text(
-													'Login'.toUpperCase(),
-													style: new TextStyle(
-														color: const Color(0xFF1033FF),
-														fontFamily: 'Montserrat',
-														fontWeight: FontWeight.w800,
-														fontSize: 14.0,
+												child: new FlatButton(
+													onPressed: _login,
+													child: new Text(
+														'Login'.toUpperCase(),
+														style: new TextStyle(
+															color: const Color(0xFF1033FF),
+															fontFamily: 'Montserrat',
+															fontWeight: FontWeight.w800,
+															fontSize: 14.0,
+														),
 													),
 												),
 											),
@@ -93,6 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
 								),
 								new Container(
 									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+									alignment: Alignment.topLeft,
 									child: new Text(
 										'Tell us your school email.'.toUpperCase(),
 										style: new TextStyle(
@@ -184,10 +235,29 @@ class _MyHomePageState extends State<MyHomePage> {
 		);
 	}
 
+	void _createAccount2() {
+		Navigator.of(context).push(
+			new MaterialPageRoute(
+				builder: (context) {
+					return new Scaffold(
+						body: new Column(
+							mainAxisSize: MainAxisSize.min,
+							children: <Widget>[
+								
+							]
+						),
+					),
+				}
+			)
+		)
+	}
+			
 	void _login() {
 		Navigator.of(context).push(
 			new MaterialPageRoute(
 				builder: (context) {
+										bool _obscureText = true;
+
 					return new Scaffold(
 						body: new Column(
 							mainAxisSize: MainAxisSize.min,
@@ -197,20 +267,35 @@ class _MyHomePageState extends State<MyHomePage> {
 										new BackButton(),
 										new Expanded(
 											child: new Container(
-												padding: new EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
 												alignment: Alignment.topRight,
-												child: new Text(
-													'Login'.toUpperCase(),
-													style: new TextStyle(
-														color: const Color(0xFF1033FF),
-														fontFamily: 'Montserrat',
-														fontWeight: FontWeight.w800,
-														fontSize: 14.0,
+												child: new FlatButton(
+													onPressed: _createAccount,
+													child: new Text(
+														'Create Account'.toUpperCase(),
+														style: new TextStyle(
+															color: const Color(0xFF1033FF),
+															fontFamily: 'Montserrat',
+															fontWeight: FontWeight.w800,
+															fontSize: 14.0,
+														),
 													),
 												),
 											),
 										),
 									]
+								),
+								new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+									alignment: Alignment.topLeft,
+									child: new Text(
+										'Login'.toUpperCase(),
+										style: new TextStyle(
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 38.0,
+											height: 1.0,
+										),
+									),
 								),
 								new Container(
 									padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
@@ -257,20 +342,7 @@ class _MyHomePageState extends State<MyHomePage> {
 								),
 								new Container(
 									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-							        child: new TextField(
-							        	obscureText: true,
-										style: new TextStyle(
-											color: const Color(0xFF000000),
-											fontFamily: 'Montserrat',
-											fontWeight: FontWeight.w800,
-											fontSize: 18.0,
-										),
-										decoration: new InputDecoration(
-							            	fillColor: const Color(0x66E0E1EA),
-											filled: true,
-										),
-										keyboardType: TextInputType.emailAddress,
-							        ),
+							        child: new PasswordField(),
 								),
 								new Expanded(
 									child: new Align(
