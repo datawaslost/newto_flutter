@@ -1,32 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/scheduler.dart';
 
 void main() => runApp(new MyApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'NewTo',
-      theme: new ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: new MyHomePage(),
-    );
-  }
+	class MyApp extends StatelessWidget {
+	// This widget is the root of your application.
+	@override
+	Widget build(BuildContext context) {
+		return new MaterialApp(
+			title: 'NewTo',
+			theme: new ThemeData(
+				// This is the theme of your application.
+				primarySwatch: Colors.blue,
+			),
+			// home: new Onboarding(),
+			home: new Home(),
+		    routes: <String, WidgetBuilder> {
+				'/onboarding': (BuildContext context) => new Onboarding(title: 'on b'),
+				'/landing': (BuildContext context) => new Landing(title: 'on b'),
+			},
+		);
+	}
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class Home extends StatefulWidget {
+  Home({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -40,7 +39,55 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _HomeState createState() => new _HomeState();
+}
+
+class _HomeState extends State<Home> {
+
+	bool isLoggedIn = true;
+	
+    @override
+    void initState() {
+      super.initState();
+      
+      // need to test for logged in state here.
+
+      if(!isLoggedIn) {
+        print("not logged in, going to login page");
+		SchedulerBinding.instance.addPostFrameCallback((_) {
+		  Navigator.of(context).pushNamed("/onboarding");
+		});
+      } else {
+		SchedulerBinding.instance.addPostFrameCallback((_) {
+		  Navigator.of(context).pushNamed("/landing");
+		});
+	  }
+
+    }
+    
+	@override
+	Widget build(BuildContext context) {
+		return new Scaffold();
+	}
+	
+}
+
+class Onboarding extends StatefulWidget {
+  Onboarding({Key key, this.title}) : super(key: key);
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
+
+  final String title;
+
+  @override
+  _OnboardingState createState() => new _OnboardingState();
 }
 
 class PasswordField extends StatefulWidget {
@@ -90,8 +137,7 @@ class _PasswordFieldState extends State<PasswordField> {
 	}
 }
 
-
-class _MyHomePageState extends State<MyHomePage> {
+class _OnboardingState extends State<Onboarding> {
 
 	final TextEditingController _emailController = new TextEditingController();
 
@@ -429,15 +475,7 @@ class _MyHomePageState extends State<MyHomePage> {
 											children: <Widget>[
 												new Expanded(
 													child: new RaisedButton(
-														onPressed: () {
-															showDialog(
-																context: context,
-																child: new AlertDialog(
-																	title: new Text('What you typed:'),
-																	content: new Text(_emailController.text),
-																),
-															);
-														},
+														onPressed: _landing,
 														padding: new EdgeInsets.all(14.0),  
 														color: const Color(0xFF1033FF),
 														textColor: const Color(0xFFFFFFFF),
@@ -466,8 +504,6 @@ class _MyHomePageState extends State<MyHomePage> {
 		Navigator.of(context).push(
 			new MaterialPageRoute(
 				builder: (context) {
-										bool _obscureText = true;
-
 					return new Scaffold(
 						body: new Column(
 							mainAxisSize: MainAxisSize.min,
@@ -560,15 +596,7 @@ class _MyHomePageState extends State<MyHomePage> {
 										child: new Row(children: <Widget>[
 											new Expanded(
 												child: new RaisedButton(
-														onPressed: () {
-															showDialog(
-																context: context,
-																child: new AlertDialog(
-																	title: new Text('What you typed:'),
-																	content: new Text(_emailController.text),
-																),
-															);
-														},
+														onPressed: _landing,
 														padding: new EdgeInsets.all(14.0),  
 														color: const Color(0xFF1033FF),
 														textColor: const Color(0xFFFFFFFF),
@@ -592,7 +620,12 @@ class _MyHomePageState extends State<MyHomePage> {
 			),
 		);
 	}
-    
+	
+	void _landing() {
+		// go to landing page
+		Navigator.of(context).pushNamed('/landing');
+	}
+	
 	@override
 	Widget build(BuildContext context) {
 	  
@@ -683,3 +716,62 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+
+class Landing extends StatefulWidget {
+	Landing({Key key, this.title}) : super(key: key);
+	
+	final String title;
+	
+	@override
+	_LandingState createState() => new _LandingState();
+}
+
+
+class _LandingState extends State<Landing> {
+	
+	void _account() {
+		// load account info
+		Navigator.of(context).pushNamed('/onboarding');
+	}
+
+	@override
+	Widget build(BuildContext context) {
+	  
+		SystemChrome.setEnabledSystemUIOverlays([]);
+		
+		return new Scaffold(
+			appBar: new AppBar(
+			  title: new Text('Newto'),
+			  actions: <Widget>[
+			    new IconButton(
+			      icon: new Icon(Icons.playlist_play),
+			      tooltip: 'Air it',
+			      onPressed: _account,
+			    ),
+			  ],
+			),
+			body: new Column(
+				mainAxisSize: MainAxisSize.min,
+				children: <Widget>[
+					new Container(
+						padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+						alignment: Alignment.topLeft,
+						child: new Text(
+							'Landing Page'.toUpperCase(),
+							style: new TextStyle(
+								color: const Color(0xFF838383),
+								fontFamily: 'Montserrat',
+								fontWeight: FontWeight.w800,
+								fontSize: 14.0,
+							),
+						),
+					),
+				]
+			),
+		);
+
+	}
+	
+}
+
