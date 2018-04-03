@@ -13,6 +13,14 @@ void main() => runApp(new MyApp());
 			theme: new ThemeData(
 				// This is the theme of your application.
 				primarySwatch: Colors.blue,
+				backgroundColor: const Color(0xFF000000),
+				canvasColor: const Color(0xFF000000),
+				scaffoldBackgroundColor: const Color(0xFFFFFFFF),
+				disabledColor: const Color(0xFFFFFFFF),
+				buttonColor: const Color(0xFFFFFFFF),
+				iconTheme: new IconThemeData( color: const Color(0xFFFFFFFF) ),
+				primaryIconTheme: new IconThemeData( color: const Color(0xFFFFFFFF) ),
+				accentIconTheme: new IconThemeData( color: const Color(0xFFFFFFFF) ),
 			),
 			// home: new Onboarding(),
 			home: new Home(),
@@ -741,15 +749,44 @@ class _LandingState extends State<Landing> {
 		SystemChrome.setEnabledSystemUIOverlays([]);
 		
 		return new Scaffold(
+			backgroundColor: const Color(0xFF000000),
 			appBar: new AppBar(
-			  title: new Text('Newto'),
-			  actions: <Widget>[
-			    new IconButton(
-			      icon: new Icon(Icons.playlist_play),
-			      tooltip: 'Air it',
-			      onPressed: _account,
-			    ),
-			  ],
+				backgroundColor: const Color(0xFF000000),
+				centerTitle: true,
+				title: new Container(
+					alignment: Alignment.centerRight,
+					child: new Row(
+						children: <Widget>[
+							new Expanded(child: new Container(
+					alignment: Alignment.centerRight, child:
+							new Image.asset("images/LogoSpan-White.png", height: 12.0),
+							)),
+							new Expanded(child: new Container(
+							alignment: Alignment.centerLeft, child:
+
+							new Text(
+								'UWM'.toUpperCase(),
+								style: new TextStyle(
+									color: const Color(0xFF838383),
+									fontFamily: 'Montserrat',
+									fontWeight: FontWeight.w300,
+									fontSize: 14.0,
+								),
+							),
+							),
+							),
+						]
+					)
+				),
+				// title: new Image.asset("images/LogoSpan-White.png", height: 12.0),
+				leading: new Container(),
+				actions: <Widget>[
+					new IconButton(
+						icon: new Icon(Icons.account_circle ),
+						tooltip: 'Account',
+						onPressed: _account,
+					),
+				],
 			),
 			body: new Column(
 				mainAxisSize: MainAxisSize.min,
@@ -766,6 +803,33 @@ class _LandingState extends State<Landing> {
 								fontSize: 14.0,
 							),
 						),
+					),
+				]
+			),
+			bottomNavigationBar: new BottomNavigationBar(
+				type: BottomNavigationBarType.fixed,
+				iconSize: 39.0,
+				fixedColor: const Color(0xFFFFFFFF),
+				items: <BottomNavigationBarItem>[
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.home, color: const Color(0xFFFFFFFF)  ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
+					),
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.filter_none, color: const Color(0xFFFFFFFF) ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
+					),
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.location_searching, color: const Color(0xFFFFFFFF) ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
+					),
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.bookmark, color: const Color(0xFFFFFFFF) ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
+					),
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.insert_emoticon, color: const Color(0xFFFFFFFF) ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
 					),
 				]
 			),
