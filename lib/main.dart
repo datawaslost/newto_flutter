@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:carousel/carousel.dart';
+import "dart:ui";
 
 void main() => runApp(new MyApp());
 
@@ -742,6 +744,10 @@ class _LandingState extends State<Landing> {
 		// load account info
 		Navigator.of(context).pushNamed('/onboarding');
 	}
+	
+	void _goto() {
+		// holder for carousel arrow button	
+	}
 
 	@override
 	Widget build(BuildContext context) {
@@ -757,23 +763,25 @@ class _LandingState extends State<Landing> {
 					alignment: Alignment.centerRight,
 					child: new Row(
 						children: <Widget>[
-							new Expanded(child: new Container(
-					alignment: Alignment.centerRight, child:
-							new Image.asset("images/LogoSpan-White.png", height: 12.0),
-							)),
-							new Expanded(child: new Container(
-							alignment: Alignment.centerLeft, child:
-
-							new Text(
-								'UWM'.toUpperCase(),
-								style: new TextStyle(
-									color: const Color(0xFF838383),
-									fontFamily: 'Montserrat',
-									fontWeight: FontWeight.w300,
-									fontSize: 14.0,
+							new Expanded(
+								child: new Container(
+									alignment: Alignment.centerRight,
+									child: new Image.asset("images/LogoSpan-White.png", height: 12.0),
+								)
+							),
+							new Expanded(
+								child: new Container(
+									alignment: Alignment.centerLeft,
+									child: new Text(
+										'UWM'.toUpperCase(),
+										style: new TextStyle(
+											color: const Color(0xFF838383),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w300,
+											fontSize: 14.0,
+										),
+									),
 								),
-							),
-							),
 							),
 						]
 					)
@@ -791,19 +799,214 @@ class _LandingState extends State<Landing> {
 			body: new Column(
 				mainAxisSize: MainAxisSize.min,
 				children: <Widget>[
-					new Container(
-						padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-						alignment: Alignment.topLeft,
-						child: new Text(
-							'Landing Page'.toUpperCase(),
-							style: new TextStyle(
-								color: const Color(0xFF838383),
-								fontFamily: 'Montserrat',
-								fontWeight: FontWeight.w800,
-								fontSize: 14.0,
-							),
+					new Expanded(
+						child: new Carousel(
+							displayDuration: new Duration(seconds: 20),
+							children: [
+							    new Container(
+									padding: new EdgeInsets.fromLTRB(65.0, 0.0, 65.0, 0.0),
+									alignment: Alignment.center,
+									child: new Column(
+										mainAxisSize: MainAxisSize.min,
+										children: <Widget>[
+											new Text(
+												'Your List'.toUpperCase(),
+												textAlign: TextAlign.center,
+												style: new TextStyle(
+													color: const Color(0xFF838383),
+													fontFamily: 'Montserrat',
+													fontWeight: FontWeight.w800,
+													fontSize: 14.0,
+												),
+											),
+											new SizedBox(height: 10.0),
+											new Text(
+												'Tell your friends your new address'.toUpperCase(),
+												textAlign: TextAlign.center,
+												style: new TextStyle(
+													color: const Color(0xFFFFFFFF),
+													fontFamily: 'Montserrat',
+													fontWeight: FontWeight.w800,
+													fontSize: 24.0,
+													height: 0.9,
+												),
+											),
+											new FlatButton(
+												onPressed: _goto,
+												child: new Icon(
+													Icons.arrow_forward,
+													color: const Color(0xFFFFFFFF),
+												),
+											),
+										],
+									),
+								),
+							    new Container(
+									padding: new EdgeInsets.fromLTRB(65.0, 0.0, 65.0, 0.0),
+									alignment: Alignment.center,
+									child: new Column(
+										mainAxisSize: MainAxisSize.min,
+										children: <Widget>[
+											new Text(
+												'Your List'.toUpperCase(),
+												textAlign: TextAlign.center,
+												style: new TextStyle(
+													color: const Color(0xFF838383),
+													fontFamily: 'Montserrat',
+													fontWeight: FontWeight.w800,
+													fontSize: 14.0,
+												),
+											),
+											new SizedBox(height: 10.0),
+											new Text(
+												'Turn in your housing insurance forms'.toUpperCase(),
+												textAlign: TextAlign.center,
+												style: new TextStyle(
+													color: const Color(0xFFFFFFFF),
+													fontFamily: 'Montserrat',
+													fontWeight: FontWeight.w800,
+													fontSize: 24.0,
+													height: 0.9,
+												),
+											),
+											new FlatButton(
+												onPressed: _goto,
+												child: new Icon(
+													Icons.arrow_forward,
+													color: const Color(0xFFFFFFFF),
+												),
+											),
+										],
+									),
+								),
+							]
 						),
 					),
+					new Container(
+						child: new LinearProgressIndicator(
+							value: 0.5,
+							backgroundColor: const Color(0xFF2D2D2F),
+							valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
+						),
+						decoration: new BoxDecoration(
+							boxShadow: [
+								new BoxShadow(
+									color: Colors.black,
+									blurRadius: 20.0,
+								),
+							]
+						),
+					),
+					new Container(
+						height: 365.0,
+						decoration: new BoxDecoration(
+							color: const Color(0xFFFFFFFF),
+						),
+						child: new Column(
+							mainAxisSize: MainAxisSize.min,
+							children: <Widget>[
+								new SizedBox(height: 25.0),
+								new Text(
+									'Discover'.toUpperCase(),
+									textAlign: TextAlign.center,
+									style: new TextStyle(
+										color: const Color(0xFF838383),
+										fontFamily: 'Montserrat',
+										fontWeight: FontWeight.w800,
+										fontSize: 14.0,
+									),
+								),
+								// new SizedBox(height: 10.0),
+								new Expanded(
+									child: new Container(
+										margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+										child: new ListView(
+											scrollDirection: Axis.horizontal,
+											shrinkWrap: true,
+											children: <Widget>[
+												new Container(
+													width: 278.0,
+													height: 278.0,
+													margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
+													child: new Card(
+														elevation: 8.0,
+														child: new Container(
+															decoration: new BoxDecoration(
+																image: new DecorationImage(
+																	image: new AssetImage('images/cardphoto.png'),
+																	fit: BoxFit.cover,
+																),
+															),
+															child: new Column(
+																mainAxisSize: MainAxisSize.min,
+																children: <Widget>[
+																	new BackdropFilter(
+																		filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+																		child: new Container(
+																			padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+																			child: new Text(
+																				'Create the Perfect Dorm Room'.toUpperCase(),
+																				textAlign: TextAlign.left,
+																				style: new TextStyle(
+																					color: const Color(0xFF000000),
+																					fontFamily: 'Montserrat',
+																					fontWeight: FontWeight.w800,
+																					fontSize: 24.0,
+																				),
+																			),
+																			decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+																		),
+																	),
+																],
+															),
+														),
+													),
+												),
+												new Container(
+													width: 278.0,
+													height: 278.0,
+													margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
+													child: new Card(
+														elevation: 8.0,
+														child: new Container(
+															decoration: new BoxDecoration(
+																image: new DecorationImage(
+																	image: new AssetImage('images/background.png'),
+																	fit: BoxFit.cover,
+																),
+															),
+															child: new Column(
+																mainAxisSize: MainAxisSize.min,
+																children: <Widget>[
+																	new BackdropFilter(
+																		filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+																		child: new Container(
+																			padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+																			child: new Text(
+																				'Get to know UMW'.toUpperCase(),
+																				textAlign: TextAlign.left,
+																				style: new TextStyle(
+																					color: const Color(0xFF000000),
+																					fontFamily: 'Montserrat',
+																					fontWeight: FontWeight.w800,
+																					fontSize: 24.0,
+																				),
+																			),
+																			decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+																		),
+																	),
+																],
+															),
+														),
+													),
+												),
+											],
+										)
+									)
+								)
+							],
+						),
+					)
 				]
 			),
 			bottomNavigationBar: new BottomNavigationBar(
