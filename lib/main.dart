@@ -23,12 +23,16 @@ void main() => runApp(new MyApp());
 				iconTheme: new IconThemeData( color: const Color(0xFFFFFFFF) ),
 				primaryIconTheme: new IconThemeData( color: const Color(0xFFFFFFFF) ),
 				accentIconTheme: new IconThemeData( color: const Color(0xFFFFFFFF) ),
+				bottomAppBarColor: const Color(0x000000),
+				primaryColor: const Color(0xFF000000),
+				indicatorColor: const Color(0xFF00C3FF),
 			),
 			// home: new Onboarding(),
 			home: new Home(),
 		    routes: <String, WidgetBuilder> {
 				'/onboarding': (BuildContext context) => new Onboarding(title: 'on b'),
 				'/landing': (BuildContext context) => new Landing(title: 'on b'),
+				'/yourlist': (BuildContext context) => new YourList(title: 'on b'),
 			},
 		);
 	}
@@ -639,7 +643,7 @@ class _OnboardingState extends State<Onboarding> {
 	@override
 	Widget build(BuildContext context) {
 	  
-		SystemChrome.setEnabledSystemUIOverlays([]);
+		// SystemChrome.setEnabledSystemUIOverlays([]);
 	  
     // This method is rerun every time setState is called
     //
@@ -745,14 +749,15 @@ class _LandingState extends State<Landing> {
 		Navigator.of(context).pushNamed('/onboarding');
 	}
 	
-	void _goto() {
-		// holder for carousel arrow button	
+	void _yourlist() {
+		// go to list page
+		Navigator.of(context).pushNamed('/yourlist');
 	}
 
 	@override
 	Widget build(BuildContext context) {
 	  
-		SystemChrome.setEnabledSystemUIOverlays([]);
+		// SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
 		
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
@@ -832,7 +837,7 @@ class _LandingState extends State<Landing> {
 												),
 											),
 											new FlatButton(
-												onPressed: _goto,
+												onPressed: _yourlist,
 												child: new Icon(
 													Icons.arrow_forward,
 													color: const Color(0xFFFFFFFF),
@@ -870,7 +875,7 @@ class _LandingState extends State<Landing> {
 												),
 											),
 											new FlatButton(
-												onPressed: _goto,
+												onPressed: _yourlist,
 												child: new Icon(
 													Icons.arrow_forward,
 													color: const Color(0xFFFFFFFF),
@@ -1042,3 +1047,108 @@ class _LandingState extends State<Landing> {
 	
 }
 
+
+class YourList extends StatefulWidget {
+	YourList({Key key, this.title}) : super(key: key);
+	
+	final String title;
+	
+	@override
+	_YourListState createState() => new _YourListState();
+}
+
+
+class _YourListState extends State<YourList> {
+
+	void _account() {
+		// load account info
+		Navigator.of(context).pushNamed('/onboarding');
+	}
+	
+	void _goto() {
+		// holder
+	}
+
+	@override
+	Widget build(BuildContext context) {
+	  		
+    return new MaterialApp(
+      home: new DefaultTabController(
+        length: 3,
+        child: new Scaffold(
+			backgroundColor: const Color(0xFFF3F3F7),
+			appBar: new AppBar(
+				backgroundColor: const Color(0xFF000000),
+				centerTitle: true,
+				title: new TabBar(
+					indicatorWeight: 4.0,
+					indicatorColor: const Color(0xFF00C3FF),
+					isScrollable: false,
+					labelStyle: new TextStyle(
+						fontFamily: 'Montserrat',
+						fontWeight: FontWeight.w800,
+						fontSize: 14.0,
+					),
+					tabs: [
+						new Tab(text: "Your List".toUpperCase()),
+						new Tab(text: "Popular".toUpperCase()),
+						new Tab(text: "UWM".toUpperCase()),
+					],
+				),
+				actions: <Widget>[
+					new IconButton(
+						icon: new Icon(Icons.account_circle ),
+						tooltip: 'Account',
+						onPressed: _account,
+					),
+				],
+
+			),
+			body: new TabBarView(
+				children: [
+					new Text(
+						'Your List'.toUpperCase(),
+						style: new TextStyle(
+							fontFamily: 'Montserrat',
+							fontWeight: FontWeight.w800,
+							fontSize: 24.0,
+						),
+					),
+					new Icon(Icons.directions_transit),
+					new Icon(Icons.directions_bike),
+				],
+			),
+			bottomNavigationBar: new BottomNavigationBar(
+				type: BottomNavigationBarType.fixed,
+				iconSize: 39.0,
+				fixedColor: const Color(0xFFFFFFFF),
+				items: <BottomNavigationBarItem>[
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.home, color: const Color(0xFFFFFFFF)  ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
+					),
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.filter_none, color: const Color(0xFFFFFFFF) ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
+					),
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.location_searching, color: const Color(0xFFFFFFFF) ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
+					),
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.bookmark, color: const Color(0xFFFFFFFF) ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
+					),
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.insert_emoticon, color: const Color(0xFFFFFFFF) ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
+					),
+				]
+			),
+		)
+		)
+		);
+
+	}
+	
+}
