@@ -1187,7 +1187,7 @@ class _YourListState extends State<YourList> {
 									),
 								),
 								new SliverPadding(
-									padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+									padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
 									sliver: new SliverGrid.count(
 										crossAxisSpacing: 10.0,
 										mainAxisSpacing: 10.0,
@@ -1314,7 +1314,7 @@ class _YourListState extends State<YourList> {
 									),
 								),
 								new SliverPadding(
-									padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+									padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
 									sliver: new SliverGrid.count(
 										crossAxisSpacing: 10.0,
 										mainAxisSpacing: 10.0,
@@ -1357,7 +1357,72 @@ class _YourListState extends State<YourList> {
 									),
 								),
 								new SliverPadding(
-									padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+									padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+									sliver: new SliverGrid.count(
+										crossAxisSpacing: 10.0,
+										mainAxisSpacing: 10.0,
+										crossAxisCount: 1,
+										childAspectRatio: 1.0,
+										children: <Widget>[
+											new Card(
+												elevation: 3.0,
+												child: new Container(
+													decoration: new BoxDecoration(
+														image: new DecorationImage(
+															image: new AssetImage('images/cardphoto.png'),
+															fit: BoxFit.cover,
+														),
+													),
+													child: new Column(
+														mainAxisSize: MainAxisSize.min,
+														children: <Widget>[
+															new BackdropFilter(
+																filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+																child: new Container(
+																	padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+																	child: new Text(
+																		'Create the Perfect Dorm Room'.toUpperCase(),
+																		textAlign: TextAlign.left,
+																		style: new TextStyle(
+																			color: const Color(0xFF000000),
+																			fontFamily: 'Montserrat',
+																			fontWeight: FontWeight.w800,
+																			fontSize: 24.0,
+																		),
+																	),
+																	decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+																),
+															),
+															new Expanded(
+																child: new Container()
+															),															
+															new Row(
+																children: [
+																	new Container(
+																		padding: new EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
+																		child: new Text(
+																			'Sponsor'.toUpperCase(),
+																			textAlign: TextAlign.left,
+																			style: new TextStyle(
+																				color: const Color(0xFF000000),
+																				fontFamily: 'Montserrat',
+																				fontWeight: FontWeight.w800,
+																				fontSize: 10.0,
+																			),
+																		),
+																		decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
+																	),
+																	new Expanded(
+																		child: new Container()
+																	),
+																]
+															)
+														],
+													),
+												),
+											),
+										]
+									)
 								),
 							],
 						),
