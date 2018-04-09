@@ -1108,13 +1108,258 @@ class _YourListState extends State<YourList> {
 				),
 				body: new TabBarView(
 					children: [
-						new Text(
-							'Your List'.toUpperCase(),
-							style: new TextStyle(
-								fontFamily: 'Montserrat',
-								fontWeight: FontWeight.w800,
-								fontSize: 24.0,
-							),
+						new CustomScrollView(
+							primary: false,
+							slivers: <Widget>[
+								new SliverPadding(
+									padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+									sliver: new SliverGrid.count(
+										crossAxisSpacing: 10.0,
+										mainAxisSpacing: 10.0,
+										crossAxisCount: 2,
+										childAspectRatio: 1.1,
+										children: <Widget>[
+											new Card(
+												elevation: 3.0,
+												child: new Container(
+													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+													child: new Text(
+														'Tell your friends your new address',
+														textAlign: TextAlign.left,
+														style: new TextStyle(
+															color: const Color(0xFF000000),
+															fontFamily: 'Montserrat',
+															fontWeight: FontWeight.w700,
+															fontSize: 14.0,
+														),
+													),
+												),
+											),
+											new Card(
+												elevation: 3.0,
+												child: new Container(
+													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+													child: new Text(
+														"Plan how you're going to get around campus",
+														textAlign: TextAlign.left,
+														style: new TextStyle(
+															color: const Color(0xFF000000),
+															fontFamily: 'Montserrat',
+															fontWeight: FontWeight.w700,
+															fontSize: 14.0,
+														),
+													),
+												),
+											),
+											new Card(
+												elevation: 3.0,
+												child: new Container(
+													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+													child: new Text(
+														'Find Your Doctor, Dentist, Eye care, Pharmacy',
+														textAlign: TextAlign.left,
+														style: new TextStyle(
+															color: const Color(0xFF000000),
+															fontFamily: 'Montserrat',
+															fontWeight: FontWeight.w700,
+															fontSize: 14.0,
+														),
+													),
+												),
+											),
+											new Card(
+												elevation: 3.0,
+												child: new Container(
+													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+													child: new Text(
+														'Find the nearest grocery store',
+														textAlign: TextAlign.left,
+														style: new TextStyle(
+															color: const Color(0xFF000000),
+															fontFamily: 'Montserrat',
+															fontWeight: FontWeight.w700,
+															fontSize: 14.0,
+														),
+													),
+												),
+											),
+										],
+									),
+								),
+								new SliverPadding(
+									padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+									sliver: new SliverGrid.count(
+										crossAxisSpacing: 10.0,
+										mainAxisSpacing: 10.0,
+										crossAxisCount: 1,
+										childAspectRatio: 2.75,
+										children: <Widget>[
+											new Card(
+												elevation: 3.0,
+												child: new Column(
+													mainAxisSize: MainAxisSize.min,
+													children: <Widget>[
+														new Container(
+															padding: const EdgeInsets.fromLTRB(20.0, 15.0, 10.0, 7.5),
+															child: new Text(
+																'Popular Activity Name Title Group'.toUpperCase(),
+																textAlign: TextAlign.left,
+																style: new TextStyle(
+																	color: const Color(0xFF000000),
+																	fontFamily: 'Montserrat',
+																	fontWeight: FontWeight.w800,
+																	fontSize: 24.0,
+																),
+															),
+														),
+														new Container(
+															padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+															child: new Row(
+																children: [
+																	new Expanded(
+																		child: new Text(
+																			'Sponsored by UWM'.toUpperCase(),
+																			textAlign: TextAlign.left,
+																			style: new TextStyle(
+																				color: const Color(0xFF838383),
+																				fontFamily: 'Montserrat',
+																				fontWeight: FontWeight.w800,
+																				fontSize: 10.0,
+																			),
+																		),
+																	),
+																	new Text(
+																		'4 '.toUpperCase(),
+																		textAlign: TextAlign.left,
+																		style: new TextStyle(
+																			color: const Color(0xFF838383),
+																			fontFamily: 'Montserrat',
+																			fontWeight: FontWeight.w800,
+																			fontSize: 10.0,
+																		),
+																	),
+																	new Container(
+																		padding: const EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
+																		child: new Icon(
+																			Icons.filter_none, 
+																			color: const Color(0xFF838383), 
+																			size: 10.0
+																		)
+																	),
+																]
+															)
+														),
+													],
+												),
+											),
+											new Card(
+												elevation: 3.0,
+												child: new Column(
+													mainAxisSize: MainAxisSize.min,
+													children: <Widget>[
+														new Container(
+															padding: const EdgeInsets.fromLTRB(20.0, 15.0, 10.0, 7.5),
+															child: new Text(
+																'Popular Activity Name Title Group'.toUpperCase(),
+																textAlign: TextAlign.left,
+																style: new TextStyle(
+																	color: const Color(0xFF000000),
+																	fontFamily: 'Montserrat',
+																	fontWeight: FontWeight.w800,
+																	fontSize: 24.0,
+																),
+															),
+														),
+														new Container(
+															padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+															child: new Row(
+																children: [
+																	new Expanded(
+																		child: new Text(
+																			'Sponsored by UWM'.toUpperCase(),
+																			textAlign: TextAlign.left,
+																			style: new TextStyle(
+																				color: const Color(0xFF838383),
+																				fontFamily: 'Montserrat',
+																				fontWeight: FontWeight.w800,
+																				fontSize: 10.0,
+																			),
+																		),
+																	),
+																	new Text(
+																		'4 '.toUpperCase(),
+																		textAlign: TextAlign.left,
+																		style: new TextStyle(
+																			color: const Color(0xFF838383),
+																			fontFamily: 'Montserrat',
+																			fontWeight: FontWeight.w800,
+																			fontSize: 10.0,
+																		),
+																	),
+																	new Container(
+																		padding: const EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
+																		child: new Icon(
+																			Icons.filter_none, 
+																			color: const Color(0xFF838383), 
+																			size: 10.0
+																		)
+																	),
+																]
+															)
+														),
+													],
+												),
+											),
+										],
+									),
+								),
+								new SliverPadding(
+									padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+									sliver: new SliverGrid.count(
+										crossAxisSpacing: 10.0,
+										mainAxisSpacing: 10.0,
+										crossAxisCount: 2,
+										childAspectRatio: 1.1,
+										children: <Widget>[
+											new Card(
+												elevation: 3.0,
+												child: new Container(
+													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+													child: new Text(
+														'Find the nearest convenience store',
+														textAlign: TextAlign.left,
+														style: new TextStyle(
+															color: const Color(0xFF000000),
+															fontFamily: 'Montserrat',
+															fontWeight: FontWeight.w700,
+															fontSize: 14.0,
+														),
+													),
+												),
+											),
+											new Card(
+												elevation: 3.0,
+												child: new Container(
+													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+													child: new Text(
+														"Buy books for your class",
+														textAlign: TextAlign.left,
+														style: new TextStyle(
+															color: const Color(0xFF000000),
+															fontFamily: 'Montserrat',
+															fontWeight: FontWeight.w700,
+															fontSize: 14.0,
+														),
+													),
+												),
+											),
+										],
+									),
+								),
+								new SliverPadding(
+									padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+								),
+							],
 						),
 						new Icon(Icons.directions_transit),
 						new Icon(Icons.directions_bike),
