@@ -1424,6 +1424,44 @@ class _YourListState extends State<YourList> {
 										]
 									)
 								),
+								new SliverPadding(
+									padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
+									sliver: new SliverGrid.count(
+										crossAxisCount: 1,
+										childAspectRatio: 4.0,
+										children: <Widget>[
+											new Row(
+												children: <Widget>[
+													new Expanded( child: new Container() ),
+													new Container(
+														decoration: new BoxDecoration (
+															borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
+															color: const Color(0xFF1033FF),
+														),
+														padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+														child: new Row(
+															children: <Widget>[
+																new Container(
+																	padding: const EdgeInsets.fromLTRB(20.0, 12.0, 20.0, 12.0),
+																	child: const Icon(Icons.add, size: 18.0),
+																),
+																new Container(
+																	padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+																	child: const Icon(Icons.create, size: 18.0),
+																),
+																new Container(
+																	padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+																	child: const Icon(Icons.more_horiz, size: 18.0),
+																),
+															],
+														),
+													),
+													new Expanded( child: new Container() ),
+												]
+											)
+										]
+									)
+								),
 							],
 						),
 						new Icon(Icons.directions_transit),
