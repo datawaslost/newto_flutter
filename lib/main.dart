@@ -1071,84 +1071,85 @@ class _YourListState extends State<YourList> {
 
 	@override
 	Widget build(BuildContext context) {
-	  		
-    return new MaterialApp(
-      home: new DefaultTabController(
-        length: 3,
-        child: new Scaffold(
-			backgroundColor: const Color(0xFFF3F3F7),
-			appBar: new AppBar(
-				backgroundColor: const Color(0xFF000000),
-				centerTitle: true,
-				title: new TabBar(
-					indicatorWeight: 4.0,
-					indicatorColor: const Color(0xFF00C3FF),
-					isScrollable: false,
-					labelStyle: new TextStyle(
-						fontFamily: 'Montserrat',
-						fontWeight: FontWeight.w800,
-						fontSize: 14.0,
-					),
-					tabs: [
-						new Tab(text: "Your List".toUpperCase()),
-						new Tab(text: "Popular".toUpperCase()),
-						new Tab(text: "UWM".toUpperCase()),
-					],
-				),
-				actions: <Widget>[
-					new IconButton(
-						icon: new Icon(Icons.account_circle ),
-						tooltip: 'Account',
-						onPressed: _account,
-					),
-				],
-
-			),
-			body: new TabBarView(
-				children: [
-					new Text(
-						'Your List'.toUpperCase(),
-						style: new TextStyle(
+		  		
+	    return new DefaultTabController(
+	        length: 3,
+	        child: new Scaffold(
+				backgroundColor: const Color(0xFFF3F3F7),
+				appBar: new AppBar(
+					titleSpacing: 0.0,
+					backgroundColor: const Color(0xFF000000),
+					centerTitle: true,
+					automaticallyImplyLeading: false,
+					title: new TabBar(
+						indicatorWeight: 4.0,
+						indicatorColor: const Color(0xFF00C3FF),
+						indicatorSize: TabBarIndicatorSize.label,
+						isScrollable: false,
+						labelStyle: new TextStyle(
 							fontFamily: 'Montserrat',
 							fontWeight: FontWeight.w800,
-							fontSize: 24.0,
+							fontSize: 14.0,
+							height: 2.0,
 						),
+						tabs: [
+							new Tab(text: "Your List".toUpperCase()),
+							new Tab(text: "Popular".toUpperCase()),
+							new Tab(text: "UWM".toUpperCase()),
+						],
 					),
-					new Icon(Icons.directions_transit),
-					new Icon(Icons.directions_bike),
-				],
-			),
-			bottomNavigationBar: new BottomNavigationBar(
-				type: BottomNavigationBarType.fixed,
-				iconSize: 39.0,
-				fixedColor: const Color(0xFFFFFFFF),
-				items: <BottomNavigationBarItem>[
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.home, color: const Color(0xFFFFFFFF)  ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.filter_none, color: const Color(0xFFFFFFFF) ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.location_searching, color: const Color(0xFFFFFFFF) ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.bookmark, color: const Color(0xFFFFFFFF) ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.insert_emoticon, color: const Color(0xFFFFFFFF) ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-				]
-			),
-		)
-		)
+					actions: <Widget>[
+						new IconButton(
+							icon: new Icon(Icons.account_circle ),
+							tooltip: 'Account',
+							onPressed: _account,
+						),
+					],
+				),
+				body: new TabBarView(
+					children: [
+						new Text(
+							'Your List'.toUpperCase(),
+							style: new TextStyle(
+								fontFamily: 'Montserrat',
+								fontWeight: FontWeight.w800,
+								fontSize: 24.0,
+							),
+						),
+						new Icon(Icons.directions_transit),
+						new Icon(Icons.directions_bike),
+					],
+				),
+				bottomNavigationBar: new BottomNavigationBar(
+					type: BottomNavigationBarType.fixed,
+					iconSize: 39.0,
+					fixedColor: const Color(0xFFFFFFFF),
+					items: <BottomNavigationBarItem>[
+						new BottomNavigationBarItem(
+							icon: new Icon(Icons.home, color: const Color(0xFFFFFFFF)  ),
+							title: new Text("", style: new TextStyle(fontSize: 0.0)),
+						),
+						new BottomNavigationBarItem(
+							icon: new Icon(Icons.filter_none, color: const Color(0xFFFFFFFF) ),
+							title: new Text("", style: new TextStyle(fontSize: 0.0)),
+						),
+						new BottomNavigationBarItem(
+							icon: new Icon(Icons.location_searching, color: const Color(0xFFFFFFFF) ),
+							title: new Text("", style: new TextStyle(fontSize: 0.0)),
+						),
+						new BottomNavigationBarItem(
+							icon: new Icon(Icons.bookmark, color: const Color(0xFFFFFFFF) ),
+							title: new Text("", style: new TextStyle(fontSize: 0.0)),
+						),
+						new BottomNavigationBarItem(
+							icon: new Icon(Icons.insert_emoticon, color: const Color(0xFFFFFFFF) ),
+							title: new Text("", style: new TextStyle(fontSize: 0.0)),
+						),
+					]
+				)
+			)
 		);
 
 	}
-	
+
 }
