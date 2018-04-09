@@ -1108,6 +1108,7 @@ class _YourListState extends State<YourList> {
 				),
 				body: new TabBarView(
 					children: [
+						// Your List
 						new CustomScrollView(
 							primary: false,
 							slivers: <Widget>[
@@ -1464,11 +1465,87 @@ class _YourListState extends State<YourList> {
 								),
 							],
 						),
+						// Popular
 						new CustomScrollView(
 							primary: false,
 							slivers: <Widget>[
 								new SliverPadding(
 									padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+									sliver: new SliverGrid.count(
+										crossAxisCount: 1,
+										childAspectRatio: 1.2,
+										children: <Widget>[
+											new Stack(
+												fit: StackFit.expand,
+												children: <Widget>[
+													new Container(
+														margin: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+														child: new Card(
+															elevation: 3.0,
+															child: new Container(
+																padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 15.0),
+																child: new Column(
+																	children: [
+																		new Expanded( child: new Container() ),
+																		new Row(
+																			crossAxisAlignment: CrossAxisAlignment.end,
+																			children: [
+																				new Expanded(
+																					child: new Text(
+																						'Back to school essentials'.toUpperCase(),
+																						textAlign: TextAlign.left,
+																						style: new TextStyle(
+																							color: const Color(0xFF000000),
+																							fontFamily: 'Montserrat',
+																							fontWeight: FontWeight.w800,
+																							fontSize: 24.0,
+																						),
+																					),
+																				),
+																				new Text(
+																					'4 '.toUpperCase(),
+																					textAlign: TextAlign.left,
+																					style: new TextStyle(
+																						color: const Color(0xFF838383),
+																						fontFamily: 'Montserrat',
+																						fontWeight: FontWeight.w800,
+																						fontSize: 10.0,
+																					),
+																				),
+																				new Container(
+																					padding: const EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
+																					child: new Icon(
+																						Icons.filter_none, 
+																						color: const Color(0xFF838383), 
+																						size: 10.0
+																					)
+																				),
+																			]
+																		),
+																	]
+																)
+															),														
+														),
+													),
+													new Container(
+														margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 80.0),
+														padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
+														child: new Container(
+															decoration: new BoxDecoration(
+																image: new DecorationImage(
+																	image: new AssetImage('images/cardphoto.png'),
+																	fit: BoxFit.cover,
+																),
+															),
+														),
+													),
+												],
+											),
+										]
+									),
+								),
+								new SliverPadding(
+									padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 0.0),
 									sliver: new SliverGrid.count(
 										crossAxisSpacing: 10.0,
 										mainAxisSpacing: 10.0,
@@ -1543,7 +1620,7 @@ class _YourListState extends State<YourList> {
 									),
 								),
 								new SliverPadding(
-									padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+									padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
 									sliver: new SliverGrid.count(
 										crossAxisSpacing: 10.0,
 										mainAxisSpacing: 10.0,
