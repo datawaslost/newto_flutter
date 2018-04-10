@@ -1753,10 +1753,19 @@ class _ListItemsState extends State<ListItems> {
 			body: new CustomScrollView(
 				primary: false,
 				slivers: <Widget>[
-					const SliverAppBar(
+					new SliverAppBar(
+						backgroundColor: const Color(0xFFF3F3F7),
 						pinned: false,
 						expandedHeight: 230.0,
 						floating: true,
+						leading: new Container(),
+						actions: <Widget>[
+							new IconButton(
+								icon: new Icon(Icons.close ),
+								tooltip: 'Close',
+								onPressed: () => Navigator.pop(context,true)
+							),
+						],
 						flexibleSpace: const FlexibleSpaceBar(
 							background: const Image(
 								image: const AssetImage('images/cardphoto.png'),
