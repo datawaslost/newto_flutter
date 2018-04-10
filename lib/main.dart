@@ -1040,7 +1040,27 @@ class _LandingState extends State<Landing> {
 						icon: new Icon(Icons.insert_emoticon, color: const Color(0xFFFFFFFF) ),
 						title: new Text("", style: new TextStyle(fontSize: 0.0)),
 					),
-				]
+				],
+				onTap: (num){
+					print(num);
+					switch (num) {
+						case 0:
+							Navigator.of(context).pushNamed('/landing');
+							break;
+						case 1:
+							Navigator.of(context).pushNamed('/yourlist');
+							break;
+						case 2:
+							Navigator.of(context).pushNamed('/discover');	
+							break;
+						case 3:
+							Navigator.of(context).pushNamed('/bookmarks');	
+							break;
+						case 4:
+							Navigator.of(context).pushNamed('/org');	
+							break;
+					}
+				}
 			),
 		);
 
