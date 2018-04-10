@@ -33,6 +33,7 @@ void main() => runApp(new MyApp());
 				'/onboarding': (BuildContext context) => new Onboarding(title: 'on b'),
 				'/landing': (BuildContext context) => new Landing(title: 'on b'),
 				'/yourlist': (BuildContext context) => new YourList(title: 'on b'),
+				'/listview': (BuildContext context) => new YourList(title: 'on b'),
 			},
 		);
 	}
@@ -1064,10 +1065,6 @@ class _YourListState extends State<YourList> {
 		// load account info
 		Navigator.of(context).pushNamed('/onboarding');
 	}
-	
-	void _goto() {
-		// holder
-	}
 
 	@override
 	Widget build(BuildContext context) {
@@ -1475,71 +1472,77 @@ class _YourListState extends State<YourList> {
 										crossAxisCount: 1,
 										childAspectRatio: 1.2,
 										children: <Widget>[
-											new Stack(
-												fit: StackFit.expand,
-												children: <Widget>[
-													new Container(
-														margin: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-														child: new Card(
-															elevation: 3.0,
-															child: new Container(
-																padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 15.0),
-																child: new Column(
-																	children: [
-																		new Expanded( child: new Container() ),
-																		new Row(
-																			crossAxisAlignment: CrossAxisAlignment.end,
-																			children: [
-																				new Expanded(
-																					child: new Text(
-																						'Back to school essentials'.toUpperCase(),
-																						textAlign: TextAlign.left,
-																						style: new TextStyle(
-																							color: const Color(0xFF000000),
-																							fontFamily: 'Montserrat',
-																							fontWeight: FontWeight.w800,
-																							fontSize: 24.0,
+											new GestureDetector(
+												onTap: (){
+													// go to list view
+													Navigator.of(context).pushNamed('/listview');
+												},
+												child: new Stack(
+													fit: StackFit.expand,
+													children: <Widget>[
+														new Container(
+															margin: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+															child: new Card(
+																elevation: 3.0,
+																child: new Container(
+																	padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 15.0),
+																	child: new Column(
+																		children: [
+																			new Expanded( child: new Container() ),
+																			new Row(
+																				crossAxisAlignment: CrossAxisAlignment.end,
+																				children: [
+																					new Expanded(
+																						child: new Text(
+																							'Back to school essentials'.toUpperCase(),
+																							textAlign: TextAlign.left,
+																							style: new TextStyle(
+																								color: const Color(0xFF000000),
+																								fontFamily: 'Montserrat',
+																								fontWeight: FontWeight.w800,
+																								fontSize: 24.0,
+																							),
 																						),
 																					),
-																				),
-																				new Text(
-																					'4 '.toUpperCase(),
-																					textAlign: TextAlign.left,
-																					style: new TextStyle(
-																						color: const Color(0xFF838383),
-																						fontFamily: 'Montserrat',
-																						fontWeight: FontWeight.w800,
-																						fontSize: 10.0,
+																					new Text(
+																						'4 '.toUpperCase(),
+																						textAlign: TextAlign.left,
+																						style: new TextStyle(
+																							color: const Color(0xFF838383),
+																							fontFamily: 'Montserrat',
+																							fontWeight: FontWeight.w800,
+																							fontSize: 10.0,
+																						),
 																					),
-																				),
-																				new Container(
-																					padding: const EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
-																					child: new Icon(
-																						Icons.filter_none, 
-																						color: const Color(0xFF838383), 
-																						size: 10.0
-																					)
-																				),
-																			]
-																		),
-																	]
-																)
-															),														
+																					new Container(
+																						padding: const EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
+																						child: new Icon(
+																							Icons.filter_none, 
+																							color: const Color(0xFF838383), 
+																							size: 10.0
+																						)
+																					),
+																				]
+																			)
+																		]
+																	)
+																),														
+															),
 														),
-													),
-													new Container(
-														margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 80.0),
-														padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
-														child: new Container(
-															decoration: new BoxDecoration(
-																image: new DecorationImage(
-																	image: new AssetImage('images/cardphoto.png'),
-																	fit: BoxFit.cover,
+														new Container(
+															margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 80.0),
+															padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
+															child: new Container(
+																decoration: new BoxDecoration(
+																	image: new DecorationImage(
+																		image: new AssetImage('images/cardphoto.png'),
+																		fit: BoxFit.cover,
+																	),
 																),
 															),
 														),
-													),
-												],
+													],
+												),
 											),
 										]
 									),
