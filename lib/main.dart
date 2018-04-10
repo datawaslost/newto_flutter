@@ -1749,6 +1749,7 @@ class _ListItemsState extends State<ListItems> {
 		// SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
 		
 		return new Scaffold(
+			backgroundColor: const Color(0xFFF3F3F7),
 			body: new CustomScrollView(
 				primary: false,
 				slivers: <Widget>[
