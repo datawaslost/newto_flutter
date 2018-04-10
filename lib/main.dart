@@ -33,7 +33,7 @@ void main() => runApp(new MyApp());
 				'/onboarding': (BuildContext context) => new Onboarding(title: 'on b'),
 				'/landing': (BuildContext context) => new Landing(title: 'on b'),
 				'/yourlist': (BuildContext context) => new YourList(title: 'on b'),
-				'/listview': (BuildContext context) => new YourList(title: 'on b'),
+				'/listitems': (BuildContext context) => new ListItems(title: 'on b'),
 			},
 		);
 	}
@@ -1475,7 +1475,7 @@ class _YourListState extends State<YourList> {
 											new GestureDetector(
 												onTap: (){
 													// go to list view
-													Navigator.of(context).pushNamed('/listview');
+													Navigator.of(context).pushNamed('/listitems');
 												},
 												child: new Stack(
 													fit: StackFit.expand,
@@ -1726,6 +1726,213 @@ class _YourListState extends State<YourList> {
 			)
 		);
 
+	}
+
+}
+
+
+class ListItems extends StatefulWidget {
+	ListItems({Key key, this.title}) : super(key: key);
+	
+	final String title;
+	
+	@override
+	_ListItemsState createState() => new _ListItemsState();
+}
+
+
+class _ListItemsState extends State<ListItems> {
+	
+	@override
+	Widget build(BuildContext context) {
+	  
+		// SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+		
+		return new Scaffold(
+			body: new CustomScrollView(
+				primary: false,
+				slivers: <Widget>[
+					const SliverAppBar(
+						pinned: false,
+						expandedHeight: 230.0,
+						floating: true,
+						flexibleSpace: const FlexibleSpaceBar(
+							background: const Image(
+								image: const AssetImage('images/cardphoto.png'),
+								fit: BoxFit.cover,
+							)
+						),
+					),
+					new SliverPadding(
+						padding: const EdgeInsets.all(20.0),
+						sliver: new SliverGrid.count(
+							crossAxisSpacing: 10.0,
+							mainAxisSpacing: 10.0,
+							crossAxisCount: 1,
+							childAspectRatio: 8.0,
+							children: <Widget>[
+								new Text(
+									'Back to school essentials'.toUpperCase(),
+									textAlign: TextAlign.left,
+									style: new TextStyle(
+										color: const Color(0xFF000000),
+										fontFamily: 'Montserrat',
+										fontWeight: FontWeight.w800,
+										fontSize: 28.0,
+										height: 0.9,
+									),
+								),
+							]
+						),
+					),
+					new SliverPadding(
+						padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 0.0),
+						sliver: new SliverGrid.count(
+							crossAxisSpacing: 10.0,
+							mainAxisSpacing: 10.0,
+							crossAxisCount: 2,
+							childAspectRatio: 1.1,
+							children: <Widget>[
+								new Card(
+									elevation: 3.0,
+									child: new Container(
+										padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+										child: new Text(
+											'Tell your friends your new address',
+											textAlign: TextAlign.left,
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontFamily: 'Montserrat',
+												fontWeight: FontWeight.w700,
+												fontSize: 14.0,
+											),
+										),
+									),
+								),
+								new Card(
+									elevation: 3.0,
+									child: new Container(
+										padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+										child: new Text(
+											"Set up your email and student accounts",
+											textAlign: TextAlign.left,
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontFamily: 'Montserrat',
+												fontWeight: FontWeight.w700,
+												fontSize: 14.0,
+											),
+										),
+									),
+								),
+								new Card(
+									elevation: 3.0,
+									child: new Container(
+										padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+										child: new Text(
+											'Check in and get your welcome packet',
+											textAlign: TextAlign.left,
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontFamily: 'Montserrat',
+												fontWeight: FontWeight.w700,
+												fontSize: 14.0,
+											),
+										),
+									),
+								),
+								new Card(
+									elevation: 3.0,
+									child: new Container(
+										padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+										child: new Text(
+											'Buy books for your classes',
+											textAlign: TextAlign.left,
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontFamily: 'Montserrat',
+												fontWeight: FontWeight.w700,
+												fontSize: 14.0,
+											),
+										),
+									),
+								),
+							],
+						),
+					),
+					new SliverPadding(
+						padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+						sliver: new SliverGrid.count(
+							crossAxisSpacing: 10.0,
+							mainAxisSpacing: 10.0,
+							crossAxisCount: 1,
+							childAspectRatio: 1.0,
+							children: <Widget>[
+								new Card(
+									elevation: 3.0,
+									child: new Container(
+										decoration: new BoxDecoration(
+											image: new DecorationImage(
+												image: new AssetImage('images/cardphoto.png'),
+												fit: BoxFit.cover,
+											),
+										),
+										child: new Column(
+											mainAxisSize: MainAxisSize.min,
+											children: <Widget>[
+												new BackdropFilter(
+													filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+													child: new Container(
+														padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+														child: new Text(
+															'Create the Perfect Dorm Room'.toUpperCase(),
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w800,
+																fontSize: 24.0,
+															),
+														),
+														decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+													),
+												),
+												new Expanded(
+													child: new Container()
+												),															
+												new Row(
+													children: [
+														new Container(
+															padding: new EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
+															child: new Text(
+																'Sponsor'.toUpperCase(),
+																textAlign: TextAlign.left,
+																style: new TextStyle(
+																	color: const Color(0xFF000000),
+																	fontFamily: 'Montserrat',
+																	fontWeight: FontWeight.w800,
+																	fontSize: 10.0,
+																),
+															),
+															decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
+														),
+														new Expanded(
+															child: new Container()
+														),
+													]
+												)
+											],
+										),
+									),
+								),
+							]
+						)
+					),
+
+				]
+			),
+		);
+		
 	}
 
 }
