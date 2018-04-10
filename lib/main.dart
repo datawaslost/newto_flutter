@@ -5,7 +5,6 @@ import 'package:carousel/carousel.dart';
 import "dart:ui";
 
 void main() => runApp(new MyApp());
-
 	class MyApp extends StatelessWidget {
 	// This widget is the root of your application.
 	@override
@@ -39,6 +38,29 @@ void main() => runApp(new MyApp());
 	}
 }
 
+void _navbar(num){
+		// bottom nav bar decider
+
+					print(num);
+					switch (num) {
+						case 0:
+							return '/landing';
+							break;
+						case 1:
+							return '/yourlist';
+							break;
+						case 2:
+							return '/discover';	
+							break;
+						case 3:
+							return '/bookmarks';	
+							break;
+						case 4:
+							return '/org';	
+							break;
+					}
+}
+	
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
 
@@ -1041,26 +1063,7 @@ class _LandingState extends State<Landing> {
 						title: new Text("", style: new TextStyle(fontSize: 0.0)),
 					),
 				],
-				onTap: (num){
-					print(num);
-					switch (num) {
-						case 0:
-							Navigator.of(context).pushNamed('/landing');
-							break;
-						case 1:
-							Navigator.of(context).pushNamed('/yourlist');
-							break;
-						case 2:
-							Navigator.of(context).pushNamed('/discover');	
-							break;
-						case 3:
-							Navigator.of(context).pushNamed('/bookmarks');	
-							break;
-						case 4:
-							Navigator.of(context).pushNamed('/org');	
-							break;
-					}
-				}
+				onTap: (num) => Navigator.of(context).pushNamed(_navbar(num)),
 			),
 		);
 
@@ -1741,7 +1744,8 @@ class _YourListState extends State<YourList> {
 							icon: new Icon(Icons.insert_emoticon, color: const Color(0xFFFFFFFF) ),
 							title: new Text("", style: new TextStyle(fontSize: 0.0)),
 						),
-					]
+					],
+					onTap: (num) => Navigator.of(context).pushNamed(_navbar(num)),
 				)
 			)
 		);
