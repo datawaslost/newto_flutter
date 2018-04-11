@@ -40,28 +40,60 @@ void main() => runApp(new MyApp());
 }
 
 void _navbar(num){
-		// bottom nav bar decider
-
-					print(num);
-					switch (num) {
-						case 0:
-							return '/landing';
-							break;
-						case 1:
-							return '/yourlist';
-							break;
-						case 2:
-							return '/discover';	
-							break;
-						case 3:
-							return '/bookmarks';	
-							break;
-						case 4:
-							return '/org';	
-							break;
-					}
+	// bottom nav bar decider
+	switch (num) {
+		case 0:
+			return '/landing';
+			break;
+		case 1:
+			return '/yourlist';
+			break;
+		case 2:
+			return '/discover';	
+			break;
+		case 3:
+			return '/bookmarks';	
+			break;
+		case 4:
+			return '/org';	
+			break;
+	}
 }
-	
+
+class bottomBar extends StatelessWidget {
+	@override
+	Widget build(BuildContext context) {
+		return new BottomNavigationBar(
+			type: BottomNavigationBarType.fixed,
+			iconSize: 39.0,
+			fixedColor: const Color(0xFFFFFFFF),
+			items: <BottomNavigationBarItem>[
+				new BottomNavigationBarItem(
+					icon: new Icon(Icons.home, color: const Color(0xFFFFFFFF)  ),
+					title: new Text("", style: new TextStyle(fontSize: 0.0)),
+				),
+				new BottomNavigationBarItem(
+					icon: new Icon(Icons.filter_none, color: const Color(0xFFFFFFFF) ),
+					title: new Text("", style: new TextStyle(fontSize: 0.0)),
+				),
+				new BottomNavigationBarItem(
+					icon: new Icon(Icons.location_searching, color: const Color(0xFFFFFFFF) ),
+					title: new Text("", style: new TextStyle(fontSize: 0.0)),
+				),
+				new BottomNavigationBarItem(
+					icon: new Icon(Icons.bookmark, color: const Color(0xFFFFFFFF) ),
+					title: new Text("", style: new TextStyle(fontSize: 0.0)),
+				),
+				new BottomNavigationBarItem(
+					icon: new Icon(Icons.insert_emoticon, color: const Color(0xFFFFFFFF) ),
+					title: new Text("", style: new TextStyle(fontSize: 0.0)),
+				),
+			],
+			onTap: (num) => Navigator.of(context).pushNamed(_navbar(num)),
+		);
+	}
+}
+				
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
 
@@ -1038,34 +1070,7 @@ class _LandingState extends State<Landing> {
 					)
 				]
 			),
-			bottomNavigationBar: new BottomNavigationBar(
-				type: BottomNavigationBarType.fixed,
-				iconSize: 39.0,
-				fixedColor: const Color(0xFFFFFFFF),
-				items: <BottomNavigationBarItem>[
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.home, color: const Color(0xFFFFFFFF)  ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.filter_none, color: const Color(0xFFFFFFFF) ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.location_searching, color: const Color(0xFFFFFFFF) ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.bookmark, color: const Color(0xFFFFFFFF) ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.insert_emoticon, color: const Color(0xFFFFFFFF) ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-				],
-				onTap: (num) => Navigator.of(context).pushNamed(_navbar(num)),
-			),
+			bottomNavigationBar: new bottomBar(),
 		);
 
 	}
@@ -1720,34 +1725,7 @@ class _YourListState extends State<YourList> {
 						new Icon(Icons.directions_bike),
 					],
 				),
-				bottomNavigationBar: new BottomNavigationBar(
-					type: BottomNavigationBarType.fixed,
-					iconSize: 39.0,
-					fixedColor: const Color(0xFFFFFFFF),
-					items: <BottomNavigationBarItem>[
-						new BottomNavigationBarItem(
-							icon: new Icon(Icons.home, color: const Color(0xFFFFFFFF)  ),
-							title: new Text("", style: new TextStyle(fontSize: 0.0)),
-						),
-						new BottomNavigationBarItem(
-							icon: new Icon(Icons.filter_none, color: const Color(0xFFFFFFFF) ),
-							title: new Text("", style: new TextStyle(fontSize: 0.0)),
-						),
-						new BottomNavigationBarItem(
-							icon: new Icon(Icons.location_searching, color: const Color(0xFFFFFFFF) ),
-							title: new Text("", style: new TextStyle(fontSize: 0.0)),
-						),
-						new BottomNavigationBarItem(
-							icon: new Icon(Icons.bookmark, color: const Color(0xFFFFFFFF) ),
-							title: new Text("", style: new TextStyle(fontSize: 0.0)),
-						),
-						new BottomNavigationBarItem(
-							icon: new Icon(Icons.insert_emoticon, color: const Color(0xFFFFFFFF) ),
-							title: new Text("", style: new TextStyle(fontSize: 0.0)),
-						),
-					],
-					onTap: (num) => Navigator.of(context).pushNamed(_navbar(num)),
-				)
+				bottomNavigationBar: new bottomBar(),
 			)
 		);
 
@@ -2154,7 +2132,7 @@ class _DiscoverState extends State<Discover> {
 						new Container(
 							height: 365.0,
 							decoration: new BoxDecoration(
-								color: const Color(0xFFFFFFFF),
+								color: const Color(0xFFF3F3F7),
 							),
 							child: new Column(
 								mainAxisSize: MainAxisSize.min,
@@ -2260,38 +2238,47 @@ class _DiscoverState extends State<Discover> {
 									)
 								],
 							),
-						)
+						),
+						new Container(
+							height: 105.0,
+							decoration: new BoxDecoration(
+								color: const Color(0xFFF3F3F7),
+							),
+							child: new Row(
+								children: <Widget>[
+									new Expanded( child: new Container() ),
+									new Container(
+										decoration: new BoxDecoration (
+											borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
+											color: const Color(0xFF1033FF),
+										),
+										padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+										child: new FlatButton.icon(
+											onPressed: () => print('search'),
+											icon: new Icon(
+												Icons.search, 
+												color: const Color(0xFFFFFFFF),
+												size: 12.0,
+											),
+											label: new Text(
+												'Search'.toUpperCase(),
+												style: new TextStyle(
+													color: const Color(0xFFFFFFFF),
+													fontFamily: 'Montserrat',
+													fontWeight: FontWeight.w800,
+													fontSize: 12.0,
+												),
+											),
+										),
+									),
+									new Expanded( child: new Container() ),
+								]
+							),
+						),
 					]
 				),
 			),
-			bottomNavigationBar: new BottomNavigationBar(
-				type: BottomNavigationBarType.fixed,
-				iconSize: 39.0,
-				fixedColor: const Color(0xFFFFFFFF),
-				items: <BottomNavigationBarItem>[
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.home, color: const Color(0xFFFFFFFF)  ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.filter_none, color: const Color(0xFFFFFFFF) ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.location_searching, color: const Color(0xFFFFFFFF) ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.bookmark, color: const Color(0xFFFFFFFF) ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-					new BottomNavigationBarItem(
-						icon: new Icon(Icons.insert_emoticon, color: const Color(0xFFFFFFFF) ),
-						title: new Text("", style: new TextStyle(fontSize: 0.0)),
-					),
-				],
-				onTap: (num) => Navigator.of(context).pushNamed(_navbar(num)),
-			),
+			bottomNavigationBar: new bottomBar(),
 		);
 
 	}
