@@ -69,23 +69,23 @@ class bottomBar extends StatelessWidget {
 			fixedColor: const Color(0xFFFFFFFF),
 			items: <BottomNavigationBarItem>[
 				new BottomNavigationBarItem(
-					icon: new Icon(Icons.home, color: const Color(0xFFFFFFFF)  ),
+					icon: new Icon(Icons.home),
 					title: new Text("", style: new TextStyle(fontSize: 0.0)),
 				),
 				new BottomNavigationBarItem(
-					icon: new Icon(Icons.filter_none, color: const Color(0xFFFFFFFF) ),
+					icon: new Icon(Icons.filter_none),
 					title: new Text("", style: new TextStyle(fontSize: 0.0)),
 				),
 				new BottomNavigationBarItem(
-					icon: new Icon(Icons.location_searching, color: const Color(0xFFFFFFFF) ),
+					icon: new Icon(Icons.location_searching),
 					title: new Text("", style: new TextStyle(fontSize: 0.0)),
 				),
 				new BottomNavigationBarItem(
-					icon: new Icon(Icons.bookmark, color: const Color(0xFFFFFFFF) ),
+					icon: new Icon(Icons.bookmark),
 					title: new Text("", style: new TextStyle(fontSize: 0.0)),
 				),
 				new BottomNavigationBarItem(
-					icon: new Icon(Icons.insert_emoticon, color: const Color(0xFFFFFFFF) ),
+					icon: new Icon(Icons.insert_emoticon),
 					title: new Text("", style: new TextStyle(fontSize: 0.0)),
 				),
 			],
