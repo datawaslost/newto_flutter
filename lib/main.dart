@@ -34,6 +34,7 @@ void main() => runApp(new MyApp());
 				'/yourlist': (BuildContext context) => new YourList(title: 'on b'),
 				'/listitems': (BuildContext context) => new ListItems(title: 'on b'),
 				'/discover': (BuildContext context) => new Discover(title: 'on b'),
+				'/search': (BuildContext context) => new Search(title: 'on b'),
 			},
 		);
 	}
@@ -1968,9 +1969,9 @@ class _DiscoverState extends State<Discover> {
 		Navigator.of(context).pushNamed('/onboarding');
 	}
 	
-	void _yourlist() {
+	void _search() {
 		// go to list page
-		Navigator.of(context).pushNamed('/yourlist');
+		Navigator.of(context).pushNamed('/search');
 	}
 
 	@override
@@ -1982,7 +1983,7 @@ class _DiscoverState extends State<Discover> {
 				backgroundColor: const Color(0xFF000000),
 				centerTitle: true,
 				title: new Text(
-					'Discover MAdison, WI'.toUpperCase(),
+					'Discover Madison, WI'.toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
 						fontFamily: 'Montserrat',
@@ -2254,7 +2255,7 @@ class _DiscoverState extends State<Discover> {
 										),
 										padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
 										child: new FlatButton.icon(
-											onPressed: () => print('search'),
+											onPressed: _search,
 											icon: new Icon(
 												Icons.search, 
 												color: const Color(0xFFFFFFFF),
@@ -2285,3 +2286,56 @@ class _DiscoverState extends State<Discover> {
 	
 }
 
+
+class Search extends StatefulWidget {
+	Search({Key key, this.title}) : super(key: key);
+	
+	final String title;
+	
+	@override
+	_SearchState createState() => new _SearchState();
+}
+
+
+class _SearchState extends State<Search> {
+	
+
+	@override
+	Widget build(BuildContext context) {
+	  
+		return new Scaffold(
+			backgroundColor: const Color(0xFFFFFFFF),
+			appBar: new AppBar(
+				backgroundColor: const Color(0xFFFFFFFF),
+				elevation: 0.0,
+				centerTitle: true,
+				title: new Text(
+					'Find a grocery store'.toUpperCase(),
+					style: new TextStyle(
+						color: const Color(0xFF000000),
+						fontFamily: 'Montserrat',
+						fontWeight: FontWeight.w800,
+						fontSize: 14.0,
+					),
+				),
+				leading: new Container(),
+				actions: <Widget>[
+					new IconButton(
+						icon: new Icon(Icons.close, color: const Color(0xFF000000) ),
+						tooltip: 'Close',
+						onPressed: () => Navigator.pop(context,true)
+					),
+				],
+			),
+			body: new Column(
+				mainAxisSize: MainAxisSize.min,
+				children: <Widget>[
+					new Container(),
+				]
+			),
+			bottomNavigationBar: new bottomBar(),
+		);
+
+	}
+	
+}
