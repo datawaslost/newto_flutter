@@ -2034,7 +2034,6 @@ class _DiscoverState extends State<Discover> {
 													child: new Column(
 														mainAxisSize: MainAxisSize.min,
 														crossAxisAlignment: CrossAxisAlignment.start,
-														// mainAxisAlignment: MainAxisAlignment.start,
 														children: <Widget>[
 															new Container(
 																width: 150.0,
@@ -2065,7 +2064,6 @@ class _DiscoverState extends State<Discover> {
 													child: new Column(
 														mainAxisSize: MainAxisSize.min,
 														crossAxisAlignment: CrossAxisAlignment.start,
-														// mainAxisAlignment: MainAxisAlignment.start,
 														children: <Widget>[
 															new Container(
 																width: 150.0,
@@ -2312,7 +2310,7 @@ class _SearchState extends State<Search> {
 				title: new Text(
 					'Find a grocery store'.toUpperCase(),
 					style: new TextStyle(
-						color: const Color(0xFF000000),
+						color: const Color(0xFF838383),
 						fontFamily: 'Montserrat',
 						fontWeight: FontWeight.w800,
 						fontSize: 14.0,
@@ -2329,8 +2327,34 @@ class _SearchState extends State<Search> {
 			),
 			body: new Column(
 				mainAxisSize: MainAxisSize.min,
+				crossAxisAlignment: CrossAxisAlignment.start,
 				children: <Widget>[
-					new Container(),
+					new Container(
+						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 2.0),
+						child: new Text(
+							'Distance'.toUpperCase(),
+							textAlign: TextAlign.left,
+							style: new TextStyle(
+								color: const Color(0xFF000000),
+								fontFamily: 'Montserrat',
+								fontWeight: FontWeight.w800,
+								fontSize: 28.0,
+							),
+						),
+					),
+					new Container(
+						padding: const EdgeInsets.fromLTRB(20.0, 0.0, 10.0, 0.0),
+						child: new Text(
+							'Average distance in miles',
+							textAlign: TextAlign.left,
+							style: new TextStyle(
+								color: const Color(0xFF000000),
+								fontFamily: 'Montserrat',
+								fontWeight: FontWeight.w300,
+								fontSize: 14.0,
+							),
+						),
+					),
 				]
 			),
 			bottomNavigationBar: new bottomBar(),
