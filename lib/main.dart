@@ -33,6 +33,7 @@ void main() => runApp(new MyApp());
 				'/landing': (BuildContext context) => new Landing(title: 'on b'),
 				'/yourlist': (BuildContext context) => new YourList(title: 'on b'),
 				'/listitems': (BuildContext context) => new ListItems(title: 'on b'),
+				'/discover': (BuildContext context) => new Discover(title: 'on b'),
 			},
 		);
 	}
@@ -1970,3 +1971,328 @@ class _ListItemsState extends State<ListItems> {
 	}
 
 }
+
+
+class Discover extends StatefulWidget {
+	Discover({Key key, this.title}) : super(key: key);
+	
+	final String title;
+	
+	@override
+	_DiscoverState createState() => new _DiscoverState();
+}
+
+
+class _DiscoverState extends State<Discover> {
+	
+	void _account() {
+		// load account info
+		Navigator.of(context).pushNamed('/onboarding');
+	}
+	
+	void _yourlist() {
+		// go to list page
+		Navigator.of(context).pushNamed('/yourlist');
+	}
+
+	@override
+	Widget build(BuildContext context) {
+	  
+		return new Scaffold(
+			backgroundColor: const Color(0xFF000000),
+			appBar: new AppBar(
+				backgroundColor: const Color(0xFF000000),
+				centerTitle: true,
+				title: new Text(
+					'Discover MAdison, WI'.toUpperCase(),
+					style: new TextStyle(
+						color: const Color(0xFF838383),
+						fontFamily: 'Montserrat',
+						fontWeight: FontWeight.w800,
+						fontSize: 14.0,
+					),
+				),
+				leading: new Container(),
+				actions: <Widget>[
+					new IconButton(
+						icon: new Icon(Icons.account_circle ),
+						tooltip: 'Account',
+						onPressed: _account,
+					),
+				],
+			),
+			body: new Column(
+				mainAxisSize: MainAxisSize.min,
+				children: <Widget>[
+					new Container(
+						
+						child: new Column(
+							mainAxisSize: MainAxisSize.min,
+							children: <Widget>[
+								new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
+									child: new Text(
+										'Find places that best speak to you'.toUpperCase(),
+										textAlign: TextAlign.center,
+										style: new TextStyle(
+											color: const Color(0xFFFFFFFF),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 28.0,
+										),
+									),
+								),
+								new Container(
+									margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+									height: 255.0,
+									child: new ListView(
+										scrollDirection: Axis.horizontal,
+										shrinkWrap: true,
+										children: <Widget>[
+											new Container(
+												margin: new EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 0.0),
+												child: new Column(
+													mainAxisSize: MainAxisSize.min,
+													crossAxisAlignment: CrossAxisAlignment.start,
+													// mainAxisAlignment: MainAxisAlignment.start,
+													children: <Widget>[
+														new Container(
+															width: 150.0,
+															height: 180.0,
+															decoration: new BoxDecoration(
+																image: new DecorationImage(
+																	image: new AssetImage('images/cardphoto.png'),
+																	fit: BoxFit.cover,
+																),
+															),
+														),
+														new Text(
+															'Groceries'.toUpperCase(),
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFFFFFFFF),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w800,
+																fontSize: 14.0,
+																height: 1.8,
+															),
+														),
+													],
+												),
+											),
+											new Container(
+												margin: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+												child: new Column(
+													mainAxisSize: MainAxisSize.min,
+													crossAxisAlignment: CrossAxisAlignment.start,
+													// mainAxisAlignment: MainAxisAlignment.start,
+													children: <Widget>[
+														new Container(
+															width: 150.0,
+															height: 180.0,
+															decoration: new BoxDecoration(
+																image: new DecorationImage(
+																	image: new AssetImage('images/cardphoto.png'),
+																	fit: BoxFit.cover,
+																),
+															),
+														),
+														new Text(
+															'Restaurants'.toUpperCase(),
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFFFFFFFF),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w800,
+																fontSize: 14.0,
+																height: 1.8,
+															),
+														),
+													],
+												),
+											),
+											new Container(
+												margin: new EdgeInsets.fromLTRB(5.0, 0.0, 20.0, 0.0),
+												child: new Column(
+													mainAxisSize: MainAxisSize.min,
+													crossAxisAlignment: CrossAxisAlignment.start,
+													// mainAxisAlignment: MainAxisAlignment.start,
+													children: <Widget>[
+														new Container(
+															width: 150.0,
+															height: 180.0,
+															decoration: new BoxDecoration(
+																image: new DecorationImage(
+																	image: new AssetImage('images/cardphoto.png'),
+																	fit: BoxFit.cover,
+																),
+															),
+														),
+														new Text(
+															'Madison'.toUpperCase(),
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFFFFFFFF),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w800,
+																fontSize: 14.0,
+																height: 1.8,
+															),
+														),
+													],
+												),
+											),											
+
+
+										],
+									)
+								)
+							]
+						),
+					),
+					new Container(
+						height: 365.0,
+						decoration: new BoxDecoration(
+							color: const Color(0xFFFFFFFF),
+						),
+						child: new Column(
+							mainAxisSize: MainAxisSize.min,
+							children: <Widget>[
+								new SizedBox(height: 25.0),
+								new Text(
+									'Featured'.toUpperCase(),
+									textAlign: TextAlign.center,
+									style: new TextStyle(
+										color: const Color(0xFF838383),
+										fontFamily: 'Montserrat',
+										fontWeight: FontWeight.w800,
+										fontSize: 14.0,
+									),
+								),
+								// new SizedBox(height: 10.0),
+								new Expanded(
+									child: new Container(
+										margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+										child: new ListView(
+											scrollDirection: Axis.horizontal,
+											shrinkWrap: true,
+											children: <Widget>[
+												new Container(
+													width: 278.0,
+													height: 278.0,
+													margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
+													child: new Card(
+														elevation: 8.0,
+														child: new Container(
+															decoration: new BoxDecoration(
+																image: new DecorationImage(
+																	image: new AssetImage('images/cardphoto.png'),
+																	fit: BoxFit.cover,
+																),
+															),
+															child: new Column(
+																mainAxisSize: MainAxisSize.min,
+																children: <Widget>[
+																	new BackdropFilter(
+																		filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+																		child: new Container(
+																			padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+																			child: new Text(
+																				'Create the Perfect Dorm Room'.toUpperCase(),
+																				textAlign: TextAlign.left,
+																				style: new TextStyle(
+																					color: const Color(0xFF000000),
+																					fontFamily: 'Montserrat',
+																					fontWeight: FontWeight.w800,
+																					fontSize: 24.0,
+																				),
+																			),
+																			decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+																		),
+																	),
+																],
+															),
+														),
+													),
+												),
+												new Container(
+													width: 278.0,
+													height: 278.0,
+													margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
+													child: new Card(
+														elevation: 8.0,
+														child: new Container(
+															decoration: new BoxDecoration(
+																image: new DecorationImage(
+																	image: new AssetImage('images/background.png'),
+																	fit: BoxFit.cover,
+																),
+															),
+															child: new Column(
+																mainAxisSize: MainAxisSize.min,
+																children: <Widget>[
+																	new BackdropFilter(
+																		filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+																		child: new Container(
+																			padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+																			child: new Text(
+																				'Get to know UMW'.toUpperCase(),
+																				textAlign: TextAlign.left,
+																				style: new TextStyle(
+																					color: const Color(0xFF000000),
+																					fontFamily: 'Montserrat',
+																					fontWeight: FontWeight.w800,
+																					fontSize: 24.0,
+																				),
+																			),
+																			decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+																		),
+																	),
+																],
+															),
+														),
+													),
+												),
+											],
+										)
+									)
+								)
+							],
+						),
+					)
+				]
+			),
+			bottomNavigationBar: new BottomNavigationBar(
+				type: BottomNavigationBarType.fixed,
+				iconSize: 39.0,
+				fixedColor: const Color(0xFFFFFFFF),
+				items: <BottomNavigationBarItem>[
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.home, color: const Color(0xFFFFFFFF)  ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
+					),
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.filter_none, color: const Color(0xFFFFFFFF) ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
+					),
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.location_searching, color: const Color(0xFFFFFFFF) ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
+					),
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.bookmark, color: const Color(0xFFFFFFFF) ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
+					),
+					new BottomNavigationBarItem(
+						icon: new Icon(Icons.insert_emoticon, color: const Color(0xFFFFFFFF) ),
+						title: new Text("", style: new TextStyle(fontSize: 0.0)),
+					),
+				],
+				onTap: (num) => Navigator.of(context).pushNamed(_navbar(num)),
+			),
+		);
+
+	}
+	
+}
+
