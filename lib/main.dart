@@ -2021,246 +2021,248 @@ class _DiscoverState extends State<Discover> {
 					),
 				],
 			),
-			body: new Column(
-				mainAxisSize: MainAxisSize.min,
-				children: <Widget>[
-					new Container(
-						
-						child: new Column(
-							mainAxisSize: MainAxisSize.min,
-							children: <Widget>[
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
-									child: new Text(
-										'Find places that best speak to you'.toUpperCase(),
-										textAlign: TextAlign.center,
-										style: new TextStyle(
-											color: const Color(0xFFFFFFFF),
-											fontFamily: 'Montserrat',
-											fontWeight: FontWeight.w800,
-											fontSize: 28.0,
+			body: new SingleChildScrollView(
+				scrollDirection: Axis.vertical,
+				child: new Column(
+					mainAxisSize: MainAxisSize.min,
+					children: <Widget>[
+						new Container(
+							child: new Column(
+								mainAxisSize: MainAxisSize.min,
+								children: <Widget>[
+									new Container(
+										padding: new EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
+										child: new Text(
+											'Find places that best speak to you'.toUpperCase(),
+											textAlign: TextAlign.center,
+											style: new TextStyle(
+												color: const Color(0xFFFFFFFF),
+												fontFamily: 'Montserrat',
+												fontWeight: FontWeight.w800,
+												fontSize: 28.0,
+											),
 										),
 									),
-								),
-								new Container(
-									margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-									height: 255.0,
-									child: new ListView(
-										scrollDirection: Axis.horizontal,
-										shrinkWrap: true,
-										children: <Widget>[
-											new Container(
-												margin: new EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 0.0),
-												child: new Column(
-													mainAxisSize: MainAxisSize.min,
-													crossAxisAlignment: CrossAxisAlignment.start,
-													// mainAxisAlignment: MainAxisAlignment.start,
-													children: <Widget>[
-														new Container(
-															width: 150.0,
-															height: 180.0,
-															decoration: new BoxDecoration(
-																image: new DecorationImage(
-																	image: new AssetImage('images/cardphoto.png'),
-																	fit: BoxFit.cover,
-																),
-															),
-														),
-														new Text(
-															'Groceries'.toUpperCase(),
-															textAlign: TextAlign.left,
-															style: new TextStyle(
-																color: const Color(0xFFFFFFFF),
-																fontFamily: 'Montserrat',
-																fontWeight: FontWeight.w800,
-																fontSize: 14.0,
-																height: 1.8,
-															),
-														),
-													],
-												),
-											),
-											new Container(
-												margin: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
-												child: new Column(
-													mainAxisSize: MainAxisSize.min,
-													crossAxisAlignment: CrossAxisAlignment.start,
-													// mainAxisAlignment: MainAxisAlignment.start,
-													children: <Widget>[
-														new Container(
-															width: 150.0,
-															height: 180.0,
-															decoration: new BoxDecoration(
-																image: new DecorationImage(
-																	image: new AssetImage('images/cardphoto.png'),
-																	fit: BoxFit.cover,
-																),
-															),
-														),
-														new Text(
-															'Restaurants'.toUpperCase(),
-															textAlign: TextAlign.left,
-															style: new TextStyle(
-																color: const Color(0xFFFFFFFF),
-																fontFamily: 'Montserrat',
-																fontWeight: FontWeight.w800,
-																fontSize: 14.0,
-																height: 1.8,
-															),
-														),
-													],
-												),
-											),
-											new Container(
-												margin: new EdgeInsets.fromLTRB(5.0, 0.0, 20.0, 0.0),
-												child: new Column(
-													mainAxisSize: MainAxisSize.min,
-													crossAxisAlignment: CrossAxisAlignment.start,
-													// mainAxisAlignment: MainAxisAlignment.start,
-													children: <Widget>[
-														new Container(
-															width: 150.0,
-															height: 180.0,
-															decoration: new BoxDecoration(
-																image: new DecorationImage(
-																	image: new AssetImage('images/cardphoto.png'),
-																	fit: BoxFit.cover,
-																),
-															),
-														),
-														new Text(
-															'Madison'.toUpperCase(),
-															textAlign: TextAlign.left,
-															style: new TextStyle(
-																color: const Color(0xFFFFFFFF),
-																fontFamily: 'Montserrat',
-																fontWeight: FontWeight.w800,
-																fontSize: 14.0,
-																height: 1.8,
-															),
-														),
-													],
-												),
-											),											
-
-
-										],
-									)
-								)
-							]
-						),
-					),
-					new Container(
-						height: 365.0,
-						decoration: new BoxDecoration(
-							color: const Color(0xFFFFFFFF),
-						),
-						child: new Column(
-							mainAxisSize: MainAxisSize.min,
-							children: <Widget>[
-								new SizedBox(height: 25.0),
-								new Text(
-									'Featured'.toUpperCase(),
-									textAlign: TextAlign.center,
-									style: new TextStyle(
-										color: const Color(0xFF838383),
-										fontFamily: 'Montserrat',
-										fontWeight: FontWeight.w800,
-										fontSize: 14.0,
-									),
-								),
-								// new SizedBox(height: 10.0),
-								new Expanded(
-									child: new Container(
+									new Container(
 										margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+										height: 255.0,
 										child: new ListView(
 											scrollDirection: Axis.horizontal,
 											shrinkWrap: true,
 											children: <Widget>[
 												new Container(
-													width: 278.0,
-													height: 278.0,
-													margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
-													child: new Card(
-														elevation: 8.0,
-														child: new Container(
-															decoration: new BoxDecoration(
-																image: new DecorationImage(
-																	image: new AssetImage('images/cardphoto.png'),
-																	fit: BoxFit.cover,
+													margin: new EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 0.0),
+													child: new Column(
+														mainAxisSize: MainAxisSize.min,
+														crossAxisAlignment: CrossAxisAlignment.start,
+														// mainAxisAlignment: MainAxisAlignment.start,
+														children: <Widget>[
+															new Container(
+																width: 150.0,
+																height: 180.0,
+																decoration: new BoxDecoration(
+																	image: new DecorationImage(
+																		image: new AssetImage('images/cardphoto.png'),
+																		fit: BoxFit.cover,
+																	),
 																),
 															),
-															child: new Column(
-																mainAxisSize: MainAxisSize.min,
-																children: <Widget>[
-																	new BackdropFilter(
-																		filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-																		child: new Container(
-																			padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-																			child: new Text(
-																				'Create the Perfect Dorm Room'.toUpperCase(),
-																				textAlign: TextAlign.left,
-																				style: new TextStyle(
-																					color: const Color(0xFF000000),
-																					fontFamily: 'Montserrat',
-																					fontWeight: FontWeight.w800,
-																					fontSize: 24.0,
-																				),
-																			),
-																			decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-																		),
-																	),
-																],
+															new Text(
+																'Groceries'.toUpperCase(),
+																textAlign: TextAlign.left,
+																style: new TextStyle(
+																	color: const Color(0xFFFFFFFF),
+																	fontFamily: 'Montserrat',
+																	fontWeight: FontWeight.w800,
+																	fontSize: 14.0,
+																	height: 1.8,
+																),
 															),
-														),
+														],
 													),
 												),
 												new Container(
-													width: 278.0,
-													height: 278.0,
-													margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
-													child: new Card(
-														elevation: 8.0,
-														child: new Container(
-															decoration: new BoxDecoration(
-																image: new DecorationImage(
-																	image: new AssetImage('images/background.png'),
-																	fit: BoxFit.cover,
+													margin: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+													child: new Column(
+														mainAxisSize: MainAxisSize.min,
+														crossAxisAlignment: CrossAxisAlignment.start,
+														// mainAxisAlignment: MainAxisAlignment.start,
+														children: <Widget>[
+															new Container(
+																width: 150.0,
+																height: 180.0,
+																decoration: new BoxDecoration(
+																	image: new DecorationImage(
+																		image: new AssetImage('images/cardphoto.png'),
+																		fit: BoxFit.cover,
+																	),
 																),
 															),
-															child: new Column(
-																mainAxisSize: MainAxisSize.min,
-																children: <Widget>[
-																	new BackdropFilter(
-																		filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-																		child: new Container(
-																			padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-																			child: new Text(
-																				'Get to know UMW'.toUpperCase(),
-																				textAlign: TextAlign.left,
-																				style: new TextStyle(
-																					color: const Color(0xFF000000),
-																					fontFamily: 'Montserrat',
-																					fontWeight: FontWeight.w800,
-																					fontSize: 24.0,
-																				),
-																			),
-																			decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-																		),
-																	),
-																],
+															new Text(
+																'Restaurants'.toUpperCase(),
+																textAlign: TextAlign.left,
+																style: new TextStyle(
+																	color: const Color(0xFFFFFFFF),
+																	fontFamily: 'Montserrat',
+																	fontWeight: FontWeight.w800,
+																	fontSize: 14.0,
+																	height: 1.8,
+																),
 															),
-														),
+														],
 													),
 												),
+												new Container(
+													margin: new EdgeInsets.fromLTRB(5.0, 0.0, 20.0, 0.0),
+													child: new Column(
+														mainAxisSize: MainAxisSize.min,
+														crossAxisAlignment: CrossAxisAlignment.start,
+														// mainAxisAlignment: MainAxisAlignment.start,
+														children: <Widget>[
+															new Container(
+																width: 150.0,
+																height: 180.0,
+																decoration: new BoxDecoration(
+																	image: new DecorationImage(
+																		image: new AssetImage('images/cardphoto.png'),
+																		fit: BoxFit.cover,
+																	),
+																),
+															),
+															new Text(
+																'Madison'.toUpperCase(),
+																textAlign: TextAlign.left,
+																style: new TextStyle(
+																	color: const Color(0xFFFFFFFF),
+																	fontFamily: 'Montserrat',
+																	fontWeight: FontWeight.w800,
+																	fontSize: 14.0,
+																	height: 1.8,
+																),
+															),
+														],
+													),
+												),											
+	
+	
 											],
 										)
 									)
-								)
-							],
+								]
+							),
 						),
-					)
-				]
+						new Container(
+							height: 365.0,
+							decoration: new BoxDecoration(
+								color: const Color(0xFFFFFFFF),
+							),
+							child: new Column(
+								mainAxisSize: MainAxisSize.min,
+								children: <Widget>[
+									new SizedBox(height: 25.0),
+									new Text(
+										'Featured'.toUpperCase(),
+										textAlign: TextAlign.center,
+										style: new TextStyle(
+											color: const Color(0xFF838383),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 14.0,
+										),
+									),
+									// new SizedBox(height: 10.0),
+									new Expanded(
+										child: new Container(
+											margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+											child: new ListView(
+												scrollDirection: Axis.horizontal,
+												shrinkWrap: true,
+												children: <Widget>[
+													new Container(
+														width: 278.0,
+														height: 278.0,
+														margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
+														child: new Card(
+															elevation: 8.0,
+															child: new Container(
+																decoration: new BoxDecoration(
+																	image: new DecorationImage(
+																		image: new AssetImage('images/cardphoto.png'),
+																		fit: BoxFit.cover,
+																	),
+																),
+																child: new Column(
+																	mainAxisSize: MainAxisSize.min,
+																	children: <Widget>[
+																		new BackdropFilter(
+																			filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+																			child: new Container(
+																				padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+																				child: new Text(
+																					'Create the Perfect Dorm Room'.toUpperCase(),
+																					textAlign: TextAlign.left,
+																					style: new TextStyle(
+																						color: const Color(0xFF000000),
+																						fontFamily: 'Montserrat',
+																						fontWeight: FontWeight.w800,
+																						fontSize: 24.0,
+																					),
+																				),
+																				decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+																			),
+																		),
+																	],
+																),
+															),
+														),
+													),
+													new Container(
+														width: 278.0,
+														height: 278.0,
+														margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
+														child: new Card(
+															elevation: 8.0,
+															child: new Container(
+																decoration: new BoxDecoration(
+																	image: new DecorationImage(
+																		image: new AssetImage('images/background.png'),
+																		fit: BoxFit.cover,
+																	),
+																),
+																child: new Column(
+																	mainAxisSize: MainAxisSize.min,
+																	children: <Widget>[
+																		new BackdropFilter(
+																			filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+																			child: new Container(
+																				padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+																				child: new Text(
+																					'Get to know UMW'.toUpperCase(),
+																					textAlign: TextAlign.left,
+																					style: new TextStyle(
+																						color: const Color(0xFF000000),
+																						fontFamily: 'Montserrat',
+																						fontWeight: FontWeight.w800,
+																						fontSize: 24.0,
+																					),
+																				),
+																				decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+																			),
+																		),
+																	],
+																),
+															),
+														),
+													),
+												],
+											)
+										)
+									)
+								],
+							),
+						)
+					]
+				),
 			),
 			bottomNavigationBar: new BottomNavigationBar(
 				type: BottomNavigationBarType.fixed,
