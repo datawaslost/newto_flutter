@@ -2298,6 +2298,8 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
 	
 
+	var double _distance = 0.0;
+	
 	@override
 	Widget build(BuildContext context) {
 	  
@@ -2353,6 +2355,22 @@ class _SearchState extends State<Search> {
 								fontWeight: FontWeight.w300,
 								fontSize: 14.0,
 							),
+						),
+					),
+					new Container(
+						padding: const EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0),
+						child: new Slider(
+							divisions: 2,
+							max: 2.0,
+							min: 0.0,
+							label: _distance.round().toString(),
+							value: _distance.toDouble(),
+							onChanged: (double newValue) {
+								setState(() {
+									_distance = newValue;
+									// print(_distance);
+								});
+							},
 						),
 					),
 				]
