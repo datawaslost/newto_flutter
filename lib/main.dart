@@ -29,13 +29,14 @@ void main() => runApp(new MyApp());
 			// home: new Onboarding(),
 			home: new Home(),
 		    routes: <String, WidgetBuilder> {
-				'/onboarding': (BuildContext context) => new Onboarding(title: 'on b'),
-				'/landing': (BuildContext context) => new Landing(title: 'on b'),
-				'/yourlist': (BuildContext context) => new YourList(title: 'on b'),
-				'/listitems': (BuildContext context) => new ListItems(title: 'on b'),
-				'/discover': (BuildContext context) => new Discover(title: 'on b'),
-				'/search': (BuildContext context) => new Search(title: 'on b'),
-				'/searchresults': (BuildContext context) => new SearchResults(title: 'on b'),
+				'/onboarding': (BuildContext context) => new Onboarding(),
+				'/landing': (BuildContext context) => new Landing(),
+				'/yourlist': (BuildContext context) => new YourList(),
+				'/listitems': (BuildContext context) => new ListItems(),
+				'/discover': (BuildContext context) => new Discover(),
+				'/search': (BuildContext context) => new Search(),
+				'/searchresults': (BuildContext context) => new SearchResults(),
+				'/bookmarks': (BuildContext context) => new Bookmarks(),
 			},
 		);
 	}
@@ -2721,7 +2722,7 @@ class _SearchResultsState extends State<SearchResults> {
 													new Expanded( child: new Container() ),
 													new Container(
 														width: 125.0,
-														padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+														padding: const EdgeInsets.fromLTRB(10.0, 7.0, 10.0, 7.0),
 														color: const Color(0xFFFCEE21),
 														child: new Text(
 															'Featured'.toUpperCase(),
@@ -2755,3 +2756,51 @@ class _SearchResultsState extends State<SearchResults> {
 	}
 	
 }
+
+
+class Bookmarks extends StatefulWidget {
+	Bookmarks({Key key, this.title}) : super(key: key);
+	
+	final String title;
+	
+	@override
+	_BookmarksState createState() => new _BookmarksState();
+}
+
+
+class _BookmarksState extends State<Bookmarks> {
+	
+	@override
+	Widget build(BuildContext context) {
+	  
+		return new Scaffold(
+			backgroundColor: const Color(0xFFFFFFFF),
+			appBar: new AppBar(
+				backgroundColor: const Color(0xFFFFFFFF),
+				elevation: 0.0,
+				centerTitle: true,
+				title: new Text(
+					'Bookmarks'.toUpperCase(),
+					style: new TextStyle(
+						color: const Color(0xFF838383),
+						fontFamily: 'Montserrat',
+						fontWeight: FontWeight.w800,
+						fontSize: 14.0,
+					),
+				),
+				leading: new Container(),
+				actions: <Widget>[
+					new IconButton(
+						icon: new Icon(Icons.close, color: const Color(0xFF000000) ),
+						tooltip: 'Close',
+						onPressed: () => Navigator.pop(context,true)
+					),
+				],
+			),
+			body: new Container(),
+		);
+
+	}
+	
+}
+
