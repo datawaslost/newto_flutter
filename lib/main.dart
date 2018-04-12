@@ -980,7 +980,6 @@ class _LandingState extends State<Landing> {
 										fontSize: 14.0,
 									),
 								),
-								// new SizedBox(height: 10.0),
 								new Expanded(
 									child: new Container(
 										margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
@@ -2773,14 +2772,13 @@ class _BookmarksState extends State<Bookmarks> {
 	@override
 	Widget build(BuildContext context) {
 	  
-		return new Scaffold(
-			backgroundColor: const Color(0xFFFFFFFF),
+return new Scaffold(
+			backgroundColor: const Color(0xFFF3F3F7),
 			appBar: new AppBar(
-				backgroundColor: const Color(0xFFFFFFFF),
-				elevation: 0.0,
+				backgroundColor: const Color(0xFF000000),
 				centerTitle: true,
 				title: new Text(
-					'Bookmarks'.toUpperCase(),
+					'Saved'.toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
 						fontFamily: 'Montserrat',
@@ -2791,16 +2789,204 @@ class _BookmarksState extends State<Bookmarks> {
 				leading: new Container(),
 				actions: <Widget>[
 					new IconButton(
-						icon: new Icon(Icons.close, color: const Color(0xFF000000) ),
-						tooltip: 'Close',
-						onPressed: () => Navigator.pop(context,true)
+						icon: new Icon(Icons.account_circle ),
+						tooltip: 'Account',
+						onPressed: () => Navigator.of(context).pushNamed('/onboarding'),
 					),
 				],
 			),
-			body: new Container(),
+			body: new CustomScrollView(
+				primary: false,
+				slivers: <Widget>[
+					new SliverPadding(
+						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+						sliver: new SliverGrid.count(
+							crossAxisSpacing: 10.0,
+							mainAxisSpacing: 10.0,
+							crossAxisCount: 2,
+							childAspectRatio: 1.1,
+							children: <Widget>[
+								new Card(
+									elevation: 3.0,
+									child: new Container(
+										padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+										child: new Text(
+											'Find Your Doctor, Dentist, Eye care, Pharmacy',
+											textAlign: TextAlign.left,
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontFamily: 'Montserrat',
+												fontWeight: FontWeight.w700,
+												fontSize: 14.0,
+											),
+										),
+									),
+								),
+								new Card(
+									elevation: 3.0,
+									child: new Container(
+										padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+										child: new Text(
+											"Find the nearest Grocery Store",
+											textAlign: TextAlign.left,
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontFamily: 'Montserrat',
+												fontWeight: FontWeight.w700,
+												fontSize: 14.0,
+											),
+										),
+									),
+								),
+							],
+						),
+					),
+					
+					
+					
+					new SliverPadding(
+						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
+						sliver: new SliverGrid.count(
+							crossAxisSpacing: 10.0,
+							mainAxisSpacing: 10.0,
+							crossAxisCount: 1,
+							childAspectRatio: 2.25,
+							children: <Widget>[
+								new Container(
+									height: 150.0,
+									child: new Stack(
+										fit: StackFit.loose,
+										children: <Widget>[
+											new Container(
+												margin: const EdgeInsets.fromLTRB(0.0, 7.5, 0.0, 7.5),
+												child: new Card(
+													elevation: 3.0,
+													child: new Container(
+														padding: const EdgeInsets.fromLTRB(145.0, 0.0, 0.0, 0.0),
+														child: new Column(
+															crossAxisAlignment: CrossAxisAlignment.start,
+															children: <Widget>[
+																new Container(
+																	padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 0.0),
+																	child: new Text(
+																		'Aldi'.toUpperCase(),
+																		textAlign: TextAlign.left,
+																		style: new TextStyle(
+																			color: const Color(0xFF000000),
+																			fontFamily: 'Montserrat',
+																			fontWeight: FontWeight.w800,
+																			fontSize: 14.0,
+																		),
+																	),
+																),
+																new Expanded(
+																	child: new Row(
+																		children: [
+																			new SizedBox( width: 20.0 ),
+																			new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
+																			new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
+																			new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
+																			new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
+																			new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
+																			new SizedBox( width: 20.0 ),
+																		],
+																	),
+																),
+																new Container(
+																	padding: const EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 10.0),
+																	child: new Text(
+																		'1.3 mi',
+																		textAlign: TextAlign.left,
+																		style: new TextStyle(
+																			color: const Color(0xFF000000),
+																			fontFamily: 'Montserrat',
+																			fontWeight: FontWeight.w300,
+																			fontSize: 14.0,
+																		),
+																	),
+																),
+			
+															]
+														),	
+													),
+												),
+											),
+											new Container(
+												margin: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+												child: new SizedBox(
+													width: 125.0,
+													child: new Container(
+														decoration: new BoxDecoration(
+															image: new DecorationImage(
+																image: new AssetImage('images/cardphoto.png'),
+																fit: BoxFit.cover,
+															),
+														),
+													),
+												),
+											),
+										],
+									),
+								),
+							],
+						),
+					),
+
+
+
+
+					new SliverPadding(
+						padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+						sliver: new SliverGrid.count(
+							crossAxisSpacing: 10.0,
+							mainAxisSpacing: 10.0,
+							crossAxisCount: 1,
+							childAspectRatio: 1.0,
+							children: <Widget>[
+								new Card(
+									elevation: 3.0,
+									child: new Container(
+										decoration: new BoxDecoration(
+											image: new DecorationImage(
+												image: new AssetImage('images/cardphoto.png'),
+												fit: BoxFit.cover,
+											),
+										),
+										child: new Column(
+											mainAxisSize: MainAxisSize.min,
+											children: <Widget>[
+												new BackdropFilter(
+													filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+													child: new Container(
+														padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+														child: new Text(
+															'Create the Perfect Dorm Room'.toUpperCase(),
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w800,
+																fontSize: 24.0,
+															),
+														),
+														decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+													),
+												),
+												new Expanded(
+													child: new Container()
+												),															
+											],
+										),
+									),
+								),
+							]
+						)
+					),
+				],
+			),
+			bottomNavigationBar: new bottomBar(),
 		);
 
 	}
 	
 }
-
