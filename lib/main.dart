@@ -2568,7 +2568,44 @@ class _SearchResultsState extends State<SearchResults> {
 					),
 				],
 			),
-			body: new Container(),
+			body: new ListView(
+				shrinkWrap: true,
+				padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
+				children: <Widget>[
+					new Container(
+						height: 150.0,
+						child: new Stack(
+							fit: StackFit.loose,
+							children: <Widget>[
+								new Container(
+									margin: const EdgeInsets.fromLTRB(0.0, 7.5, 0.0, 7.5),
+									child: new Card(
+										elevation: 3.0,
+										child: new Container(
+											// height: 100.0,
+											// width: 100.0,
+										),														
+									),
+								),
+								new Container(
+									margin: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+									child: new SizedBox(
+										width: 125.0,
+										child: new Container(
+											decoration: new BoxDecoration(
+												image: new DecorationImage(
+													image: new AssetImage('images/cardphoto.png'),
+													fit: BoxFit.cover,
+												),
+											),
+										),
+									),
+								),
+							],
+						),
+					),
+				],
+			)
 		);
 
 	}
