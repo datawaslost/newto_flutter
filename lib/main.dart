@@ -2582,8 +2582,52 @@ class _SearchResultsState extends State<SearchResults> {
 									child: new Card(
 										elevation: 3.0,
 										child: new Container(
-											// height: 100.0,
-											// width: 100.0,
+											padding: const EdgeInsets.fromLTRB(145.0, 0.0, 0.0, 0.0),
+											child: new Column(
+												crossAxisAlignment: CrossAxisAlignment.start,
+												children: <Widget>[
+													new Container(
+														padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 0.0),
+														child: new Text(
+															'Grocery Stores'.toUpperCase(),
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w800,
+																fontSize: 14.0,
+															),
+														),
+													),
+													new Expanded(
+														child: new Row(
+															children: [
+																new SizedBox( width: 15.0 ),
+																new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
+																new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
+																new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
+																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
+																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
+																new SizedBox( width: 15.0 ),
+															],
+														),
+													),
+													new Container(
+														padding: const EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 10.0),
+														child: new Text(
+															'1.3 mi',
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w300,
+																fontSize: 14.0,
+															),
+														),
+													),
+
+												]
+											),	
 										),														
 									),
 								),
