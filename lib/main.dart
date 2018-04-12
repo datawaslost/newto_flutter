@@ -2373,9 +2373,35 @@ class _SearchState extends State<Search> {
 							},
 						),
 					),
+					new Container(
+						padding: const EdgeInsets.fromLTRB(20.0, 45.0, 10.0, 2.0),
+						child: new Text(
+							'Selection'.toUpperCase(),
+							textAlign: TextAlign.left,
+							style: new TextStyle(
+								color: const Color(0xFF000000),
+								fontFamily: 'Montserrat',
+								fontWeight: FontWeight.w800,
+								fontSize: 28.0,
+							),
+						),
+					),
+					new Container(
+						padding: const EdgeInsets.fromLTRB(20.0, 0.0, 10.0, 0.0),
+						child: new Text(
+							'Type of Grocery Store',
+							textAlign: TextAlign.left,
+							style: new TextStyle(
+								color: const Color(0xFF000000),
+								fontFamily: 'Montserrat',
+								fontWeight: FontWeight.w300,
+								fontSize: 14.0,
+							),
+						),
+					),
 				]
 			),
-			bottomNavigationBar: new bottomBar(),
+			// bottomNavigationBar: new bottomBar(),
 		);
 
 	}
