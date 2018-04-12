@@ -35,6 +35,7 @@ void main() => runApp(new MyApp());
 				'/listitems': (BuildContext context) => new ListItems(title: 'on b'),
 				'/discover': (BuildContext context) => new Discover(title: 'on b'),
 				'/search': (BuildContext context) => new Search(title: 'on b'),
+				'/searchresults': (BuildContext context) => new SearchResults(title: 'on b'),
 			},
 		);
 	}
@@ -2501,7 +2502,7 @@ class _SearchState extends State<Search> {
 								children: <Widget>[
 									new Expanded(
 										child: new RaisedButton(
-											onPressed: () => print("View Results"),
+											onPressed: () => Navigator.of(context).pushNamed('/searchresults'),
 											padding: new EdgeInsets.all(20.0),  
 											color: const Color(0xFF1033FF),
 											textColor: const Color(0xFFFFFFFF),
@@ -2520,6 +2521,54 @@ class _SearchState extends State<Search> {
 					),
 				]
 			),
+		);
+
+	}
+	
+}
+
+
+
+class SearchResults extends StatefulWidget {
+	SearchResults({Key key, this.title}) : super(key: key);
+	
+	final String title;
+	
+	@override
+	_SearchResultsState createState() => new _SearchResultsState();
+}
+
+
+class _SearchResultsState extends State<SearchResults> {
+	
+	@override
+	Widget build(BuildContext context) {
+	  
+		return new Scaffold(
+			backgroundColor: const Color(0xFFFFFFFF),
+			appBar: new AppBar(
+				backgroundColor: const Color(0xFFFFFFFF),
+				elevation: 0.0,
+				centerTitle: true,
+				title: new Text(
+					'Grocery Stores'.toUpperCase(),
+					style: new TextStyle(
+						color: const Color(0xFF838383),
+						fontFamily: 'Montserrat',
+						fontWeight: FontWeight.w800,
+						fontSize: 14.0,
+					),
+				),
+				leading: new Container(),
+				actions: <Widget>[
+					new IconButton(
+						icon: new Icon(Icons.close, color: const Color(0xFF000000) ),
+						tooltip: 'Close',
+						onPressed: () => Navigator.pop(context,true)
+					),
+				],
+			),
+			body: new Container(),
 		);
 
 	}
