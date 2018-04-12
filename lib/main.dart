@@ -2387,7 +2387,7 @@ class _SearchState extends State<Search> {
 						),
 					),
 					new Container(
-						padding: const EdgeInsets.fromLTRB(20.0, 0.0, 10.0, 0.0),
+						padding: const EdgeInsets.fromLTRB(20.0, 0.0, 10.0, 20.0),
 						child: new Text(
 							'Type of Grocery Store',
 							textAlign: TextAlign.left,
@@ -2399,9 +2399,127 @@ class _SearchState extends State<Search> {
 							),
 						),
 					),
+					new Row(
+						children: <Widget>[
+							new Container( width: 20.0 ),
+							new Expanded(
+								child: new Card(
+									elevation: 3.0,
+									child: new Container(
+										height: 85.0,
+										alignment: Alignment.center,
+										padding: const EdgeInsets.all(10.0),
+										child: new Text(
+											'Familiar and Affordable'.toUpperCase(),
+											textAlign: TextAlign.center,
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontFamily: 'Montserrat',
+												fontWeight: FontWeight.w800,
+												fontSize: 14.0,
+											),
+										),
+									),
+								),
+							),
+							new Container( width: 20.0 ),
+							new Expanded(
+								child: new Card(
+									elevation: 3.0,
+									child: new Container(
+										height: 85.0,
+										alignment: Alignment.center,
+										padding: const EdgeInsets.all(10.0),
+										child: new Text(
+											'Hidden Gems'.toUpperCase(),
+											textAlign: TextAlign.center,
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontFamily: 'Montserrat',
+												fontWeight: FontWeight.w800,
+												fontSize: 14.0,
+											),
+										),
+									),
+								),
+							),
+							new Container( width: 20.0 ),
+						]
+					),
+					new Container( height: 20.0 ),
+					new Row(
+						children: <Widget>[
+							new Container( width: 20.0 ),
+							new Expanded(
+								child: new Card(
+									elevation: 3.0,
+									child: new Container(
+										height: 85.0,
+										alignment: Alignment.center,
+										padding: const EdgeInsets.all(10.0),
+										child: new Text(
+											'The Finer Things'.toUpperCase(),
+											textAlign: TextAlign.center,
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontFamily: 'Montserrat',
+												fontWeight: FontWeight.w800,
+												fontSize: 14.0,
+											),
+										),
+									),
+								),
+							),
+							new Container( width: 20.0 ),
+							new Expanded(
+								child: new Card(
+									elevation: 3.0,
+									child: new Container(
+										height: 85.0,
+										alignment: Alignment.center,
+										padding: const EdgeInsets.all(10.0),
+										child: new Text(
+											'Surprise Me'.toUpperCase(),
+											textAlign: TextAlign.center,
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontFamily: 'Montserrat',
+												fontWeight: FontWeight.w800,
+												fontSize: 14.0,
+											),
+										),
+									),
+								),
+							),
+							new Container( width: 20.0 ),
+						]
+					),
+					new Expanded(
+						child: new Align(
+							alignment: Alignment.bottomCenter,
+							child: new Row(
+								children: <Widget>[
+									new Expanded(
+										child: new RaisedButton(
+											onPressed: () => print("View Results"),
+											padding: new EdgeInsets.all(20.0),  
+											color: const Color(0xFF1033FF),
+											textColor: const Color(0xFFFFFFFF),
+											child: new Text(
+												'View Results'.toUpperCase(),
+												style: new TextStyle(
+													fontFamily: 'Montserrat',
+													fontWeight: FontWeight.w800,
+												),
+											),
+										),
+									)
+								]
+							),
+						),
+					),
 				]
 			),
-			// bottomNavigationBar: new bottomBar(),
 		);
 
 	}
