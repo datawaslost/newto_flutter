@@ -2707,7 +2707,7 @@ class _SearchResultsState extends State<SearchResults> {
 
 												]
 											),	
-										),														
+										),
 									),
 								),
 								new Container(
