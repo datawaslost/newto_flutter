@@ -2572,6 +2572,85 @@ class _SearchResultsState extends State<SearchResults> {
 				shrinkWrap: true,
 				padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
 				children: <Widget>[
+					// result card
+					new Container(
+						height: 150.0,
+						margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
+						child: new Stack(
+							fit: StackFit.loose,
+							children: <Widget>[
+								new Container(
+									margin: const EdgeInsets.fromLTRB(0.0, 7.5, 0.0, 7.5),
+									child: new Card(
+										elevation: 3.0,
+										child: new Container(
+											padding: const EdgeInsets.fromLTRB(145.0, 0.0, 0.0, 0.0),
+											child: new Column(
+												crossAxisAlignment: CrossAxisAlignment.start,
+												children: <Widget>[
+													new Container(
+														padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 0.0),
+														child: new Text(
+															'Fresh Market Madison'.toUpperCase(),
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w800,
+																fontSize: 14.0,
+															),
+														),
+													),
+													new Expanded(
+														child: new Row(
+															children: [
+																new SizedBox( width: 20.0 ),
+																new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
+																new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
+																new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
+																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
+																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
+																new SizedBox( width: 20.0 ),
+															],
+														),
+													),
+													new Container(
+														padding: const EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 10.0),
+														child: new Text(
+															'2.7 mi',
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w300,
+																fontSize: 14.0,
+															),
+														),
+													),
+
+												]
+											),	
+										),														
+									),
+								),
+								new Container(
+									margin: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+									child: new SizedBox(
+										width: 125.0,
+										child: new Container(
+											decoration: new BoxDecoration(
+												image: new DecorationImage(
+													image: new AssetImage('images/cardphoto.png'),
+													fit: BoxFit.cover,
+												),
+											),
+										),
+									),
+								),
+							],
+						),
+					),
+					// result card 2
 					new Container(
 						height: 150.0,
 						child: new Stack(
@@ -2589,7 +2668,7 @@ class _SearchResultsState extends State<SearchResults> {
 													new Container(
 														padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 0.0),
 														child: new Text(
-															'Grocery Stores'.toUpperCase(),
+															'Whole Foods'.toUpperCase(),
 															textAlign: TextAlign.left,
 															style: new TextStyle(
 																color: const Color(0xFF000000),
@@ -2602,13 +2681,13 @@ class _SearchResultsState extends State<SearchResults> {
 													new Expanded(
 														child: new Row(
 															children: [
-																new SizedBox( width: 15.0 ),
+																new SizedBox( width: 20.0 ),
 																new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
 																new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
 																new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
 																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
 																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
-																new SizedBox( width: 15.0 ),
+																new SizedBox( width: 20.0 ),
 															],
 														),
 													),
@@ -2636,6 +2715,27 @@ class _SearchResultsState extends State<SearchResults> {
 									child: new SizedBox(
 										width: 125.0,
 										child: new Container(
+											child: new Column(
+												crossAxisAlignment: CrossAxisAlignment.start,
+												children: <Widget>[
+													new Expanded( child: new Container() ),
+													new Container(
+														width: 125.0,
+														padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+														color: const Color(0xFFFCEE21),
+														child: new Text(
+															'Featured'.toUpperCase(),
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w800,
+																fontSize: 10.0,
+															),
+														),
+													),
+												]
+											),
 											decoration: new BoxDecoration(
 												image: new DecorationImage(
 													image: new AssetImage('images/cardphoto.png'),
