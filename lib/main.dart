@@ -2772,7 +2772,7 @@ class _BookmarksState extends State<Bookmarks> {
 	@override
 	Widget build(BuildContext context) {
 	  
-return new Scaffold(
+		return new Scaffold(
 			backgroundColor: const Color(0xFFF3F3F7),
 			appBar: new AppBar(
 				backgroundColor: const Color(0xFF000000),
