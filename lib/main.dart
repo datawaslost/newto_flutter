@@ -2841,9 +2841,6 @@ return new Scaffold(
 							],
 						),
 					),
-					
-					
-					
 					new SliverPadding(
 						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
 						sliver: new SliverGrid.count(
@@ -2931,10 +2928,6 @@ return new Scaffold(
 							],
 						),
 					),
-
-
-
-
 					new SliverPadding(
 						padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
 						sliver: new SliverGrid.count(
