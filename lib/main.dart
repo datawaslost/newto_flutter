@@ -3077,8 +3077,8 @@ class _AccountState extends State<Account> {
 						),
 						trailing: new IconButton(
 							icon: new Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
-							onPressed: () => Navigator.pop(context,true)
 						),
+						onTap: () => print("email"),
 					),
 					new Divider(
 						height: 1.0,
@@ -3098,8 +3098,8 @@ class _AccountState extends State<Account> {
 						),
 						trailing: new IconButton(
 							icon: new Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
-							onPressed: () => Navigator.pop(context,true)
 						),
+						onTap: () => print("city"),
 					),
 					new Divider(
 						height: 1.0,
@@ -3119,8 +3119,8 @@ class _AccountState extends State<Account> {
 						),
 						trailing: new IconButton(
 							icon: new Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
-							onPressed: () => Navigator.pop(context,true)
 						),
+						onTap: () => print("change password"),
 					),
 					new Divider(
 						height: 1.0,
@@ -3140,8 +3140,8 @@ class _AccountState extends State<Account> {
 						),
 						trailing: new IconButton(
 							icon: new Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
-							onPressed: () => Navigator.pop(context,true)
 						),
+						onTap: () => Navigator.of(context).pushNamed('/onboarding'),
 					),
 					new Divider(
 						height: 1.0,
