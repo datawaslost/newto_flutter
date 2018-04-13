@@ -3039,7 +3039,7 @@ class _AccountState extends State<Account> {
 	Widget build(BuildContext context) {
 	  
 		return new Scaffold(
-			backgroundColor: const Color(0xFFF3F3F7),
+			backgroundColor: const Color(0xFFFFFFFF),
 			appBar: new AppBar(
 				backgroundColor: const Color(0xFF000000),
 				centerTitle: true,
@@ -3061,9 +3061,97 @@ class _AccountState extends State<Account> {
 					),
 				],
 			),
-			body: new Container(),
+			body: new ListView(
+				children: <Widget>[
+					new ListTile(
+						title: new Text('karen@uwmadison.edu',
+							style: new TextStyle(
+								fontFamily: 'Montserrat',
+								fontWeight: FontWeight.w300,
+								fontSize: 14.0,
+							)
+						),
+						leading: new Icon(
+							Icons.mail_outline,
+							color: const Color(0xFF838383),
+						),
+						trailing: new IconButton(
+							icon: new Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
+							onPressed: () => Navigator.pop(context,true)
+						),
+					),
+					new Divider(
+						height: 1.0,
+						color: const Color(0xFFE0E1EA),
+					),
+					new ListTile(
+						title: new Text('Chicago, IL',
+							style: new TextStyle(
+								fontFamily: 'Montserrat',
+								fontWeight: FontWeight.w300,
+								fontSize: 14.0,
+							)
+						),
+						leading: new Icon(
+							Icons.home,
+							color: const Color(0xFF838383),
+						),
+						trailing: new IconButton(
+							icon: new Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
+							onPressed: () => Navigator.pop(context,true)
+						),
+					),
+					new Divider(
+						height: 1.0,
+						color: const Color(0xFFE0E1EA),
+					),			
+					new ListTile(
+						title: new Text('Change Password',
+							style: new TextStyle(
+								fontFamily: 'Montserrat',
+								fontWeight: FontWeight.w300,
+								fontSize: 14.0,
+							)
+						),
+						leading: new Icon(
+							Icons.lock_outline,
+							color: const Color(0xFF838383),
+						),
+						trailing: new IconButton(
+							icon: new Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
+							onPressed: () => Navigator.pop(context,true)
+						),
+					),
+					new Divider(
+						height: 1.0,
+						color: const Color(0xFFE0E1EA),
+					),			
+					new ListTile(
+						title: new Text('Log Out',
+							style: new TextStyle(
+								fontFamily: 'Montserrat',
+								fontWeight: FontWeight.w300,
+								fontSize: 14.0,
+							)
+						),
+						leading: new Icon(
+							Icons.power_settings_new,
+							color: const Color(0xFF838383),
+						),
+						trailing: new IconButton(
+							icon: new Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
+							onPressed: () => Navigator.pop(context,true)
+						),
+					),
+					new Divider(
+						height: 1.0,
+						color: const Color(0xFFE0E1EA),
+					),
+				],
+			),
 		);
 
 	}
 	
 }
+
