@@ -2808,35 +2808,69 @@ class _BookmarksState extends State<Bookmarks> {
 							children: <Widget>[
 								new Card(
 									elevation: 3.0,
-									child: new Container(
-										padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-										child: new Text(
-											'Find Your Doctor, Dentist, Eye care, Pharmacy',
-											textAlign: TextAlign.left,
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontFamily: 'Montserrat',
-												fontWeight: FontWeight.w700,
-												fontSize: 14.0,
+									child: new Column(
+										children: <Widget>[
+											new Expanded(
+												child: new Container(
+													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+													child: new Text(
+														'Find your doctor, dentist, eye care, pharmacy',
+														textAlign: TextAlign.left,
+														style: new TextStyle(
+															color: const Color(0xFF000000),
+															fontFamily: 'Montserrat',
+															fontWeight: FontWeight.w700,
+															fontSize: 14.0,
+														),
+													),
+												),
 											),
-										),
-									),
+											new Row(
+												children: <Widget>[
+													new Expanded(
+														child: new Container()
+													),
+													new Container(
+														padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 10.0),
+														child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
+													),
+												]
+											),
+										]
+									)
 								),
 								new Card(
 									elevation: 3.0,
-									child: new Container(
-										padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-										child: new Text(
-											"Find the nearest Grocery Store",
-											textAlign: TextAlign.left,
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontFamily: 'Montserrat',
-												fontWeight: FontWeight.w700,
-												fontSize: 14.0,
+									child: new Column(
+										children: <Widget>[
+											new Expanded(
+												child: new Container(
+													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+													child: new Text(
+														'Find the nearest grocery store',
+														textAlign: TextAlign.left,
+														style: new TextStyle(
+															color: const Color(0xFF000000),
+															fontFamily: 'Montserrat',
+															fontWeight: FontWeight.w700,
+															fontSize: 14.0,
+														),
+													),
+												),
 											),
-										),
-									),
+											new Row(
+												children: <Widget>[
+													new Expanded(
+														child: new Container()
+													),
+													new Container(
+														padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 10.0),
+														child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
+													),
+												]
+											),
+										]
+									)
 								),
 							],
 						),
@@ -2889,20 +2923,29 @@ class _BookmarksState extends State<Bookmarks> {
 																		],
 																	),
 																),
-																new Container(
-																	padding: const EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 10.0),
-																	child: new Text(
-																		'1.3 mi',
-																		textAlign: TextAlign.left,
-																		style: new TextStyle(
-																			color: const Color(0xFF000000),
-																			fontFamily: 'Montserrat',
-																			fontWeight: FontWeight.w300,
-																			fontSize: 14.0,
+																new Row(
+																	children: <Widget>[
+																		new Expanded(
+																			child: new Container(
+																				padding: const EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 10.0),
+																				child: new Text(
+																					'1.3 mi',
+																					textAlign: TextAlign.left,
+																					style: new TextStyle(
+																						color: const Color(0xFF000000),
+																						fontFamily: 'Montserrat',
+																						fontWeight: FontWeight.w300,
+																						fontSize: 14.0,
+																					),
+																				),
+																			),
 																		),
-																	),
+																		new Container(
+																			padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 10.0),
+																			child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
+																		),
+																	]
 																),
-			
 															]
 														),	
 													),
@@ -2951,16 +2994,26 @@ class _BookmarksState extends State<Bookmarks> {
 												new BackdropFilter(
 													filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
 													child: new Container(
-														padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-														child: new Text(
-															'Create the Perfect Dorm Room'.toUpperCase(),
-															textAlign: TextAlign.left,
-															style: new TextStyle(
-																color: const Color(0xFF000000),
-																fontFamily: 'Montserrat',
-																fontWeight: FontWeight.w800,
-																fontSize: 24.0,
-															),
+														padding: new EdgeInsets.fromLTRB(20.0, 15.0, 10.0, 15.0),
+														child: new Row(
+															crossAxisAlignment: CrossAxisAlignment.start,
+															children: <Widget>[
+																new Expanded(
+																	child: new Text(
+																		'Create the Perfect Dorm Room'.toUpperCase(),
+																		textAlign: TextAlign.left,
+																		style: new TextStyle(
+																			color: const Color(0xFF000000),
+																			fontFamily: 'Montserrat',
+																			fontWeight: FontWeight.w800,
+																			fontSize: 24.0,
+																		),
+																	),
+																),
+																new Container(
+																	child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
+																),
+															]
 														),
 														decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
 													),
