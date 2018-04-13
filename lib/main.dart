@@ -26,7 +26,6 @@ void main() => runApp(new MyApp());
 				primaryColor: const Color(0xFF000000),
 				indicatorColor: const Color(0xFF00C3FF),
 			),
-			// home: new Onboarding(),
 			home: new Home(),
 		    routes: <String, WidgetBuilder> {
 				'/onboarding': (BuildContext context) => new Onboarding(),
@@ -37,6 +36,7 @@ void main() => runApp(new MyApp());
 				'/search': (BuildContext context) => new Search(),
 				'/searchresults': (BuildContext context) => new SearchResults(),
 				'/bookmarks': (BuildContext context) => new Bookmarks(),
+				'/account': (BuildContext context) => new Account(),
 			},
 		);
 	}
@@ -803,11 +803,6 @@ class Landing extends StatefulWidget {
 
 class _LandingState extends State<Landing> {
 	
-	void _account() {
-		// load account info
-		Navigator.of(context).pushNamed('/onboarding');
-	}
-	
 	void _yourlist() {
 		// go to list page
 		Navigator.of(context).pushNamed('/yourlist');
@@ -856,7 +851,7 @@ class _LandingState extends State<Landing> {
 					new IconButton(
 						icon: new Icon(Icons.account_circle ),
 						tooltip: 'Account',
-						onPressed: _account,
+						onPressed: () => Navigator.of(context).pushNamed('/account'),
 					),
 				],
 			),
@@ -1092,11 +1087,6 @@ class YourList extends StatefulWidget {
 
 class _YourListState extends State<YourList> {
 
-	void _account() {
-		// load account info
-		Navigator.of(context).pushNamed('/onboarding');
-	}
-
 	@override
 	Widget build(BuildContext context) {
 		  		
@@ -1130,7 +1120,7 @@ class _YourListState extends State<YourList> {
 						new IconButton(
 							icon: new Icon(Icons.account_circle ),
 							tooltip: 'Account',
-							onPressed: _account,
+							onPressed: () => Navigator.of(context).pushNamed('/account'),
 						),
 					],
 				),
@@ -1965,11 +1955,6 @@ class Discover extends StatefulWidget {
 
 class _DiscoverState extends State<Discover> {
 	
-	void _account() {
-		// load account info
-		Navigator.of(context).pushNamed('/onboarding');
-	}
-	
 	void _search() {
 		// go to list page
 		Navigator.of(context).pushNamed('/search');
@@ -1997,7 +1982,7 @@ class _DiscoverState extends State<Discover> {
 					new IconButton(
 						icon: new Icon(Icons.account_circle ),
 						tooltip: 'Account',
-						onPressed: _account,
+						onPressed: () => Navigator.of(context).pushNamed('/account'),
 					),
 				],
 			),
@@ -2791,7 +2776,7 @@ class _BookmarksState extends State<Bookmarks> {
 					new IconButton(
 						icon: new Icon(Icons.account_circle ),
 						tooltip: 'Account',
-						onPressed: () => Navigator.of(context).pushNamed('/onboarding'),
+						onPressed: () => Navigator.of(context).pushNamed('/account'),
 					),
 				],
 			),
@@ -3031,6 +3016,52 @@ class _BookmarksState extends State<Bookmarks> {
 				],
 			),
 			bottomNavigationBar: new bottomBar(),
+		);
+
+	}
+	
+}
+
+
+class Account extends StatefulWidget {
+	Account({Key key, this.title}) : super(key: key);
+	
+	final String title;
+	
+	@override
+	_AccountState createState() => new _AccountState();
+}
+
+
+class _AccountState extends State<Account> {
+	
+	@override
+	Widget build(BuildContext context) {
+	  
+		return new Scaffold(
+			backgroundColor: const Color(0xFFF3F3F7),
+			appBar: new AppBar(
+				backgroundColor: const Color(0xFF000000),
+				centerTitle: true,
+				title: new Text(
+					'Account Settings'.toUpperCase(),
+					style: new TextStyle(
+						color: const Color(0xFF838383),
+						fontFamily: 'Montserrat',
+						fontWeight: FontWeight.w800,
+						fontSize: 14.0,
+					),
+				),
+				leading: new Container(),
+				actions: <Widget>[
+					new IconButton(
+						icon: new Icon(Icons.close, color: const Color(0xFFFFFFFF) ),
+						tooltip: 'Close',
+						onPressed: () => Navigator.pop(context,true)
+					),
+				],
+			),
+			body: new Container(),
 		);
 
 	}
