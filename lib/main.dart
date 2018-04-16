@@ -2284,7 +2284,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
 	
 
-	var double _distance = 0.0;
+	double _distance = 0.0;
 	
 	@override
 	Widget build(BuildContext context) {
