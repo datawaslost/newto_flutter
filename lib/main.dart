@@ -860,7 +860,7 @@ class _LandingState extends State<Landing> {
 				children: <Widget>[
 					new Expanded(
 						child: new Carousel(
-							displayDuration: new Duration(seconds: 20),
+							displayDuration: new Duration(seconds: 200000),
 							children: [
 							    new Container(
 									padding: new EdgeInsets.fromLTRB(65.0, 0.0, 65.0, 0.0),
