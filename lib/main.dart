@@ -37,6 +37,7 @@ void main() => runApp(new MyApp());
 				'/searchresults': (BuildContext context) => new SearchResults(),
 				'/bookmarks': (BuildContext context) => new Bookmarks(),
 				'/account': (BuildContext context) => new Account(),
+				'/article': (BuildContext context) => new Article(),
 			},
 		);
 	}
@@ -982,78 +983,110 @@ class _LandingState extends State<Landing> {
 											scrollDirection: Axis.horizontal,
 											shrinkWrap: true,
 											children: <Widget>[
-												new Container(
-													width: 278.0,
-													height: 278.0,
-													margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
-													child: new Card(
-														elevation: 8.0,
-														child: new Container(
-															decoration: new BoxDecoration(
-																image: new DecorationImage(
-																	image: new AssetImage('images/cardphoto.png'),
-																	fit: BoxFit.cover,
-																),
-															),
-															child: new Column(
-																mainAxisSize: MainAxisSize.min,
-																children: <Widget>[
-																	new BackdropFilter(
-																		filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-																		child: new Container(
-																			padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-																			child: new Text(
-																				'Create the Perfect Dorm Room'.toUpperCase(),
-																				textAlign: TextAlign.left,
-																				style: new TextStyle(
-																					color: const Color(0xFF000000),
-																					fontFamily: 'Montserrat',
-																					fontWeight: FontWeight.w800,
-																					fontSize: 24.0,
-																				),
-																			),
-																			decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-																		),
+												new GestureDetector(
+													onTap: () {
+														Navigator.of(context).pushNamed('/article');
+													},
+													child: new Container(
+														width: 278.0,
+														height: 278.0,
+														margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
+														child: new Card(
+															elevation: 8.0,
+															child: new Container(
+																decoration: new BoxDecoration(
+																	image: new DecorationImage(
+																		image: new AssetImage('images/cardphoto.png'),
+																		fit: BoxFit.cover,
 																	),
-																],
+																),
+																child: new Column(
+																	mainAxisSize: MainAxisSize.min,
+																	children: <Widget>[
+																		new BackdropFilter(
+																			filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+																			child: new Container(
+																				padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+																				child: new Text(
+																					'Create the Perfect Dorm Room'.toUpperCase(),
+																					textAlign: TextAlign.left,
+																					style: new TextStyle(
+																						color: const Color(0xFF000000),
+																						fontFamily: 'Montserrat',
+																						fontWeight: FontWeight.w800,
+																						fontSize: 24.0,
+																					),
+																				),
+																				decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+																			),
+																		),
+																		new Expanded(
+																			child: new Container(
+																				decoration: new BoxDecoration(
+																					image: new DecorationImage(
+																						image: new AssetImage('images/cardphoto.png'),
+																						fit: BoxFit.cover,
+																						alignment: Alignment.bottomCenter,
+																					),
+																				), 
+																			),
+																		),
+																	],
+																),
 															),
 														),
 													),
 												),
-												new Container(
-													width: 278.0,
-													height: 278.0,
-													margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
-													child: new Card(
-														elevation: 8.0,
-														child: new Container(
-															decoration: new BoxDecoration(
-																image: new DecorationImage(
-																	image: new AssetImage('images/background.png'),
-																	fit: BoxFit.cover,
-																),
-															),
-															child: new Column(
-																mainAxisSize: MainAxisSize.min,
-																children: <Widget>[
-																	new BackdropFilter(
-																		filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-																		child: new Container(
-																			padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-																			child: new Text(
-																				'Get to know UMW'.toUpperCase(),
-																				textAlign: TextAlign.left,
-																				style: new TextStyle(
-																					color: const Color(0xFF000000),
-																					fontFamily: 'Montserrat',
-																					fontWeight: FontWeight.w800,
-																					fontSize: 24.0,
-																				),
-																			),
-																			decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-																		),
+												new GestureDetector(
+													onTap: () {
+														Navigator.of(context).pushNamed('/article');
+													},
+													child: new Container(
+														width: 278.0,
+														height: 278.0,
+														margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
+														child: new Card(
+															elevation: 8.0,
+															child: new Container(
+																decoration: new BoxDecoration(
+																	image: new DecorationImage(
+																		image: new AssetImage('images/background.png'),
+																		fit: BoxFit.cover,
 																	),
-																],
+																),
+																child: new Column(
+																	mainAxisSize: MainAxisSize.min,
+																	children: <Widget>[
+																		new BackdropFilter(
+																			filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+																			child: new Container(
+																				padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+																				child: new Text(
+																					'Get to know UMW'.toUpperCase(),
+																					textAlign: TextAlign.left,
+																					style: new TextStyle(
+																						color: const Color(0xFF000000),
+																						fontFamily: 'Montserrat',
+																						fontWeight: FontWeight.w800,
+																						fontSize: 24.0,
+																					),
+																				),
+																				decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+																			),
+																		),
+																		Expanded(
+																			child: new Container(
+																				decoration: new BoxDecoration(
+																					image: new DecorationImage(
+																						image: new AssetImage('images/background.png'),
+																						fit: BoxFit.cover,
+																						alignment: Alignment.bottomCenter,
+																					),
+																				), 
+																			),
+																		),
+																	],
+																),
 															),
 														),
 													),
@@ -3155,3 +3188,88 @@ class _AccountState extends State<Account> {
 	
 }
 
+
+class Article extends StatefulWidget {
+	Article({Key key, this.title}) : super(key: key);
+	
+	final String title;
+	
+	@override
+	_ArticleState createState() => new _ArticleState();
+}
+
+
+class _ArticleState extends State<Article> {
+	
+	@override
+	Widget build(BuildContext context) {
+	  
+		return new Scaffold(
+			backgroundColor: const Color(0xFFFFFFFF),
+			body: new SingleChildScrollView(
+				scrollDirection: Axis.vertical,
+				child: new Column(
+					children: <Widget>[
+						new SizedBox(
+							height: 324.0,
+							child: new Container(
+								decoration: new BoxDecoration(
+									image: new DecorationImage(
+										image: new AssetImage('images/cardphoto.png'),
+										fit: BoxFit.cover,
+									),
+								),
+								child: new Column(
+									mainAxisSize: MainAxisSize.min,
+									children: <Widget>[
+										new BackdropFilter(
+											filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+											child: new Container(
+												padding: new EdgeInsets.fromLTRB(20.0, 30.0, 10.0, 15.0),
+												child: new Row(
+													crossAxisAlignment: CrossAxisAlignment.start,
+													children: <Widget>[
+														new Expanded(
+															child: new Text(
+																'Create the Perfect Dorm Room'.toUpperCase(),
+																textAlign: TextAlign.left,
+																style: new TextStyle(
+																	color: const Color(0xFF000000),
+																	fontFamily: 'Montserrat',
+																	fontWeight: FontWeight.w800,
+																	fontSize: 28.0,
+																	height: 0.9,
+																),
+															),
+														),
+														new Container(
+															child: new Icon(Icons.close, color: const Color(0xFF000000), size: 20.0),
+														),
+													]
+												),
+												decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+											),
+										),
+										new Expanded(
+											child: new Container(
+												decoration: new BoxDecoration(
+													image: new DecorationImage(
+														image: new AssetImage('images/cardphoto.png'),
+														fit: BoxFit.cover,
+														alignment: Alignment.bottomCenter,
+													),
+												), 
+											),
+										),															
+									],
+								),
+							),
+						),
+					],
+				)
+			)
+		);
+
+	}
+	
+}
