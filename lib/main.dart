@@ -3444,19 +3444,18 @@ class _LocationState extends State<Location> {
 						),
 						new Container(
 							padding: new EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 15.0),
-							child:  new Row(
+							alignment: Alignment.topLeft,
+							child: new Column(
 								children: <Widget>[
-									new Expanded(
-										child:  new Text(
-											"703 University Ave, Madison, WI 53715",
-											textAlign: TextAlign.left,
-											style: new TextStyle(
-												color: const Color(0xFF1033FF),
-												fontFamily: 'Montserrat',
-												fontWeight: FontWeight.w300,
-												fontSize: 14.0,
-												height: 1.15,
-											),
+									new Text(
+										"703 University Ave, Madison, WI 53715",
+										textAlign: TextAlign.left,
+										style: new TextStyle(
+											color: const Color(0xFF1033FF),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w300,
+											fontSize: 14.0,
+											height: 1.15,
 										),
 									),
 								]
