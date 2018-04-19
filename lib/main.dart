@@ -3210,66 +3210,144 @@ class _ArticleState extends State<Article> {
 				scrollDirection: Axis.vertical,
 				child: new Column(
 					children: <Widget>[
-						new SizedBox(
+						new Container(
 							height: 324.0,
-							child: new Container(
-								decoration: new BoxDecoration(
-									image: new DecorationImage(
-										image: new AssetImage('images/cardphoto.png'),
-										fit: BoxFit.cover,
-									),
+							decoration: new BoxDecoration(
+								image: new DecorationImage(
+									image: new AssetImage('images/cardphoto.png'),
+									fit: BoxFit.cover,
 								),
-								child: new Column(
-									mainAxisSize: MainAxisSize.min,
-									children: <Widget>[
-										new BackdropFilter(
-											filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-											child: new Container(
-												padding: new EdgeInsets.fromLTRB(20.0, 30.0, 10.0, 15.0),
-												child: new Row(
-													crossAxisAlignment: CrossAxisAlignment.start,
-													children: <Widget>[
-														new Expanded(
-															child: new Text(
-																'Create the Perfect Dorm Room'.toUpperCase(),
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFF000000),
-																	fontFamily: 'Montserrat',
-																	fontWeight: FontWeight.w800,
-																	fontSize: 28.0,
-																	height: 0.9,
-																),
+							),
+							child: new Column(
+								mainAxisSize: MainAxisSize.min,
+								children: <Widget>[
+									new BackdropFilter(
+										filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+										child: new Container(
+											padding: new EdgeInsets.fromLTRB(20.0, 30.0, 10.0, 15.0),
+											child: new Row(
+												crossAxisAlignment: CrossAxisAlignment.start,
+												children: <Widget>[
+													new Expanded(
+														child: new Text(
+															'Create the Perfect Dorm Room'.toUpperCase(),
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w800,
+																fontSize: 28.0,
+																height: 0.9,
 															),
 														),
-														new Container(
-															child: new Icon(Icons.close, color: const Color(0xFF000000), size: 20.0),
-														),
-													]
+													),
+													new Container(
+														child: new Icon(Icons.close, color: const Color(0xFF000000), size: 20.0),
+													),
+												]
+											),
+											decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+										),
+									),
+									new Expanded(
+										child: new Container(
+											decoration: new BoxDecoration(
+												image: new DecorationImage(
+													image: new AssetImage('images/cardphoto.png'),
+													fit: BoxFit.cover,
+													alignment: Alignment.bottomCenter,
 												),
-												decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+											), 
+										),
+									),															
+								],
+							),
+						),
+						new Row(
+							children: [
+								new Container(
+									padding: new EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+									child: new Text(
+										'Sponsor'.toUpperCase(),
+										textAlign: TextAlign.left,
+										style: new TextStyle(
+											color: const Color(0xFF000000),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 12.0,
+										),
+									),
+									decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
+								),
+								new Expanded(
+									child: Container( decoration: BoxDecoration(color: const Color(0xFFFFFFFF) ) )
+								),
+							]
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 15.0),
+							child:  new Text(
+								"It will be seen that this mere painstaking burrower and grub-worm of a poor devil of a Sub-Sub appears to have gone through the long Vaticans and street-stalls of the earth, picking up whatever random allusions to whales he could anyways find in any book whatsoever, sacred or profane. Therefore you must not, in every case at least, take the higgledy-piggledy whale statements, however authentic, in these extracts, for veritable gospel cetology. Far from it. As touching the ancient authors generally, as well as the poets here appearing, these extracts are solely valuable or entertaining, as affording a glancing bird's eye view of what has been promiscuously said, thought, fancied, and sung of Leviathan, by many nations and generations, including our own. It will be seen that this mere painstaking burrower and grub-worm of a poor devil of a Sub-Sub appears to have gone through the long Vaticans and street-stalls of the earth, picking up whatever random allusions to whales he could anyways find in any book whatsoever, sacred or profane. Therefore you must not, in every case at least, take the higgledy-piggledy whale statements, however authentic, in these extracts, for veritable gospel cetology. Far from it. As touching the ancient authors generally, as well as the poets here appearing, these extracts are solely valuable or entertaining, as affording a glancing bird's eye view of what has been promiscuously said, thought, fancied, and sung of Leviathan, by many nations and generations, including our own.",
+								textAlign: TextAlign.left,
+								style: new TextStyle(
+									color: const Color(0xFF000000),
+									fontFamily: 'Montserrat',
+									fontWeight: FontWeight.w300,
+									fontSize: 14.0,
+									height: 1.15,
+								),
+							),
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 30.0),
+							child:  new Row(children: <Widget>[
+								new Expanded(
+									child: new RaisedButton(
+											onPressed: () => Navigator.pop(context,true),
+											padding: new EdgeInsets.all(14.0),  
+											color: const Color(0xFF1033FF),
+											textColor: const Color(0xFFFFFFFF),
+											child: new Text(
+												'Shop Now'.toUpperCase(),
+												style: new TextStyle(
+													fontFamily: 'Montserrat',
+													fontWeight: FontWeight.w800,
+												),
 											),
 										),
-										new Expanded(
-											child: new Container(
-												decoration: new BoxDecoration(
-													image: new DecorationImage(
-														image: new AssetImage('images/cardphoto.png'),
-														fit: BoxFit.cover,
-														alignment: Alignment.bottomCenter,
-													),
-												), 
-											),
-										),															
-									],
-								),
+									)
+								]
 							),
 						),
 					],
 				)
-			)
+			),
+			persistentFooterButtons: <Widget>[
+				new FlatButton(
+					onPressed: () => Navigator.pop(context,true),
+					child: new Icon(
+						Icons.add_circle_outline,
+						color: const Color(0xFF2D2D2F),
+					),
+				),
+				new FlatButton(
+					onPressed: () => Navigator.pop(context,true),
+					child: new Icon(
+						Icons.check_circle_outline,
+						color: const Color(0xFF2D2D2F),
+					),
+				),
+				new FlatButton(
+					onPressed: () => Navigator.pop(context,true),
+					child: new Icon(
+						Icons.bookmark_border,
+						color: const Color(0xFF2D2D2F),
+					),
+				),
+			],
 		);
 
 	}
 	
 }
+
