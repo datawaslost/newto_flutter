@@ -2049,34 +2049,39 @@ class _DiscoverState extends State<Discover> {
 											scrollDirection: Axis.horizontal,
 											shrinkWrap: true,
 											children: <Widget>[
-												new Container(
-													margin: new EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 0.0),
-													child: new Column(
-														mainAxisSize: MainAxisSize.min,
-														crossAxisAlignment: CrossAxisAlignment.start,
-														children: <Widget>[
-															new Container(
-																width: 150.0,
-																height: 180.0,
-																decoration: new BoxDecoration(
-																	image: new DecorationImage(
-																		image: new AssetImage('images/cardphoto.png'),
-																		fit: BoxFit.cover,
+												new GestureDetector(
+													onTap: () {
+														Navigator.of(context).pushNamed('/search');
+													},
+													child: new Container(
+														margin: new EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 0.0),
+														child: new Column(
+															mainAxisSize: MainAxisSize.min,
+															crossAxisAlignment: CrossAxisAlignment.start,
+															children: <Widget>[
+																new Container(
+																	width: 150.0,
+																	height: 180.0,
+																	decoration: new BoxDecoration(
+																		image: new DecorationImage(
+																			image: new AssetImage('images/cardphoto.png'),
+																			fit: BoxFit.cover,
+																		),
 																	),
 																),
-															),
-															new Text(
-																'Groceries'.toUpperCase(),
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFFFFFFFF),
-																	fontFamily: 'Montserrat',
-																	fontWeight: FontWeight.w800,
-																	fontSize: 14.0,
-																	height: 1.8,
+																new Text(
+																	'Groceries'.toUpperCase(),
+																	textAlign: TextAlign.left,
+																	style: new TextStyle(
+																		color: const Color(0xFFFFFFFF),
+																		fontFamily: 'Montserrat',
+																		fontWeight: FontWeight.w800,
+																		fontSize: 14.0,
+																		height: 1.8,
+																	),
 																),
-															),
-														],
+															],
+														),
 													),
 												),
 												new Container(
