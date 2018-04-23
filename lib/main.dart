@@ -3446,6 +3446,7 @@ class _LocationState extends State<Location> {
 							padding: new EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 15.0),
 							alignment: Alignment.topLeft,
 							child: new Column(
+								crossAxisAlignment: CrossAxisAlignment.start,
 								children: <Widget>[
 									new Text(
 										"703 University Ave, Madison, WI 53715",
@@ -3453,9 +3454,42 @@ class _LocationState extends State<Location> {
 										style: new TextStyle(
 											color: const Color(0xFF1033FF),
 											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w400,
+											fontSize: 14.0,
+											height: 1.25,
+										),
+									),
+									new Text(
+										"freshmadisonmarket.com",
+										textAlign: TextAlign.left,
+										style: new TextStyle(
+											color: const Color(0xFF1033FF),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w400,
+											fontSize: 14.0,
+											height: 1.25,
+										),
+									),
+									new Text(
+										"(608) 287-0000",
+										textAlign: TextAlign.left,
+										style: new TextStyle(
+											color: const Color(0xFF1033FF),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w400,
+											fontSize: 14.0,
+											height: 1.25,
+										),
+									),
+									new Text(
+										"Open Now: 7AM-12AM",
+										textAlign: TextAlign.left,
+										style: new TextStyle(
+											color: const Color(0xFF000000),
+											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w300,
 											fontSize: 14.0,
-											height: 1.15,
+											height: 1.25,
 										),
 									),
 								]
