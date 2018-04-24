@@ -3490,7 +3490,6 @@ class _PlaceState extends State<Place> {
 									),
 									new Text(
 										"Open Now: 7AM-12AM",
-										textAlign: TextAlign.left,
 										style: new TextStyle(
 											color: const Color(0xFF000000),
 											fontFamily: 'Montserrat',
@@ -3512,7 +3511,6 @@ class _PlaceState extends State<Place> {
 									),
 									new Text(
 										"Highlights".toUpperCase(),
-										textAlign: TextAlign.left,
 										style: new TextStyle(
 											color: const Color(0xFF000000),
 											fontFamily: 'Montserrat',
@@ -3522,10 +3520,9 @@ class _PlaceState extends State<Place> {
 										),
 									),
 									new Container(
-										padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 20.0),
+										padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 25.0),
 										child: new Text(
 											"Get fresh in our aisles. Oh, behave. We’re so about fresh we can hardly contain ourselves. Fresh produce, fresh sushi, fresh deli, fresh faces, fresh seafood, fresh salads, sandwiches, panini’s and breakfast, lunch and dinner buffets, and a fresh approach to just about everything. We’re not your mother’s grocery store because we’re your grocery store. Come on now, it’s time to get fresh in our aisles.",
-											textAlign: TextAlign.left,
 											style: new TextStyle(
 												color: const Color(0xFF000000),
 												fontFamily: 'Montserrat',
@@ -3534,7 +3531,75 @@ class _PlaceState extends State<Place> {
 												height: 1.25,
 											),
 										),								
-									),								
+									),
+									new Divider(
+										height: 1.0,
+										color: const Color(0xFFE0E1EA),
+									),
+									new SizedBox( height: 20.0 ),
+									new Row(
+										children: [
+											new Text(
+												"What Others Think".toUpperCase(),
+												style: new TextStyle(
+													color: const Color(0xFF000000),
+													fontFamily: 'Montserrat',
+													fontWeight: FontWeight.w800,
+													fontSize: 14.0,
+													height: 1.25,
+												),
+											),
+											new SizedBox( width: 20.0 ),
+											new Text(
+												"4.9".toUpperCase(),
+												style: new TextStyle(
+													color: const Color(0xFF1033FF),
+													fontFamily: 'Montserrat',
+													fontWeight: FontWeight.w800,
+													fontSize: 14.0,
+													height: 1.25,
+												),
+											),
+											new SizedBox( width: 10.0 ),
+											new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
+											new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
+											new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
+											new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
+											new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 20.0)),
+										],
+									),
+									new Container(
+										padding: new EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
+										child: new Row(
+											children: [
+												new SizedBox( width: 30.0 ),
+												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+												new SizedBox( width: 30.0 ),
+											],
+										),
+									),
+									new Row(
+										children: [
+											new Expanded(
+												child: new Text(
+													"What do you think?",
+													textAlign: TextAlign.center,
+													style: new TextStyle(
+														color: const Color(0xFF000000),
+														fontFamily: 'Montserrat',
+														fontWeight: FontWeight.w300,
+														fontSize: 14.0,
+														height: 1.25,
+													),
+												),
+											),
+										],
+									),
+									new SizedBox( height: 50.0 ),
 								]
 							),
 						),
