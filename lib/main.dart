@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:carousel/carousel.dart';
+import 'package:map_view/map_view.dart';
 import "dart:ui";
 
-void main() => runApp(new MyApp());
-	class MyApp extends StatelessWidget {
+void main() {
+	MapView.setApiKey("AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E");
+	runApp(new MyApp());
+}
+
+class MyApp extends StatelessWidget {
 	// This widget is the root of your application.
 	@override
 	Widget build(BuildContext context) {
@@ -38,7 +43,7 @@ void main() => runApp(new MyApp());
 				'/bookmarks': (BuildContext context) => new Bookmarks(),
 				'/account': (BuildContext context) => new Account(),
 				'/article': (BuildContext context) => new Article(),
-				'/location': (BuildContext context) => new Location(),
+				'/place': (BuildContext context) => new Place(),
 			},
 		);
 	}
@@ -2599,7 +2604,7 @@ class _SearchResultsState extends State<SearchResults> {
 					// result card
 					new GestureDetector(
 						onTap: () {
-							Navigator.of(context).pushNamed('/location');
+							Navigator.of(context).pushNamed('/place');
 						},
 						child: new Container(
 							height: 150.0,
@@ -2682,7 +2687,7 @@ class _SearchResultsState extends State<SearchResults> {
 					// result card 2
 					new GestureDetector(
 						onTap: () {
-							Navigator.of(context).pushNamed('/location');
+							Navigator.of(context).pushNamed('/place');
 						},
 						child: new Container(
 							height: 150.0,
@@ -3368,17 +3373,19 @@ class _ArticleState extends State<Article> {
 }
 
 
-class Location extends StatefulWidget {
-	Location({Key key, this.title}) : super(key: key);
+class Place extends StatefulWidget {
+	Place({Key key, this.title}) : super(key: key);
 	
 	final String title;
 	
 	@override
-	_LocationState createState() => new _LocationState();
+	_PlaceState createState() => new _PlaceState();
 }
 
 
-class _LocationState extends State<Location> {
+class _PlaceState extends State<Place> {
+	
+	var _staticMapProvider = new StaticMapProvider('AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E');
 	
 	@override
 	Widget build(BuildContext context) {
@@ -3492,6 +3499,42 @@ class _LocationState extends State<Location> {
 											height: 1.25,
 										),
 									),
+									new Container(
+										padding: new EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 20.0),
+										child: new Image.network(
+											_staticMapProvider.getStaticUriWithMarkers(
+												<Marker>[ new Marker("1", "Fresh Market Madison", 45.523970, -122.663081) ],
+												width: 600,
+												height: 400,
+												maptype: StaticMapViewType.roadmap,
+											).toString()
+										),
+									),
+									new Text(
+										"Highlights".toUpperCase(),
+										textAlign: TextAlign.left,
+										style: new TextStyle(
+											color: const Color(0xFF000000),
+											fontFamily: 'Montserrat',
+											fontWeight: FontWeight.w800,
+											fontSize: 14.0,
+											height: 1.25,
+										),
+									),
+									new Container(
+										padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 20.0),
+										child: new Text(
+											"Get fresh in our aisles. Oh, behave. We’re so about fresh we can hardly contain ourselves. Fresh produce, fresh sushi, fresh deli, fresh faces, fresh seafood, fresh salads, sandwiches, panini’s and breakfast, lunch and dinner buffets, and a fresh approach to just about everything. We’re not your mother’s grocery store because we’re your grocery store. Come on now, it’s time to get fresh in our aisles.",
+											textAlign: TextAlign.left,
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontFamily: 'Montserrat',
+												fontWeight: FontWeight.w300,
+												fontSize: 14.0,
+												height: 1.25,
+											),
+										),								
+									),								
 								]
 							),
 						),
