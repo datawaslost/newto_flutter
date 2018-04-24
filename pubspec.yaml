@@ -33,6 +33,11 @@ flutter:
     - images/LogoStack-White.png
     - images/LogoSpan-White.png
     - images/cardphoto.png
+    - images/icon_home.png
+    - images/icon_list.png
+    - images/icon_compass.png
+    - images/icon_bookmark.png
+    - images/icon_umw.png
    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

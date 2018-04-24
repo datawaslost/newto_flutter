@@ -79,23 +79,23 @@ class bottomBar extends StatelessWidget {
 			fixedColor: const Color(0xFFFFFFFF),
 			items: <BottomNavigationBarItem>[
 				new BottomNavigationBarItem(
-					icon: new Icon(Icons.home, color: const Color(0xFFFFFFFF)  ),
+					icon: new ImageIcon(new AssetImage("images/icon_home.png"), color: const Color(0xFFFFFFFF) ),
 					title: new Text("", style: new TextStyle(fontSize: 0.0)),
 				),
 				new BottomNavigationBarItem(
-					icon: new Icon(Icons.filter_none, color: const Color(0xFFFFFFFF) ),
+					icon: new ImageIcon(new AssetImage("images/icon_list.png"), color: const Color(0xFFFFFFFF) ),
 					title: new Text("", style: new TextStyle(fontSize: 0.0)),
 				),
 				new BottomNavigationBarItem(
-					icon: new Icon(Icons.location_searching, color: const Color(0xFFFFFFFF) ),
+					icon: new ImageIcon(new AssetImage("images/icon_compass.png"), color: const Color(0xFFFFFFFF) ),
 					title: new Text("", style: new TextStyle(fontSize: 0.0)),
 				),
 				new BottomNavigationBarItem(
-					icon: new Icon(Icons.bookmark, color: const Color(0xFFFFFFFF) ),
+					icon: new ImageIcon(new AssetImage("images/icon_bookmark.png"), color: const Color(0xFFFFFFFF) ),
 					title: new Text("", style: new TextStyle(fontSize: 0.0)),
 				),
 				new BottomNavigationBarItem(
-					icon: new Icon(Icons.insert_emoticon, color: const Color(0xFFFFFFFF) ),
+					icon: new ImageIcon(new AssetImage("images/icon_umw.png"), color: const Color(0xFFFFFFFF) ),
 					title: new Text("", style: new TextStyle(fontSize: 0.0)),
 				),
 			],
