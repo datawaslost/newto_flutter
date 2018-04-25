@@ -1452,29 +1452,42 @@ class _YourListState extends State<YourList> {
 																),
 															),
 															new Expanded(
-																child: new Container()
-															),															
-															new Row(
-																children: [
-																	new Container(
-																		padding: new EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
-																		child: new Text(
-																			'Sponsor'.toUpperCase(),
-																			textAlign: TextAlign.left,
-																			style: new TextStyle(
-																				color: const Color(0xFF000000),
-																				fontFamily: 'Montserrat',
-																				fontWeight: FontWeight.w800,
-																				fontSize: 10.0,
-																			),
+																child: new Container(
+																	alignment: Alignment.bottomCenter,
+																	decoration: new BoxDecoration(
+																		image: new DecorationImage(
+																			image: new AssetImage('images/cardphoto.png'),
+																			fit: BoxFit.cover,
+																			alignment: Alignment.bottomCenter,
 																		),
-																		decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
 																	),
-																	new Expanded(
-																		child: new Container()
+																	child: new Column(
+																		mainAxisSize: MainAxisSize.min,
+																		children: <Widget>[
+																			new Expanded( child: new Container() ),
+																			new Row(
+																				children: [
+																					new Container(
+																						padding: new EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
+																						child: new Text(
+																							'Sponsor'.toUpperCase(),
+																							textAlign: TextAlign.left,
+																							style: new TextStyle(
+																								color: const Color(0xFF000000),
+																								fontFamily: 'Montserrat',
+																								fontWeight: FontWeight.w800,
+																								fontSize: 10.0,
+																							),
+																						),
+																						decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
+																					),
+																					new Expanded( child: new Container() ),
+																				]
+																			),
+																		]
 																	),
-																]
-															)
+																),
+															),
 														],
 													),
 												),
@@ -1942,29 +1955,42 @@ class _ListItemsState extends State<ListItems> {
 													),
 												),
 												new Expanded(
-													child: new Container()
-												),															
-												new Row(
-													children: [
-														new Container(
-															padding: new EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
-															child: new Text(
-																'Sponsor'.toUpperCase(),
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFF000000),
-																	fontFamily: 'Montserrat',
-																	fontWeight: FontWeight.w800,
-																	fontSize: 10.0,
-																),
+													child: new Container(
+														alignment: Alignment.bottomCenter,
+														decoration: new BoxDecoration(
+															image: new DecorationImage(
+																image: new AssetImage('images/cardphoto.png'),
+																fit: BoxFit.cover,
+																alignment: Alignment.bottomCenter,
 															),
-															decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
 														),
-														new Expanded(
-															child: new Container()
+														child: new Column(
+															mainAxisSize: MainAxisSize.min,
+															children: <Widget>[
+																new Expanded( child: new Container() ),
+																new Row(
+																	children: [
+																		new Container(
+																			padding: new EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
+																			child: new Text(
+																				'Sponsor'.toUpperCase(),
+																				textAlign: TextAlign.left,
+																				style: new TextStyle(
+																					color: const Color(0xFF000000),
+																					fontFamily: 'Montserrat',
+																					fontWeight: FontWeight.w800,
+																					fontSize: 10.0,
+																				),
+																			),
+																			decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
+																		),
+																		new Expanded( child: new Container() ),
+																	]
+																),
+															]
 														),
-													]
-												)
+													),
+												),
 											],
 										),
 									),
@@ -2218,6 +2244,17 @@ class _DiscoverState extends State<Discover> {
 																				decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
 																			),
 																		),
+																		new Expanded(
+																			child: new Container(
+																				decoration: new BoxDecoration(
+																					image: new DecorationImage(
+																						image: new AssetImage('images/cardphoto.png'),
+																						fit: BoxFit.cover,
+																						alignment: Alignment.bottomCenter,
+																					),
+																				), 
+																			),
+																		),
 																	],
 																),
 															),
@@ -2254,6 +2291,17 @@ class _DiscoverState extends State<Discover> {
 																					),
 																				),
 																				decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+																			),
+																		),
+																		new Expanded(
+																			child: new Container(
+																				decoration: new BoxDecoration(
+																					image: new DecorationImage(
+																						image: new AssetImage('images/background.png'),
+																						fit: BoxFit.cover,
+																						alignment: Alignment.bottomCenter,
+																					),
+																				), 
 																			),
 																		),
 																	],
@@ -3058,8 +3106,16 @@ class _BookmarksState extends State<Bookmarks> {
 													),
 												),
 												new Expanded(
-													child: new Container()
-												),															
+													child: new Container(
+														decoration: new BoxDecoration(
+															image: new DecorationImage(
+																image: new AssetImage('images/cardphoto.png'),
+																fit: BoxFit.cover,
+																alignment: Alignment.bottomCenter,
+															),
+														), 
+													),
+												),												
 											],
 										),
 									),
