@@ -20,14 +20,14 @@ class MyApp extends StatelessWidget {
 				// This is the theme of your application.
 				primarySwatch: Colors.blue,
 				backgroundColor: const Color(0xFF000000),
-				canvasColor: const Color(0xFF000000),
+				canvasColor: const Color(0xFF262626),
 				scaffoldBackgroundColor: const Color(0xFFFFFFFF),
 				disabledColor: const Color(0xFFFFFFFF),
 				buttonColor: const Color(0xFFFFFFFF),
 				iconTheme: new IconThemeData( color: const Color(0xFFFFFFFF) ),
 				primaryIconTheme: new IconThemeData( color: const Color(0xFFFFFFFF) ),
 				accentIconTheme: new IconThemeData( color: const Color(0xFFFFFFFF) ),
-				bottomAppBarColor: const Color(0x000000),
+				bottomAppBarColor: const Color(0xFF262626),
 				primaryColor: const Color(0xFF000000),
 				indicatorColor: const Color(0xFF00C3FF),
 			),
@@ -3262,8 +3262,11 @@ class _ArticleState extends State<Article> {
 															),
 														),
 													),
-													new Container(
-														child: new Icon(Icons.close, color: const Color(0xFF000000), size: 20.0),
+													new IconButton(
+														icon: new Icon(Icons.close, color: const Color(0xFF000000)),
+														padding: new EdgeInsets.all(0.0),
+														alignment: Alignment.topCenter,
+														onPressed: () => Navigator.pop(context,true),
 													),
 												]
 											),
@@ -3427,8 +3430,11 @@ class _PlaceState extends State<Place> {
 															),
 														),
 													),
-													new Container(
-														child: new Icon(Icons.close, color: const Color(0xFF000000), size: 20.0),
+													new IconButton(
+														icon: new Icon(Icons.close, color: const Color(0xFF000000)),
+														padding: new EdgeInsets.all(0.0),
+														alignment: Alignment.topCenter,
+														onPressed: () => Navigator.pop(context,true),
 													),
 												]
 											),
