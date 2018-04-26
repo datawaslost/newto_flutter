@@ -3812,8 +3812,6 @@ class _OrganizationState extends State<Organization> {
 	Widget build(BuildContext context) {
 	  
 		return new Scaffold(
-			backgroundColor: const Color(0xFFFFFFFF),
-			body: new Container(),
 			appBar: new AppBar(
 				backgroundColor: const Color(0xFFFFFFFF),
 				elevation: 0.0,
@@ -3830,11 +3828,6 @@ class _OrganizationState extends State<Organization> {
 				leading: new Container(),
 			),
 			bottomNavigationBar: new bottomBar(),
-			floatingActionButton: new FloatingActionButton(
-				tooltip: 'Add',
-				child: new Icon(Icons.add),
-				backgroundColor: new Color(0xFFF44336),
-			), 
     	);
 
 	}
