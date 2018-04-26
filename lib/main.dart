@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
 				'/account': (BuildContext context) => new Account(),
 				'/article': (BuildContext context) => new Article(),
 				'/place': (BuildContext context) => new Place(),
+				'/org': (BuildContext context) => new Organization(),
 			},
 		);
 	}
@@ -820,6 +821,103 @@ class _LandingState extends State<Landing> {
 	  
 		// SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
 		
+		void _dialog() {
+			showDialog(
+				context: context,
+				child: new AlertDialog(
+					contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
+					content: new SingleChildScrollView(
+						scrollDirection: Axis.vertical,
+						child: new Column(
+							mainAxisSize: MainAxisSize.min,
+							children: <Widget>[
+								new Row(
+									crossAxisAlignment: CrossAxisAlignment.start,
+									children: <Widget>[
+										new Expanded(
+											child: new Text(
+												'Turn in your housing insurance forms'.toUpperCase(),
+												textAlign: TextAlign.left,
+												style: new TextStyle(
+													color: const Color(0xFF000000),
+													fontFamily: 'Montserrat',
+													fontWeight: FontWeight.w800,
+													fontSize: 28.0,
+													height: 0.9,
+												),
+											),
+										),
+										new Container(
+											width: 20.0,
+											child: new IconButton(
+												alignment: Alignment.topRight,
+												padding: const EdgeInsets.all(0.0),
+												icon: new Icon(Icons.close, color: const Color(0xFF000000) ),
+												tooltip: 'Close',
+												onPressed: () => Navigator.pop(context,true)
+											),
+										),
+									]
+								),
+								new SizedBox( height: 20.0 ),
+								new Text(
+									"Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam quis risus eget urna mollis ornare vel eu leo. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.",
+									textAlign: TextAlign.left,
+									style: new TextStyle(
+										color: const Color(0xFF000000),
+										fontFamily: 'Montserrat',
+										fontWeight: FontWeight.w300,
+										fontSize: 14.0,
+										height: 1.15,
+									),
+								),
+								new SizedBox( height: 25.0 ),
+								new Row(
+									children: <Widget>[
+										new Expanded(
+											child: new RaisedButton(
+												onPressed: () => Navigator.pop(context,true),
+												padding: new EdgeInsets.all(14.0),  
+												color: const Color(0xFF1033FF),
+												textColor: const Color(0xFFFFFFFF),
+												child: new Text(
+													'Do it online'.toUpperCase(),
+													style: new TextStyle(
+														fontFamily: 'Montserrat',
+														fontWeight: FontWeight.w800,
+													),
+												),
+											),
+										)
+									]
+								),
+								new SizedBox( height: 10.0 ),
+								new Row(
+									children: <Widget>[
+										new Expanded(
+											child: new RaisedButton(
+												onPressed: () => Navigator.pop(context,true),
+												padding: new EdgeInsets.all(14.0),  
+												color: const Color(0xFFE3F5FF),
+												textColor: const Color(0xFF000000),
+												child: new Text(
+													'Download Forms'.toUpperCase(),
+													style: new TextStyle(
+														fontFamily: 'Montserrat',
+														fontWeight: FontWeight.w800,
+													),
+												),
+											),
+										)
+									]
+								),
+							],
+						),
+					),
+				)
+			);
+		}
+		
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
 			appBar: new AppBar(
@@ -869,80 +967,86 @@ class _LandingState extends State<Landing> {
 						child: new Carousel(
 							displayDuration: new Duration(seconds: 200000),
 							children: [
-							    new Container(
-									padding: new EdgeInsets.fromLTRB(65.0, 0.0, 65.0, 0.0),
-									alignment: Alignment.center,
-									child: new Column(
-										mainAxisSize: MainAxisSize.min,
-										children: <Widget>[
-											new Text(
-												'Your List'.toUpperCase(),
-												textAlign: TextAlign.center,
-												style: new TextStyle(
-													color: const Color(0xFF838383),
-													fontFamily: 'Montserrat',
-													fontWeight: FontWeight.w800,
-													fontSize: 14.0,
+							    new GestureDetector(
+									onTap: _dialog,
+									child: new Container(
+										padding: new EdgeInsets.fromLTRB(65.0, 0.0, 65.0, 0.0),
+										alignment: Alignment.center,
+										child: new Column(
+											mainAxisSize: MainAxisSize.min,
+											children: <Widget>[
+												new Text(
+													'Your List'.toUpperCase(),
+													textAlign: TextAlign.center,
+													style: new TextStyle(
+														color: const Color(0xFF838383),
+														fontFamily: 'Montserrat',
+														fontWeight: FontWeight.w800,
+														fontSize: 14.0,
+													),
 												),
-											),
-											new SizedBox(height: 10.0),
-											new Text(
-												'Tell your friends your new address'.toUpperCase(),
-												textAlign: TextAlign.center,
-												style: new TextStyle(
-													color: const Color(0xFFFFFFFF),
-													fontFamily: 'Montserrat',
-													fontWeight: FontWeight.w800,
-													fontSize: 24.0,
-													height: 0.9,
+												new SizedBox(height: 10.0),
+												new Text(
+													'Tell your friends your new address'.toUpperCase(),
+													textAlign: TextAlign.center,
+													style: new TextStyle(
+														color: const Color(0xFFFFFFFF),
+														fontFamily: 'Montserrat',
+														fontWeight: FontWeight.w800,
+														fontSize: 24.0,
+														height: 0.9,
+													),
 												),
-											),
-											new FlatButton(
-												onPressed: _yourlist,
-												child: new Icon(
-													Icons.arrow_forward,
-													color: const Color(0xFFFFFFFF),
+												new FlatButton(
+													onPressed: _yourlist,
+													child: new Icon(
+														Icons.arrow_forward,
+														color: const Color(0xFFFFFFFF),
+													),
 												),
-											),
-										],
+											],
+										),
 									),
 								),
-							    new Container(
-									padding: new EdgeInsets.fromLTRB(65.0, 0.0, 65.0, 0.0),
-									alignment: Alignment.center,
-									child: new Column(
-										mainAxisSize: MainAxisSize.min,
-										children: <Widget>[
-											new Text(
-												'Your List'.toUpperCase(),
-												textAlign: TextAlign.center,
-												style: new TextStyle(
-													color: const Color(0xFF838383),
-													fontFamily: 'Montserrat',
-													fontWeight: FontWeight.w800,
-													fontSize: 14.0,
+								new GestureDetector(
+									onTap: _dialog,
+									child: new Container(
+										padding: new EdgeInsets.fromLTRB(65.0, 0.0, 65.0, 0.0),
+										alignment: Alignment.center,
+										child: new Column(
+											mainAxisSize: MainAxisSize.min,
+											children: <Widget>[
+												new Text(
+													'Your List'.toUpperCase(),
+													textAlign: TextAlign.center,
+													style: new TextStyle(
+														color: const Color(0xFF838383),
+														fontFamily: 'Montserrat',
+														fontWeight: FontWeight.w800,
+														fontSize: 14.0,
+													),
 												),
-											),
-											new SizedBox(height: 10.0),
-											new Text(
-												'Turn in your housing insurance forms'.toUpperCase(),
-												textAlign: TextAlign.center,
-												style: new TextStyle(
-													color: const Color(0xFFFFFFFF),
-													fontFamily: 'Montserrat',
-													fontWeight: FontWeight.w800,
-													fontSize: 24.0,
-													height: 0.9,
+												new SizedBox(height: 10.0),
+												new Text(
+													'Turn in your housing insurance forms'.toUpperCase(),
+													textAlign: TextAlign.center,
+													style: new TextStyle(
+														color: const Color(0xFFFFFFFF),
+														fontFamily: 'Montserrat',
+														fontWeight: FontWeight.w800,
+														fontSize: 24.0,
+														height: 0.9,
+													),
 												),
-											),
-											new FlatButton(
-												onPressed: _yourlist,
-												child: new Icon(
-													Icons.arrow_forward,
-													color: const Color(0xFFFFFFFF),
+												new FlatButton(
+													onPressed: _yourlist,
+													child: new Icon(
+														Icons.arrow_forward,
+														color: const Color(0xFFFFFFFF),
+													),
 												),
-											),
-										],
+											],
+										),
 									),
 								),
 							]
@@ -3685,6 +3789,53 @@ class _PlaceState extends State<Place> {
 				),
 			],
 		);
+
+	}
+	
+}
+
+
+
+class Organization extends StatefulWidget {
+	Organization({Key key, this.title}) : super(key: key);
+	
+	final String title;
+	
+	@override
+	_OrganizationState createState() => new _OrganizationState();
+}
+
+
+class _OrganizationState extends State<Organization> {
+		
+	@override
+	Widget build(BuildContext context) {
+	  
+		return new Scaffold(
+			backgroundColor: const Color(0xFFFFFFFF),
+			body: new Container(),
+			appBar: new AppBar(
+				backgroundColor: const Color(0xFFFFFFFF),
+				elevation: 0.0,
+				centerTitle: true,
+				title: new Text(
+					'UWM'.toUpperCase(),
+					style: new TextStyle(
+						color: const Color(0xFF838383),
+						fontFamily: 'Montserrat',
+						fontWeight: FontWeight.w800,
+						fontSize: 14.0,
+					),
+				),
+				leading: new Container(),
+			),
+			bottomNavigationBar: new bottomBar(),
+			floatingActionButton: new FloatingActionButton(
+				tooltip: 'Add',
+				child: new Icon(Icons.add),
+				backgroundColor: new Color(0xFFF44336),
+			), 
+    	);
 
 	}
 	
