@@ -1218,6 +1218,29 @@ class _LandingState extends State<Landing> {
 }
 
 
+// widget for popup menu
+class PopupMenuWidget<T> extends PopupMenuEntry<T> {
+	const PopupMenuWidget({ Key key, this.height, this.child }) : super(key: key);
+	
+	@override
+	final Widget child;
+	
+	@override
+	final double height;
+	
+	@override
+	bool get enabled => false;
+	
+	@override
+	_PopupMenuWidgetState createState() => new _PopupMenuWidgetState();
+}
+
+class _PopupMenuWidgetState extends State<PopupMenuWidget> {
+	@override
+	Widget build(BuildContext context) => widget.child;
+}
+
+
 class YourList extends StatefulWidget {
 	YourList({Key key, this.title}) : super(key: key);
 	
@@ -1281,18 +1304,43 @@ class _YourListState extends State<YourList> {
 										crossAxisCount: 2,
 										childAspectRatio: 1.1,
 										children: <Widget>[
-											new Card(
-												elevation: 3.0,
-												child: new Container(
-													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-													child: new Text(
-														'Tell your friends your new address',
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontFamily: 'Montserrat',
-															fontWeight: FontWeight.w700,
-															fontSize: 14.0,
+											
+											new PopupMenuButton<String>(
+												onSelected:  (String value) => print("You selected $value"),
+												itemBuilder: (BuildContext context) {
+													return [
+														new PopupMenuWidget(
+															height: 40.0,
+															child: new Row(
+																children: [
+																	new IconButton(
+																		icon: new Icon(Icons.add),
+																		color: const Color(0xFF000000),
+																		onPressed: () => Navigator.pop(context, 'add')
+																	),
+																	new IconButton(
+																		icon: new Icon(Icons.remove),
+																		color: const Color(0xFF000000),
+																		onPressed: () => Navigator.pop(context, 'remove')
+																	),
+																],
+															),
+														),
+													];
+												},
+												child: new Card(
+													elevation: 3.0,
+													child: new Container(
+														padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+														child: new Text(
+															'Tell your friends your new address',
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w700,
+																fontSize: 14.0,
+															),
 														),
 													),
 												),
@@ -3795,7 +3843,6 @@ class _PlaceState extends State<Place> {
 }
 
 
-
 class Organization extends StatefulWidget {
 	Organization({Key key, this.title}) : super(key: key);
 	
@@ -3807,7 +3854,7 @@ class Organization extends StatefulWidget {
 
 
 class _OrganizationState extends State<Organization> {
-		
+
 	@override
 	Widget build(BuildContext context) {
 	  
@@ -3827,6 +3874,7 @@ class _OrganizationState extends State<Organization> {
 				),
 				leading: new Container(),
 			),
+			body: new Container(),
 			bottomNavigationBar: new bottomBar(),
     	);
 
