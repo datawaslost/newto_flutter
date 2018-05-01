@@ -50,111 +50,58 @@ class MyApp extends StatelessWidget {
 	}
 }
 
-void _navbar(num){
-	// bottom nav bar decider
-	switch (num) {
-		case 0:
-			return '/landing';
-			break;
-		case 1:
-			return '/yourlist';
-			break;
-		case 2:
-			return '/discover';	
-			break;
-		case 3:
-			return '/bookmarks';	
-			break;
-		case 4:
-			return '/org';	
-			break;
-	}
-}
 
-var navOptions = [
-	["landing", "home"],
-	["yourlist", "list"],
-	["discover", "compass"],
-	["bookmarks", "bookmark"],
-	["org", "umw"],
-];
+void bottomBar(context, _selected) {
+	
+	var _navOptions = [
+		["landing", "home"],
+		["yourlist", "list"],
+		["discover", "compass"],
+		["bookmarks", "bookmark"],
+		["org", "umw"],
+	];
+	
+	List<Widget> _navItems = [];
+	
+	for (var i = 0; i < _navOptions.length; i++) {
 
-class bottomBar extends StatelessWidget {
-	@override
-	Widget build(BuildContext context) {
-		return new Hero(
-			tag: "bottomNavigationBar",
-			child: new Container(
-		        padding: new EdgeInsets.all(0.0),
-		        height: 60.0,
-		        color: const Color(0xFF000000),
-		        child: new Row(
-			          children: [
-				        new Expanded(
-					        child: new GestureDetector(
-								onTap: ()=> Navigator.of(context).pushNamed("/landing"),
-								child: new Container(
-									alignment: Alignment.topCenter,
-									child: new ImageIcon(new AssetImage("images/icon_home.png"), color: const Color(0xFFFFFFFF), size: 39.0),
-									decoration: const BoxDecoration( border: const Border( bottom: const BorderSide(width: 3.0, color: const Color(0xFF1033FF) ), ), ),
-									margin: new EdgeInsets.all(0.0),
-									padding: new EdgeInsets.all(8.0),
-								),
-							),
-						),
-				        new Expanded(
-					        child: new GestureDetector(
-								onTap: ()=> Navigator.of(context).pushNamed("/yourlist"),
-								child: new Container(
-									alignment: Alignment.topCenter,
-									child: new ImageIcon(new AssetImage("images/icon_list.png"), color: const Color(0xFFFFFFFF), size: 39.0),
-									decoration: const BoxDecoration( border: const Border( bottom: const BorderSide(width: 3.0, color: const Color(0xFF1033FF) ), ), ),
-									margin: new EdgeInsets.all(0.0),
-									padding: new EdgeInsets.all(8.0),
-								),
-							),
-						),
-				        new Expanded(
-					        child: new GestureDetector(
-								onTap: ()=> Navigator.of(context).pushNamed("/discover"),
-								child: new Container(
-									alignment: Alignment.topCenter,
-									child: new ImageIcon(new AssetImage("images/icon_compass.png"), color: const Color(0xFFFFFFFF), size: 39.0),
-									decoration: const BoxDecoration( border: const Border( bottom: const BorderSide(width: 3.0, color: const Color(0xFF1033FF) ), ), ),
-									margin: new EdgeInsets.all(0.0),
-									padding: new EdgeInsets.all(8.0),
-								),
-							),
-						),
-				        new Expanded(
-					        child: new GestureDetector(
-								onTap: ()=> Navigator.of(context).pushNamed("/bookmarks"),
-								child: new Container(
-									alignment: Alignment.topCenter,
-									child: new ImageIcon(new AssetImage("images/icon_bookmark.png"), color: const Color(0xFFFFFFFF), size: 39.0),
-									decoration: const BoxDecoration( border: const Border( bottom: const BorderSide(width: 3.0, color: const Color(0xFF1033FF) ), ), ),
-									margin: new EdgeInsets.all(0.0),
-									padding: new EdgeInsets.all(8.0),
-								),
-							),
-						),
-				        new Expanded(
-					        child: new GestureDetector(
-								onTap: ()=> Navigator.of(context).pushNamed("/org"),
-								child: new Container(
-									alignment: Alignment.topCenter,
-									child: new ImageIcon(new AssetImage("images/icon_umw.png"), color: const Color(0xFFFFFFFF), size: 39.0),
-									decoration: const BoxDecoration( border: const Border( bottom: const BorderSide(width: 3.0, color: const Color(0xFF1033FF) ), ), ),
-									margin: new EdgeInsets.all(0.0),
-									padding: new EdgeInsets.all(8.0),
-								),
-							),
-						),
-					],
+		var _borderColor = const Color(0xFF000000);
+		var _selectedName = "";
+		
+		if (i == _selected) {
+			_borderColor = const Color(0xFF1033FF);
+			_selectedName = "_selected";
+			
+		}
+		
+		_navItems.add(
+			new Expanded(
+		        child: new GestureDetector(
+					onTap: () { if (i != _selected) { Navigator.of(context).pushNamed("/" + _navOptions[i][0]);}},
+					child: new Container(
+						alignment: Alignment.topCenter,
+						child: new ImageIcon(new AssetImage("images/icon_" + _navOptions[i][1] + _selectedName + ".png"), color: const Color(0xFFFFFFFF), size: 39.0),
+						decoration: new BoxDecoration( border: new Border( bottom: new BorderSide(width: 3.0, color: _borderColor ), ), ),
+						margin: new EdgeInsets.all(0.0),
+						padding: new EdgeInsets.all(8.0),
+					),
 				),
 			),
-	    );
+		);
 	}
+	
+	return new Hero(
+		tag: "bottomNavigationBar",
+		child: new Container(
+	        padding: new EdgeInsets.all(0.0),
+	        height: 60.0,
+	        color: const Color(0xFF000000),
+	        child: new Row(
+		        children: _navItems
+			),
+		),
+    );
+    
 }
 
 				
@@ -1263,7 +1210,7 @@ class _LandingState extends State<Landing> {
 					)
 				]
 			),
-			bottomNavigationBar: new bottomBar(),
+			bottomNavigationBar: bottomBar(context, 0),
 		);
 
 	}
@@ -1974,7 +1921,7 @@ class _YourListState extends State<YourList> {
 						new Icon(Icons.directions_bike),
 					],
 				),
-				bottomNavigationBar: new bottomBar(),
+				bottomNavigationBar: bottomBar(context, 1),
 			)
 		);
 
@@ -2560,7 +2507,7 @@ class _DiscoverState extends State<Discover> {
 					]
 				),
 			),
-			bottomNavigationBar: new bottomBar(),
+			bottomNavigationBar: bottomBar(context, 2),
 		);
 
 	}
@@ -3330,7 +3277,7 @@ class _BookmarksState extends State<Bookmarks> {
 					),
 				],
 			),
-			bottomNavigationBar: new bottomBar(),
+			bottomNavigationBar: bottomBar(context, 3),
 		);
 
 	}
@@ -3928,7 +3875,7 @@ class _OrganizationState extends State<Organization> {
 				leading: new Container(),
 			),
 			body: new Container(),
-			bottomNavigationBar: new bottomBar(),
+			bottomNavigationBar: bottomBar(context, 4),
     	);
 
 	}
