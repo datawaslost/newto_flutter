@@ -71,7 +71,6 @@ void bottomBar(context, _selected) {
 		if (i == _selected) {
 			_borderColor = const Color(0xFF1033FF);
 			_selectedName = "_selected";
-			
 		}
 		
 		_navItems.add(
@@ -79,25 +78,23 @@ void bottomBar(context, _selected) {
 		        child: new GestureDetector(
 					onTap: () { if (i != _selected) { Navigator.of(context).pushNamed("/" + _navOptions[i][0]);}},
 					child: new Container(
-						alignment: Alignment.topCenter,
 						child: new ImageIcon(new AssetImage("images/icon_" + _navOptions[i][1] + _selectedName + ".png"), color: const Color(0xFFFFFFFF), size: 39.0),
-						decoration: new BoxDecoration( border: new Border( bottom: new BorderSide(width: 3.0, color: _borderColor ), ), ),
-						margin: new EdgeInsets.all(0.0),
+						decoration: new BoxDecoration( border: new Border( bottom: new BorderSide( width: 3.0, color: _borderColor ), ), ),
 						padding: new EdgeInsets.all(8.0),
 					),
 				),
 			),
 		);
+		
 	}
 	
 	return new Hero(
 		tag: "bottomNavigationBar",
 		child: new Container(
-	        padding: new EdgeInsets.all(0.0),
 	        height: 60.0,
 	        color: const Color(0xFF000000),
 	        child: new Row(
-		        children: _navItems
+		        children: _navItems,
 			),
 		),
     );
