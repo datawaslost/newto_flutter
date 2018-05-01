@@ -65,7 +65,7 @@ void bottomBar(context, _selected) {
 	
 	for (var i = 0; i < _navOptions.length; i++) {
 
-		var _borderColor = const Color(0xFF000000);
+		var _borderColor = const Color(0xFF262626);
 		var _selectedName = "";
 		
 		if (i == _selected) {
@@ -92,7 +92,7 @@ void bottomBar(context, _selected) {
 		tag: "bottomNavigationBar",
 		child: new Container(
 	        height: 60.0,
-	        color: const Color(0xFF000000),
+	        color: const Color(0xFF262626),
 	        child: new Row(
 		        children: _navItems,
 			),
@@ -104,15 +104,6 @@ void bottomBar(context, _selected) {
 				
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -153,15 +144,6 @@ class _HomeState extends State<Home> {
 class Onboarding extends StatefulWidget {
   Onboarding({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -182,6 +164,7 @@ class PasswordField extends StatefulWidget {
   @override
   _PasswordFieldState createState() => new _PasswordFieldState();
 }
+
 
 class _PasswordFieldState extends State<PasswordField> {
 	bool _obscureText = true;
@@ -214,6 +197,7 @@ class _PasswordFieldState extends State<PasswordField> {
 		);
 	}
 }
+
 
 class _OnboardingState extends State<Onboarding> {
 
@@ -553,7 +537,7 @@ class _OnboardingState extends State<Onboarding> {
 											children: <Widget>[
 												new Expanded(
 													child: new RaisedButton(
-														onPressed: _landing,
+														onPressed: () => Navigator.of(context).pushNamed('/landing'),
 														padding: new EdgeInsets.all(14.0),  
 														color: const Color(0xFF1033FF),
 														textColor: const Color(0xFFFFFFFF),
@@ -674,7 +658,7 @@ class _OnboardingState extends State<Onboarding> {
 										child: new Row(children: <Widget>[
 											new Expanded(
 												child: new RaisedButton(
-														onPressed: _landing,
+														onPressed: () => Navigator.of(context).pushNamed('/landing'),
 														padding: new EdgeInsets.all(14.0),  
 														color: const Color(0xFF1033FF),
 														textColor: const Color(0xFFFFFFFF),
@@ -698,22 +682,18 @@ class _OnboardingState extends State<Onboarding> {
 			),
 		);
 	}
-	
-	void _landing() {
-		// go to landing page
-		Navigator.of(context).pushNamed('/landing');
-	}
-	
+
 	@override
 	Widget build(BuildContext context) {
 	  
-		// SystemChrome.setEnabledSystemUIOverlays([]);
+	// SystemChrome.setEnabledSystemUIOverlays([]);
 	  
     // This method is rerun every time setState is called
     //
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    
     return new Scaffold(
       body: new Container(
 	    padding: new EdgeInsets.all(40.0),
@@ -807,11 +787,6 @@ class Landing extends StatefulWidget {
 
 
 class _LandingState extends State<Landing> {
-	
-	void _yourlist() {
-		// go to list page
-		Navigator.of(context).pushNamed('/yourlist');
-	}
 
 	@override
 	Widget build(BuildContext context) {
@@ -995,7 +970,7 @@ class _LandingState extends State<Landing> {
 													),
 												),
 												new FlatButton(
-													onPressed: _yourlist,
+													onPressed: () => Navigator.of(context).pushNamed('/yourlist'),
 													child: new Icon(
 														Icons.arrow_forward,
 														color: const Color(0xFFFFFFFF),
@@ -1036,7 +1011,7 @@ class _LandingState extends State<Landing> {
 													),
 												),
 												new FlatButton(
-													onPressed: _yourlist,
+													onPressed: () => Navigator.of(context).pushNamed('/yourlist'),
 													child: new Icon(
 														Icons.arrow_forward,
 														color: const Color(0xFFFFFFFF),
@@ -2168,11 +2143,6 @@ class Discover extends StatefulWidget {
 
 
 class _DiscoverState extends State<Discover> {
-	
-	void _search() {
-		// go to list page
-		Navigator.of(context).pushNamed('/search');
-	}
 
 	@override
 	Widget build(BuildContext context) {
@@ -2480,7 +2450,7 @@ class _DiscoverState extends State<Discover> {
 										),
 										padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
 										child: new FlatButton.icon(
-											onPressed: _search,
+											onPressed: () => Navigator.of(context).pushNamed('/search'),
 											icon: new Icon(
 												Icons.search, 
 												color: const Color(0xFFFFFFFF),
