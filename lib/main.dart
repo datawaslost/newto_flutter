@@ -71,39 +71,92 @@ void _navbar(num){
 	}
 }
 
+var navOptions = [
+	["landing", "home"],
+	["yourlist", "list"],
+	["discover", "compass"],
+	["bookmarks", "bookmark"],
+	["org", "umw"],
+];
+
 class bottomBar extends StatelessWidget {
 	@override
 	Widget build(BuildContext context) {
-		return new BottomNavigationBar(
-			type: BottomNavigationBarType.fixed,
-			iconSize: 39.0,
-			fixedColor: const Color(0xFFFFFFFF),
-			items: <BottomNavigationBarItem>[
-				new BottomNavigationBarItem(
-					icon: new ImageIcon(new AssetImage("images/icon_home.png"), color: const Color(0xFFFFFFFF) ),
-					title: new Text("", style: new TextStyle(fontSize: 0.0)),
+		return new Hero(
+			tag: "bottomNavigationBar",
+			child: new Container(
+		        padding: new EdgeInsets.all(0.0),
+		        height: 60.0,
+		        color: const Color(0xFF000000),
+		        child: new Row(
+			          children: [
+				        new Expanded(
+					        child: new GestureDetector(
+								onTap: ()=> Navigator.of(context).pushNamed("/landing"),
+								child: new Container(
+									alignment: Alignment.topCenter,
+									child: new ImageIcon(new AssetImage("images/icon_home.png"), color: const Color(0xFFFFFFFF), size: 39.0),
+									decoration: const BoxDecoration( border: const Border( bottom: const BorderSide(width: 3.0, color: const Color(0xFF1033FF) ), ), ),
+									margin: new EdgeInsets.all(0.0),
+									padding: new EdgeInsets.all(8.0),
+								),
+							),
+						),
+				        new Expanded(
+					        child: new GestureDetector(
+								onTap: ()=> Navigator.of(context).pushNamed("/yourlist"),
+								child: new Container(
+									alignment: Alignment.topCenter,
+									child: new ImageIcon(new AssetImage("images/icon_list.png"), color: const Color(0xFFFFFFFF), size: 39.0),
+									decoration: const BoxDecoration( border: const Border( bottom: const BorderSide(width: 3.0, color: const Color(0xFF1033FF) ), ), ),
+									margin: new EdgeInsets.all(0.0),
+									padding: new EdgeInsets.all(8.0),
+								),
+							),
+						),
+				        new Expanded(
+					        child: new GestureDetector(
+								onTap: ()=> Navigator.of(context).pushNamed("/discover"),
+								child: new Container(
+									alignment: Alignment.topCenter,
+									child: new ImageIcon(new AssetImage("images/icon_compass.png"), color: const Color(0xFFFFFFFF), size: 39.0),
+									decoration: const BoxDecoration( border: const Border( bottom: const BorderSide(width: 3.0, color: const Color(0xFF1033FF) ), ), ),
+									margin: new EdgeInsets.all(0.0),
+									padding: new EdgeInsets.all(8.0),
+								),
+							),
+						),
+				        new Expanded(
+					        child: new GestureDetector(
+								onTap: ()=> Navigator.of(context).pushNamed("/bookmarks"),
+								child: new Container(
+									alignment: Alignment.topCenter,
+									child: new ImageIcon(new AssetImage("images/icon_bookmark.png"), color: const Color(0xFFFFFFFF), size: 39.0),
+									decoration: const BoxDecoration( border: const Border( bottom: const BorderSide(width: 3.0, color: const Color(0xFF1033FF) ), ), ),
+									margin: new EdgeInsets.all(0.0),
+									padding: new EdgeInsets.all(8.0),
+								),
+							),
+						),
+				        new Expanded(
+					        child: new GestureDetector(
+								onTap: ()=> Navigator.of(context).pushNamed("/org"),
+								child: new Container(
+									alignment: Alignment.topCenter,
+									child: new ImageIcon(new AssetImage("images/icon_umw.png"), color: const Color(0xFFFFFFFF), size: 39.0),
+									decoration: const BoxDecoration( border: const Border( bottom: const BorderSide(width: 3.0, color: const Color(0xFF1033FF) ), ), ),
+									margin: new EdgeInsets.all(0.0),
+									padding: new EdgeInsets.all(8.0),
+								),
+							),
+						),
+					],
 				),
-				new BottomNavigationBarItem(
-					icon: new ImageIcon(new AssetImage("images/icon_list.png"), color: const Color(0xFFFFFFFF) ),
-					title: new Text("", style: new TextStyle(fontSize: 0.0)),
-				),
-				new BottomNavigationBarItem(
-					icon: new ImageIcon(new AssetImage("images/icon_compass.png"), color: const Color(0xFFFFFFFF) ),
-					title: new Text("", style: new TextStyle(fontSize: 0.0)),
-				),
-				new BottomNavigationBarItem(
-					icon: new ImageIcon(new AssetImage("images/icon_bookmark.png"), color: const Color(0xFFFFFFFF) ),
-					title: new Text("", style: new TextStyle(fontSize: 0.0)),
-				),
-				new BottomNavigationBarItem(
-					icon: new ImageIcon(new AssetImage("images/icon_umw.png"), color: const Color(0xFFFFFFFF) ),
-					title: new Text("", style: new TextStyle(fontSize: 0.0)),
-				),
-			],
-			onTap: (num) => Navigator.of(context).pushNamed(_navbar(num)),
-		);
+			),
+	    );
 	}
 }
+
 				
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
