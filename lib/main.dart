@@ -788,6 +788,9 @@ class Landing extends StatefulWidget {
 
 class _LandingState extends State<Landing> {
 
+	String _response;
+	bool _details = false;
+	
 	@override
 	Widget build(BuildContext context) {
 	  
@@ -939,46 +942,110 @@ class _LandingState extends State<Landing> {
 						child: new Carousel(
 							displayDuration: new Duration(seconds: 200000),
 							children: [
-							    new GestureDetector(
-									onTap: _dialog,
-									child: new Container(
-										padding: new EdgeInsets.fromLTRB(65.0, 0.0, 65.0, 0.0),
-										alignment: Alignment.center,
-										child: new Column(
-											mainAxisSize: MainAxisSize.min,
-											children: <Widget>[
-												new Text(
-													'Your List'.toUpperCase(),
-													textAlign: TextAlign.center,
-													style: new TextStyle(
-														color: const Color(0xFF838383),
-														fontFamily: 'Montserrat',
-														fontWeight: FontWeight.w800,
-														fontSize: 14.0,
-													),
+								new Stack(
+									children: [
+									    new GestureDetector(
+											onTap: _dialog,
+											onLongPress: () {
+												setState(() { _details = true; });
+											},
+											child: new Container(
+												padding: new EdgeInsets.fromLTRB(65.0, 0.0, 65.0, 0.0),
+												alignment: Alignment.center,
+												child: new Column(
+													mainAxisSize: MainAxisSize.min,
+													children: <Widget>[
+														new Text(
+															'Your List'.toUpperCase(),
+															textAlign: TextAlign.center,
+															style: new TextStyle(
+																color: const Color(0xFF838383),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w800,
+																fontSize: 14.0,
+															),
+														),
+														new SizedBox(height: 10.0),
+														new Text(
+															'Tell your friends your new address'.toUpperCase(),
+															textAlign: TextAlign.center,
+															style: new TextStyle(
+																color: const Color(0xFFFFFFFF),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w800,
+																fontSize: 24.0,
+																height: 0.9,
+															),
+														),
+														new FlatButton(
+															onPressed: () => Navigator.of(context).pushNamed('/yourlist'),
+															child: new Icon(
+																Icons.arrow_forward,
+																color: const Color(0xFFFFFFFF),
+															),
+														),
+													],
 												),
-												new SizedBox(height: 10.0),
-												new Text(
-													'Tell your friends your new address'.toUpperCase(),
-													textAlign: TextAlign.center,
-													style: new TextStyle(
-														color: const Color(0xFFFFFFFF),
-														fontFamily: 'Montserrat',
-														fontWeight: FontWeight.w800,
-														fontSize: 24.0,
-														height: 0.9,
-													),
-												),
-												new FlatButton(
-													onPressed: () => Navigator.of(context).pushNamed('/yourlist'),
-													child: new Icon(
-														Icons.arrow_forward,
-														color: const Color(0xFFFFFFFF),
-													),
-												),
-											],
+											),
 										),
-									),
+										
+										(_details
+											? new Container(
+												color: const Color(0xFF000000),
+												padding: new EdgeInsets.fromLTRB(80.0, 0.0, 80.0, 0.0),
+												// alignment: Alignment.center,
+												child: new Center(
+													child: new Row(
+														children: [
+															new Expanded(
+																child: new InkWell(
+																	onTap: () => setState(() { _details = false; }),
+																	child: new Container(
+																		width: 50.0,
+																		height: 50.0,
+																		decoration: new BoxDecoration(
+																			shape: BoxShape.circle,
+																			color: const Color(0xFFFFFFFF),
+																		),
+																		child: new Icon( Icons.check, size: 25.0, color: const Color(0xFF000000) ),
+																	),
+																),
+															),
+															new Expanded(
+																child: new InkWell(
+																	onTap: () => setState(() { _details = false; }),
+																	child: new Container(
+																		width: 50.0,
+																		height: 50.0,
+																		decoration: new BoxDecoration(
+																			shape: BoxShape.circle,
+																			color: const Color(0xFFFFFFFF),
+																		),
+																		child: new Icon( Icons.bookmark_border, size: 25.0, color: const Color(0xFF000000) ),
+																	),
+																),
+															),
+															new Expanded(
+																child: new InkWell(
+																	onTap: () => setState(() { _details = false; }),
+																	child: new Container(
+																		width: 50.0,
+																		height: 50.0,
+																		decoration: new BoxDecoration(
+																			shape: BoxShape.circle,
+																			color: const Color(0xFFFFFFFF),
+																		),
+																		child: new Icon( Icons.close, size: 25.0, color: const Color(0xFF000000) ),
+																	),
+																),
+															),
+														]
+													)
+												),
+											)
+											: new Container()
+										)
+									]
 								),
 								new GestureDetector(
 									onTap: _dialog,
