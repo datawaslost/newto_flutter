@@ -1343,7 +1343,6 @@ class _YourListState extends State<YourList> {
 										crossAxisCount: 2,
 										childAspectRatio: 1.1,
 										children: <Widget>[
-											
 											new PopupMenuButton<String>(
 												onSelected:  (String value) => print("You selected $value"),
 												itemBuilder: (BuildContext context) {
@@ -1384,22 +1383,71 @@ class _YourListState extends State<YourList> {
 													),
 												),
 											),
-											new Card(
-												elevation: 3.0,
-												child: new Container(
-													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-													child: new Text(
-														"Plan how you're going to get around campus",
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontFamily: 'Montserrat',
-															fontWeight: FontWeight.w700,
-															fontSize: 14.0,
+											new GestureDetector(
+												onTap: (){
+													showDialog(
+														context: context,
+														builder: (BuildContext context) {
+															return new Row(
+																children: [
+																	new SizedBox( width: 25.0 ),
+																	new Expanded(
+																		child: new Container(
+																			width: 50.0,
+																			height: 50.0,
+																			decoration: new BoxDecoration(
+																				shape: BoxShape.circle,
+																				color: const Color(0xFFFFFFFF),
+																			),
+																			child: new Icon( Icons.check, size: 25.0, color: const Color(0xFF000000) ),
+																		),
+																	),
+																	new Expanded(
+																		child: new Container(
+																			width: 50.0,
+																			height: 50.0,
+																			decoration: new BoxDecoration(
+																				shape: BoxShape.circle,
+																				color: const Color(0xFFFFFFFF),
+																			),
+																			child: new Icon( Icons.bookmark_border, size: 25.0, color: const Color(0xFF000000) ),
+																		),
+																	),
+																	new Expanded(
+																		child: new Container(
+																			width: 50.0,
+																			height: 50.0,
+																			decoration: new BoxDecoration(
+																				shape: BoxShape.circle,
+																				color: const Color(0xFFFFFFFF),
+																			),
+																			child: new Icon( Icons.close, size: 25.0, color: const Color(0xFF000000) ),
+																		),
+																	),
+																	new SizedBox( width: 150.0 ),
+																]
+															);
+														}
+													);
+												},
+												child: new Card(
+													elevation: 3.0,
+													child: new Container(
+														padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+														child: new Text(
+															"Plan how you're going to get around campus",
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontFamily: 'Montserrat',
+																fontWeight: FontWeight.w700,
+																fontSize: 14.0,
+															),
 														),
 													),
 												),
-											),
+											),																							
+
 											new Card(
 												elevation: 3.0,
 												child: new Container(
