@@ -1239,6 +1239,10 @@ void listButton(icon) {
 		decoration: new BoxDecoration(
 			shape: BoxShape.circle,
 			color: const Color(0xFFFFFFFF),
+			boxShadow: [new BoxShadow(
+	            color: const Color(0x66000000),
+	            blurRadius: 8.0,
+          ),]
 		),
 		child: new Icon( icon, size: 25.0, color: const Color(0xFF000000) ),
 	);
