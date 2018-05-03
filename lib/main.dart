@@ -1280,6 +1280,29 @@ class _PopupMenuWidgetState extends State<PopupMenuWidget> {
 }
 
 
+void listCard(String txt, {height, width, key}) {
+	return new Card(
+		key: key,
+		elevation: 3.0,
+		child: new Container(
+			height: height,
+			width: width,
+			padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+			child: new Text(
+				txt,
+				textAlign: TextAlign.left,
+				style: new TextStyle(
+					color: const Color(0xFF000000),
+					fontFamily: 'Montserrat',
+					fontWeight: FontWeight.w700,
+					fontSize: 14.0,
+				),
+			),
+		),
+	);
+}
+
+
 class YourList extends StatefulWidget {
 	YourList({Key key, this.title}) : super(key: key);
 	
@@ -1291,6 +1314,9 @@ class YourList extends StatefulWidget {
 
 
 class _YourListState extends State<YourList> {
+
+	GlobalKey stickyKey = new GlobalKey();
+	GlobalKey stickyKey2 = new GlobalKey();
 
 	@override
 	Widget build(BuildContext context) {
@@ -1343,143 +1369,96 @@ class _YourListState extends State<YourList> {
 										crossAxisCount: 2,
 										childAspectRatio: 1.1,
 										children: <Widget>[
-											new PopupMenuButton<String>(
-												onSelected:  (String value) => print("You selected $value"),
-												itemBuilder: (BuildContext context) {
-													return [
-														new PopupMenuWidget(
-															height: 40.0,
-															child: new Row(
-																children: [
-																	new IconButton(
-																		icon: new Icon(Icons.add),
-																		color: const Color(0xFF000000),
-																		onPressed: () => Navigator.pop(context, 'add')
-																	),
-																	new IconButton(
-																		icon: new Icon(Icons.remove),
-																		color: const Color(0xFF000000),
-																		onPressed: () => Navigator.pop(context, 'remove')
-																	),
-																],
-															),
-														),
-													];
-												},
-												child: new Card(
-													elevation: 3.0,
-													child: new Container(
-														padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-														child: new Text(
-															'Tell your friends your new address',
-															textAlign: TextAlign.left,
-															style: new TextStyle(
-																color: const Color(0xFF000000),
-																fontFamily: 'Montserrat',
-																fontWeight: FontWeight.w700,
-																fontSize: 14.0,
-															),
-														),
-													),
-												),
-											),
+											listCard("Tell your friends your new address"),																					
 											new GestureDetector(
-												onTap: (){
+												onTapUp: (details){
+													var _offsety;
+													var _boxwidth;
+													var _boxheight;
+													var _offsetx = 150.0;
+													var _offsetx2 = 25.0;
+													if (details.globalPosition.dx > 200) {
+														_offsetx = 25.0;
+														_offsetx2 = 150.0;
+													}
+													final keyContext = stickyKey.currentContext;
+													// if box is visible
+											        if (keyContext != null) {
+														final RenderBox box = keyContext.findRenderObject();
+														_offsety = box.localToGlobal(Offset.zero).dy - 20.0;
+														_boxwidth = box.size.width - 7.5;
+														_boxheight = box.size.height - 7.5;
+											        }
+											        // if box is partially offscreen
+											        if (_offsety < 0) {
+												        // push it down a bit
+												        _offsety = 0.0;
+											        }
 													showDialog(
 														context: context,
 														builder: (BuildContext context) {
-															return new Row(
-																children: [
-																	new SizedBox( width: 25.0 ),
+															return new Column(
+													            children: [
+																	new SizedBox(height: _offsety ),
 																	new Expanded(
-																		child: new Container(
-																			width: 50.0,
-																			height: 50.0,
-																			decoration: new BoxDecoration(
-																				shape: BoxShape.circle,
-																				color: const Color(0xFFFFFFFF),
-																			),
-																			child: new Icon( Icons.check, size: 25.0, color: const Color(0xFF000000) ),
-																		),
-																	),
-																	new Expanded(
-																		child: new Container(
-																			width: 50.0,
-																			height: 50.0,
-																			decoration: new BoxDecoration(
-																				shape: BoxShape.circle,
-																				color: const Color(0xFFFFFFFF),
-																			),
-																			child: new Icon( Icons.bookmark_border, size: 25.0, color: const Color(0xFF000000) ),
-																		),
-																	),
-																	new Expanded(
-																		child: new Container(
-																			width: 50.0,
-																			height: 50.0,
-																			decoration: new BoxDecoration(
-																				shape: BoxShape.circle,
-																				color: const Color(0xFFFFFFFF),
-																			),
-																			child: new Icon( Icons.close, size: 25.0, color: const Color(0xFF000000) ),
-																		),
-																	),
-																	new SizedBox( width: 150.0 ),
+															            child: new Stack(
+																            children: [
+																	            new Positioned(
+																		            top: 0.0,
+																		            right: 20.0,
+																		            child: listCard("Plan how you're going to get around campus", height:_boxheight, width:_boxwidth),
+																				),
+																	            new Row(
+																					children: [
+																						new SizedBox( width: _offsetx, height: _boxheight),
+																						new Expanded(
+																							child: new Container(
+																								width: 50.0,
+																								height: 50.0,
+																								decoration: new BoxDecoration(
+																									shape: BoxShape.circle,
+																									color: const Color(0xFFFFFFFF),
+																								),
+																								child: new Icon( Icons.check, size: 25.0, color: const Color(0xFF000000) ),
+																							),
+																						),
+																						new Expanded(
+																							child: new Container(
+																								width: 50.0,
+																								height: 50.0,
+																								decoration: new BoxDecoration(
+																									shape: BoxShape.circle,
+																									color: const Color(0xFFFFFFFF),
+																								),
+																								child: new Icon( Icons.bookmark_border, size: 25.0, color: const Color(0xFF000000) ),
+																							),
+																						),
+																						new Expanded(
+																							child: new Container(
+																								width: 50.0,
+																								height: 50.0,
+																								decoration: new BoxDecoration(
+																									shape: BoxShape.circle,
+																									color: const Color(0xFFFFFFFF),
+																								),
+																								child: new Icon( Icons.close, size: 25.0, color: const Color(0xFF000000) ),
+																							),
+																						),
+																						new SizedBox( width: _offsetx2 ),
+																					]
+																				)
+																			]
+																		)
+																	)
 																]
 															);
 														}
 													);
 												},
-												child: new Card(
-													elevation: 3.0,
-													child: new Container(
-														padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-														child: new Text(
-															"Plan how you're going to get around campus",
-															textAlign: TextAlign.left,
-															style: new TextStyle(
-																color: const Color(0xFF000000),
-																fontFamily: 'Montserrat',
-																fontWeight: FontWeight.w700,
-																fontSize: 14.0,
-															),
-														),
-													),
-												),
-											),																							
-
-											new Card(
-												elevation: 3.0,
-												child: new Container(
-													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-													child: new Text(
-														'Find Your Doctor, Dentist, Eye care, Pharmacy',
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontFamily: 'Montserrat',
-															fontWeight: FontWeight.w700,
-															fontSize: 14.0,
-														),
-													),
-												),
-											),
-											new Card(
-												elevation: 3.0,
-												child: new Container(
-													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-													child: new Text(
-														'Find the nearest grocery store',
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontFamily: 'Montserrat',
-															fontWeight: FontWeight.w700,
-															fontSize: 14.0,
-														),
-													),
-												),
-											),
+												child: listCard("Plan how you're going to get around campus", key: stickyKey),
+											),	
+											listCard("Find Your Doctor, Dentist, Eye care, Pharmacy"),																				
+											listCard("Find the nearest grocery store"),																		
 										],
 									),
 								),
@@ -1618,38 +1597,8 @@ class _YourListState extends State<YourList> {
 										crossAxisCount: 2,
 										childAspectRatio: 1.1,
 										children: <Widget>[
-											new Card(
-												elevation: 3.0,
-												child: new Container(
-													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-													child: new Text(
-														'Find the nearest convenience store',
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontFamily: 'Montserrat',
-															fontWeight: FontWeight.w700,
-															fontSize: 14.0,
-														),
-													),
-												),
-											),
-											new Card(
-												elevation: 3.0,
-												child: new Container(
-													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-													child: new Text(
-														"Buy books for your class",
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontFamily: 'Montserrat',
-															fontWeight: FontWeight.w700,
-															fontSize: 14.0,
-														),
-													),
-												),
-											),
+											listCard("Find the nearest convenience store"),																		
+											listCard("Buy books for your class"),																		
 										],
 									),
 								),
