@@ -753,7 +753,7 @@ class _OnboardingState extends State<Onboarding> {
   }
 }
 
-void discoverItem(txt, img, context, { bool sponsored = false }) {
+void discoverItem(txt, img, context, { bool sponsored = false, bool bookmarked = false }) {
 	return new GestureDetector(
 		onTap: () {
 			Navigator.of(context).pushNamed('/article');
@@ -774,14 +774,26 @@ void discoverItem(txt, img, context, { bool sponsored = false }) {
 							filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
 							child: new Container(
 								padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-								child: new Text(
-									txt.toUpperCase(),
-									textAlign: TextAlign.left,
-									style: new TextStyle(
-										color: const Color(0xFF000000),
-										fontWeight: FontWeight.w800,
-										fontSize: 24.0,
-									),
+								child: new Row(
+									crossAxisAlignment: CrossAxisAlignment.start,
+									children: <Widget>[
+										new Expanded(
+											child: new Text(
+												txt.toUpperCase(),
+												textAlign: TextAlign.left,
+												style: new TextStyle(
+													color: const Color(0xFF000000),
+													fontWeight: FontWeight.w800,
+													fontSize: 24.0,
+												),
+											),
+										),
+										( bookmarked
+											? new Container(
+												child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
+											) : new SizedBox(width: 0.0)
+										)
+									]
 								),
 								decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
 							),
@@ -2722,7 +2734,7 @@ class _BookmarksState extends State<Bookmarks> {
 							crossAxisCount: 1,
 							childAspectRatio: 1.0,
 							children: <Widget>[
-								discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context, sponsored: true),
+								discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context, sponsored: true, bookmarked: true),
 							]
 						)
 					),
