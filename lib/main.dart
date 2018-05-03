@@ -1997,7 +1997,6 @@ class _SearchState extends State<Search> {
 							onChanged: (double newValue) {
 								setState(() {
 									_distance = newValue;
-									// print(_distance);
 								});
 							},
 						),
