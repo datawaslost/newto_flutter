@@ -753,61 +753,84 @@ class _OnboardingState extends State<Onboarding> {
   }
 }
 
-void discoverItem(txt, img, context) {
+void discoverItem(txt, img, context, { bool sponsored = false }) {
 	return new GestureDetector(
 		onTap: () {
 			Navigator.of(context).pushNamed('/article');
 		},
-		child: new Container(
-			width: 278.0,
-			height: 278.0,
-			margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
-			child: new Card(
-				elevation: 8.0,
-				child: new Container(
-					decoration: new BoxDecoration(
-						image: new DecorationImage(
-							image: new AssetImage('images/'+img),
-							fit: BoxFit.cover,
-						),
+		child: new Card(
+			elevation: 3.0,
+			child: new Container(
+				decoration: new BoxDecoration(
+					image: new DecorationImage(
+						image: new AssetImage('images/'+img),
+						fit: BoxFit.cover,
 					),
-					child: new Column(
-						mainAxisSize: MainAxisSize.min,
-						children: <Widget>[
-							new BackdropFilter(
-								filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-								child: new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-									child: new Text(
-										txt.toUpperCase(),
-										textAlign: TextAlign.left,
-										style: new TextStyle(
-											color: const Color(0xFF000000),
-											fontWeight: FontWeight.w800,
-											fontSize: 24.0,
-										),
+				),
+				child: new Column(
+					mainAxisSize: MainAxisSize.min,
+					children: <Widget>[
+						new BackdropFilter(
+							filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+							child: new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+								child: new Text(
+									txt.toUpperCase(),
+									textAlign: TextAlign.left,
+									style: new TextStyle(
+										color: const Color(0xFF000000),
+										fontWeight: FontWeight.w800,
+										fontSize: 24.0,
 									),
-									decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+								),
+								decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+							),
+						),
+						new Expanded(
+							child: new Container(
+								alignment: Alignment.bottomCenter,
+								decoration: new BoxDecoration(
+									image: new DecorationImage(
+										image: new AssetImage('images/'+img),
+										fit: BoxFit.cover,
+										alignment: Alignment.bottomCenter,
+									),
+								),
+								child: ( sponsored
+									? new Column(
+										mainAxisSize: MainAxisSize.min,
+										children: <Widget>[
+											new Expanded( child: new Container() ),
+											new Row(
+												children: [
+													new Container(
+														padding: new EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
+														child: new Text(
+															'Sponsor'.toUpperCase(),
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontWeight: FontWeight.w800,
+																fontSize: 10.0,
+															),
+														),
+														decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
+													),
+													new Expanded( child: new Container() ),
+												]
+											),
+										]
+									) : new Container()
 								),
 							),
-							new Expanded(
-								child: new Container(
-									decoration: new BoxDecoration(
-										image: new DecorationImage(
-											image: new AssetImage('images/'+img),
-											fit: BoxFit.cover,
-											alignment: Alignment.bottomCenter,
-										),
-									), 
-								),
-							),
-						],
-					),
+						),
+					],
 				),
 			),
 		),
 	);
 }
+						
 
 class Landing extends StatefulWidget {
 	Landing({Key key, this.title}) : super(key: key);
@@ -1097,8 +1120,8 @@ class _LandingState extends State<Landing> {
 											scrollDirection: Axis.horizontal,
 											shrinkWrap: true,
 											children: <Widget>[
-												discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context),
-												discoverItem('Get to know UMW', 'background.png', context),
+												new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context) ),
+												new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem('Get to know UMW', 'background.png', context, sponsored: true) ),
 											],
 										)
 									)
@@ -1132,6 +1155,97 @@ void listButton(icon) {
 }
 
 
+void listCard(String txt, {height, width, key}) {
+	return new Card(
+		key: key,
+		elevation: 3.0,
+		child: new Container(
+			height: height,
+			width: width,
+			padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+			child: new Text(
+				txt,
+				textAlign: TextAlign.left,
+				style: new TextStyle(
+					color: const Color(0xFF000000),
+					fontWeight: FontWeight.w700,
+					fontSize: 14.0,
+				),
+			),
+		),
+	);
+}
+
+void listCardGesture(String txt, context) {
+	
+	// create a key so we can specifically reference the original card widget later to get its size, position
+	GlobalKey stickyKey = new GlobalKey();
+
+	return new GestureDetector(
+		onTapUp: (details){
+			var _offsety;
+			var _boxwidth;
+			var _boxheight;
+			var _rightside = false;
+			var _offsetx = 150.0;
+			var _offsetx2 = 25.0;
+			if (details.globalPosition.dx > 200) {
+				_rightside = true;
+				_offsetx = 25.0;
+				_offsetx2 = 150.0;
+			}
+			final keyContext = stickyKey.currentContext;
+			// if box is visible
+	        if (keyContext != null) {
+				final RenderBox box = keyContext.findRenderObject();
+				_offsety = box.localToGlobal(Offset.zero).dy - 20.0;
+				_boxwidth = box.size.width - 7.5;
+				_boxheight = box.size.height - 7.5;
+	        }
+	        // if box is partially offscreen
+	        if (_offsety < 0) {
+		        // for now, don't show a dialog
+		        // but we could also just push it down a bit
+		        // _offsety = 0.0;
+	        } else {
+				showDialog(
+					context: context,
+					builder: (BuildContext context) {
+						return new Column(
+				            children: [
+								new SizedBox(height: _offsety ),
+								new Expanded(
+						            child: new Stack(
+							            children: [
+								            new Positioned(
+									            top: 0.0,
+									            right: _rightside ? 20.0 : null,
+									            left: _rightside ? null : 20.0,
+									            child: listCard(txt, height:_boxheight, width:_boxwidth),
+											),
+								            new Row(
+												children: [
+													new SizedBox( width: _offsetx, height: _boxheight),
+													new Expanded( child: listButton(Icons.check) ),
+													new Expanded( child: listButton(Icons.bookmark_border) ),
+													new Expanded( child: listButton(Icons.close) ),
+													new SizedBox( width: _offsetx2 ),
+												]
+											)
+										]
+									)
+								)
+							]
+						);
+					}
+				);
+			}
+		},
+		child: listCard(txt, key: stickyKey),
+	);
+}
+
+
 class YourList extends StatefulWidget {
 	YourList({Key key, this.title}) : super(key: key);
 	
@@ -1144,97 +1258,7 @@ class YourList extends StatefulWidget {
 
 class _YourListState extends State<YourList> {
 	
-	void listCard(String txt, {height, width, key}) {
-		return new Card(
-			key: key,
-			elevation: 3.0,
-			child: new Container(
-				height: height,
-				width: width,
-				padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-				child: new Text(
-					txt,
-					textAlign: TextAlign.left,
-					style: new TextStyle(
-						color: const Color(0xFF000000),
-						fontWeight: FontWeight.w700,
-						fontSize: 14.0,
-					),
-				),
-			),
-		);
-	}
-	
-	void listCardGesture(String txt, context) {
-		
-		// create a key so we can specifically reference the original card widget later to get its size, position
-		GlobalKey stickyKey = new GlobalKey();
-	
-		return new GestureDetector(
-			onTapUp: (details){
-				var _offsety;
-				var _boxwidth;
-				var _boxheight;
-				var _rightside = false;
-				var _offsetx = 150.0;
-				var _offsetx2 = 25.0;
-				if (details.globalPosition.dx > 200) {
-					_rightside = true;
-					_offsetx = 25.0;
-					_offsetx2 = 150.0;
-				}
-				final keyContext = stickyKey.currentContext;
-				// if box is visible
-		        if (keyContext != null) {
-					final RenderBox box = keyContext.findRenderObject();
-					_offsety = box.localToGlobal(Offset.zero).dy - 20.0;
-					_boxwidth = box.size.width - 7.5;
-					_boxheight = box.size.height - 7.5;
-		        }
-		        // if box is partially offscreen
-		        if (_offsety < 0) {
-			        // for now, don't show a dialog
-			        // but we could also just push it down a bit
-			        // _offsety = 0.0;
-		        } else {
-					showDialog(
-						context: context,
-						builder: (BuildContext context) {
-							return new Column(
-					            children: [
-									new SizedBox(height: _offsety ),
-									new Expanded(
-							            child: new Stack(
-								            children: [
-									            new Positioned(
-										            top: 0.0,
-										            right: _rightside ? 20.0 : null,
-										            left: _rightside ? null : 20.0,
-										            child: listCard(txt, height:_boxheight, width:_boxwidth),
-												),
-									            new Row(
-													children: [
-														new SizedBox( width: _offsetx, height: _boxheight),
-														new Expanded( child: listButton(Icons.check) ),
-														new Expanded( child: listButton(Icons.bookmark_border) ),
-														new Expanded( child: listButton(Icons.close) ),
-														new SizedBox( width: _offsetx2 ),
-													]
-												)
-											]
-										)
-									)
-								]
-							);
-						}
-					);
-				}
-			},
-			child: listCard(txt, key: stickyKey),
-		);
-	}
-
-	@override
+		@override
 	Widget build(BuildContext context) {
 		  		
 	    return new DefaultTabController(
@@ -1284,7 +1308,7 @@ class _YourListState extends State<YourList> {
 										crossAxisCount: 2,
 										childAspectRatio: 1.1,
 										children: <Widget>[
-											listCardGesture("Tell your friends your new address", context),																	
+											listCardGesture("Tell your friends your new address", context),																
 											listCardGesture("Plan how you're going to get around campus", context),																	
 											listCardGesture("Find Your Doctor, Dentist, Eye care, Pharmacy", context),																	
 											listCardGesture("Find the nearest grocery store", context),																	
@@ -1433,80 +1457,15 @@ class _YourListState extends State<YourList> {
 										crossAxisCount: 1,
 										childAspectRatio: 1.0,
 										children: <Widget>[
-											new Card(
-												elevation: 3.0,
-												child: new Container(
-													decoration: new BoxDecoration(
-														image: new DecorationImage(
-															image: new AssetImage('images/cardphoto.png'),
-															fit: BoxFit.cover,
-														),
-													),
-													child: new Column(
-														mainAxisSize: MainAxisSize.min,
-														children: <Widget>[
-															new BackdropFilter(
-																filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-																child: new Container(
-																	padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-																	child: new Text(
-																		'Create the Perfect Dorm Room'.toUpperCase(),
-																		textAlign: TextAlign.left,
-																		style: new TextStyle(
-																			color: const Color(0xFF000000),
-																			fontWeight: FontWeight.w800,
-																			fontSize: 24.0,
-																		),
-																	),
-																	decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-																),
-															),
-															new Expanded(
-																child: new Container(
-																	alignment: Alignment.bottomCenter,
-																	decoration: new BoxDecoration(
-																		image: new DecorationImage(
-																			image: new AssetImage('images/cardphoto.png'),
-																			fit: BoxFit.cover,
-																			alignment: Alignment.bottomCenter,
-																		),
-																	),
-																	child: new Column(
-																		mainAxisSize: MainAxisSize.min,
-																		children: <Widget>[
-																			new Expanded( child: new Container() ),
-																			new Row(
-																				children: [
-																					new Container(
-																						padding: new EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
-																						child: new Text(
-																							'Sponsor'.toUpperCase(),
-																							textAlign: TextAlign.left,
-																							style: new TextStyle(
-																								color: const Color(0xFF000000),
-																								fontWeight: FontWeight.w800,
-																								fontSize: 10.0,
-																							),
-																						),
-																						decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
-																					),
-																					new Expanded( child: new Container() ),
-																				]
-																			),
-																		]
-																	),
-																),
-															),
-														],
-													),
-												),
-											),
+											discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context, sponsored: true),
 										]
 									)
 								),
 								new SliverPadding(
 									padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
 									sliver: new SliverGrid.count(
+										crossAxisSpacing: 10.0,
+										mainAxisSpacing: 10.0,
 										crossAxisCount: 1,
 										childAspectRatio: 4.0,
 										children: <Widget>[
@@ -1551,6 +1510,8 @@ class _YourListState extends State<YourList> {
 								new SliverPadding(
 									padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
 									sliver: new SliverGrid.count(
+										crossAxisSpacing: 10.0,
+										mainAxisSpacing: 10.0,
 										crossAxisCount: 1,
 										childAspectRatio: 1.2,
 										children: <Widget>[
@@ -1628,73 +1589,17 @@ class _YourListState extends State<YourList> {
 									),
 								),
 								new SliverPadding(
-									padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 0.0),
+									padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
 									sliver: new SliverGrid.count(
 										crossAxisSpacing: 10.0,
 										mainAxisSpacing: 10.0,
 										crossAxisCount: 2,
 										childAspectRatio: 1.1,
 										children: <Widget>[
-											new Card(
-												elevation: 3.0,
-												child: new Container(
-													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-													child: new Text(
-														'Tell your friends your new address',
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontWeight: FontWeight.w700,
-															fontSize: 14.0,
-														),
-													),
-												),
-											),
-											new Card(
-												elevation: 3.0,
-												child: new Container(
-													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-													child: new Text(
-														"Set up your email and student accounts",
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontWeight: FontWeight.w700,
-															fontSize: 14.0,
-														),
-													),
-												),
-											),
-											new Card(
-												elevation: 3.0,
-												child: new Container(
-													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-													child: new Text(
-														'Check in and get your welcome packet',
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontWeight: FontWeight.w700,
-															fontSize: 14.0,
-														),
-													),
-												),
-											),
-											new Card(
-												elevation: 3.0,
-												child: new Container(
-													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-													child: new Text(
-														'Buy books for your classes',
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontWeight: FontWeight.w700,
-															fontSize: 14.0,
-														),
-													),
-												),
-											),
+											listCardGesture("Tell your friends your new address", context),
+											listCardGesture("Set up your email and student accounts", context),
+											listCardGesture("Check in and get your welcome packet", context),
+											listCardGesture("Buy books for your classes", context),
 										],
 									),
 								),
@@ -1842,73 +1747,17 @@ class _ListItemsState extends State<ListItems> {
 						),
 					),
 					new SliverPadding(
-						padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 0.0),
+						padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
 						sliver: new SliverGrid.count(
 							crossAxisSpacing: 10.0,
 							mainAxisSpacing: 10.0,
 							crossAxisCount: 2,
 							childAspectRatio: 1.1,
 							children: <Widget>[
-								new Card(
-									elevation: 3.0,
-									child: new Container(
-										padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-										child: new Text(
-											'Tell your friends your new address',
-											textAlign: TextAlign.left,
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontWeight: FontWeight.w700,
-												fontSize: 14.0,
-											),
-										),
-									),
-								),
-								new Card(
-									elevation: 3.0,
-									child: new Container(
-										padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-										child: new Text(
-											"Set up your email and student accounts",
-											textAlign: TextAlign.left,
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontWeight: FontWeight.w700,
-												fontSize: 14.0,
-											),
-										),
-									),
-								),
-								new Card(
-									elevation: 3.0,
-									child: new Container(
-										padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-										child: new Text(
-											'Check in and get your welcome packet',
-											textAlign: TextAlign.left,
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontWeight: FontWeight.w700,
-												fontSize: 14.0,
-											),
-										),
-									),
-								),
-								new Card(
-									elevation: 3.0,
-									child: new Container(
-										padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-										child: new Text(
-											'Buy books for your classes',
-											textAlign: TextAlign.left,
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontWeight: FontWeight.w700,
-												fontSize: 14.0,
-											),
-										),
-									),
-								),
+								listCardGesture("Tell your friends your new address", context),
+								listCardGesture("Set up your email and student accounts", context),
+								listCardGesture("Check in and get your welcome packet", context),
+								listCardGesture("Buy books for your classes", context),
 							],
 						),
 					),
@@ -1920,74 +1769,7 @@ class _ListItemsState extends State<ListItems> {
 							crossAxisCount: 1,
 							childAspectRatio: 1.0,
 							children: <Widget>[
-								new Card(
-									elevation: 3.0,
-									child: new Container(
-										decoration: new BoxDecoration(
-											image: new DecorationImage(
-												image: new AssetImage('images/cardphoto.png'),
-												fit: BoxFit.cover,
-											),
-										),
-										child: new Column(
-											mainAxisSize: MainAxisSize.min,
-											children: <Widget>[
-												new BackdropFilter(
-													filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-													child: new Container(
-														padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-														child: new Text(
-															'Create the Perfect Dorm Room'.toUpperCase(),
-															textAlign: TextAlign.left,
-															style: new TextStyle(
-																color: const Color(0xFF000000),
-																fontWeight: FontWeight.w800,
-																fontSize: 24.0,
-															),
-														),
-														decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-													),
-												),
-												new Expanded(
-													child: new Container(
-														alignment: Alignment.bottomCenter,
-														decoration: new BoxDecoration(
-															image: new DecorationImage(
-																image: new AssetImage('images/cardphoto.png'),
-																fit: BoxFit.cover,
-																alignment: Alignment.bottomCenter,
-															),
-														),
-														child: new Column(
-															mainAxisSize: MainAxisSize.min,
-															children: <Widget>[
-																new Expanded( child: new Container() ),
-																new Row(
-																	children: [
-																		new Container(
-																			padding: new EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
-																			child: new Text(
-																				'Sponsor'.toUpperCase(),
-																				textAlign: TextAlign.left,
-																				style: new TextStyle(
-																					color: const Color(0xFF000000),
-																					fontWeight: FontWeight.w800,
-																					fontSize: 10.0,
-																				),
-																			),
-																			decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
-																		),
-																		new Expanded( child: new Container() ),
-																	]
-																),
-															]
-														),
-													),
-												),
-											],
-										),
-									),
-								),
+								discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context, sponsored: true),
 							]
 						)
 					),
@@ -2197,97 +1979,13 @@ class _DiscoverState extends State<Discover> {
 														width: 278.0,
 														height: 278.0,
 														margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
-														child: new Card(
-															elevation: 8.0,
-															child: new Container(
-																decoration: new BoxDecoration(
-																	image: new DecorationImage(
-																		image: new AssetImage('images/cardphoto.png'),
-																		fit: BoxFit.cover,
-																	),
-																),
-																child: new Column(
-																	mainAxisSize: MainAxisSize.min,
-																	children: <Widget>[
-																		new BackdropFilter(
-																			filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-																			child: new Container(
-																				padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-																				child: new Text(
-																					'Create the Perfect Dorm Room'.toUpperCase(),
-																					textAlign: TextAlign.left,
-																					style: new TextStyle(
-																						color: const Color(0xFF000000),
-																						fontWeight: FontWeight.w800,
-																						fontSize: 24.0,
-																					),
-																				),
-																				decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-																			),
-																		),
-																		new Expanded(
-																			child: new Container(
-																				decoration: new BoxDecoration(
-																					image: new DecorationImage(
-																						image: new AssetImage('images/cardphoto.png'),
-																						fit: BoxFit.cover,
-																						alignment: Alignment.bottomCenter,
-																					),
-																				), 
-																			),
-																		),
-																	],
-																),
-															),
-														),
+														child: discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context),
 													),
 													new Container(
 														width: 278.0,
 														height: 278.0,
 														margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
-														child: new Card(
-															elevation: 8.0,
-															child: new Container(
-																decoration: new BoxDecoration(
-																	image: new DecorationImage(
-																		image: new AssetImage('images/background.png'),
-																		fit: BoxFit.cover,
-																	),
-																),
-																child: new Column(
-																	mainAxisSize: MainAxisSize.min,
-																	children: <Widget>[
-																		new BackdropFilter(
-																			filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-																			child: new Container(
-																				padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-																				child: new Text(
-																					'Get to know UMW'.toUpperCase(),
-																					textAlign: TextAlign.left,
-																					style: new TextStyle(
-																						color: const Color(0xFF000000),
-																						fontWeight: FontWeight.w800,
-																						fontSize: 24.0,
-																					),
-																				),
-																				decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-																			),
-																		),
-																		new Expanded(
-																			child: new Container(
-																				decoration: new BoxDecoration(
-																					image: new DecorationImage(
-																						image: new AssetImage('images/background.png'),
-																						fit: BoxFit.cover,
-																						alignment: Alignment.bottomCenter,
-																					),
-																				), 
-																			),
-																		),
-																	],
-																),
-															),
-														),
+														child: discoverItem('Get to know UMW', 'background.png', context),
 													),
 												],
 											)
@@ -3024,59 +2722,7 @@ class _BookmarksState extends State<Bookmarks> {
 							crossAxisCount: 1,
 							childAspectRatio: 1.0,
 							children: <Widget>[
-								new Card(
-									elevation: 3.0,
-									child: new Container(
-										decoration: new BoxDecoration(
-											image: new DecorationImage(
-												image: new AssetImage('images/cardphoto.png'),
-												fit: BoxFit.cover,
-											),
-										),
-										child: new Column(
-											mainAxisSize: MainAxisSize.min,
-											children: <Widget>[
-												new BackdropFilter(
-													filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-													child: new Container(
-														padding: new EdgeInsets.fromLTRB(20.0, 15.0, 10.0, 15.0),
-														child: new Row(
-															crossAxisAlignment: CrossAxisAlignment.start,
-															children: <Widget>[
-																new Expanded(
-																	child: new Text(
-																		'Create the Perfect Dorm Room'.toUpperCase(),
-																		textAlign: TextAlign.left,
-																		style: new TextStyle(
-																			color: const Color(0xFF000000),
-																			fontWeight: FontWeight.w800,
-																			fontSize: 24.0,
-																		),
-																	),
-																),
-																new Container(
-																	child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
-																),
-															]
-														),
-														decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-													),
-												),
-												new Expanded(
-													child: new Container(
-														decoration: new BoxDecoration(
-															image: new DecorationImage(
-																image: new AssetImage('images/cardphoto.png'),
-																fit: BoxFit.cover,
-																alignment: Alignment.bottomCenter,
-															),
-														), 
-													),
-												),												
-											],
-										),
-									),
-								),
+								discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context, sponsored: true),
 							]
 						)
 					),
