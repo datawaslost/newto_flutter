@@ -1245,98 +1245,6 @@ void listButton(icon) {
 }
 
 
-void listCard(String txt, {height, width, key}) {
-	return new Card(
-		key: key,
-		elevation: 3.0,
-		child: new Container(
-			height: height,
-			width: width,
-			padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-			child: new Text(
-				txt,
-				textAlign: TextAlign.left,
-				style: new TextStyle(
-					color: const Color(0xFF000000),
-					fontFamily: 'Montserrat',
-					fontWeight: FontWeight.w700,
-					fontSize: 14.0,
-				),
-			),
-		),
-	);
-}
-
-void listCardGesture(String txt, context) {
-	
-	// create a key so we can specifically reference the original card widget later to get its size, position
-	GlobalKey stickyKey = new GlobalKey();
-
-	return new GestureDetector(
-		onTapUp: (details){
-			var _offsety;
-			var _boxwidth;
-			var _boxheight;
-			var _rightside = false;
-			var _offsetx = 150.0;
-			var _offsetx2 = 25.0;
-			if (details.globalPosition.dx > 200) {
-				_rightside = true;
-				_offsetx = 25.0;
-				_offsetx2 = 150.0;
-			}
-			final keyContext = stickyKey.currentContext;
-			// if box is visible
-	        if (keyContext != null) {
-				final RenderBox box = keyContext.findRenderObject();
-				_offsety = box.localToGlobal(Offset.zero).dy - 20.0;
-				_boxwidth = box.size.width - 7.5;
-				_boxheight = box.size.height - 7.5;
-	        }
-	        // if box is partially offscreen
-	        if (_offsety < 0) {
-		        // for now, don't show a dialog
-		        // but we could also just push it down a bit
-		        // _offsety = 0.0;
-	        } else {
-				showDialog(
-					context: context,
-					builder: (BuildContext context) {
-						return new Column(
-				            children: [
-								new SizedBox(height: _offsety ),
-								new Expanded(
-						            child: new Stack(
-							            children: [
-								            new Positioned(
-									            top: 0.0,
-									            right: _rightside ? 20.0 : null,
-									            left: _rightside ? null : 20.0,
-									            child: listCard(txt, height:_boxheight, width:_boxwidth),
-											),
-								            new Row(
-												children: [
-													new SizedBox( width: _offsetx, height: _boxheight),
-													new Expanded( child: listButton(Icons.check) ),
-													new Expanded( child: listButton(Icons.bookmark_border) ),
-													new Expanded( child: listButton(Icons.close) ),
-													new SizedBox( width: _offsetx2 ),
-												]
-											)
-										]
-									)
-								)
-							]
-						);
-					}
-				);
-			}
-		},
-		child: listCard(txt, key: stickyKey),
-	);
-}
-
-
 class YourList extends StatefulWidget {
 	YourList({Key key, this.title}) : super(key: key);
 	
@@ -1348,6 +1256,97 @@ class YourList extends StatefulWidget {
 
 
 class _YourListState extends State<YourList> {
+	
+	void listCard(String txt, {height, width, key}) {
+		return new Card(
+			key: key,
+			elevation: 3.0,
+			child: new Container(
+				height: height,
+				width: width,
+				padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
+				child: new Text(
+					txt,
+					textAlign: TextAlign.left,
+					style: new TextStyle(
+						color: const Color(0xFF000000),
+						fontFamily: 'Montserrat',
+						fontWeight: FontWeight.w700,
+						fontSize: 14.0,
+					),
+				),
+			),
+		);
+	}
+	
+	void listCardGesture(String txt, context) {
+		
+		// create a key so we can specifically reference the original card widget later to get its size, position
+		GlobalKey stickyKey = new GlobalKey();
+	
+		return new GestureDetector(
+			onTapUp: (details){
+				var _offsety;
+				var _boxwidth;
+				var _boxheight;
+				var _rightside = false;
+				var _offsetx = 150.0;
+				var _offsetx2 = 25.0;
+				if (details.globalPosition.dx > 200) {
+					_rightside = true;
+					_offsetx = 25.0;
+					_offsetx2 = 150.0;
+				}
+				final keyContext = stickyKey.currentContext;
+				// if box is visible
+		        if (keyContext != null) {
+					final RenderBox box = keyContext.findRenderObject();
+					_offsety = box.localToGlobal(Offset.zero).dy - 20.0;
+					_boxwidth = box.size.width - 7.5;
+					_boxheight = box.size.height - 7.5;
+		        }
+		        // if box is partially offscreen
+		        if (_offsety < 0) {
+			        // for now, don't show a dialog
+			        // but we could also just push it down a bit
+			        // _offsety = 0.0;
+		        } else {
+					showDialog(
+						context: context,
+						builder: (BuildContext context) {
+							return new Column(
+					            children: [
+									new SizedBox(height: _offsety ),
+									new Expanded(
+							            child: new Stack(
+								            children: [
+									            new Positioned(
+										            top: 0.0,
+										            right: _rightside ? 20.0 : null,
+										            left: _rightside ? null : 20.0,
+										            child: listCard(txt, height:_boxheight, width:_boxwidth),
+												),
+									            new Row(
+													children: [
+														new SizedBox( width: _offsetx, height: _boxheight),
+														new Expanded( child: listButton(Icons.check) ),
+														new Expanded( child: listButton(Icons.bookmark_border) ),
+														new Expanded( child: listButton(Icons.close) ),
+														new SizedBox( width: _offsetx2 ),
+													]
+												)
+											]
+										)
+									)
+								]
+							);
+						}
+					);
+				}
+			},
+			child: listCard(txt, key: stickyKey),
+		);
+	}
 
 	@override
 	Widget build(BuildContext context) {
