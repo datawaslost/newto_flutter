@@ -753,6 +753,61 @@ class _OnboardingState extends State<Onboarding> {
   }
 }
 
+void discoverItem(txt, img, context) {
+	return new GestureDetector(
+		onTap: () {
+			Navigator.of(context).pushNamed('/article');
+		},
+		child: new Container(
+			width: 278.0,
+			height: 278.0,
+			margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
+			child: new Card(
+				elevation: 8.0,
+				child: new Container(
+					decoration: new BoxDecoration(
+						image: new DecorationImage(
+							image: new AssetImage('images/'+img),
+							fit: BoxFit.cover,
+						),
+					),
+					child: new Column(
+						mainAxisSize: MainAxisSize.min,
+						children: <Widget>[
+							new BackdropFilter(
+								filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+								child: new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+									child: new Text(
+										txt.toUpperCase(),
+										textAlign: TextAlign.left,
+										style: new TextStyle(
+											color: const Color(0xFF000000),
+											fontWeight: FontWeight.w800,
+											fontSize: 24.0,
+										),
+									),
+									decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+								),
+							),
+							new Expanded(
+								child: new Container(
+									decoration: new BoxDecoration(
+										image: new DecorationImage(
+											image: new AssetImage('images/'+img),
+											fit: BoxFit.cover,
+											alignment: Alignment.bottomCenter,
+										),
+									), 
+								),
+							),
+						],
+					),
+				),
+			),
+		),
+	);
+}
 
 class Landing extends StatefulWidget {
 	Landing({Key key, this.title}) : super(key: key);
@@ -1007,6 +1062,7 @@ class _LandingState extends State<Landing> {
 							backgroundColor: const Color(0xFF2D2D2F),
 							valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
 						),
+						// this is overlapped
 						decoration: new BoxDecoration(
 							boxShadow: [
 								new BoxShadow(
@@ -1024,7 +1080,7 @@ class _LandingState extends State<Landing> {
 						child: new Column(
 							mainAxisSize: MainAxisSize.min,
 							children: <Widget>[
-								new SizedBox(height: 25.0),
+								new SizedBox(height: 25.0, ),
 								new Text(
 									'Discover'.toUpperCase(),
 									textAlign: TextAlign.center,
@@ -1041,112 +1097,8 @@ class _LandingState extends State<Landing> {
 											scrollDirection: Axis.horizontal,
 											shrinkWrap: true,
 											children: <Widget>[
-												new GestureDetector(
-													onTap: () {
-														Navigator.of(context).pushNamed('/article');
-													},
-													child: new Container(
-														width: 278.0,
-														height: 278.0,
-														margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
-														child: new Card(
-															elevation: 8.0,
-															child: new Container(
-																decoration: new BoxDecoration(
-																	image: new DecorationImage(
-																		image: new AssetImage('images/cardphoto.png'),
-																		fit: BoxFit.cover,
-																	),
-																),
-																child: new Column(
-																	mainAxisSize: MainAxisSize.min,
-																	children: <Widget>[
-																		new BackdropFilter(
-																			filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-																			child: new Container(
-																				padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-																				child: new Text(
-																					'Create the Perfect Dorm Room'.toUpperCase(),
-																					textAlign: TextAlign.left,
-																					style: new TextStyle(
-																						color: const Color(0xFF000000),
-																						fontWeight: FontWeight.w800,
-																						fontSize: 24.0,
-																					),
-																				),
-																				decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-																			),
-																		),
-																		new Expanded(
-																			child: new Container(
-																				decoration: new BoxDecoration(
-																					image: new DecorationImage(
-																						image: new AssetImage('images/cardphoto.png'),
-																						fit: BoxFit.cover,
-																						alignment: Alignment.bottomCenter,
-																					),
-																				), 
-																			),
-																		),
-																	],
-																),
-															),
-														),
-													),
-												),
-												new GestureDetector(
-													onTap: () {
-														Navigator.of(context).pushNamed('/article');
-													},
-													child: new Container(
-														width: 278.0,
-														height: 278.0,
-														margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
-														child: new Card(
-															elevation: 8.0,
-															child: new Container(
-																decoration: new BoxDecoration(
-																	image: new DecorationImage(
-																		image: new AssetImage('images/background.png'),
-																		fit: BoxFit.cover,
-																	),
-																),
-																child: new Column(
-																	mainAxisSize: MainAxisSize.min,
-																	children: <Widget>[
-																		new BackdropFilter(
-																			filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-																			child: new Container(
-																				padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-																				child: new Text(
-																					'Get to know UMW'.toUpperCase(),
-																					textAlign: TextAlign.left,
-																					style: new TextStyle(
-																						color: const Color(0xFF000000),
-																						fontWeight: FontWeight.w800,
-																						fontSize: 24.0,
-																					),
-																				),
-																				decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-																			),
-																		),
-																		Expanded(
-																			child: new Container(
-																				decoration: new BoxDecoration(
-																					image: new DecorationImage(
-																						image: new AssetImage('images/background.png'),
-																						fit: BoxFit.cover,
-																						alignment: Alignment.bottomCenter,
-																					),
-																				), 
-																			),
-																		),
-																	],
-																),
-															),
-														),
-													),
-												),
+												discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context),
+												discoverItem('Get to know UMW', 'background.png', context),
 											],
 										)
 									)
