@@ -1270,6 +1270,75 @@ void listCardGesture(String txt, context, {bookmarked = false}) {
 }
 
 
+void listGroup(String txt, amount, context, {bookmarked = false, String sponsored}) {
+	return new GestureDetector(
+		onTap: () {
+			Navigator.of(context).pushNamed('/listitems');
+		},
+		child: new Card(
+			elevation: 3.0,
+			child: new Column(
+				mainAxisSize: MainAxisSize.min,
+				crossAxisAlignment: CrossAxisAlignment.start,
+				children: <Widget>[
+					new Expanded(
+						child: new Container(
+							padding: const EdgeInsets.fromLTRB(20.0, 15.0, 10.0, 7.5),
+							child: new Text(
+								txt.toUpperCase(),
+								textAlign: TextAlign.left,
+								style: new TextStyle(
+									color: const Color(0xFF000000),
+									fontWeight: FontWeight.w800,
+									fontSize: 24.0,
+								),
+							),
+						),
+					),
+					new Container(
+						padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
+						child: new Row(
+							children: [
+								new Expanded(
+									child: (sponsored != null ? 
+										new Text(
+											'Sponsored by UWM'.toUpperCase(),
+											textAlign: TextAlign.left,
+											style: new TextStyle(
+												color: const Color(0xFF838383),
+												fontWeight: FontWeight.w800,
+												fontSize: 10.0,
+											),
+										): new Container()
+									)
+								),
+								new Text(
+									amount.toString() + ' '.toUpperCase(),
+									textAlign: TextAlign.left,
+									style: new TextStyle(
+										color: const Color(0xFF838383),
+										fontWeight: FontWeight.w800,
+										fontSize: 10.0,
+									),
+								),
+								new Container(
+									padding: const EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
+									child: new Icon(
+										Icons.filter_none, 
+										color: const Color(0xFF838383), 
+										size: 10.0
+									)
+								),
+							]
+						)
+					),
+				],
+			),
+		),
+	);
+}
+
+
 class YourList extends StatefulWidget {
 	YourList({Key key, this.title}) : super(key: key);
 	
@@ -1282,7 +1351,7 @@ class YourList extends StatefulWidget {
 
 class _YourListState extends State<YourList> {
 	
-		@override
+	@override
 	Widget build(BuildContext context) {
 		  		
 	    return new DefaultTabController(
@@ -1347,116 +1416,8 @@ class _YourListState extends State<YourList> {
 										crossAxisCount: 1,
 										childAspectRatio: 2.75,
 										children: <Widget>[
-											new Card(
-												elevation: 3.0,
-												child: new Column(
-													mainAxisSize: MainAxisSize.min,
-													children: <Widget>[
-														new Container(
-															padding: const EdgeInsets.fromLTRB(20.0, 15.0, 10.0, 7.5),
-															child: new Text(
-																'Popular Activity Name Title Group'.toUpperCase(),
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFF000000),
-																	fontWeight: FontWeight.w800,
-																	fontSize: 24.0,
-																),
-															),
-														),
-														new Container(
-															padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-															child: new Row(
-																children: [
-																	new Expanded(
-																		child: new Text(
-																			'Sponsored by UWM'.toUpperCase(),
-																			textAlign: TextAlign.left,
-																			style: new TextStyle(
-																				color: const Color(0xFF838383),
-																				fontWeight: FontWeight.w800,
-																				fontSize: 10.0,
-																			),
-																		),
-																	),
-																	new Text(
-																		'4 '.toUpperCase(),
-																		textAlign: TextAlign.left,
-																		style: new TextStyle(
-																			color: const Color(0xFF838383),
-																			fontWeight: FontWeight.w800,
-																			fontSize: 10.0,
-																		),
-																	),
-																	new Container(
-																		padding: const EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
-																		child: new Icon(
-																			Icons.filter_none, 
-																			color: const Color(0xFF838383), 
-																			size: 10.0
-																		)
-																	),
-																]
-															)
-														),
-													],
-												),
-											),
-											new Card(
-												elevation: 3.0,
-												child: new Column(
-													mainAxisSize: MainAxisSize.min,
-													children: <Widget>[
-														new Container(
-															padding: const EdgeInsets.fromLTRB(20.0, 15.0, 10.0, 7.5),
-															child: new Text(
-																'Popular Activity Name Title Group'.toUpperCase(),
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFF000000),
-																	fontWeight: FontWeight.w800,
-																	fontSize: 24.0,
-																),
-															),
-														),
-														new Container(
-															padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-															child: new Row(
-																children: [
-																	new Expanded(
-																		child: new Text(
-																			'Sponsored by UWM'.toUpperCase(),
-																			textAlign: TextAlign.left,
-																			style: new TextStyle(
-																				color: const Color(0xFF838383),
-																				fontWeight: FontWeight.w800,
-																				fontSize: 10.0,
-																			),
-																		),
-																	),
-																	new Text(
-																		'4 '.toUpperCase(),
-																		textAlign: TextAlign.left,
-																		style: new TextStyle(
-																			color: const Color(0xFF838383),
-																			fontWeight: FontWeight.w800,
-																			fontSize: 10.0,
-																		),
-																	),
-																	new Container(
-																		padding: const EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
-																		child: new Icon(
-																			Icons.filter_none, 
-																			color: const Color(0xFF838383), 
-																			size: 10.0
-																		)
-																	),
-																]
-															)
-														),
-													],
-												),
-											),
+											listGroup("Popular Activity Name Title Group", 4, context, sponsored: "UWWM"),
+											listGroup("Another Group", 3, context),
 										],
 									),
 								),
@@ -1635,61 +1596,7 @@ class _YourListState extends State<YourList> {
 										crossAxisCount: 1,
 										childAspectRatio: 2.75,
 										children: <Widget>[
-											new Card(
-												elevation: 3.0,
-												child: new Column(
-													mainAxisSize: MainAxisSize.min,
-													children: <Widget>[
-														new Container(
-															padding: const EdgeInsets.fromLTRB(20.0, 15.0, 10.0, 7.5),
-															child: new Text(
-																'Popular Activity Name Title Group'.toUpperCase(),
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFF000000),
-																	fontWeight: FontWeight.w800,
-																	fontSize: 24.0,
-																),
-															),
-														),
-														new Container(
-															padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-															child: new Row(
-																children: [
-																	new Expanded(
-																		child: new Text(
-																			'Sponsored by UWM'.toUpperCase(),
-																			textAlign: TextAlign.left,
-																			style: new TextStyle(
-																				color: const Color(0xFF838383),
-																				fontWeight: FontWeight.w800,
-																				fontSize: 10.0,
-																			),
-																		),
-																	),
-																	new Text(
-																		'4 '.toUpperCase(),
-																		textAlign: TextAlign.left,
-																		style: new TextStyle(
-																			color: const Color(0xFF838383),
-																			fontWeight: FontWeight.w800,
-																			fontSize: 10.0,
-																		),
-																	),
-																	new Container(
-																		padding: const EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
-																		child: new Icon(
-																			Icons.filter_none, 
-																			color: const Color(0xFF838383), 
-																			size: 10.0
-																		)
-																	),
-																]
-															)
-														),
-													],
-												),
-											),
+											listGroup("Popular Activity Name Title Group", 4, context, sponsored: "UWWM"),
 										],
 									),
 								),
