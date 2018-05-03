@@ -1257,29 +1257,6 @@ class _LandingState extends State<Landing> {
 }
 
 
-// widget for popup menu
-class PopupMenuWidget<T> extends PopupMenuEntry<T> {
-	const PopupMenuWidget({ Key key, this.height, this.child }) : super(key: key);
-	
-	@override
-	final Widget child;
-	
-	@override
-	final double height;
-	
-	@override
-	bool get enabled => false;
-	
-	@override
-	_PopupMenuWidgetState createState() => new _PopupMenuWidgetState();
-}
-
-class _PopupMenuWidgetState extends State<PopupMenuWidget> {
-	@override
-	Widget build(BuildContext context) => widget.child;
-}
-
-
 void listCard(String txt, {height, width, key}) {
 	return new Card(
 		key: key,
@@ -1302,6 +1279,99 @@ void listCard(String txt, {height, width, key}) {
 	);
 }
 
+void listCardGesture(String txt, context) {
+	
+		GlobalKey stickyKey = new GlobalKey();
+
+	return new GestureDetector(
+		onTapUp: (details){
+			var _offsety;
+			var _boxwidth;
+			var _boxheight;
+			var _offsetx = 150.0;
+			var _offsetx2 = 25.0;
+			if (details.globalPosition.dx > 200) {
+				_offsetx = 25.0;
+				_offsetx2 = 150.0;
+			}
+			final keyContext = stickyKey.currentContext;
+			// if box is visible
+	        if (keyContext != null) {
+				final RenderBox box = keyContext.findRenderObject();
+				_offsety = box.localToGlobal(Offset.zero).dy - 20.0;
+				_boxwidth = box.size.width - 7.5;
+				_boxheight = box.size.height - 7.5;
+	        }
+	        // if box is partially offscreen
+	        if (_offsety < 0) {
+		        // push it down a bit
+		        _offsety = 0.0;
+	        }
+			showDialog(
+				context: context,
+				builder: (BuildContext context) {
+					return new Column(
+			            children: [
+							new SizedBox(height: _offsety ),
+							new Expanded(
+					            child: new Stack(
+						            children: [
+							            new Positioned(
+								            top: 0.0,
+								            right: 20.0,
+								            child: listCard(txt, height:_boxheight, width:_boxwidth),
+										),
+							            new Row(
+											children: [
+												new SizedBox( width: _offsetx, height: _boxheight),
+												new Expanded(
+													child: new Container(
+														width: 50.0,
+														height: 50.0,
+														decoration: new BoxDecoration(
+															shape: BoxShape.circle,
+															color: const Color(0xFFFFFFFF),
+														),
+														child: new Icon( Icons.check, size: 25.0, color: const Color(0xFF000000) ),
+													),
+												),
+												new Expanded(
+													child: new Container(
+														width: 50.0,
+														height: 50.0,
+														decoration: new BoxDecoration(
+															shape: BoxShape.circle,
+															color: const Color(0xFFFFFFFF),
+														),
+														child: new Icon( Icons.bookmark_border, size: 25.0, color: const Color(0xFF000000) ),
+													),
+												),
+												new Expanded(
+													child: new Container(
+														width: 50.0,
+														height: 50.0,
+														decoration: new BoxDecoration(
+															shape: BoxShape.circle,
+															color: const Color(0xFFFFFFFF),
+														),
+														child: new Icon( Icons.close, size: 25.0, color: const Color(0xFF000000) ),
+													),
+												),
+												new SizedBox( width: _offsetx2 ),
+											]
+										)
+									]
+								)
+							)
+						]
+					);
+				}
+			);
+		},
+		child: listCard(txt, key: stickyKey),
+	);
+}
+
 
 class YourList extends StatefulWidget {
 	YourList({Key key, this.title}) : super(key: key);
@@ -1314,9 +1384,6 @@ class YourList extends StatefulWidget {
 
 
 class _YourListState extends State<YourList> {
-
-	GlobalKey stickyKey = new GlobalKey();
-	GlobalKey stickyKey2 = new GlobalKey();
 
 	@override
 	Widget build(BuildContext context) {
@@ -1369,94 +1436,8 @@ class _YourListState extends State<YourList> {
 										crossAxisCount: 2,
 										childAspectRatio: 1.1,
 										children: <Widget>[
-											listCard("Tell your friends your new address"),																					
-											new GestureDetector(
-												onTapUp: (details){
-													var _offsety;
-													var _boxwidth;
-													var _boxheight;
-													var _offsetx = 150.0;
-													var _offsetx2 = 25.0;
-													if (details.globalPosition.dx > 200) {
-														_offsetx = 25.0;
-														_offsetx2 = 150.0;
-													}
-													final keyContext = stickyKey.currentContext;
-													// if box is visible
-											        if (keyContext != null) {
-														final RenderBox box = keyContext.findRenderObject();
-														_offsety = box.localToGlobal(Offset.zero).dy - 20.0;
-														_boxwidth = box.size.width - 7.5;
-														_boxheight = box.size.height - 7.5;
-											        }
-											        // if box is partially offscreen
-											        if (_offsety < 0) {
-												        // push it down a bit
-												        _offsety = 0.0;
-											        }
-													showDialog(
-														context: context,
-														builder: (BuildContext context) {
-															return new Column(
-													            children: [
-																	new SizedBox(height: _offsety ),
-																	new Expanded(
-															            child: new Stack(
-																            children: [
-																	            new Positioned(
-																		            top: 0.0,
-																		            right: 20.0,
-																		            child: listCard("Plan how you're going to get around campus", height:_boxheight, width:_boxwidth),
-																				),
-																	            new Row(
-																					children: [
-																						new SizedBox( width: _offsetx, height: _boxheight),
-																						new Expanded(
-																							child: new Container(
-																								width: 50.0,
-																								height: 50.0,
-																								decoration: new BoxDecoration(
-																									shape: BoxShape.circle,
-																									color: const Color(0xFFFFFFFF),
-																								),
-																								child: new Icon( Icons.check, size: 25.0, color: const Color(0xFF000000) ),
-																							),
-																						),
-																						new Expanded(
-																							child: new Container(
-																								width: 50.0,
-																								height: 50.0,
-																								decoration: new BoxDecoration(
-																									shape: BoxShape.circle,
-																									color: const Color(0xFFFFFFFF),
-																								),
-																								child: new Icon( Icons.bookmark_border, size: 25.0, color: const Color(0xFF000000) ),
-																							),
-																						),
-																						new Expanded(
-																							child: new Container(
-																								width: 50.0,
-																								height: 50.0,
-																								decoration: new BoxDecoration(
-																									shape: BoxShape.circle,
-																									color: const Color(0xFFFFFFFF),
-																								),
-																								child: new Icon( Icons.close, size: 25.0, color: const Color(0xFF000000) ),
-																							),
-																						),
-																						new SizedBox( width: _offsetx2 ),
-																					]
-																				)
-																			]
-																		)
-																	)
-																]
-															);
-														}
-													);
-												},
-												child: listCard("Plan how you're going to get around campus", key: stickyKey),
-											),	
+											listCard("Tell your friends your new address"),
+											listCardGesture("Plan how you're going to get around campus", context),																	
 											listCard("Find Your Doctor, Dentist, Eye care, Pharmacy"),																				
 											listCard("Find the nearest grocery store"),																		
 										],
