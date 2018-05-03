@@ -5,10 +5,12 @@ import 'package:carousel/carousel.dart';
 import 'package:map_view/map_view.dart';
 import "dart:ui";
 
+
 void main() {
 	MapView.setApiKey("AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E");
 	runApp(new MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
 	// This widget is the root of your application.
@@ -112,6 +114,7 @@ class Home extends StatefulWidget {
   _HomeState createState() => new _HomeState();
 }
 
+
 class _HomeState extends State<Home> {
 
 	bool isLoggedIn = true;
@@ -142,6 +145,7 @@ class _HomeState extends State<Home> {
 	
 }
 
+
 class Onboarding extends StatefulWidget {
   Onboarding({Key key, this.title}) : super(key: key);
 
@@ -150,6 +154,7 @@ class Onboarding extends StatefulWidget {
   @override
   _OnboardingState createState() => new _OnboardingState();
 }
+
 
 class PasswordField extends StatefulWidget {
   const PasswordField({
