@@ -867,6 +867,88 @@ class _LandingState extends State<Landing> {
 			);
 		}
 		
+		void carouselItem(txt) {
+			return new Stack(
+				children: [
+				    new GestureDetector(
+						onTap: _dialog,
+						onLongPress: () {
+							setState(() { _details = true; });
+						},
+						child: new Container(
+							padding: new EdgeInsets.fromLTRB(60.0, 0.0, 60.0, 0.0),
+							alignment: Alignment.center,
+							child: new Column(
+								mainAxisSize: MainAxisSize.min,
+								children: <Widget>[
+									new Text(
+										'Your List'.toUpperCase(),
+										textAlign: TextAlign.center,
+										style: new TextStyle(
+											color: const Color(0xFF838383),
+											fontWeight: FontWeight.w800,
+											fontSize: 14.0,
+										),
+									),
+									new SizedBox(height: 10.0),
+									new Text(
+										txt.toUpperCase(),
+										textAlign: TextAlign.center,
+										style: new TextStyle(
+											color: const Color(0xFFFFFFFF),
+											fontWeight: FontWeight.w800,
+											fontSize: 24.0,
+											height: 0.9,
+										),
+									),
+									new FlatButton(
+										onPressed: () => Navigator.of(context).pushNamed('/yourlist'),
+										child: new Icon(
+											Icons.arrow_forward,
+											color: const Color(0xFFFFFFFF),
+										),
+									),
+								],
+							),
+						),
+					),
+					
+					(_details
+						? new Container(
+							color: const Color(0xFF000000),
+							padding: new EdgeInsets.fromLTRB(80.0, 0.0, 80.0, 0.0),
+							// alignment: Alignment.center,
+							child: new Center(
+								child: new Row(
+									children: [
+										new Expanded(
+											child: new InkWell(
+												onTap: () => setState(() { _details = false; }),
+												child: listButton(Icons.check),
+											),
+										),
+										new Expanded(
+											child: new InkWell(
+												onTap: () => setState(() { _details = false; }),
+												child: listButton(Icons.bookmark_border),
+											),
+										),
+										new Expanded(
+											child: new InkWell(
+												onTap: () => setState(() { _details = false; }),
+												child: listButton(Icons.close),
+											),
+										),
+									]
+								)
+							),
+						)
+						: new Container()
+					)
+				]
+			);
+		}
+		
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
 			appBar: new AppBar(
@@ -898,7 +980,6 @@ class _LandingState extends State<Landing> {
 						]
 					)
 				),
-				// title: new Image.asset("images/LogoSpan-White.png", height: 12.0),
 				leading: new Container(),
 				actions: <Widget>[
 					new IconButton(
@@ -915,124 +996,8 @@ class _LandingState extends State<Landing> {
 						child: new Carousel(
 							displayDuration: new Duration(seconds: 200000),
 							children: [
-								new Stack(
-									children: [
-									    new GestureDetector(
-											onTap: _dialog,
-											onLongPress: () {
-												setState(() { _details = true; });
-											},
-											child: new Container(
-												padding: new EdgeInsets.fromLTRB(65.0, 0.0, 65.0, 0.0),
-												alignment: Alignment.center,
-												child: new Column(
-													mainAxisSize: MainAxisSize.min,
-													children: <Widget>[
-														new Text(
-															'Your List'.toUpperCase(),
-															textAlign: TextAlign.center,
-															style: new TextStyle(
-																color: const Color(0xFF838383),
-																fontWeight: FontWeight.w800,
-																fontSize: 14.0,
-															),
-														),
-														new SizedBox(height: 10.0),
-														new Text(
-															'Tell your friends your new address'.toUpperCase(),
-															textAlign: TextAlign.center,
-															style: new TextStyle(
-																color: const Color(0xFFFFFFFF),
-																fontWeight: FontWeight.w800,
-																fontSize: 24.0,
-																height: 0.9,
-															),
-														),
-														new FlatButton(
-															onPressed: () => Navigator.of(context).pushNamed('/yourlist'),
-															child: new Icon(
-																Icons.arrow_forward,
-																color: const Color(0xFFFFFFFF),
-															),
-														),
-													],
-												),
-											),
-										),
-										
-										(_details
-											? new Container(
-												color: const Color(0xFF000000),
-												padding: new EdgeInsets.fromLTRB(80.0, 0.0, 80.0, 0.0),
-												// alignment: Alignment.center,
-												child: new Center(
-													child: new Row(
-														children: [
-															new Expanded(
-																child: new InkWell(
-																	onTap: () => setState(() { _details = false; }),
-																	child: listButton(Icons.check),
-																),
-															),
-															new Expanded(
-																child: new InkWell(
-																	onTap: () => setState(() { _details = false; }),
-																	child: listButton(Icons.bookmark_border),
-																),
-															),
-															new Expanded(
-																child: new InkWell(
-																	onTap: () => setState(() { _details = false; }),
-																	child: listButton(Icons.close),
-																),
-															),
-														]
-													)
-												),
-											)
-											: new Container()
-										)
-									]
-								),
-								new GestureDetector(
-									onTap: _dialog,
-									child: new Container(
-										padding: new EdgeInsets.fromLTRB(65.0, 0.0, 65.0, 0.0),
-										alignment: Alignment.center,
-										child: new Column(
-											mainAxisSize: MainAxisSize.min,
-											children: <Widget>[
-												new Text(
-													'Your List'.toUpperCase(),
-													textAlign: TextAlign.center,
-													style: new TextStyle(
-														color: const Color(0xFF838383),
-														fontWeight: FontWeight.w800,
-														fontSize: 14.0,
-													),
-												),
-												new SizedBox(height: 10.0),
-												new Text(
-													'Turn in your housing insurance forms'.toUpperCase(),
-													textAlign: TextAlign.center,
-													style: new TextStyle(
-														color: const Color(0xFFFFFFFF),
-														fontWeight: FontWeight.w800,
-														fontSize: 24.0,
-														height: 0.9,
-													),
-												),
-												new FlatButton(
-													onPressed: () => Navigator.of(context).pushNamed('/yourlist'),
-													child: new Icon(
-														Icons.arrow_forward,
-														color: const Color(0xFFFFFFFF),
-													),
-												),
-											],
-										),
-									),
-								),
+								carouselItem('Tell your friends your new address'),
+								carouselItem('Turn in your housing insurance forms'),
 							]
 						),
 					),
