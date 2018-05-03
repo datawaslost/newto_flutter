@@ -1167,7 +1167,7 @@ void listButton(icon) {
 }
 
 
-void listCard(String txt, {height, width, key}) {
+void listCard(String txt, {height, width, key, bookmarked = false}) {
 	return new Card(
 		key: key,
 		elevation: 3.0,
@@ -1175,20 +1175,32 @@ void listCard(String txt, {height, width, key}) {
 			height: height,
 			width: width,
 			padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-			child: new Text(
-				txt,
-				textAlign: TextAlign.left,
-				style: new TextStyle(
-					color: const Color(0xFF000000),
-					fontWeight: FontWeight.w700,
-					fontSize: 14.0,
-				),
-			),
+			child: new Stack(
+				children: [
+					new Text(
+						txt,
+						textAlign: TextAlign.left,
+						style: new TextStyle(
+							color: const Color(0xFF000000),
+							fontWeight: FontWeight.w700,
+							fontSize: 14.0,
+						),
+					),
+					(bookmarked ? 
+						new Positioned(
+							bottom: 10.0,
+							right: 10.0,
+							child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0)
+						) : new Container()
+					)
+				]
+			)
 		),
 	);
 }
 
-void listCardGesture(String txt, context) {
+
+void listCardGesture(String txt, context, {bookmarked = false}) {
 	
 	// create a key so we can specifically reference the original card widget later to get its size, position
 	GlobalKey stickyKey = new GlobalKey();
@@ -1233,7 +1245,7 @@ void listCardGesture(String txt, context) {
 									            top: 0.0,
 									            right: _rightside ? 20.0 : null,
 									            left: _rightside ? null : 20.0,
-									            child: listCard(txt, height:_boxheight, width:_boxwidth),
+									            child: listCard(txt, height:_boxheight, width:_boxwidth, bookmarked: bookmarked),
 											),
 								            new Row(
 												children: [
@@ -1253,7 +1265,7 @@ void listCardGesture(String txt, context) {
 				);
 			}
 		},
-		child: listCard(txt, key: stickyKey),
+		child: listCard(txt, key: stickyKey, bookmarked: bookmarked),
 	);
 }
 
@@ -1807,6 +1819,43 @@ class Discover extends StatefulWidget {
 
 class _DiscoverState extends State<Discover> {
 
+	void searchCategory(txt, img) {
+		return new GestureDetector(
+			onTap: () {
+				Navigator.of(context).pushNamed('/search');
+			},
+			child: new Container(
+				margin: new EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 0.0),
+				child: new Column(
+					mainAxisSize: MainAxisSize.min,
+					crossAxisAlignment: CrossAxisAlignment.start,
+					children: <Widget>[
+						new Container(
+							width: 150.0,
+							height: 180.0,
+							decoration: new BoxDecoration(
+								image: new DecorationImage(
+									image: new AssetImage('images/' + img),
+									fit: BoxFit.cover,
+								),
+							),
+						),
+						new Text(
+							txt.toUpperCase(),
+							textAlign: TextAlign.left,
+							style: new TextStyle(
+								color: const Color(0xFFFFFFFF),
+								fontWeight: FontWeight.w800,
+								fontSize: 14.0,
+								height: 1.8,
+							),
+						),
+					],
+				),
+			),
+		);
+	}
+	
 	@override
 	Widget build(BuildContext context) {
 	  
@@ -1860,101 +1909,11 @@ class _DiscoverState extends State<Discover> {
 											scrollDirection: Axis.horizontal,
 											shrinkWrap: true,
 											children: <Widget>[
-												new GestureDetector(
-													onTap: () {
-														Navigator.of(context).pushNamed('/search');
-													},
-													child: new Container(
-														margin: new EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 0.0),
-														child: new Column(
-															mainAxisSize: MainAxisSize.min,
-															crossAxisAlignment: CrossAxisAlignment.start,
-															children: <Widget>[
-																new Container(
-																	width: 150.0,
-																	height: 180.0,
-																	decoration: new BoxDecoration(
-																		image: new DecorationImage(
-																			image: new AssetImage('images/cardphoto.png'),
-																			fit: BoxFit.cover,
-																		),
-																	),
-																),
-																new Text(
-																	'Groceries'.toUpperCase(),
-																	textAlign: TextAlign.left,
-																	style: new TextStyle(
-																		color: const Color(0xFFFFFFFF),
-																		fontWeight: FontWeight.w800,
-																		fontSize: 14.0,
-																		height: 1.8,
-																	),
-																),
-															],
-														),
-													),
-												),
-												new Container(
-													margin: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
-													child: new Column(
-														mainAxisSize: MainAxisSize.min,
-														crossAxisAlignment: CrossAxisAlignment.start,
-														children: <Widget>[
-															new Container(
-																width: 150.0,
-																height: 180.0,
-																decoration: new BoxDecoration(
-																	image: new DecorationImage(
-																		image: new AssetImage('images/cardphoto.png'),
-																		fit: BoxFit.cover,
-																	),
-																),
-															),
-															new Text(
-																'Restaurants'.toUpperCase(),
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFFFFFFFF),
-																	fontWeight: FontWeight.w800,
-																	fontSize: 14.0,
-																	height: 1.8,
-																),
-															),
-														],
-													),
-												),
-												new Container(
-													margin: new EdgeInsets.fromLTRB(5.0, 0.0, 20.0, 0.0),
-													child: new Column(
-														mainAxisSize: MainAxisSize.min,
-														crossAxisAlignment: CrossAxisAlignment.start,
-														// mainAxisAlignment: MainAxisAlignment.start,
-														children: <Widget>[
-															new Container(
-																width: 150.0,
-																height: 180.0,
-																decoration: new BoxDecoration(
-																	image: new DecorationImage(
-																		image: new AssetImage('images/cardphoto.png'),
-																		fit: BoxFit.cover,
-																	),
-																),
-															),
-															new Text(
-																'Madison'.toUpperCase(),
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFFFFFFFF),
-																	fontWeight: FontWeight.w800,
-																	fontSize: 14.0,
-																	height: 1.8,
-																),
-															),
-														],
-													),
-												),											
-	
-	
+												new SizedBox(width: 15.0),
+												searchCategory("Groceries", "cardphoto.png"),
+												searchCategory("Restaurants", "cardphoto.png"),
+												searchCategory("Madison", "cardphoto.png"),
+												new SizedBox(width: 15.0),
 											],
 										)
 									)
@@ -1979,7 +1938,6 @@ class _DiscoverState extends State<Discover> {
 											fontSize: 14.0,
 										),
 									),
-									// new SizedBox(height: 10.0),
 									new Expanded(
 										child: new Container(
 											margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
@@ -2565,70 +2523,8 @@ class _BookmarksState extends State<Bookmarks> {
 							crossAxisCount: 2,
 							childAspectRatio: 1.1,
 							children: <Widget>[
-								new Card(
-									elevation: 3.0,
-									child: new Column(
-										children: <Widget>[
-											new Expanded(
-												child: new Container(
-													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-													child: new Text(
-														'Find your doctor, dentist, eye care, pharmacy',
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontWeight: FontWeight.w700,
-															fontSize: 14.0,
-														),
-													),
-												),
-											),
-											new Row(
-												children: <Widget>[
-													new Expanded(
-														child: new Container()
-													),
-													new Container(
-														padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 10.0),
-														child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
-													),
-												]
-											),
-										]
-									)
-								),
-								new Card(
-									elevation: 3.0,
-									child: new Column(
-										children: <Widget>[
-											new Expanded(
-												child: new Container(
-													padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-													child: new Text(
-														'Find the nearest grocery store',
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontWeight: FontWeight.w700,
-															fontSize: 14.0,
-														),
-													),
-												),
-											),
-											new Row(
-												children: <Widget>[
-													new Expanded(
-														child: new Container()
-													),
-													new Container(
-														padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 10.0),
-														child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
-													),
-												]
-											),
-										]
-									)
-								),
+								listCardGesture("Find your doctor, dentist, eye care, pharmacy", context, bookmarked: true),																
+								listCardGesture("Find the nearest grocery store", context, bookmarked: true),																
 							],
 						),
 					),
