@@ -1281,16 +1281,19 @@ void listCard(String txt, {height, width, key}) {
 
 void listCardGesture(String txt, context) {
 	
-		GlobalKey stickyKey = new GlobalKey();
+	// create a key so we can specifically reference the original card widget later to get its size, position
+	GlobalKey stickyKey = new GlobalKey();
 
 	return new GestureDetector(
 		onTapUp: (details){
 			var _offsety;
 			var _boxwidth;
 			var _boxheight;
+			var _rightside = false;
 			var _offsetx = 150.0;
 			var _offsetx2 = 25.0;
 			if (details.globalPosition.dx > 200) {
+				_rightside = true;
 				_offsetx = 25.0;
 				_offsetx2 = 150.0;
 			}
@@ -1304,69 +1307,72 @@ void listCardGesture(String txt, context) {
 	        }
 	        // if box is partially offscreen
 	        if (_offsety < 0) {
-		        // push it down a bit
-		        _offsety = 0.0;
-	        }
-			showDialog(
-				context: context,
-				builder: (BuildContext context) {
-					return new Column(
-			            children: [
-							new SizedBox(height: _offsety ),
-							new Expanded(
-					            child: new Stack(
-						            children: [
-							            new Positioned(
-								            top: 0.0,
-								            right: 20.0,
-								            child: listCard(txt, height:_boxheight, width:_boxwidth),
-										),
-							            new Row(
-											children: [
-												new SizedBox( width: _offsetx, height: _boxheight),
-												new Expanded(
-													child: new Container(
-														width: 50.0,
-														height: 50.0,
-														decoration: new BoxDecoration(
-															shape: BoxShape.circle,
-															color: const Color(0xFFFFFFFF),
+		        // for now, don't show a dialog
+		        // but we could also just push it down a bit
+		        // _offsety = 0.0;
+	        } else {
+				showDialog(
+					context: context,
+					builder: (BuildContext context) {
+						return new Column(
+				            children: [
+								new SizedBox(height: _offsety ),
+								new Expanded(
+						            child: new Stack(
+							            children: [
+								            new Positioned(
+									            top: 0.0,
+									            right: _rightside ? 20.0 : null,
+									            left: _rightside ? null : 20.0,
+									            child: listCard(txt, height:_boxheight, width:_boxwidth),
+											),
+								            new Row(
+												children: [
+													new SizedBox( width: _offsetx, height: _boxheight),
+													new Expanded(
+														child: new Container(
+															width: 50.0,
+															height: 50.0,
+															decoration: new BoxDecoration(
+																shape: BoxShape.circle,
+																color: const Color(0xFFFFFFFF),
+															),
+															child: new Icon( Icons.check, size: 25.0, color: const Color(0xFF000000) ),
 														),
-														child: new Icon( Icons.check, size: 25.0, color: const Color(0xFF000000) ),
 													),
-												),
-												new Expanded(
-													child: new Container(
-														width: 50.0,
-														height: 50.0,
-														decoration: new BoxDecoration(
-															shape: BoxShape.circle,
-															color: const Color(0xFFFFFFFF),
+													new Expanded(
+														child: new Container(
+															width: 50.0,
+															height: 50.0,
+															decoration: new BoxDecoration(
+																shape: BoxShape.circle,
+																color: const Color(0xFFFFFFFF),
+															),
+															child: new Icon( Icons.bookmark_border, size: 25.0, color: const Color(0xFF000000) ),
 														),
-														child: new Icon( Icons.bookmark_border, size: 25.0, color: const Color(0xFF000000) ),
 													),
-												),
-												new Expanded(
-													child: new Container(
-														width: 50.0,
-														height: 50.0,
-														decoration: new BoxDecoration(
-															shape: BoxShape.circle,
-															color: const Color(0xFFFFFFFF),
+													new Expanded(
+														child: new Container(
+															width: 50.0,
+															height: 50.0,
+															decoration: new BoxDecoration(
+																shape: BoxShape.circle,
+																color: const Color(0xFFFFFFFF),
+															),
+															child: new Icon( Icons.close, size: 25.0, color: const Color(0xFF000000) ),
 														),
-														child: new Icon( Icons.close, size: 25.0, color: const Color(0xFF000000) ),
 													),
-												),
-												new SizedBox( width: _offsetx2 ),
-											]
-										)
-									]
+													new SizedBox( width: _offsetx2 ),
+												]
+											)
+										]
+									)
 								)
-							)
-						]
-					);
-				}
-			);
+							]
+						);
+					}
+				);
+			}
 		},
 		child: listCard(txt, key: stickyKey),
 	);
