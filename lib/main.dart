@@ -1000,43 +1000,19 @@ class _LandingState extends State<Landing> {
 															new Expanded(
 																child: new InkWell(
 																	onTap: () => setState(() { _details = false; }),
-																	child: new Container(
-																		width: 50.0,
-																		height: 50.0,
-																		decoration: new BoxDecoration(
-																			shape: BoxShape.circle,
-																			color: const Color(0xFFFFFFFF),
-																		),
-																		child: new Icon( Icons.check, size: 25.0, color: const Color(0xFF000000) ),
-																	),
+																	child: listButton(Icons.check),
 																),
 															),
 															new Expanded(
 																child: new InkWell(
 																	onTap: () => setState(() { _details = false; }),
-																	child: new Container(
-																		width: 50.0,
-																		height: 50.0,
-																		decoration: new BoxDecoration(
-																			shape: BoxShape.circle,
-																			color: const Color(0xFFFFFFFF),
-																		),
-																		child: new Icon( Icons.bookmark_border, size: 25.0, color: const Color(0xFF000000) ),
-																	),
+																	child: listButton(Icons.bookmark_border),
 																),
 															),
 															new Expanded(
 																child: new InkWell(
 																	onTap: () => setState(() { _details = false; }),
-																	child: new Container(
-																		width: 50.0,
-																		height: 50.0,
-																		decoration: new BoxDecoration(
-																			shape: BoxShape.circle,
-																			color: const Color(0xFFFFFFFF),
-																		),
-																		child: new Icon( Icons.close, size: 25.0, color: const Color(0xFF000000) ),
-																	),
+																	child: listButton(Icons.close),
 																),
 															),
 														]
@@ -1256,6 +1232,18 @@ class _LandingState extends State<Landing> {
 	
 }
 
+void listButton(icon) {
+	return new Container(
+		width: 50.0,
+		height: 50.0,
+		decoration: new BoxDecoration(
+			shape: BoxShape.circle,
+			color: const Color(0xFFFFFFFF),
+		),
+		child: new Icon( icon, size: 25.0, color: const Color(0xFF000000) ),
+	);
+}
+
 
 void listCard(String txt, {height, width, key}) {
 	return new Card(
@@ -1329,39 +1317,9 @@ void listCardGesture(String txt, context) {
 								            new Row(
 												children: [
 													new SizedBox( width: _offsetx, height: _boxheight),
-													new Expanded(
-														child: new Container(
-															width: 50.0,
-															height: 50.0,
-															decoration: new BoxDecoration(
-																shape: BoxShape.circle,
-																color: const Color(0xFFFFFFFF),
-															),
-															child: new Icon( Icons.check, size: 25.0, color: const Color(0xFF000000) ),
-														),
-													),
-													new Expanded(
-														child: new Container(
-															width: 50.0,
-															height: 50.0,
-															decoration: new BoxDecoration(
-																shape: BoxShape.circle,
-																color: const Color(0xFFFFFFFF),
-															),
-															child: new Icon( Icons.bookmark_border, size: 25.0, color: const Color(0xFF000000) ),
-														),
-													),
-													new Expanded(
-														child: new Container(
-															width: 50.0,
-															height: 50.0,
-															decoration: new BoxDecoration(
-																shape: BoxShape.circle,
-																color: const Color(0xFFFFFFFF),
-															),
-															child: new Icon( Icons.close, size: 25.0, color: const Color(0xFF000000) ),
-														),
-													),
+													new Expanded( child: listButton(Icons.check) ),
+													new Expanded( child: listButton(Icons.bookmark_border) ),
+													new Expanded( child: listButton(Icons.close) ),
 													new SizedBox( width: _offsetx2 ),
 												]
 											)
