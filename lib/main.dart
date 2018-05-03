@@ -2242,6 +2242,122 @@ class _SearchState extends State<Search> {
 }
 
 
+void placeCard(txt, img, stars, distance, context, { featured = false, bookmarked = false }) {
+	return new GestureDetector(
+		onTap: () {
+			Navigator.of(context).pushNamed('/place');
+		},
+		child: new Container(
+			height: 150.0,
+			margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
+			child: new Stack(
+				fit: StackFit.loose,
+				children: <Widget>[
+					new Container(
+						margin: const EdgeInsets.fromLTRB(0.0, 7.5, 0.0, 7.5),
+						child: new Card(
+							elevation: 3.0,
+							child: new Container(
+								padding: const EdgeInsets.fromLTRB(145.0, 0.0, 0.0, 0.0),
+								child: new Column(
+									crossAxisAlignment: CrossAxisAlignment.start,
+									children: <Widget>[
+										new Container(
+											padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 0.0),
+											child: new Text(
+												txt.toUpperCase(),
+												textAlign: TextAlign.left,
+												style: new TextStyle(
+													color: const Color(0xFF000000),
+													fontWeight: FontWeight.w800,
+													fontSize: 14.0,
+												),
+											),
+										),
+										new Expanded(
+											child: new Row(
+												children: [
+													new SizedBox( width: 20.0 ),
+													new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
+													new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
+													new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
+													new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
+													new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
+													new SizedBox( width: 20.0 ),
+												],
+											),
+										),
+										new Row(
+											children: <Widget>[
+												new Expanded(
+													child: new Container(
+														padding: const EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 10.0),
+														child: new Text(
+															distance.toString() + ' mi',
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontWeight: FontWeight.w300,
+																fontSize: 14.0,
+															),
+														),
+													),
+												),
+												( bookmarked ?
+													new Container(
+														padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 10.0),
+														child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
+													) : new Container()
+												)
+											]
+										),
+									]
+								),	
+							),
+						),
+					),					
+					new Container(
+						margin: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+						child: new SizedBox(
+							width: 125.0,
+							child: new Container(
+								child: ( featured ? 
+									new Column(
+										crossAxisAlignment: CrossAxisAlignment.start,
+										children: <Widget>[
+											new Expanded( child: new Container() ),
+											new Container(
+												width: 125.0,
+												padding: const EdgeInsets.fromLTRB(10.0, 7.0, 10.0, 7.0),
+												color: const Color(0xFFFCEE21),
+												child: new Text(
+													'Featured'.toUpperCase(),
+													textAlign: TextAlign.left,
+													style: new TextStyle(
+														color: const Color(0xFF000000),
+														fontWeight: FontWeight.w800,
+														fontSize: 10.0,
+													),
+												),
+											),
+										]
+									) : new Container()
+								),
+								decoration: new BoxDecoration(
+									image: new DecorationImage(
+										image: new AssetImage('images/'+img),
+										fit: BoxFit.cover,
+									),
+								),
+							),
+						),
+					),
+				],
+			),
+		),
+	);
+}
+
 
 class SearchResults extends StatefulWidget {
 	SearchResults({Key key, this.title}) : super(key: key);
@@ -2285,187 +2401,8 @@ class _SearchResultsState extends State<SearchResults> {
 				shrinkWrap: true,
 				padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
 				children: <Widget>[
-					// result card
-					new GestureDetector(
-						onTap: () {
-							Navigator.of(context).pushNamed('/place');
-						},
-						child: new Container(
-							height: 150.0,
-							margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
-							child: new Stack(
-								fit: StackFit.loose,
-								children: <Widget>[
-									new Container(
-										margin: const EdgeInsets.fromLTRB(0.0, 7.5, 0.0, 7.5),
-										child: new Card(
-											elevation: 3.0,
-											child: new Container(
-												padding: const EdgeInsets.fromLTRB(145.0, 0.0, 0.0, 0.0),
-												child: new Column(
-													crossAxisAlignment: CrossAxisAlignment.start,
-													children: <Widget>[
-														new Container(
-															padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 0.0),
-															child: new Text(
-																'Fresh Market Madison'.toUpperCase(),
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFF000000),
-																	fontWeight: FontWeight.w800,
-																	fontSize: 14.0,
-																),
-															),
-														),
-														new Expanded(
-															child: new Row(
-																children: [
-																	new SizedBox( width: 20.0 ),
-																	new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
-																	new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
-																	new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
-																	new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
-																	new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
-																	new SizedBox( width: 20.0 ),
-																],
-															),
-														),
-														new Container(
-															padding: const EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 10.0),
-															child: new Text(
-																'2.7 mi',
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFF000000),
-																	fontWeight: FontWeight.w300,
-																	fontSize: 14.0,
-																),
-															),
-														),
-	
-													]
-												),	
-											),														
-										),
-									),
-									new Container(
-										margin: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-										child: new SizedBox(
-											width: 125.0,
-											child: new Container(
-												decoration: new BoxDecoration(
-													image: new DecorationImage(
-														image: new AssetImage('images/cardphoto.png'),
-														fit: BoxFit.cover,
-													),
-												),
-											),
-										),
-									),
-								],
-							),
-						),
-					),
-					// result card 2
-					new GestureDetector(
-						onTap: () {
-							Navigator.of(context).pushNamed('/place');
-						},
-						child: new Container(
-							height: 150.0,
-							child: new Stack(
-								fit: StackFit.loose,
-								children: <Widget>[
-									new Container(
-										margin: const EdgeInsets.fromLTRB(0.0, 7.5, 0.0, 7.5),
-										child: new Card(
-											elevation: 3.0,
-											child: new Container(
-												padding: const EdgeInsets.fromLTRB(145.0, 0.0, 0.0, 0.0),
-												child: new Column(
-													crossAxisAlignment: CrossAxisAlignment.start,
-													children: <Widget>[
-														new Container(
-															padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 0.0),
-															child: new Text(
-																'Whole Foods'.toUpperCase(),
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFF000000),
-																	fontWeight: FontWeight.w800,
-																	fontSize: 14.0,
-																),
-															),
-														),
-														new Expanded(
-															child: new Row(
-																children: [
-																	new SizedBox( width: 20.0 ),
-																	new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
-																	new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
-																	new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
-																	new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
-																	new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
-																	new SizedBox( width: 20.0 ),
-																],
-															),
-														),
-														new Container(
-															padding: const EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 10.0),
-															child: new Text(
-																'1.3 mi',
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFF000000),
-																	fontWeight: FontWeight.w300,
-																	fontSize: 14.0,
-																),
-															),
-														),
-	
-													]
-												),	
-											),
-										),
-									),
-									new Container(
-										margin: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-										child: new SizedBox(
-											width: 125.0,
-											child: new Container(
-												child: new Column(
-													crossAxisAlignment: CrossAxisAlignment.start,
-													children: <Widget>[
-														new Expanded( child: new Container() ),
-														new Container(
-															width: 125.0,
-															padding: const EdgeInsets.fromLTRB(10.0, 7.0, 10.0, 7.0),
-															color: const Color(0xFFFCEE21),
-															child: new Text(
-																'Featured'.toUpperCase(),
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFF000000),
-																	fontWeight: FontWeight.w800,
-																	fontSize: 10.0,
-																),
-															),
-														),
-													]
-												),
-												decoration: new BoxDecoration(
-													image: new DecorationImage(
-														image: new AssetImage('images/cardphoto.png'),
-														fit: BoxFit.cover,
-													),
-												),
-											),
-										),
-									),
-								],
-							),
-						),
-					),
+					 placeCard('Whole Foods', 'cardphoto.png', 5.0, 2.7, context),
+					 placeCard('Fresh Market Madison', 'background.png', 3.0, 1.3, context, featured: true),
 				],
 			)
 		);
@@ -2535,90 +2472,9 @@ class _BookmarksState extends State<Bookmarks> {
 							mainAxisSpacing: 10.0,
 							crossAxisCount: 1,
 							childAspectRatio: 2.25,
+							// fix this nonsense ^
 							children: <Widget>[
-								new Container(
-									height: 150.0,
-									child: new Stack(
-										fit: StackFit.loose,
-										children: <Widget>[
-											new Container(
-												margin: const EdgeInsets.fromLTRB(0.0, 7.5, 0.0, 7.5),
-												child: new Card(
-													elevation: 3.0,
-													child: new Container(
-														padding: const EdgeInsets.fromLTRB(145.0, 0.0, 0.0, 0.0),
-														child: new Column(
-															crossAxisAlignment: CrossAxisAlignment.start,
-															children: <Widget>[
-																new Container(
-																	padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 0.0),
-																	child: new Text(
-																		'Aldi'.toUpperCase(),
-																		textAlign: TextAlign.left,
-																		style: new TextStyle(
-																			color: const Color(0xFF000000),
-																			fontWeight: FontWeight.w800,
-																			fontSize: 14.0,
-																		),
-																	),
-																),
-																new Expanded(
-																	child: new Row(
-																		children: [
-																			new SizedBox( width: 20.0 ),
-																			new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
-																			new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
-																			new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
-																			new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
-																			new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
-																			new SizedBox( width: 20.0 ),
-																		],
-																	),
-																),
-																new Row(
-																	children: <Widget>[
-																		new Expanded(
-																			child: new Container(
-																				padding: const EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 10.0),
-																				child: new Text(
-																					'1.3 mi',
-																					textAlign: TextAlign.left,
-																					style: new TextStyle(
-																						color: const Color(0xFF000000),
-																						fontWeight: FontWeight.w300,
-																						fontSize: 14.0,
-																					),
-																				),
-																			),
-																		),
-																		new Container(
-																			padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 10.0),
-																			child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
-																		),
-																	]
-																),
-															]
-														),	
-													),
-												),
-											),
-											new Container(
-												margin: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-												child: new SizedBox(
-													width: 125.0,
-													child: new Container(
-														decoration: new BoxDecoration(
-															image: new DecorationImage(
-																image: new AssetImage('images/cardphoto.png'),
-																fit: BoxFit.cover,
-															),
-														),
-													),
-												),
-											),
-										],
-									),
-								),
+								placeCard('Aldi', 'cardphoto.png', 5.0, 2.7, context, bookmarked: true),
 							],
 						),
 					),
