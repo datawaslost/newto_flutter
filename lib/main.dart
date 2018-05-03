@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
 				bottomAppBarColor: const Color(0xFF262626),
 				primaryColor: const Color(0xFF000000),
 				indicatorColor: const Color(0xFF00C3FF),
+				fontFamily: 'Montserrat',
 			),
 			home: new Home(),
 		    routes: <String, WidgetBuilder> {
@@ -178,7 +179,6 @@ class _PasswordFieldState extends State<PasswordField> {
 			onFieldSubmitted: widget.onFieldSubmitted,
 			style: new TextStyle(
 				color: const Color(0xFF000000),
-				fontFamily: 'Montserrat',
 				fontWeight: FontWeight.w800,
 				fontSize: 18.0,
 			),
@@ -227,7 +227,6 @@ class _OnboardingState extends State<Onboarding> {
 														'Login'.toUpperCase(),
 														style: new TextStyle(
 															color: const Color(0xFF1033FF),
-															fontFamily: 'Montserrat',
 															fontWeight: FontWeight.w800,
 															fontSize: 14.0,
 														),
@@ -243,7 +242,6 @@ class _OnboardingState extends State<Onboarding> {
 									child: new Text(
 										'1/3',
 										style: new TextStyle(
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 14.0,
 										),
@@ -255,7 +253,6 @@ class _OnboardingState extends State<Onboarding> {
 									child: new Text(
 										'Tell us your school email.'.toUpperCase(),
 										style: new TextStyle(
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 38.0,
 											height: 1.0,
@@ -269,7 +266,6 @@ class _OnboardingState extends State<Onboarding> {
 										'Email'.toUpperCase(),
 										style: new TextStyle(
 											color: const Color(0xFF838383),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 14.0,
 										),
@@ -281,7 +277,6 @@ class _OnboardingState extends State<Onboarding> {
 							        	controller: _emailController,
 										style: new TextStyle(
 											color: const Color(0xFF000000),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 18.0,
 										),
@@ -298,7 +293,6 @@ class _OnboardingState extends State<Onboarding> {
 										'We’ll send you a confirmation email to confirm you school account.',
 										style: new TextStyle(
 											color: const Color(0xFF2D2D2F),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w300,
 											fontSize: 14.0,
 										),
@@ -317,7 +311,6 @@ class _OnboardingState extends State<Onboarding> {
 														child: new Text(
 															'Next Step'.toUpperCase(),
 															style: new TextStyle(
-																fontFamily: 'Montserrat',
 																fontWeight: FontWeight.w800,
 															),
 														),
@@ -359,7 +352,6 @@ class _OnboardingState extends State<Onboarding> {
 														'Login'.toUpperCase(),
 														style: new TextStyle(
 															color: const Color(0xFF1033FF),
-															fontFamily: 'Montserrat',
 															fontWeight: FontWeight.w800,
 															fontSize: 14.0,
 														),
@@ -375,7 +367,6 @@ class _OnboardingState extends State<Onboarding> {
 									child: new Text(
 										'2/3',
 										style: new TextStyle(
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 14.0,
 										),
@@ -387,7 +378,6 @@ class _OnboardingState extends State<Onboarding> {
 									child: new Text(
 										'Create your password.'.toUpperCase(),
 										style: new TextStyle(
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 38.0,
 											height: 1.0,
@@ -401,7 +391,6 @@ class _OnboardingState extends State<Onboarding> {
 										'Password'.toUpperCase(),
 										style: new TextStyle(
 											color: const Color(0xFF838383),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 14.0,
 										),
@@ -425,7 +414,6 @@ class _OnboardingState extends State<Onboarding> {
 														child: new Text(
 															'Next Step'.toUpperCase(),
 															style: new TextStyle(
-																fontFamily: 'Montserrat',
 																fontWeight: FontWeight.w800,
 															),
 														),
@@ -467,7 +455,6 @@ class _OnboardingState extends State<Onboarding> {
 														'Login'.toUpperCase(),
 														style: new TextStyle(
 															color: const Color(0xFF1033FF),
-															fontFamily: 'Montserrat',
 															fontWeight: FontWeight.w800,
 															fontSize: 14.0,
 														),
@@ -483,7 +470,6 @@ class _OnboardingState extends State<Onboarding> {
 									child: new Text(
 										'3/3',
 										style: new TextStyle(
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 14.0,
 										),
@@ -495,7 +481,6 @@ class _OnboardingState extends State<Onboarding> {
 									child: new Text(
 										'What is your hometown?'.toUpperCase(),
 										style: new TextStyle(
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 38.0,
 											height: 1.0,
@@ -509,7 +494,6 @@ class _OnboardingState extends State<Onboarding> {
 										"I'm From".toUpperCase(),
 										style: new TextStyle(
 											color: const Color(0xFF838383),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 14.0,
 										),
@@ -520,7 +504,6 @@ class _OnboardingState extends State<Onboarding> {
 							        child: new TextField(
 										style: new TextStyle(
 											color: const Color(0xFF000000),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 18.0,
 										),
@@ -544,7 +527,6 @@ class _OnboardingState extends State<Onboarding> {
 														child: new Text(
 															'Complete Sign Up'.toUpperCase(),
 															style: new TextStyle(
-																fontFamily: 'Montserrat',
 																fontWeight: FontWeight.w800,
 															),
 														),
@@ -582,7 +564,6 @@ class _OnboardingState extends State<Onboarding> {
 														'Create Account'.toUpperCase(),
 														style: new TextStyle(
 															color: const Color(0xFF1033FF),
-															fontFamily: 'Montserrat',
 															fontWeight: FontWeight.w800,
 															fontSize: 14.0,
 														),
@@ -598,7 +579,6 @@ class _OnboardingState extends State<Onboarding> {
 									child: new Text(
 										'Login'.toUpperCase(),
 										style: new TextStyle(
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 38.0,
 											height: 1.0,
@@ -612,7 +592,6 @@ class _OnboardingState extends State<Onboarding> {
 										'Email'.toUpperCase(),
 										style: new TextStyle(
 											color: const Color(0xFF838383),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 14.0,
 										),
@@ -624,7 +603,6 @@ class _OnboardingState extends State<Onboarding> {
 							        	controller: _emailController,
 										style: new TextStyle(
 											color: const Color(0xFF000000),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 18.0,
 										),
@@ -642,7 +620,6 @@ class _OnboardingState extends State<Onboarding> {
 										'Password'.toUpperCase(),
 										style: new TextStyle(
 											color: const Color(0xFF838383),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 14.0,
 										),
@@ -665,7 +642,6 @@ class _OnboardingState extends State<Onboarding> {
 														child: new Text(
 															'Login'.toUpperCase(),
 															style: new TextStyle(
-																fontFamily: 'Montserrat',
 																fontWeight: FontWeight.w800,
 															),
 														),
@@ -728,7 +704,6 @@ class _OnboardingState extends State<Onboarding> {
 									child: new Text(
 										'CREATE ACCOUNT',
 										style: new TextStyle(
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 										),
 									),
@@ -742,7 +717,6 @@ class _OnboardingState extends State<Onboarding> {
 							'Already a member?',
 							style: new TextStyle(
 								color: const Color(0xFFFFFFFF),
-								fontFamily: 'Montserrat',
 							),
 						),
 					),
@@ -757,7 +731,6 @@ class _OnboardingState extends State<Onboarding> {
 									child: new Text(
 										'LOGIN',
 										style: new TextStyle(
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 										),
 									),
@@ -815,7 +788,6 @@ class _LandingState extends State<Landing> {
 												textAlign: TextAlign.left,
 												style: new TextStyle(
 													color: const Color(0xFF000000),
-													fontFamily: 'Montserrat',
 													fontWeight: FontWeight.w800,
 													fontSize: 28.0,
 													height: 0.9,
@@ -840,7 +812,6 @@ class _LandingState extends State<Landing> {
 									textAlign: TextAlign.left,
 									style: new TextStyle(
 										color: const Color(0xFF000000),
-										fontFamily: 'Montserrat',
 										fontWeight: FontWeight.w300,
 										fontSize: 14.0,
 										height: 1.15,
@@ -858,7 +829,6 @@ class _LandingState extends State<Landing> {
 												child: new Text(
 													'Do it online'.toUpperCase(),
 													style: new TextStyle(
-														fontFamily: 'Montserrat',
 														fontWeight: FontWeight.w800,
 													),
 												),
@@ -878,7 +848,6 @@ class _LandingState extends State<Landing> {
 												child: new Text(
 													'Download Forms'.toUpperCase(),
 													style: new TextStyle(
-														fontFamily: 'Montserrat',
 														fontWeight: FontWeight.w800,
 													),
 												),
@@ -915,7 +884,6 @@ class _LandingState extends State<Landing> {
 										'UWM'.toUpperCase(),
 										style: new TextStyle(
 											color: const Color(0xFF838383),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w300,
 											fontSize: 14.0,
 										),
@@ -960,7 +928,6 @@ class _LandingState extends State<Landing> {
 															textAlign: TextAlign.center,
 															style: new TextStyle(
 																color: const Color(0xFF838383),
-																fontFamily: 'Montserrat',
 																fontWeight: FontWeight.w800,
 																fontSize: 14.0,
 															),
@@ -971,7 +938,6 @@ class _LandingState extends State<Landing> {
 															textAlign: TextAlign.center,
 															style: new TextStyle(
 																color: const Color(0xFFFFFFFF),
-																fontFamily: 'Montserrat',
 																fontWeight: FontWeight.w800,
 																fontSize: 24.0,
 																height: 0.9,
@@ -1036,7 +1002,6 @@ class _LandingState extends State<Landing> {
 													textAlign: TextAlign.center,
 													style: new TextStyle(
 														color: const Color(0xFF838383),
-														fontFamily: 'Montserrat',
 														fontWeight: FontWeight.w800,
 														fontSize: 14.0,
 													),
@@ -1047,7 +1012,6 @@ class _LandingState extends State<Landing> {
 													textAlign: TextAlign.center,
 													style: new TextStyle(
 														color: const Color(0xFFFFFFFF),
-														fontFamily: 'Montserrat',
 														fontWeight: FontWeight.w800,
 														fontSize: 24.0,
 														height: 0.9,
@@ -1096,7 +1060,6 @@ class _LandingState extends State<Landing> {
 									textAlign: TextAlign.center,
 									style: new TextStyle(
 										color: const Color(0xFF838383),
-										fontFamily: 'Montserrat',
 										fontWeight: FontWeight.w800,
 										fontSize: 14.0,
 									),
@@ -1137,7 +1100,6 @@ class _LandingState extends State<Landing> {
 																					textAlign: TextAlign.left,
 																					style: new TextStyle(
 																						color: const Color(0xFF000000),
-																						fontFamily: 'Montserrat',
 																						fontWeight: FontWeight.w800,
 																						fontSize: 24.0,
 																					),
@@ -1191,7 +1153,6 @@ class _LandingState extends State<Landing> {
 																					textAlign: TextAlign.left,
 																					style: new TextStyle(
 																						color: const Color(0xFF000000),
-																						fontFamily: 'Montserrat',
 																						fontWeight: FontWeight.w800,
 																						fontSize: 24.0,
 																					),
@@ -1274,7 +1235,6 @@ class _YourListState extends State<YourList> {
 					textAlign: TextAlign.left,
 					style: new TextStyle(
 						color: const Color(0xFF000000),
-						fontFamily: 'Montserrat',
 						fontWeight: FontWeight.w700,
 						fontSize: 14.0,
 					),
@@ -1370,7 +1330,6 @@ class _YourListState extends State<YourList> {
 						indicatorSize: TabBarIndicatorSize.label,
 						isScrollable: false,
 						labelStyle: new TextStyle(
-							fontFamily: 'Montserrat',
 							fontWeight: FontWeight.w800,
 							fontSize: 14.0,
 							height: 2.0,
@@ -1430,7 +1389,6 @@ class _YourListState extends State<YourList> {
 																textAlign: TextAlign.left,
 																style: new TextStyle(
 																	color: const Color(0xFF000000),
-																	fontFamily: 'Montserrat',
 																	fontWeight: FontWeight.w800,
 																	fontSize: 24.0,
 																),
@@ -1446,7 +1404,6 @@ class _YourListState extends State<YourList> {
 																			textAlign: TextAlign.left,
 																			style: new TextStyle(
 																				color: const Color(0xFF838383),
-																				fontFamily: 'Montserrat',
 																				fontWeight: FontWeight.w800,
 																				fontSize: 10.0,
 																			),
@@ -1457,7 +1414,6 @@ class _YourListState extends State<YourList> {
 																		textAlign: TextAlign.left,
 																		style: new TextStyle(
 																			color: const Color(0xFF838383),
-																			fontFamily: 'Montserrat',
 																			fontWeight: FontWeight.w800,
 																			fontSize: 10.0,
 																		),
@@ -1488,7 +1444,6 @@ class _YourListState extends State<YourList> {
 																textAlign: TextAlign.left,
 																style: new TextStyle(
 																	color: const Color(0xFF000000),
-																	fontFamily: 'Montserrat',
 																	fontWeight: FontWeight.w800,
 																	fontSize: 24.0,
 																),
@@ -1504,7 +1459,6 @@ class _YourListState extends State<YourList> {
 																			textAlign: TextAlign.left,
 																			style: new TextStyle(
 																				color: const Color(0xFF838383),
-																				fontFamily: 'Montserrat',
 																				fontWeight: FontWeight.w800,
 																				fontSize: 10.0,
 																			),
@@ -1515,7 +1469,6 @@ class _YourListState extends State<YourList> {
 																		textAlign: TextAlign.left,
 																		style: new TextStyle(
 																			color: const Color(0xFF838383),
-																			fontFamily: 'Montserrat',
 																			fontWeight: FontWeight.w800,
 																			fontSize: 10.0,
 																		),
@@ -1579,7 +1532,6 @@ class _YourListState extends State<YourList> {
 																		textAlign: TextAlign.left,
 																		style: new TextStyle(
 																			color: const Color(0xFF000000),
-																			fontFamily: 'Montserrat',
 																			fontWeight: FontWeight.w800,
 																			fontSize: 24.0,
 																		),
@@ -1610,7 +1562,6 @@ class _YourListState extends State<YourList> {
 																							textAlign: TextAlign.left,
 																							style: new TextStyle(
 																								color: const Color(0xFF000000),
-																								fontFamily: 'Montserrat',
 																								fontWeight: FontWeight.w800,
 																								fontSize: 10.0,
 																							),
@@ -1707,7 +1658,6 @@ class _YourListState extends State<YourList> {
 																							textAlign: TextAlign.left,
 																							style: new TextStyle(
 																								color: const Color(0xFF000000),
-																								fontFamily: 'Montserrat',
 																								fontWeight: FontWeight.w800,
 																								fontSize: 24.0,
 																							),
@@ -1718,7 +1668,6 @@ class _YourListState extends State<YourList> {
 																						textAlign: TextAlign.left,
 																						style: new TextStyle(
 																							color: const Color(0xFF838383),
-																							fontFamily: 'Montserrat',
 																							fontWeight: FontWeight.w800,
 																							fontSize: 10.0,
 																						),
@@ -1773,7 +1722,6 @@ class _YourListState extends State<YourList> {
 														textAlign: TextAlign.left,
 														style: new TextStyle(
 															color: const Color(0xFF000000),
-															fontFamily: 'Montserrat',
 															fontWeight: FontWeight.w700,
 															fontSize: 14.0,
 														),
@@ -1789,7 +1737,6 @@ class _YourListState extends State<YourList> {
 														textAlign: TextAlign.left,
 														style: new TextStyle(
 															color: const Color(0xFF000000),
-															fontFamily: 'Montserrat',
 															fontWeight: FontWeight.w700,
 															fontSize: 14.0,
 														),
@@ -1805,7 +1752,6 @@ class _YourListState extends State<YourList> {
 														textAlign: TextAlign.left,
 														style: new TextStyle(
 															color: const Color(0xFF000000),
-															fontFamily: 'Montserrat',
 															fontWeight: FontWeight.w700,
 															fontSize: 14.0,
 														),
@@ -1821,7 +1767,6 @@ class _YourListState extends State<YourList> {
 														textAlign: TextAlign.left,
 														style: new TextStyle(
 															color: const Color(0xFF000000),
-															fontFamily: 'Montserrat',
 															fontWeight: FontWeight.w700,
 															fontSize: 14.0,
 														),
@@ -1851,7 +1796,6 @@ class _YourListState extends State<YourList> {
 																textAlign: TextAlign.left,
 																style: new TextStyle(
 																	color: const Color(0xFF000000),
-																	fontFamily: 'Montserrat',
 																	fontWeight: FontWeight.w800,
 																	fontSize: 24.0,
 																),
@@ -1867,7 +1811,6 @@ class _YourListState extends State<YourList> {
 																			textAlign: TextAlign.left,
 																			style: new TextStyle(
 																				color: const Color(0xFF838383),
-																				fontFamily: 'Montserrat',
 																				fontWeight: FontWeight.w800,
 																				fontSize: 10.0,
 																			),
@@ -1878,7 +1821,6 @@ class _YourListState extends State<YourList> {
 																		textAlign: TextAlign.left,
 																		style: new TextStyle(
 																			color: const Color(0xFF838383),
-																			fontFamily: 'Montserrat',
 																			fontWeight: FontWeight.w800,
 																			fontSize: 10.0,
 																		),
@@ -1969,7 +1911,6 @@ class _ListItemsState extends State<ListItems> {
 									textAlign: TextAlign.left,
 									style: new TextStyle(
 										color: const Color(0xFF000000),
-										fontFamily: 'Montserrat',
 										fontWeight: FontWeight.w800,
 										fontSize: 28.0,
 										height: 0.9,
@@ -1995,7 +1936,6 @@ class _ListItemsState extends State<ListItems> {
 											textAlign: TextAlign.left,
 											style: new TextStyle(
 												color: const Color(0xFF000000),
-												fontFamily: 'Montserrat',
 												fontWeight: FontWeight.w700,
 												fontSize: 14.0,
 											),
@@ -2011,7 +1951,6 @@ class _ListItemsState extends State<ListItems> {
 											textAlign: TextAlign.left,
 											style: new TextStyle(
 												color: const Color(0xFF000000),
-												fontFamily: 'Montserrat',
 												fontWeight: FontWeight.w700,
 												fontSize: 14.0,
 											),
@@ -2027,7 +1966,6 @@ class _ListItemsState extends State<ListItems> {
 											textAlign: TextAlign.left,
 											style: new TextStyle(
 												color: const Color(0xFF000000),
-												fontFamily: 'Montserrat',
 												fontWeight: FontWeight.w700,
 												fontSize: 14.0,
 											),
@@ -2043,7 +1981,6 @@ class _ListItemsState extends State<ListItems> {
 											textAlign: TextAlign.left,
 											style: new TextStyle(
 												color: const Color(0xFF000000),
-												fontFamily: 'Montserrat',
 												fontWeight: FontWeight.w700,
 												fontSize: 14.0,
 											),
@@ -2082,7 +2019,6 @@ class _ListItemsState extends State<ListItems> {
 															textAlign: TextAlign.left,
 															style: new TextStyle(
 																color: const Color(0xFF000000),
-																fontFamily: 'Montserrat',
 																fontWeight: FontWeight.w800,
 																fontSize: 24.0,
 															),
@@ -2113,7 +2049,6 @@ class _ListItemsState extends State<ListItems> {
 																				textAlign: TextAlign.left,
 																				style: new TextStyle(
 																					color: const Color(0xFF000000),
-																					fontFamily: 'Montserrat',
 																					fontWeight: FontWeight.w800,
 																					fontSize: 10.0,
 																				),
@@ -2168,7 +2103,6 @@ class _DiscoverState extends State<Discover> {
 					'Discover Madison, WI'.toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
-						fontFamily: 'Montserrat',
 						fontWeight: FontWeight.w800,
 						fontSize: 14.0,
 					),
@@ -2198,7 +2132,6 @@ class _DiscoverState extends State<Discover> {
 											textAlign: TextAlign.center,
 											style: new TextStyle(
 												color: const Color(0xFFFFFFFF),
-												fontFamily: 'Montserrat',
 												fontWeight: FontWeight.w800,
 												fontSize: 28.0,
 											),
@@ -2236,7 +2169,6 @@ class _DiscoverState extends State<Discover> {
 																	textAlign: TextAlign.left,
 																	style: new TextStyle(
 																		color: const Color(0xFFFFFFFF),
-																		fontFamily: 'Montserrat',
 																		fontWeight: FontWeight.w800,
 																		fontSize: 14.0,
 																		height: 1.8,
@@ -2267,7 +2199,6 @@ class _DiscoverState extends State<Discover> {
 																textAlign: TextAlign.left,
 																style: new TextStyle(
 																	color: const Color(0xFFFFFFFF),
-																	fontFamily: 'Montserrat',
 																	fontWeight: FontWeight.w800,
 																	fontSize: 14.0,
 																	height: 1.8,
@@ -2298,7 +2229,6 @@ class _DiscoverState extends State<Discover> {
 																textAlign: TextAlign.left,
 																style: new TextStyle(
 																	color: const Color(0xFFFFFFFF),
-																	fontFamily: 'Montserrat',
 																	fontWeight: FontWeight.w800,
 																	fontSize: 14.0,
 																	height: 1.8,
@@ -2329,7 +2259,6 @@ class _DiscoverState extends State<Discover> {
 										textAlign: TextAlign.center,
 										style: new TextStyle(
 											color: const Color(0xFF838383),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 14.0,
 										),
@@ -2367,7 +2296,6 @@ class _DiscoverState extends State<Discover> {
 																					textAlign: TextAlign.left,
 																					style: new TextStyle(
 																						color: const Color(0xFF000000),
-																						fontFamily: 'Montserrat',
 																						fontWeight: FontWeight.w800,
 																						fontSize: 24.0,
 																					),
@@ -2416,7 +2344,6 @@ class _DiscoverState extends State<Discover> {
 																					textAlign: TextAlign.left,
 																					style: new TextStyle(
 																						color: const Color(0xFF000000),
-																						fontFamily: 'Montserrat',
 																						fontWeight: FontWeight.w800,
 																						fontSize: 24.0,
 																					),
@@ -2472,7 +2399,6 @@ class _DiscoverState extends State<Discover> {
 												'Search'.toUpperCase(),
 												style: new TextStyle(
 													color: const Color(0xFFFFFFFF),
-													fontFamily: 'Montserrat',
 													fontWeight: FontWeight.w800,
 													fontSize: 12.0,
 												),
@@ -2522,7 +2448,6 @@ class _SearchState extends State<Search> {
 					'Find a grocery store'.toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
-						fontFamily: 'Montserrat',
 						fontWeight: FontWeight.w800,
 						fontSize: 14.0,
 					),
@@ -2547,7 +2472,6 @@ class _SearchState extends State<Search> {
 							textAlign: TextAlign.left,
 							style: new TextStyle(
 								color: const Color(0xFF000000),
-								fontFamily: 'Montserrat',
 								fontWeight: FontWeight.w800,
 								fontSize: 28.0,
 							),
@@ -2560,7 +2484,6 @@ class _SearchState extends State<Search> {
 							textAlign: TextAlign.left,
 							style: new TextStyle(
 								color: const Color(0xFF000000),
-								fontFamily: 'Montserrat',
 								fontWeight: FontWeight.w300,
 								fontSize: 14.0,
 							),
@@ -2589,7 +2512,6 @@ class _SearchState extends State<Search> {
 							textAlign: TextAlign.left,
 							style: new TextStyle(
 								color: const Color(0xFF000000),
-								fontFamily: 'Montserrat',
 								fontWeight: FontWeight.w800,
 								fontSize: 28.0,
 							),
@@ -2602,7 +2524,6 @@ class _SearchState extends State<Search> {
 							textAlign: TextAlign.left,
 							style: new TextStyle(
 								color: const Color(0xFF000000),
-								fontFamily: 'Montserrat',
 								fontWeight: FontWeight.w300,
 								fontSize: 14.0,
 							),
@@ -2623,7 +2544,6 @@ class _SearchState extends State<Search> {
 											textAlign: TextAlign.center,
 											style: new TextStyle(
 												color: const Color(0xFF000000),
-												fontFamily: 'Montserrat',
 												fontWeight: FontWeight.w800,
 												fontSize: 14.0,
 											),
@@ -2644,7 +2564,6 @@ class _SearchState extends State<Search> {
 											textAlign: TextAlign.center,
 											style: new TextStyle(
 												color: const Color(0xFF000000),
-												fontFamily: 'Montserrat',
 												fontWeight: FontWeight.w800,
 												fontSize: 14.0,
 											),
@@ -2671,7 +2590,6 @@ class _SearchState extends State<Search> {
 											textAlign: TextAlign.center,
 											style: new TextStyle(
 												color: const Color(0xFF000000),
-												fontFamily: 'Montserrat',
 												fontWeight: FontWeight.w800,
 												fontSize: 14.0,
 											),
@@ -2692,7 +2610,6 @@ class _SearchState extends State<Search> {
 											textAlign: TextAlign.center,
 											style: new TextStyle(
 												color: const Color(0xFF000000),
-												fontFamily: 'Montserrat',
 												fontWeight: FontWeight.w800,
 												fontSize: 14.0,
 											),
@@ -2717,7 +2634,6 @@ class _SearchState extends State<Search> {
 											child: new Text(
 												'View Results'.toUpperCase(),
 												style: new TextStyle(
-													fontFamily: 'Montserrat',
 													fontWeight: FontWeight.w800,
 												),
 											),
@@ -2762,7 +2678,6 @@ class _SearchResultsState extends State<SearchResults> {
 					'Grocery Stores'.toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
-						fontFamily: 'Montserrat',
 						fontWeight: FontWeight.w800,
 						fontSize: 14.0,
 					),
@@ -2807,7 +2722,6 @@ class _SearchResultsState extends State<SearchResults> {
 																textAlign: TextAlign.left,
 																style: new TextStyle(
 																	color: const Color(0xFF000000),
-																	fontFamily: 'Montserrat',
 																	fontWeight: FontWeight.w800,
 																	fontSize: 14.0,
 																),
@@ -2833,7 +2747,6 @@ class _SearchResultsState extends State<SearchResults> {
 																textAlign: TextAlign.left,
 																style: new TextStyle(
 																	color: const Color(0xFF000000),
-																	fontFamily: 'Montserrat',
 																	fontWeight: FontWeight.w300,
 																	fontSize: 14.0,
 																),
@@ -2889,7 +2802,6 @@ class _SearchResultsState extends State<SearchResults> {
 																textAlign: TextAlign.left,
 																style: new TextStyle(
 																	color: const Color(0xFF000000),
-																	fontFamily: 'Montserrat',
 																	fontWeight: FontWeight.w800,
 																	fontSize: 14.0,
 																),
@@ -2915,7 +2827,6 @@ class _SearchResultsState extends State<SearchResults> {
 																textAlign: TextAlign.left,
 																style: new TextStyle(
 																	color: const Color(0xFF000000),
-																	fontFamily: 'Montserrat',
 																	fontWeight: FontWeight.w300,
 																	fontSize: 14.0,
 																),
@@ -2945,7 +2856,6 @@ class _SearchResultsState extends State<SearchResults> {
 																textAlign: TextAlign.left,
 																style: new TextStyle(
 																	color: const Color(0xFF000000),
-																	fontFamily: 'Montserrat',
 																	fontWeight: FontWeight.w800,
 																	fontSize: 10.0,
 																),
@@ -2999,7 +2909,6 @@ class _BookmarksState extends State<Bookmarks> {
 					'Saved'.toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
-						fontFamily: 'Montserrat',
 						fontWeight: FontWeight.w800,
 						fontSize: 14.0,
 					),
@@ -3036,7 +2945,6 @@ class _BookmarksState extends State<Bookmarks> {
 														textAlign: TextAlign.left,
 														style: new TextStyle(
 															color: const Color(0xFF000000),
-															fontFamily: 'Montserrat',
 															fontWeight: FontWeight.w700,
 															fontSize: 14.0,
 														),
@@ -3069,7 +2977,6 @@ class _BookmarksState extends State<Bookmarks> {
 														textAlign: TextAlign.left,
 														style: new TextStyle(
 															color: const Color(0xFF000000),
-															fontFamily: 'Montserrat',
 															fontWeight: FontWeight.w700,
 															fontSize: 14.0,
 														),
@@ -3122,7 +3029,6 @@ class _BookmarksState extends State<Bookmarks> {
 																		textAlign: TextAlign.left,
 																		style: new TextStyle(
 																			color: const Color(0xFF000000),
-																			fontFamily: 'Montserrat',
 																			fontWeight: FontWeight.w800,
 																			fontSize: 14.0,
 																		),
@@ -3151,7 +3057,6 @@ class _BookmarksState extends State<Bookmarks> {
 																					textAlign: TextAlign.left,
 																					style: new TextStyle(
 																						color: const Color(0xFF000000),
-																						fontFamily: 'Montserrat',
 																						fontWeight: FontWeight.w300,
 																						fontSize: 14.0,
 																					),
@@ -3222,7 +3127,6 @@ class _BookmarksState extends State<Bookmarks> {
 																		textAlign: TextAlign.left,
 																		style: new TextStyle(
 																			color: const Color(0xFF000000),
-																			fontFamily: 'Montserrat',
 																			fontWeight: FontWeight.w800,
 																			fontSize: 24.0,
 																		),
@@ -3288,7 +3192,6 @@ class _AccountState extends State<Account> {
 					'Account Settings'.toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
-						fontFamily: 'Montserrat',
 						fontWeight: FontWeight.w800,
 						fontSize: 14.0,
 					),
@@ -3307,7 +3210,6 @@ class _AccountState extends State<Account> {
 					new ListTile(
 						title: new Text('karen@uwmadison.edu',
 							style: new TextStyle(
-								fontFamily: 'Montserrat',
 								fontWeight: FontWeight.w300,
 								fontSize: 14.0,
 							)
@@ -3328,7 +3230,6 @@ class _AccountState extends State<Account> {
 					new ListTile(
 						title: new Text('Chicago, IL',
 							style: new TextStyle(
-								fontFamily: 'Montserrat',
 								fontWeight: FontWeight.w300,
 								fontSize: 14.0,
 							)
@@ -3349,7 +3250,6 @@ class _AccountState extends State<Account> {
 					new ListTile(
 						title: new Text('Change Password',
 							style: new TextStyle(
-								fontFamily: 'Montserrat',
 								fontWeight: FontWeight.w300,
 								fontSize: 14.0,
 							)
@@ -3370,7 +3270,6 @@ class _AccountState extends State<Account> {
 					new ListTile(
 						title: new Text('Log Out',
 							style: new TextStyle(
-								fontFamily: 'Montserrat',
 								fontWeight: FontWeight.w300,
 								fontSize: 14.0,
 							)
@@ -3442,7 +3341,6 @@ class _ArticleState extends State<Article> {
 															textAlign: TextAlign.left,
 															style: new TextStyle(
 																color: const Color(0xFF000000),
-																fontFamily: 'Montserrat',
 																fontWeight: FontWeight.w800,
 																fontSize: 28.0,
 																height: 0.9,
@@ -3483,7 +3381,6 @@ class _ArticleState extends State<Article> {
 										textAlign: TextAlign.left,
 										style: new TextStyle(
 											color: const Color(0xFF000000),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 12.0,
 										),
@@ -3502,7 +3399,6 @@ class _ArticleState extends State<Article> {
 								textAlign: TextAlign.left,
 								style: new TextStyle(
 									color: const Color(0xFF000000),
-									fontFamily: 'Montserrat',
 									fontWeight: FontWeight.w300,
 									fontSize: 14.0,
 									height: 1.15,
@@ -3521,7 +3417,6 @@ class _ArticleState extends State<Article> {
 											child: new Text(
 												'Shop Now'.toUpperCase(),
 												style: new TextStyle(
-													fontFamily: 'Montserrat',
 													fontWeight: FontWeight.w800,
 												),
 											),
@@ -3610,7 +3505,6 @@ class _PlaceState extends State<Place> {
 															textAlign: TextAlign.left,
 															style: new TextStyle(
 																color: const Color(0xFF000000),
-																fontFamily: 'Montserrat',
 																fontWeight: FontWeight.w800,
 																fontSize: 28.0,
 																height: 0.9,
@@ -3653,7 +3547,6 @@ class _PlaceState extends State<Place> {
 										textAlign: TextAlign.left,
 										style: new TextStyle(
 											color: const Color(0xFF1033FF),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w400,
 											fontSize: 14.0,
 											height: 1.25,
@@ -3664,7 +3557,6 @@ class _PlaceState extends State<Place> {
 										textAlign: TextAlign.left,
 										style: new TextStyle(
 											color: const Color(0xFF1033FF),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w400,
 											fontSize: 14.0,
 											height: 1.25,
@@ -3675,7 +3567,6 @@ class _PlaceState extends State<Place> {
 										textAlign: TextAlign.left,
 										style: new TextStyle(
 											color: const Color(0xFF1033FF),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w400,
 											fontSize: 14.0,
 											height: 1.25,
@@ -3685,7 +3576,6 @@ class _PlaceState extends State<Place> {
 										"Open Now: 7AM-12AM",
 										style: new TextStyle(
 											color: const Color(0xFF000000),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w300,
 											fontSize: 14.0,
 											height: 1.25,
@@ -3706,7 +3596,6 @@ class _PlaceState extends State<Place> {
 										"Highlights".toUpperCase(),
 										style: new TextStyle(
 											color: const Color(0xFF000000),
-											fontFamily: 'Montserrat',
 											fontWeight: FontWeight.w800,
 											fontSize: 14.0,
 											height: 1.25,
@@ -3718,7 +3607,6 @@ class _PlaceState extends State<Place> {
 											"Get fresh in our aisles. Oh, behave. We’re so about fresh we can hardly contain ourselves. Fresh produce, fresh sushi, fresh deli, fresh faces, fresh seafood, fresh salads, sandwiches, panini’s and breakfast, lunch and dinner buffets, and a fresh approach to just about everything. We’re not your mother’s grocery store because we’re your grocery store. Come on now, it’s time to get fresh in our aisles.",
 											style: new TextStyle(
 												color: const Color(0xFF000000),
-												fontFamily: 'Montserrat',
 												fontWeight: FontWeight.w300,
 												fontSize: 14.0,
 												height: 1.25,
@@ -3736,7 +3624,6 @@ class _PlaceState extends State<Place> {
 												"What Others Think".toUpperCase(),
 												style: new TextStyle(
 													color: const Color(0xFF000000),
-													fontFamily: 'Montserrat',
 													fontWeight: FontWeight.w800,
 													fontSize: 14.0,
 													height: 1.25,
@@ -3747,7 +3634,6 @@ class _PlaceState extends State<Place> {
 												"4.9".toUpperCase(),
 												style: new TextStyle(
 													color: const Color(0xFF1033FF),
-													fontFamily: 'Montserrat',
 													fontWeight: FontWeight.w800,
 													fontSize: 14.0,
 													height: 1.25,
@@ -3783,7 +3669,6 @@ class _PlaceState extends State<Place> {
 													textAlign: TextAlign.center,
 													style: new TextStyle(
 														color: const Color(0xFF000000),
-														fontFamily: 'Montserrat',
 														fontWeight: FontWeight.w300,
 														fontSize: 14.0,
 														height: 1.25,
@@ -3846,7 +3731,6 @@ class _OrganizationState extends State<Organization> {
 					'UWM'.toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
-						fontFamily: 'Montserrat',
 						fontWeight: FontWeight.w800,
 						fontSize: 14.0,
 					),
