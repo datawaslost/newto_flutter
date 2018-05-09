@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:carousel/carousel.dart';
+// import 'package:carousel/carousel.dart';
+import 'carousel.dart';
 import 'package:map_view/map_view.dart';
 import "dart:ui";
 
@@ -858,12 +859,14 @@ class _LandingState extends State<Landing> {
 
 	String _response;
 	bool _details = false;
-	
+	List<Widget> _carouselItems;
+	double _carouselProgress = 1 / 2;
+
 	@override
 	Widget build(BuildContext context) {
 	  
 		// SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-		
+
 		void _dialog() {
 			showDialog(
 				context: context,
@@ -956,15 +959,13 @@ class _LandingState extends State<Landing> {
 				)
 			);
 		}
-		
+	
 		void carouselItem(txt) {
 			return new Stack(
 				children: [
 				    new GestureDetector(
 						onTap: _dialog,
-						onLongPress: () {
-							setState(() { _details = true; });
-						},
+						onLongPress: () => setState(() { _details = true; }),
 						child: new Container(
 							padding: new EdgeInsets.fromLTRB(60.0, 0.0, 60.0, 0.0),
 							alignment: Alignment.center,
@@ -1007,7 +1008,6 @@ class _LandingState extends State<Landing> {
 						? new Container(
 							color: const Color(0xFF000000),
 							padding: new EdgeInsets.fromLTRB(80.0, 0.0, 80.0, 0.0),
-							// alignment: Alignment.center,
 							child: new Center(
 								child: new Row(
 									children: [
@@ -1038,7 +1038,13 @@ class _LandingState extends State<Landing> {
 				]
 			);
 		}
+
+		_carouselItems = [
+			carouselItem('Tell your friends your new address'),
+			carouselItem('Turn in your housing insurance forms'),
+		];
 		
+	
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
 			appBar: new AppBar(
@@ -1084,16 +1090,14 @@ class _LandingState extends State<Landing> {
 				children: <Widget>[
 					new Expanded(
 						child: new Carousel(
+							onCarouselChange: (i, t) => setState(() { _carouselProgress = i+1/t; }),
 							displayDuration: new Duration(seconds: 200000),
-							children: [
-								carouselItem('Tell your friends your new address'),
-								carouselItem('Turn in your housing insurance forms'),
-							]
+							children: _carouselItems,
 						),
 					),
 					new Container(
 						child: new LinearProgressIndicator(
-							value: 0.5,
+							value: _carouselProgress,
 							backgroundColor: const Color(0xFF2D2D2F),
 							valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
 						),
