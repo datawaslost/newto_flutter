@@ -1226,7 +1226,7 @@ void listCardGesture(String txt, context, {bookmarked = false}) {
 			// if box is visible
 	        if (keyContext != null) {
 				final RenderBox box = keyContext.findRenderObject();
-				_offsety = box.localToGlobal(Offset.zero).dy - 20.0;
+				_offsety = box.localToGlobal(Offset.zero).dy - MediaQuery.of(context).padding.top;
 				_boxwidth = box.size.width - 7.5;
 				_boxheight = box.size.height - 7.5;
 	        }
