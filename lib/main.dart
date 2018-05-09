@@ -2573,31 +2573,34 @@ class _ArticleState extends State<Article> {
 									new BackdropFilter(
 										filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
 										child: new Container(
-											padding: new EdgeInsets.fromLTRB(20.0, 30.0, 10.0, 15.0),
-											child: new Row(
-												crossAxisAlignment: CrossAxisAlignment.start,
-												children: <Widget>[
-													new Expanded(
-														child: new Text(
-															'Create the Perfect Dorm Room'.toUpperCase(),
-															textAlign: TextAlign.left,
-															style: new TextStyle(
-																color: const Color(0xFF000000),
-																fontWeight: FontWeight.w800,
-																fontSize: 28.0,
-																height: 0.9,
+											padding: new EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 15.0),
+											child: new SafeArea(
+												child: new Row(
+													crossAxisAlignment: CrossAxisAlignment.start,
+													children: <Widget>[
+														new Expanded(
+															child: new Text(
+																'Create the Perfect Dorm Room'.toUpperCase(),
+																textAlign: TextAlign.left,
+																style: new TextStyle(
+																	color: const Color(0xFF000000),
+																	fontWeight: FontWeight.w800,
+																	fontSize: 28.0,
+																	height: 0.9,
+																),
 															),
 														),
-													),
-													new IconButton(
-														icon: new Icon(Icons.close, color: const Color(0xFF000000)),
-														padding: new EdgeInsets.all(0.0),
-														alignment: Alignment.topCenter,
-														onPressed: () => Navigator.pop(context,true),
-													),
-												]
-											),
-											decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+														new IconButton(
+															icon: new Icon(Icons.close, color: const Color(0xFF000000)),
+															padding: new EdgeInsets.all(0.0),
+															alignment: Alignment.topCenter,
+															onPressed: () => Navigator.pop(context,true),
+														),
+													]
+												),
+																							),
+
+												decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
 										),
 									),
 									new Expanded(
@@ -2737,29 +2740,31 @@ class _PlaceState extends State<Place> {
 									new BackdropFilter(
 										filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
 										child: new Container(
-											padding: new EdgeInsets.fromLTRB(20.0, 30.0, 10.0, 15.0),
-											child: new Row(
-												crossAxisAlignment: CrossAxisAlignment.start,
-												children: <Widget>[
-													new Expanded(
-														child: new Text(
-															'Fresh Market Madison'.toUpperCase(),
-															textAlign: TextAlign.left,
-															style: new TextStyle(
-																color: const Color(0xFF000000),
-																fontWeight: FontWeight.w800,
-																fontSize: 28.0,
-																height: 0.9,
+											padding: new EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 15.0),
+											child: new SafeArea(
+													child: new Row(
+													crossAxisAlignment: CrossAxisAlignment.start,
+													children: <Widget>[
+														new Expanded(
+															child: new Text(
+																'Fresh Market Madison'.toUpperCase(),
+																textAlign: TextAlign.left,
+																style: new TextStyle(
+																	color: const Color(0xFF000000),
+																	fontWeight: FontWeight.w800,
+																	fontSize: 28.0,
+																	height: 0.9,
+																),
 															),
 														),
-													),
-													new IconButton(
-														icon: new Icon(Icons.close, color: const Color(0xFF000000)),
-														padding: new EdgeInsets.all(0.0),
-														alignment: Alignment.topCenter,
-														onPressed: () => Navigator.pop(context,true),
-													),
-												]
+														new IconButton(
+															icon: new Icon(Icons.close, color: const Color(0xFF000000)),
+															padding: new EdgeInsets.all(0.0),
+															alignment: Alignment.topCenter,
+															onPressed: () => Navigator.pop(context,true),
+														),
+													]
+												),
 											),
 											decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
 										),
