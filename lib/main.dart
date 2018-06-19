@@ -62,7 +62,7 @@ void bottomBar(context, _selected) {
 		["yourlist", "list"],
 		["discover", "compass"],
 		["bookmarks", "bookmark"],
-		["org", "umw"],
+		["org", "amherst"],
 	];
 	
 	List<Widget> _navItems = [];
@@ -1064,7 +1064,7 @@ class _LandingState extends State<Landing> {
 								child: new Container(
 									alignment: Alignment.centerLeft,
 									child: new Text(
-										'UWM'.toUpperCase(),
+										'Amherst'.toUpperCase(),
 										style: new TextStyle(
 											color: const Color(0xFF838383),
 											fontWeight: FontWeight.w300,
@@ -1776,7 +1776,7 @@ class _DiscoverState extends State<Discover> {
 				backgroundColor: const Color(0xFF000000),
 				centerTitle: true,
 				title: new Text(
-					'Discover Madison, WI'.toUpperCase(),
+					'Discover Amherst, MA'.toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
 						fontWeight: FontWeight.w800,
@@ -1821,9 +1821,9 @@ class _DiscoverState extends State<Discover> {
 											shrinkWrap: true,
 											children: <Widget>[
 												new SizedBox(width: 15.0),
-												searchCategory("Groceries", "cardphoto.png"),
 												searchCategory("Restaurants", "cardphoto.png"),
-												searchCategory("Madison", "cardphoto.png"),
+												searchCategory("Groceries", "cardphoto.png"),
+												searchCategory("Amherst", "cardphoto.png"),
 												new SizedBox(width: 15.0),
 											],
 										)
@@ -1946,7 +1946,7 @@ class _SearchState extends State<Search> {
 				elevation: 0.0,
 				centerTitle: true,
 				title: new Text(
-					'Find a grocery store'.toUpperCase(),
+					'Find a restaurant'.toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
 						fontWeight: FontWeight.w800,
@@ -2020,7 +2020,7 @@ class _SearchState extends State<Search> {
 					new Container(
 						padding: const EdgeInsets.fromLTRB(20.0, 0.0, 10.0, 20.0),
 						child: new Text(
-							'Type of Grocery Store',
+							'Type of Restaurant',
 							textAlign: TextAlign.left,
 							style: new TextStyle(
 								color: const Color(0xFF000000),
@@ -2291,7 +2291,7 @@ class _SearchResultsState extends State<SearchResults> {
 				elevation: 0.0,
 				centerTitle: true,
 				title: new Text(
-					'Grocery Stores'.toUpperCase(),
+					'Restaurants'.toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
 						fontWeight: FontWeight.w800,
@@ -2312,7 +2312,7 @@ class _SearchResultsState extends State<SearchResults> {
 				padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
 				children: <Widget>[
 					 placeCard('Whole Foods', 'cardphoto.png', 5.0, 2.7, context),
-					 placeCard('Fresh Market Madison', 'background.png', 3.0, 1.3, context, featured: true),
+					 placeCard('Fresh Market Amherst', 'background.png', 3.0, 1.3, context, featured: true),
 				],
 			)
 		);
@@ -2450,7 +2450,7 @@ class _AccountState extends State<Account> {
 			body: new ListView(
 				children: <Widget>[
 					new ListTile(
-						title: new Text('karen@uwmadison.edu',
+						title: new Text('karen@amherst.edu',
 							style: new TextStyle(
 								fontWeight: FontWeight.w300,
 								fontSize: 14.0,
@@ -2747,7 +2747,7 @@ class _PlaceState extends State<Place> {
 													children: <Widget>[
 														new Expanded(
 															child: new Text(
-																'Fresh Market Madison'.toUpperCase(),
+																'Fresh Market Amherst'.toUpperCase(),
 																textAlign: TextAlign.left,
 																style: new TextStyle(
 																	color: const Color(0xFF000000),
@@ -2832,7 +2832,7 @@ class _PlaceState extends State<Place> {
 										padding: new EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 20.0),
 										child: new Image.network(
 											_staticMapProvider.getStaticUriWithMarkers(
-												<Marker>[ new Marker("1", "Fresh Market Madison", 45.523970, -122.663081) ],
+												<Marker>[ new Marker("1", "Fresh Market Amherst", 45.523970, -122.663081) ],
 												width: 600,
 												height: 400,
 												maptype: StaticMapViewType.roadmap,

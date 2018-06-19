@@ -37,12 +37,14 @@ flutter:
     - images/icon_compass.png
     - images/icon_bookmark.png
     - images/icon_umw.png
+    - images/icon_amherst.png
     - images/icon_home_selected.png
     - images/icon_list_selected.png
     - images/icon_compass_selected.png
     - images/icon_bookmark_selected.png
     - images/icon_umw_selected.png
-   
+    - images/icon_amherst_selected.png
+    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 
