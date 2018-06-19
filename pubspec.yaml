@@ -44,7 +44,11 @@ flutter:
     - images/icon_bookmark_selected.png
     - images/icon_umw_selected.png
     - images/icon_amherst_selected.png
-    
+    - images/misssaigon.jpg
+    - images/fireplace.jpg
+    - images/amherst.jpg
+    - images/lonewolf.jpg
+        
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 

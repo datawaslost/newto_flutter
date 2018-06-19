@@ -1306,7 +1306,7 @@ void listGroup(String txt, amount, context, {bookmarked = false, String sponsore
 								new Expanded(
 									child: (sponsored != null ? 
 										new Text(
-											'Sponsored by UWM'.toUpperCase(),
+											'Sponsored by Amherst'.toUpperCase(),
 											textAlign: TextAlign.left,
 											style: new TextStyle(
 												color: const Color(0xFF838383),
@@ -1380,7 +1380,7 @@ class _YourListState extends State<YourList> {
 						tabs: [
 							new Tab(text: "Your List".toUpperCase()),
 							new Tab(text: "Popular".toUpperCase()),
-							new Tab(text: "UWM".toUpperCase()),
+							new Tab(text: "Amherst".toUpperCase()),
 						],
 					),
 					actions: <Widget>[
@@ -2975,7 +2975,7 @@ class _OrganizationState extends State<Organization> {
 				elevation: 0.0,
 				centerTitle: true,
 				title: new Text(
-					'UWM'.toUpperCase(),
+					'Amherst'.toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
 						fontWeight: FontWeight.w800,
