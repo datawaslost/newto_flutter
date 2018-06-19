@@ -1137,7 +1137,7 @@ class _LandingState extends State<Landing> {
 											shrinkWrap: true,
 											children: <Widget>[
 												new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context) ),
-												new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem('Get to know UMW', 'background.png', context, sponsored: true) ),
+												new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem('Get to know Amherst', 'background.png', context, sponsored: true) ),
 											],
 										)
 									)
@@ -1866,7 +1866,7 @@ class _DiscoverState extends State<Discover> {
 														width: 278.0,
 														height: 278.0,
 														margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
-														child: discoverItem('Get to know UMW', 'background.png', context),
+														child: discoverItem('Get to know Amherst', 'background.png', context),
 													),
 												],
 											)
