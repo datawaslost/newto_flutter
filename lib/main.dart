@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/scheduler.dart';
-// import 'package:carousel/carousel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'carousel.dart';
 import 'package:map_view/map_view.dart';
 import 'package:http/http.dart' as http;
 import "dart:ui";
 import 'dart:convert';
+import 'dart:io';
+
+
+final String domain = "http://dev.newto.com/";
 
 
 void main() {
@@ -109,54 +113,80 @@ void bottomBar(context, _selected) {
 
 				
 class Home extends StatefulWidget {
-  Home({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _HomeState createState() => new _HomeState();
+	Home({Key key, this.title}) : super(key: key);
+	
+	final String title;
+	
+	@override
+	_HomeState createState() => new _HomeState();
 }
 
 
-apiTest() async {
-  final response = await http.get('http://dev.newto.com/api/users/');
-    print(response.statusCode);
+void getUserData(token, success, fail) async {
+	
+	final response = await http.get(
+		domain + 'api/me/',
+		headers: {
+			HttpHeaders.AUTHORIZATION: "JWT " + token
+		},
+	);
+	
+	if (response.statusCode == 200) {
+		// If server returns an OK response, parse the JSON
+		print(response.body);
+		success(json.decode(response.body));
+	} else {
+		// If that response was not OK, throw an error.
+		fail(response.statusCode);
+	}
+	
+}
 
-  if (response.statusCode == 200) {
-    // If server returns an OK response, parse the JSON
-    print(response.body);
-    return json.decode(response.body);
-  } else {
-    // If that response was not OK, throw an error.
-    throw Exception('Failed to load');
-  }
+
+void checkIfToken(success, fail) async {
+	
+	// obtain shared preferences
+	final prefs = await SharedPreferences.getInstance();
+	final String token = prefs.getString('token') ?? null;
+	
+	if(token == null) {
+		print("no token stored, must be their first time");
+		fail();
+	} else {
+		success(token);
+	}
+
 }
 
 
 class _HomeState extends State<Home> {
-
-	bool isLoggedIn = true;
 	
-    @override
-    void initState() {
-      super.initState();
-      
-      // need to test for logged in state here.
-
-      if(!isLoggedIn) {
-        print("not logged in, going to login page");
-		SchedulerBinding.instance.addPostFrameCallback((_) {
-		  Navigator.of(context).pushNamed("/onboarding");
-		});
-      } else {
-		SchedulerBinding.instance.addPostFrameCallback((_) {
-			Navigator.of(context).pushNamed("/landing");
-		});
-		apiTest();
-	  }
-
-    }
-    
+	@override
+	void initState() {
+		super.initState();
+		checkIfToken(
+			(token){
+				// if token success, use that token to get user data
+				getUserData(
+					token, 
+					(data){
+						print("getUserData success callback");
+						// print(data);
+						Navigator.of(context).pushNamed("/landing");
+					},
+					(code){
+						print("getUserData failure callback : " + code);
+						Navigator.of(context).pushNamed("/login");
+					}
+				);
+			}, 
+			(){
+				// if fail : no token
+				Navigator.of(context).pushNamed("/onboarding");
+			}, 
+		);
+	}
+	    
 	@override
 	Widget build(BuildContext context) {
 		return new Scaffold();
