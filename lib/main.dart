@@ -4,7 +4,9 @@ import 'package:flutter/scheduler.dart';
 // import 'package:carousel/carousel.dart';
 import 'carousel.dart';
 import 'package:map_view/map_view.dart';
+import 'package:http/http.dart' as http;
 import "dart:ui";
+import 'dart:convert';
 
 
 void main() {
@@ -116,6 +118,21 @@ class Home extends StatefulWidget {
 }
 
 
+apiTest() async {
+  final response = await http.get('http://dev.newto.com/api/users/');
+    print(response.statusCode);
+
+  if (response.statusCode == 200) {
+    // If server returns an OK response, parse the JSON
+    print(response.body);
+    return json.decode(response.body);
+  } else {
+    // If that response was not OK, throw an error.
+    throw Exception('Failed to load');
+  }
+}
+
+
 class _HomeState extends State<Home> {
 
 	bool isLoggedIn = true;
@@ -133,8 +150,9 @@ class _HomeState extends State<Home> {
 		});
       } else {
 		SchedulerBinding.instance.addPostFrameCallback((_) {
-		  Navigator.of(context).pushNamed("/landing");
+			Navigator.of(context).pushNamed("/landing");
 		});
+		apiTest();
 	  }
 
     }
@@ -1137,7 +1155,7 @@ class _LandingState extends State<Landing> {
 											shrinkWrap: true,
 											children: <Widget>[
 												new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context) ),
-												new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem('Get to know Amherst', 'background.png', context, sponsored: true) ),
+												new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem('Get to know Amherst', 'amherst.jpg', context, sponsored: true) ),
 											],
 										)
 									)
