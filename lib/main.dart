@@ -159,6 +159,15 @@ void checkIfToken(success, fail) async {
 }
 
 
+void saveToken(token) async {
+	
+	// obtain shared preferences
+	final prefs = await SharedPreferences.getInstance();
+	prefs.setString('token',token);
+	
+}
+
+
 class _HomeState extends State<Home> {
 	
 	@override
@@ -210,11 +219,13 @@ class PasswordField extends StatefulWidget {
     this.onSaved,
     this.validator,
     this.onFieldSubmitted,
+    this.controller,
   });
 
   final FormFieldSetter<String> onSaved;
   final FormFieldValidator<String> validator;
   final ValueChanged<String> onFieldSubmitted;
+  final TextEditingController controller;
 
   @override
   _PasswordFieldState createState() => new _PasswordFieldState();
@@ -231,6 +242,7 @@ class _PasswordFieldState extends State<PasswordField> {
 			onSaved: widget.onSaved,
 			validator: widget.validator,
 			onFieldSubmitted: widget.onFieldSubmitted,
+			controller: widget.controller,
 			style: new TextStyle(
 				color: const Color(0xFF000000),
 				fontWeight: FontWeight.w800,
@@ -256,7 +268,38 @@ class _PasswordFieldState extends State<PasswordField> {
 class _OnboardingState extends State<Onboarding> {
 
 	final TextEditingController _emailController = new TextEditingController();
+	final TextEditingController _passwordController = new TextEditingController();
 
+
+	void _registerWithCredentials(success, fail) async {
+		
+		print("_registerWithCredentials");
+		print(_emailController.text);
+		print(_passwordController.text);
+
+		final response = await http.post(
+			domain + 'rest-auth/registration/',
+			body: {
+				"username": _emailController.text,
+				"email": _emailController.text,
+				"password1": _passwordController.text,
+				"password2": _passwordController.text,
+			}
+		);
+		
+		print(response.statusCode);
+		
+		if (response.statusCode == 201) {
+			// If server returns an OK response, parse the JSON
+			print(response.body);
+			success(json.decode(response.body)["token"]);
+		} else {
+			// If that response was not OK, throw an error.
+			fail(response.body);
+		}
+		
+	}
+	
 	void _createAccount() {
 		Navigator.of(context).push(
 			new MaterialPageRoute(
@@ -341,6 +384,7 @@ class _OnboardingState extends State<Onboarding> {
 										keyboardType: TextInputType.emailAddress,
 							        ),
 								),
+								/*
 								new Container(
 									padding: new EdgeInsets.all(20.0),
 									child: new Text(
@@ -352,6 +396,7 @@ class _OnboardingState extends State<Onboarding> {
 										),
 									),
 								),
+								*/
 								new Expanded(
 									child: new Align(
 										alignment: Alignment.bottomCenter,
@@ -452,7 +497,9 @@ class _OnboardingState extends State<Onboarding> {
 								),
 								new Container(
 									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-							        child: new PasswordField(),
+							        child: new PasswordField(
+								        controller: _passwordController,
+							        ),
 								),
 								new Expanded(
 									child: new Align(
@@ -574,7 +621,16 @@ class _OnboardingState extends State<Onboarding> {
 											children: <Widget>[
 												new Expanded(
 													child: new RaisedButton(
-														onPressed: () => Navigator.of(context).pushNamed('/landing'),
+														onPressed: () => _registerWithCredentials(
+															(token) {
+																print("Success "+ token);
+																saveToken(token);
+																Navigator.of(context).pushNamed('/landing');
+															},
+															(error) {
+																print(error);
+															},
+														),
 														padding: new EdgeInsets.all(14.0),  
 														color: const Color(0xFF1033FF),
 														textColor: const Color(0xFFFFFFFF),
@@ -597,7 +653,34 @@ class _OnboardingState extends State<Onboarding> {
 			),
 		);
 	}
-			
+
+
+	void _loginWithCredentials(success, fail) async {
+		
+		print("_loginWithCredentials");
+		print(_emailController.text);
+		print(_passwordController.text);
+
+		final response = await http.post(
+			domain + 'rest-auth/login/',
+			body: {
+				"username": _emailController.text,
+				"password": _passwordController.text
+			}
+		);
+		
+		if (response.statusCode == 200) {
+			// If server returns an OK response, parse the JSON
+			print(response.body);
+			success(json.decode(response.body)["token"]);
+		} else {
+			// If that response was not OK, throw an error.
+			fail(response.body);
+		}
+		
+	}
+
+
 	void _login() {
 		Navigator.of(context).push(
 			new MaterialPageRoute(
@@ -681,7 +764,9 @@ class _OnboardingState extends State<Onboarding> {
 								),
 								new Container(
 									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-							        child: new PasswordField(),
+							        child: new PasswordField(
+								        controller: _passwordController,
+							        ),
 								),
 								new Expanded(
 									child: new Align(
@@ -689,7 +774,15 @@ class _OnboardingState extends State<Onboarding> {
 										child: new Row(children: <Widget>[
 											new Expanded(
 												child: new RaisedButton(
-														onPressed: () => Navigator.of(context).pushNamed('/landing'),
+														onPressed: () => _loginWithCredentials(
+															(token) {
+																saveToken(token);
+																Navigator.of(context).pushNamed('/landing');
+															},
+															(error) {
+																print(error);
+															},
+														),
 														padding: new EdgeInsets.all(14.0),  
 														color: const Color(0xFF1033FF),
 														textColor: const Color(0xFFFFFFFF),
@@ -801,6 +894,7 @@ class _OnboardingState extends State<Onboarding> {
     );
   }
 }
+
 
 void discoverItem(txt, img, context, { bool sponsored = false, bool bookmarked = false }) {
 	return new GestureDetector(
