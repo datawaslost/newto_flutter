@@ -270,7 +270,8 @@ class _OnboardingState extends State<Onboarding> {
 
 	final TextEditingController _emailController = new TextEditingController();
 	final TextEditingController _passwordController = new TextEditingController();
-	final _formKey = GlobalKey<FormState>();
+	final _emailFormKey = GlobalKey<FormState>();
+	final _passwordFormKey = GlobalKey<FormState>();
 
 
 	void _registerWithCredentials(success, fail) async {
@@ -337,7 +338,7 @@ class _OnboardingState extends State<Onboarding> {
 				builder: (context) {
 					return new Scaffold(
 						body: new Form(
-							key: _formKey,
+							key: _emailFormKey,
 							child: new Column(
 								mainAxisSize: MainAxisSize.min,
 								children: <Widget>[
@@ -415,6 +416,7 @@ class _OnboardingState extends State<Onboarding> {
 														return 'Please enter a valid email address.';
 													}
 												}
+												return null;
 											},
 											style: new TextStyle(
 												color: const Color(0xFF000000),
@@ -449,7 +451,7 @@ class _OnboardingState extends State<Onboarding> {
 													new Expanded(
 														child: new RaisedButton(
 															onPressed: () {
-																if (_formKey.currentState.validate()) {
+																if (_emailFormKey.currentState.validate()) {
 																	// If the form is valid, we do an email check in the system
 																	_emailCheck(
 																		() {
@@ -493,99 +495,112 @@ class _OnboardingState extends State<Onboarding> {
 			new MaterialPageRoute(
 				builder: (context) {
 					return new Scaffold(
-						body: new Column(
-							mainAxisSize: MainAxisSize.min,
-							children: <Widget>[
-								new LinearProgressIndicator(
-									value: 0.66,
-									backgroundColor: const Color(0xFFFFFFFF),
-								),
-								new Row (
-									children: <Widget>[
-										new BackButton(),
-										new Expanded(
-											child: new Container(
-												alignment: Alignment.topRight,
-												child: new FlatButton(
-													onPressed: _login,
-													child: new Text(
-														'Login'.toUpperCase(),
-														style: new TextStyle(
-															color: const Color(0xFF1033FF),
-															fontWeight: FontWeight.w800,
-															fontSize: 14.0,
+						body: new Form(
+							key: _passwordFormKey,
+							child: new Column(
+								mainAxisSize: MainAxisSize.min,
+								children: <Widget>[
+									new LinearProgressIndicator(
+										value: 0.66,
+										backgroundColor: const Color(0xFFFFFFFF),
+									),
+									new Row (
+										children: <Widget>[
+											new BackButton(),
+											new Expanded(
+												child: new Container(
+													alignment: Alignment.topRight,
+													child: new FlatButton(
+														onPressed: _login,
+														child: new Text(
+															'Login'.toUpperCase(),
+															style: new TextStyle(
+																color: const Color(0xFF1033FF),
+																fontWeight: FontWeight.w800,
+																fontSize: 14.0,
+															),
 														),
 													),
 												),
 											),
-										),
-									]
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
-									alignment: Alignment.topLeft,
-									child: new Text(
-										'2/3',
-										style: new TextStyle(
-											fontWeight: FontWeight.w800,
-											fontSize: 14.0,
+										]
+									),
+									new Container(
+										padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+										alignment: Alignment.topLeft,
+										child: new Text(
+											'2/3',
+											style: new TextStyle(
+												fontWeight: FontWeight.w800,
+												fontSize: 14.0,
+											),
 										),
 									),
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-									alignment: Alignment.topLeft,
-									child: new Text(
-										'Create your password.'.toUpperCase(),
-										style: new TextStyle(
-											fontWeight: FontWeight.w800,
-											fontSize: 38.0,
-											height: 1.0,
+									new Container(
+										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+										alignment: Alignment.topLeft,
+										child: new Text(
+											'Create your password.'.toUpperCase(),
+											style: new TextStyle(
+												fontWeight: FontWeight.w800,
+												fontSize: 38.0,
+												height: 1.0,
+											),
 										),
 									),
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-									alignment: Alignment.topLeft,
-									child: new Text(
-										'Password'.toUpperCase(),
-										style: new TextStyle(
-											color: const Color(0xFF838383),
-											fontWeight: FontWeight.w800,
-											fontSize: 14.0,
+									new Container(
+										padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+										alignment: Alignment.topLeft,
+										child: new Text(
+											'Password'.toUpperCase(),
+											style: new TextStyle(
+												color: const Color(0xFF838383),
+												fontWeight: FontWeight.w800,
+												fontSize: 14.0,
+											),
 										),
 									),
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-							        child: new PasswordField(
-								        controller: _passwordController,
-							        ),
-								),
-								new Expanded(
-									child: new Align(
-										alignment: Alignment.bottomCenter,
-										child: new Row(
-											children: <Widget>[
-												new Expanded(
-													child: new RaisedButton(
-														onPressed: _createAccount3,
-														padding: new EdgeInsets.all(14.0),  
-														color: const Color(0xFF1033FF),
-														textColor: const Color(0xFFFFFFFF),
-														child: new Text(
-															'Next Step'.toUpperCase(),
-															style: new TextStyle(
-																fontWeight: FontWeight.w800,
+									new Container(
+										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+								        child: new PasswordField(
+									        controller: _passwordController,
+								        	validator: (value) {
+												if (value.length < 8) {
+													return 'Your password must be at least 8 characters.';
+												}
+												return null;
+											},
+								        ),
+									),
+									new Expanded(
+										child: new Align(
+											alignment: Alignment.bottomCenter,
+											child: new Row(
+												children: <Widget>[
+													new Expanded(
+														child: new RaisedButton(
+															onPressed: () {
+																if (_passwordFormKey.currentState.validate()) {
+																	_createAccount3();
+																}
+															},
+															padding: new EdgeInsets.all(14.0),  
+															color: const Color(0xFF1033FF),
+															textColor: const Color(0xFFFFFFFF),
+															child: new Text(
+																'Next Step'.toUpperCase(),
+																style: new TextStyle(
+																	fontWeight: FontWeight.w800,
+																),
 															),
 														),
-													),
-												)
-											]
+													)
+												]
+											),
 										),
 									),
-								),
-							]
+								]
+							),
 						),
 					);
 				},
