@@ -134,7 +134,7 @@ void getUserData(token, success, fail) async {
 	
 	if (response.statusCode == 200) {
 		// If server returns an OK response, parse the JSON
-		print(response.body);
+		// print(response.body);
 		success(json.decode(response.body));
 	} else {
 		// If that response was not OK, throw an error.
@@ -272,13 +272,12 @@ class _OnboardingState extends State<Onboarding> {
 	final TextEditingController _passwordController = new TextEditingController();
 	final _emailFormKey = GlobalKey<FormState>();
 	final _passwordFormKey = GlobalKey<FormState>();
+	final _loginFormKey = GlobalKey<FormState>();
 
 
 	void _registerWithCredentials(success, fail) async {
 		
 		print("_registerWithCredentials");
-		print(_emailController.text);
-		print(_passwordController.text);
 
 		final response = await http.post(
 			domain + 'rest-auth/registration/',
@@ -289,12 +288,10 @@ class _OnboardingState extends State<Onboarding> {
 				"password2": _passwordController.text,
 			}
 		);
-		
-		print(response.statusCode);
-		
+				
 		if (response.statusCode == 201) {
 			// If server returns an OK response, parse the JSON
-			print(response.body);
+			// print(response.body);
 			success(json.decode(response.body)["token"]);
 		} else {
 			// If that response was not OK, throw an error.
@@ -307,7 +304,6 @@ class _OnboardingState extends State<Onboarding> {
 	void _emailCheck(success, fail) async {
 		
 		print("_emailCheck");
-		print(_emailController.text);
 
 		final response = await http.post(
 			domain + 'api/emailcheck/',
@@ -315,9 +311,7 @@ class _OnboardingState extends State<Onboarding> {
 				"email": _emailController.text,
 			}
 		);
-		
-		print(response.statusCode);
-		
+				
 		if (response.statusCode == 200) {
 			// If email exists
 			fail();
@@ -734,8 +728,6 @@ class _OnboardingState extends State<Onboarding> {
 	void _loginWithCredentials(success, fail) async {
 		
 		print("_loginWithCredentials");
-		print(_emailController.text);
-		print(_passwordController.text);
 
 		final response = await http.post(
 			domain + 'rest-auth/login/',
@@ -747,7 +739,7 @@ class _OnboardingState extends State<Onboarding> {
 		
 		if (response.statusCode == 200) {
 			// If server returns an OK response, parse the JSON
-			print(response.body);
+			// print(response.body);
 			success(json.decode(response.body)["token"]);
 		} else {
 			// If that response was not OK, throw an error.
@@ -762,119 +754,139 @@ class _OnboardingState extends State<Onboarding> {
 			new MaterialPageRoute(
 				builder: (context) {
 					return new Scaffold(
-						body: new Column(
-							mainAxisSize: MainAxisSize.min,
-							children: <Widget>[
-								new Row (
-									children: <Widget>[
-										new BackButton(),
-										new Expanded(
-											child: new Container(
-												alignment: Alignment.topRight,
-												child: new FlatButton(
-													onPressed: _createAccount,
-													child: new Text(
-														'Create Account'.toUpperCase(),
-														style: new TextStyle(
-															color: const Color(0xFF1033FF),
-															fontWeight: FontWeight.w800,
-															fontSize: 14.0,
+						body: new Form(
+							key: _loginFormKey,
+							child: new Column(
+								mainAxisSize: MainAxisSize.min,
+								children: <Widget>[
+									new Row (
+										children: <Widget>[
+											new BackButton(),
+											new Expanded(
+												child: new Container(
+													alignment: Alignment.topRight,
+													child: new FlatButton(
+														onPressed: _createAccount,
+														child: new Text(
+															'Create Account'.toUpperCase(),
+															style: new TextStyle(
+																color: const Color(0xFF1033FF),
+																fontWeight: FontWeight.w800,
+																fontSize: 14.0,
+															),
 														),
 													),
 												),
 											),
-										),
-									]
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-									alignment: Alignment.topLeft,
-									child: new Text(
-										'Login'.toUpperCase(),
-										style: new TextStyle(
-											fontWeight: FontWeight.w800,
-											fontSize: 38.0,
-											height: 1.0,
+										]
+									),
+									new Container(
+										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+										alignment: Alignment.topLeft,
+										child: new Text(
+											'Login'.toUpperCase(),
+											style: new TextStyle(
+												fontWeight: FontWeight.w800,
+												fontSize: 38.0,
+												height: 1.0,
+											),
 										),
 									),
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-									alignment: Alignment.topLeft,
-									child: new Text(
-										'Email'.toUpperCase(),
-										style: new TextStyle(
-											color: const Color(0xFF838383),
-											fontWeight: FontWeight.w800,
-											fontSize: 14.0,
+									new Container(
+										padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+										alignment: Alignment.topLeft,
+										child: new Text(
+											'Email'.toUpperCase(),
+											style: new TextStyle(
+												color: const Color(0xFF838383),
+												fontWeight: FontWeight.w800,
+												fontSize: 14.0,
+											),
 										),
 									),
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-							        child: new TextField(
-							        	controller: _emailController,
-										style: new TextStyle(
-											color: const Color(0xFF000000),
-											fontWeight: FontWeight.w800,
-											fontSize: 18.0,
-										),
-										decoration: new InputDecoration(
-							            	fillColor: const Color(0x66E0E1EA),
-											filled: true,
-										),
-										keyboardType: TextInputType.emailAddress,
-							        ),
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-									alignment: Alignment.topLeft,
-									child: new Text(
-										'Password'.toUpperCase(),
-										style: new TextStyle(
-											color: const Color(0xFF838383),
-											fontWeight: FontWeight.w800,
-											fontSize: 14.0,
+									new Container(
+										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+										child: new TextFormField(
+								        	controller: _emailController,
+								        	validator: (value) {
+												if (value.isEmpty) {
+													return 'Please enter your email address.';
+												}
+												return null;
+											},
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontWeight: FontWeight.w800,
+												fontSize: 18.0,
+											),
+											decoration: new InputDecoration(
+								            	fillColor: const Color(0x66E0E1EA),
+												filled: true,
+											),
+											keyboardType: TextInputType.emailAddress,
+								        ),
+									),
+									new Container(
+										padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+										alignment: Alignment.topLeft,
+										child: new Text(
+											'Password'.toUpperCase(),
+											style: new TextStyle(
+												color: const Color(0xFF838383),
+												fontWeight: FontWeight.w800,
+												fontSize: 14.0,
+											),
 										),
 									),
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-							        child: new PasswordField(
-								        controller: _passwordController,
-							        ),
-								),
-								new Expanded(
-									child: new Align(
-										alignment: Alignment.bottomCenter,
-										child: new Row(children: <Widget>[
-											new Expanded(
-												child: new RaisedButton(
-														onPressed: () => _loginWithCredentials(
-															(token) {
-																saveToken(token);
-																Navigator.of(context).pushNamed('/landing');
+									new Container(
+										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+										child: new PasswordField(
+									        controller: _passwordController,
+								        	validator: (value) {
+												if (value.isEmpty) {
+													return 'Please enter your password.';
+												}
+												return null;
+											},
+								        ),
+									),
+									new Expanded(
+										child: new Align(
+											alignment: Alignment.bottomCenter,
+											child: new Row(
+												children: <Widget>[
+													new Expanded(
+														child: new RaisedButton(
+															onPressed: () {
+																if (_loginFormKey.currentState.validate()) {
+																	_loginWithCredentials(
+																		(token) {
+																			saveToken(token);
+																			Navigator.of(context).pushNamed('/landing');
+																		},
+																		(error) {
+																			print(error);
+																		},
+																	);
+																}
 															},
-															(error) {
-																print(error);
-															},
-														),
-														padding: new EdgeInsets.all(14.0),  
-														color: const Color(0xFF1033FF),
-														textColor: const Color(0xFFFFFFFF),
-														child: new Text(
-															'Login'.toUpperCase(),
-															style: new TextStyle(
-																fontWeight: FontWeight.w800,
+															padding: new EdgeInsets.all(14.0),  
+															color: const Color(0xFF1033FF),
+															textColor: const Color(0xFFFFFFFF),
+															child: new Text(
+																'Login'.toUpperCase(),
+																style: new TextStyle(
+																	fontWeight: FontWeight.w800,
+																),
 															),
 														),
-													),
-												)
-											]
+													)
+												]
+											),
 										),
 									),
-								),
-						    ],
+							    ],
+							),
 						),
 					);
 				},
@@ -2741,7 +2753,11 @@ class _AccountState extends State<Account> {
 						trailing: new IconButton(
 							icon: new Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
 						),
-						onTap: () => Navigator.of(context).pushNamed('/onboarding'),
+						onTap: () async {
+							final prefs = await SharedPreferences.getInstance();
+							prefs.remove('token');
+							Navigator.of(context).pushNamed('/onboarding');
+						},
 					),
 					new Divider(
 						height: 1.0,
