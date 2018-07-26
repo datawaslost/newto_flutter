@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:validate/validate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'carousel.dart';
 import 'package:map_view/map_view.dart';
@@ -269,6 +270,7 @@ class _OnboardingState extends State<Onboarding> {
 
 	final TextEditingController _emailController = new TextEditingController();
 	final TextEditingController _passwordController = new TextEditingController();
+	final _formKey = GlobalKey<FormState>();
 
 
 	void _registerWithCredentials(success, fail) async {
@@ -299,127 +301,186 @@ class _OnboardingState extends State<Onboarding> {
 		}
 		
 	}
+
+
+	void _emailCheck(success, fail) async {
+		
+		print("_emailCheck");
+		print(_emailController.text);
+
+		final response = await http.post(
+			domain + 'api/emailcheck/',
+			body: {
+				"email": _emailController.text,
+			}
+		);
+		
+		print(response.statusCode);
+		
+		if (response.statusCode == 200) {
+			// If email exists
+			fail();
+		} else if (response.statusCode == 404) {
+			// If email does not exist
+			success();
+		} else {
+			// If there was a problem
+			print("there was a problem : " + response.statusCode.toString());
+		}
+		
+	}
+
 	
 	void _createAccount() {
 		Navigator.of(context).push(
 			new MaterialPageRoute(
 				builder: (context) {
 					return new Scaffold(
-						body: new Column(
-							mainAxisSize: MainAxisSize.min,
-							children: <Widget>[
-								new LinearProgressIndicator(
-									value: 0.33,
-									backgroundColor: const Color(0xFFFFFFFF),
-								),
-								new Row (
-									children: <Widget>[
-										new BackButton(),
-										new Expanded(
-											child: new Container(
-												alignment: Alignment.topRight,
-												child: new FlatButton(
-													onPressed: _login,
-													child: new Text(
-														'Login'.toUpperCase(),
-														style: new TextStyle(
-															color: const Color(0xFF1033FF),
-															fontWeight: FontWeight.w800,
-															fontSize: 14.0,
+						body: new Form(
+							key: _formKey,
+							child: new Column(
+								mainAxisSize: MainAxisSize.min,
+								children: <Widget>[
+									new LinearProgressIndicator(
+										value: 0.33,
+										backgroundColor: const Color(0xFFFFFFFF),
+									),
+									new Row (
+										children: <Widget>[
+											new BackButton(),
+											new Expanded(
+												child: new Container(
+													alignment: Alignment.topRight,
+													child: new FlatButton(
+														onPressed: _login,
+														child: new Text(
+															'Login'.toUpperCase(),
+															style: new TextStyle(
+																color: const Color(0xFF1033FF),
+																fontWeight: FontWeight.w800,
+																fontSize: 14.0,
+															),
 														),
 													),
 												),
 											),
-										),
-									]
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
-									alignment: Alignment.topLeft,
-									child: new Text(
-										'1/3',
-										style: new TextStyle(
-											fontWeight: FontWeight.w800,
-											fontSize: 14.0,
+										]
+									),
+									new Container(
+										padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+										alignment: Alignment.topLeft,
+										child: new Text(
+											'1/3',
+											style: new TextStyle(
+												fontWeight: FontWeight.w800,
+												fontSize: 14.0,
+											),
 										),
 									),
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-									alignment: Alignment.topLeft,
-									child: new Text(
-										'Tell us your school email.'.toUpperCase(),
-										style: new TextStyle(
-											fontWeight: FontWeight.w800,
-											fontSize: 38.0,
-											height: 1.0,
+									new Container(
+										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+										alignment: Alignment.topLeft,
+										child: new Text(
+											'Tell us your school email.'.toUpperCase(),
+											style: new TextStyle(
+												fontWeight: FontWeight.w800,
+												fontSize: 38.0,
+												height: 1.0,
+											),
 										),
 									),
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-									alignment: Alignment.topLeft,
-									child: new Text(
-										'Email'.toUpperCase(),
-										style: new TextStyle(
-											color: const Color(0xFF838383),
-											fontWeight: FontWeight.w800,
-											fontSize: 14.0,
+									new Container(
+										padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+										alignment: Alignment.topLeft,
+										child: new Text(
+											'Email'.toUpperCase(),
+											style: new TextStyle(
+												color: const Color(0xFF838383),
+												fontWeight: FontWeight.w800,
+												fontSize: 14.0,
+											),
 										),
 									),
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-							        child: new TextField(
-							        	controller: _emailController,
-										style: new TextStyle(
-											color: const Color(0xFF000000),
-											fontWeight: FontWeight.w800,
-											fontSize: 18.0,
-										),
-										decoration: new InputDecoration(
-							            	fillColor: const Color(0x66E0E1EA),
-											filled: true,
-										),
-										keyboardType: TextInputType.emailAddress,
-							        ),
-								),
-								/*
-								new Container(
-									padding: new EdgeInsets.all(20.0),
-									child: new Text(
-										'We’ll send you a confirmation email to confirm you school account.',
-										style: new TextStyle(
-											color: const Color(0xFF2D2D2F),
-											fontWeight: FontWeight.w300,
-											fontSize: 14.0,
+									new Container(
+										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+								        child: new TextFormField(
+								        	controller: _emailController,
+								        	validator: (value) {
+												if (value.isEmpty) {
+													return 'Please enter your email address.';
+												} else {
+													try {
+														Validate.isEmail(value);
+													} catch (e) {
+														return 'Please enter a valid email address.';
+													}
+												}
+											},
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontWeight: FontWeight.w800,
+												fontSize: 18.0,
+											),
+											decoration: new InputDecoration(
+								            	fillColor: const Color(0x66E0E1EA),
+												filled: true,
+											),
+											keyboardType: TextInputType.emailAddress,
+								        ),
+									),
+									/*
+									new Container(
+										padding: new EdgeInsets.all(20.0),
+										child: new Text(
+											'We’ll send you a confirmation email to confirm you school account.',
+											style: new TextStyle(
+												color: const Color(0xFF2D2D2F),
+												fontWeight: FontWeight.w300,
+												fontSize: 14.0,
+											),
 										),
 									),
-								),
-								*/
-								new Expanded(
-									child: new Align(
-										alignment: Alignment.bottomCenter,
-										child: new Row(children: <Widget>[
-											new Expanded(
-												child: new RaisedButton(
-														onPressed: _createAccount2,
-														padding: new EdgeInsets.all(14.0),  
-														color: const Color(0xFF1033FF),
-														textColor: const Color(0xFFFFFFFF),
-														child: new Text(
-															'Next Step'.toUpperCase(),
-															style: new TextStyle(
-																fontWeight: FontWeight.w800,
+									*/
+									new Expanded(
+										child: new Align(
+											alignment: Alignment.bottomCenter,
+											child: new Row(
+												children: <Widget>[
+													new Expanded(
+														child: new RaisedButton(
+															onPressed: () {
+																if (_formKey.currentState.validate()) {
+																	// If the form is valid, we do an email check in the system
+																	_emailCheck(
+																		() {
+																			print("Success");
+																			_createAccount2();
+																		},
+																		() {
+																			print("Sorry that email already exists in our system");
+																		},
+																	);
+																} else {
+																	print("Invalid email");
+																}
+															},
+															padding: new EdgeInsets.all(14.0),  
+															color: const Color(0xFF1033FF),
+															textColor: const Color(0xFFFFFFFF),
+															child: new Text(
+																'Next Step'.toUpperCase(),
+																style: new TextStyle(
+																	fontWeight: FontWeight.w800,
+																),
 															),
 														),
-													),
-												)
-											]
+													)
+												]
+											),
 										),
 									),
-								),
-						    ],
+							    ],
+							),
 						),
 				    );
 				},
