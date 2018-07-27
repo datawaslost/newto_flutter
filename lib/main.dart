@@ -270,6 +270,7 @@ class _OnboardingState extends State<Onboarding> {
 
 	final TextEditingController _emailController = new TextEditingController();
 	final TextEditingController _passwordController = new TextEditingController();
+	final TextEditingController _hometownController = new TextEditingController();
 	final _emailFormKey = GlobalKey<FormState>();
 	final _passwordFormKey = GlobalKey<FormState>();
 	final _loginFormKey = GlobalKey<FormState>();
@@ -305,14 +306,15 @@ class _OnboardingState extends State<Onboarding> {
 	void _onboarding(success, fail, body) async {
 		
 		print("_onboarding");
-		print(_organization);
 		
 		var onboarding_data = {
 			"email": json.decode(body)["user"]["email"],
 			"id": json.decode(body)["user"]["pk"].toString(),
 		};
 			
-		// need to check for hometown here as well.
+		// check if we have a hometown entered
+		if (!_hometownController.text.isEmpty) onboarding_data["hometown"] = _hometownController.text.toString();
+		// check if we have an organization attached to this email
 		if (_organization != null) onboarding_data["organization"] = _organization.toString();
 
 		final response = await http.post(
@@ -701,7 +703,8 @@ class _OnboardingState extends State<Onboarding> {
 								),
 								new Container(
 									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-							        child: new TextField(
+									child: new TextFormField(
+							        	controller: _hometownController,
 										style: new TextStyle(
 											color: const Color(0xFF000000),
 											fontWeight: FontWeight.w800,
