@@ -273,6 +273,8 @@ class _OnboardingState extends State<Onboarding> {
 	final _emailFormKey = GlobalKey<FormState>();
 	final _passwordFormKey = GlobalKey<FormState>();
 	final _loginFormKey = GlobalKey<FormState>();
+	int _organization;
+	var usernameValidator;
 
 
 	void _registerWithCredentials(success, fail) async {
@@ -291,8 +293,7 @@ class _OnboardingState extends State<Onboarding> {
 				
 		if (response.statusCode == 201) {
 			// If server returns an OK response, parse the JSON
-			// print(response.body);
-			success(json.decode(response.body)["token"]);
+			_onboarding(success, fail, response.body);
 		} else {
 			// If that response was not OK, throw an error.
 			fail(response.body);
@@ -301,26 +302,68 @@ class _OnboardingState extends State<Onboarding> {
 	}
 
 
-	void _emailCheck(success, fail) async {
+	void _onboarding(success, fail, body) async {
+		
+		print("_onboarding");
+		print(_organization);
+		
+		var onboarding_data = {
+			"email": json.decode(body)["user"]["email"],
+			"id": json.decode(body)["user"]["pk"].toString(),
+		};
+			
+		// need to check for hometown here as well.
+		if (_organization != null) onboarding_data["organization"] = _organization.toString();
+
+		final response = await http.post(
+			domain + 'api/onboarding/',
+			body: onboarding_data
+		);
+				
+		if (response.statusCode == 200 || response.statusCode == 201) {
+			// If server returns an OK response, parse the JSON
+			success(json.decode(body)["token"]);
+		} else {
+			// If that response was not OK, throw an error.
+			fail(response.body);
+		}
+		
+	}
+
+
+	void _emailCheck() async {
 		
 		print("_emailCheck");
 
+		String email = _emailController.text;
+		
+		if (email.isEmpty) {
+			return 'Please enter your email address.';
+		} else {
+			try {
+				Validate.isEmail(email);
+			} catch (e) {
+				return 'Please enter a valid email address.';
+			}
+		}
+
 		final response = await http.post(
 			domain + 'api/emailcheck/',
-			body: {
-				"email": _emailController.text,
-			}
+			body: { "email": email },
 		);
 				
 		if (response.statusCode == 200) {
-			// If email exists
-			fail();
-		} else if (response.statusCode == 404) {
-			// If email does not exist
-			success();
+			if (json.decode(response.body)["exists"]) {
+				// If email exists
+				return "That email already exists in our system. Try logging in.";
+			} else {
+				// If email does not exist, save organization if there is one.
+				_organization = json.decode(response.body)["organization"];
+				return null;
+			};
 		} else {
 			// If there was a problem
-			print("there was a problem : " + response.statusCode.toString());
+			return "There was a problem communicating with the servers : " + response.statusCode.toString();
 		}
 		
 	}
@@ -400,17 +443,8 @@ class _OnboardingState extends State<Onboarding> {
 										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
 								        child: new TextFormField(
 								        	controller: _emailController,
-								        	validator: (value) {
-												if (value.isEmpty) {
-													return 'Please enter your email address.';
-												} else {
-													try {
-														Validate.isEmail(value);
-													} catch (e) {
-														return 'Please enter a valid email address.';
-													}
-												}
-												return null;
+											validator: (value) {
+												return usernameValidator;
 											},
 											style: new TextStyle(
 												color: const Color(0xFF000000),
@@ -444,20 +478,15 @@ class _OnboardingState extends State<Onboarding> {
 												children: <Widget>[
 													new Expanded(
 														child: new RaisedButton(
-															onPressed: () {
+															onPressed: () async {
+																// asynchronously validate email
+																var response = await _emailCheck();
+																setState(() {
+																	this.usernameValidator = response;
+																});
 																if (_emailFormKey.currentState.validate()) {
-																	// If the form is valid, we do an email check in the system
-																	_emailCheck(
-																		() {
-																			print("Success");
-																			_createAccount2();
-																		},
-																		() {
-																			print("Sorry that email already exists in our system");
-																		},
-																	);
-																} else {
-																	print("Invalid email");
+																	// if email is valid, go to the next screen
+																	_createAccount2();
 																}
 															},
 															padding: new EdgeInsets.all(14.0),  
@@ -693,7 +722,6 @@ class _OnboardingState extends State<Onboarding> {
 													child: new RaisedButton(
 														onPressed: () => _registerWithCredentials(
 															(token) {
-																print("Success "+ token);
 																saveToken(token);
 																Navigator.of(context).pushNamed('/landing');
 															},
