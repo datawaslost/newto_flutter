@@ -1125,7 +1125,7 @@ class _LandingState extends State<Landing> {
 	String _response;
 	bool _details = false;
 	List<Widget> _carouselItems;
-	double _carouselProgress = 1 / 2;
+	double _carouselProgress = 0.0; // 1 / _carouselItems.length();
 
 	@override
 	Widget build(BuildContext context) {
@@ -1225,7 +1225,7 @@ class _LandingState extends State<Landing> {
 			);
 		}
 	
-		void carouselItem(txt) {
+		void carouselItem(item) {
 			return new Stack(
 				children: [
 				    new GestureDetector(
@@ -1248,7 +1248,7 @@ class _LandingState extends State<Landing> {
 									),
 									new SizedBox(height: 10.0),
 									new Text(
-										txt.toUpperCase(),
+										item["name"].toUpperCase(),
 										textAlign: TextAlign.center,
 										style: new TextStyle(
 											color: const Color(0xFFFFFFFF),
@@ -1304,11 +1304,12 @@ class _LandingState extends State<Landing> {
 			);
 		}
 
-		_carouselItems = [
-			carouselItem('Tell your friends your new address'),
-			carouselItem('Turn in your housing insurance forms'),
-		];
-				
+		_carouselItems = [];
+		
+		for (var item in userData[0]["todo"]) {
+			_carouselItems.add(carouselItem(item));
+		};
+
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
 			appBar: new AppBar(
@@ -1354,7 +1355,9 @@ class _LandingState extends State<Landing> {
 				children: <Widget>[
 					new Expanded(
 						child: new Carousel(
-							onCarouselChange: (i, t) => setState(() { _carouselProgress = i+1/t; }),
+							onCarouselChange: (i, t) => setState(() { 
+								_carouselProgress = (i+1)/t;
+							}),
 							displayDuration: new Duration(seconds: 200000),
 							children: _carouselItems,
 						),
