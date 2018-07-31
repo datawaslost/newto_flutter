@@ -13,6 +13,7 @@ import 'dart:io';
 
 final String domain = "http://dev.newto.com/";
 
+var userData;
 
 void main() {
 	MapView.setApiKey("AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E");
@@ -135,7 +136,10 @@ void getUserData(token, success, fail) async {
 	if (response.statusCode == 200) {
 		// If server returns an OK response, parse the JSON
 		// print(response.body);
-		success(json.decode(response.body));
+		userData = json.decode(response.body);
+		// print(userData[0]["organization"]["nav_name"]);
+		// _orgName = userData[0]["organization"]["nav_name"].toString();
+		success(userData);
 	} else {
 		// If that response was not OK, throw an error.
 		fail(response.statusCode);
@@ -181,7 +185,7 @@ class _HomeState extends State<Home> {
 					token, 
 					(data){
 						print("getUserData success callback");
-						// print(data);
+						print(data);
 						Navigator.of(context).pushNamed("/landing");
 					},
 					(code){
@@ -1304,8 +1308,7 @@ class _LandingState extends State<Landing> {
 			carouselItem('Tell your friends your new address'),
 			carouselItem('Turn in your housing insurance forms'),
 		];
-		
-	
+				
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
 			appBar: new AppBar(
@@ -1325,7 +1328,7 @@ class _LandingState extends State<Landing> {
 								child: new Container(
 									alignment: Alignment.centerLeft,
 									child: new Text(
-										'Amherst'.toUpperCase(),
+										userData[0]["organization"]["nav_name"].toString().toUpperCase(),
 										style: new TextStyle(
 											color: const Color(0xFF838383),
 											fontWeight: FontWeight.w300,
@@ -1641,7 +1644,7 @@ class _YourListState extends State<YourList> {
 						tabs: [
 							new Tab(text: "Your List".toUpperCase()),
 							new Tab(text: "Popular".toUpperCase()),
-							new Tab(text: "Amherst".toUpperCase()),
+							new Tab(text: userData[0]["metro"]["name"].toString().toUpperCase()),
 						],
 					),
 					actions: <Widget>[
@@ -2037,7 +2040,7 @@ class _DiscoverState extends State<Discover> {
 				backgroundColor: const Color(0xFF000000),
 				centerTitle: true,
 				title: new Text(
-					'Discover Amherst, MA'.toUpperCase(),
+					'Discover '.toUpperCase() + userData[0]["metro"]["name"].toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
 						fontWeight: FontWeight.w800,
@@ -2711,7 +2714,7 @@ class _AccountState extends State<Account> {
 			body: new ListView(
 				children: <Widget>[
 					new ListTile(
-						title: new Text('karen@amherst.edu',
+						title: new Text(userData[0]["user"]["email"],
 							style: new TextStyle(
 								fontWeight: FontWeight.w300,
 								fontSize: 14.0,
@@ -2731,7 +2734,7 @@ class _AccountState extends State<Account> {
 						color: const Color(0xFFE0E1EA),
 					),
 					new ListTile(
-						title: new Text('Chicago, IL',
+						title: new Text(userData[0]["hometown"],
 							style: new TextStyle(
 								fontWeight: FontWeight.w300,
 								fontSize: 14.0,
@@ -3240,7 +3243,7 @@ class _OrganizationState extends State<Organization> {
 				elevation: 0.0,
 				centerTitle: true,
 				title: new Text(
-					'Amherst'.toUpperCase(),
+					userData[0]["metro"]["name"].toString().toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
 						fontWeight: FontWeight.w800,
