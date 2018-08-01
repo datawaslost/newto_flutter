@@ -135,10 +135,7 @@ void getUserData(token, success, fail) async {
 	
 	if (response.statusCode == 200) {
 		// If server returns an OK response, parse the JSON
-		// print(response.body);
 		userData = json.decode(response.body);
-		// print(userData[0]["organization"]["nav_name"]);
-		// _orgName = userData[0]["organization"]["nav_name"].toString();
 		success(userData);
 	} else {
 		// If that response was not OK, throw an error.
@@ -762,8 +759,6 @@ class _OnboardingState extends State<Onboarding> {
 
 	void _loginWithCredentials(success, fail) async {
 		
-		print("_loginWithCredentials");
-
 		final response = await http.post(
 			domain + 'rest-auth/login/',
 			body: {
@@ -773,9 +768,11 @@ class _OnboardingState extends State<Onboarding> {
 		);
 		
 		if (response.statusCode == 200) {
-			// If server returns an OK response, parse the JSON
-			// print(response.body);
-			success(json.decode(response.body)["token"]);
+			// If server returns an OK response, save the token
+			final token = json.decode(response.body)["token"];
+			saveToken(token);
+			// get user data before doing anything else
+			getUserData(token, success, fail);
 		} else {
 			// If that response was not OK, throw an error.
 			fail(response.body);
@@ -895,8 +892,7 @@ class _OnboardingState extends State<Onboarding> {
 															onPressed: () {
 																if (_loginFormKey.currentState.validate()) {
 																	_loginWithCredentials(
-																		(token) {
-																			saveToken(token);
+																		(data) {
 																			Navigator.of(context).pushNamed('/landing');
 																		},
 																		(error) {
@@ -1020,6 +1016,11 @@ class _OnboardingState extends State<Onboarding> {
 
 
 void discoverItem(txt, img, context, { bool sponsored = false, bool bookmarked = false }) {
+	
+	if (img == null) {
+		img = "amherst.jpg";
+	};
+	
 	return new GestureDetector(
 		onTap: () {
 			Navigator.of(context).pushNamed('/article');
@@ -1029,7 +1030,17 @@ void discoverItem(txt, img, context, { bool sponsored = false, bool bookmarked =
 			child: new Container(
 				decoration: new BoxDecoration(
 					image: new DecorationImage(
-						image: new AssetImage('images/'+img),
+						// image: new AssetImage('images/'+img),
+						/*
+						image: new Image.network(
+							'https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg',
+						),
+						image: FadeInImage.assetNetwork(
+							placeholder: 'images/amherst.jpg',
+							image: 'https://github.com/flutter/website/blob/master/_includes/code/layout/lakes/images/lake.jpg?raw=true',
+						),
+						*/
+						image: NetworkImage('https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg'),
 						fit: BoxFit.cover,
 					),
 				),
@@ -1069,7 +1080,17 @@ void discoverItem(txt, img, context, { bool sponsored = false, bool bookmarked =
 								alignment: Alignment.bottomCenter,
 								decoration: new BoxDecoration(
 									image: new DecorationImage(
-										image: new AssetImage('images/'+img),
+										// image: new AssetImage('images/'+img),
+										/*
+										image: new Image.network(
+											'https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg',
+										),
+										image: FadeInImage.assetNetwork(
+											placeholder: 'images/amherst.jpg',
+											image: 'https://github.com/flutter/website/blob/master/_includes/code/layout/lakes/images/lake.jpg?raw=true',
+										),
+										*/
+										image: NetworkImage('https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg'),
 										fit: BoxFit.cover,
 										alignment: Alignment.bottomCenter,
 									),
@@ -1125,7 +1146,8 @@ class _LandingState extends State<Landing> {
 	String _response;
 	bool _details = false;
 	List<Widget> _carouselItems;
-	double _carouselProgress = 0.0; // 1 / _carouselItems.length();
+	List<Widget> _discoverItems;
+	double _carouselProgress = 0.0;
 
 	@override
 	Widget build(BuildContext context) {
@@ -1309,6 +1331,18 @@ class _LandingState extends State<Landing> {
 		for (var item in userData[0]["todo"]) {
 			_carouselItems.add(carouselItem(item));
 		};
+		
+		setState(() { 
+			print(_carouselItems.length);
+			_carouselProgress = 1 / _carouselItems.length;
+		});
+
+		_discoverItems = [];
+		
+		for (var item in userData[0]["organization"]["discover_items"]) {
+			print(item);
+			_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["name"], item["image"], context) ) );
+		};
 
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
@@ -1402,10 +1436,7 @@ class _LandingState extends State<Landing> {
 										child: new ListView(
 											scrollDirection: Axis.horizontal,
 											shrinkWrap: true,
-											children: <Widget>[
-												new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context) ),
-												new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem('Get to know Amherst', 'amherst.jpg', context, sponsored: true) ),
-											],
+											children: _discoverItems,
 										)
 									)
 								)
