@@ -1017,9 +1017,16 @@ class _OnboardingState extends State<Onboarding> {
 
 void discoverItem(txt, img, context, { bool sponsored = false, bool bookmarked = false }) {
 	
-	if (img == null) {
-		img = "amherst.jpg";
-	};
+	var imgWidget;
+	
+	if (img == null || img == "") {
+		// default image
+		imgWidget = new AssetImage('images/misssaigon.jpg');
+	} else if (!img.startsWith("/static/")) {
+		imgWidget = new AssetImage('images/'+img);
+	} else {
+		imgWidget = new NetworkImage(domain + img);
+	}
 	
 	return new GestureDetector(
 		onTap: () {
@@ -1030,17 +1037,7 @@ void discoverItem(txt, img, context, { bool sponsored = false, bool bookmarked =
 			child: new Container(
 				decoration: new BoxDecoration(
 					image: new DecorationImage(
-						// image: new AssetImage('images/'+img),
-						/*
-						image: new Image.network(
-							'https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg',
-						),
-						image: FadeInImage.assetNetwork(
-							placeholder: 'images/amherst.jpg',
-							image: 'https://github.com/flutter/website/blob/master/_includes/code/layout/lakes/images/lake.jpg?raw=true',
-						),
-						*/
-						image: NetworkImage('https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg'),
+						image: imgWidget,
 						fit: BoxFit.cover,
 					),
 				),
@@ -1080,17 +1077,7 @@ void discoverItem(txt, img, context, { bool sponsored = false, bool bookmarked =
 								alignment: Alignment.bottomCenter,
 								decoration: new BoxDecoration(
 									image: new DecorationImage(
-										// image: new AssetImage('images/'+img),
-										/*
-										image: new Image.network(
-											'https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg',
-										),
-										image: FadeInImage.assetNetwork(
-											placeholder: 'images/amherst.jpg',
-											image: 'https://github.com/flutter/website/blob/master/_includes/code/layout/lakes/images/lake.jpg?raw=true',
-										),
-										*/
-										image: NetworkImage('https://raw.githubusercontent.com/flutter/website/master/_includes/code/layout/lakes/images/lake.jpg'),
+										image: imgWidget,
 										fit: BoxFit.cover,
 										alignment: Alignment.bottomCenter,
 									),
@@ -1129,7 +1116,7 @@ void discoverItem(txt, img, context, { bool sponsored = false, bool bookmarked =
 		),
 	);
 }
-						
+
 
 class Landing extends StatefulWidget {
 	Landing({Key key, this.title}) : super(key: key);
@@ -1145,15 +1132,16 @@ class _LandingState extends State<Landing> {
 
 	String _response;
 	bool _details = false;
-	List<Widget> _carouselItems;
-	List<Widget> _discoverItems;
-	double _carouselProgress = 0.0;
+	List<Widget> _carouselItems = [];
+	List<Widget> _discoverItems = [];
+	double _carouselProgress = 1 / userData[0]["todo"].length;
+
 
 	@override
 	Widget build(BuildContext context) {
 	  
 		// SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-
+		
 		void _dialog() {
 			showDialog(
 				context: context,
@@ -1326,23 +1314,8 @@ class _LandingState extends State<Landing> {
 			);
 		}
 
-		_carouselItems = [];
-		
-		for (var item in userData[0]["todo"]) {
-			_carouselItems.add(carouselItem(item));
-		};
-		
-		setState(() { 
-			print(_carouselItems.length);
-			_carouselProgress = 1 / _carouselItems.length;
-		});
-
-		_discoverItems = [];
-		
-		for (var item in userData[0]["organization"]["discover_items"]) {
-			print(item);
-			_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["name"], item["image"], context) ) );
-		};
+		userData[0]["todo"].forEach( (item) => _carouselItems.add(carouselItem(item)) );
+		userData[0]["organization"]["discover_items"].forEach( (item) => _discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["name"], item["image"], context) ) ) );
 
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
