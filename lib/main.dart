@@ -1004,20 +1004,22 @@ class _OnboardingState extends State<Onboarding> {
 
 }
 
+void imgDefault(img, defaultImg) {
+	if (img == null || img == "") {
+		// default image
+		return new AssetImage('images/' + defaultImg);
+	} else if (!img.startsWith("/static/")) {
+		return new AssetImage('images/'+img);
+	} else {
+		return new NetworkImage(domain + img);
+	}
+}
+
 
 void discoverItem(txt, img, context, { String sponsored = null, bool bookmarked = false }) {
 	
-	var imgWidget;
-	
-	if (img == null || img == "") {
-		// default image
-		imgWidget = new AssetImage('images/misssaigon.jpg');
-	} else if (!img.startsWith("/static/")) {
-		imgWidget = new AssetImage('images/'+img);
-	} else {
-		imgWidget = new NetworkImage(domain + img);
-	}
-	
+	var imgWidget = imgDefault(img, "misssaigon.jpg");
+		
 	return new GestureDetector(
 		onTap: () {
 			Navigator.of(context).pushNamed('/article');
@@ -1607,16 +1609,7 @@ void listGroup(String txt, amount, context, {bookmarked = false, String sponsore
 
 void listGroupImage(String txt, amount, img, context, {bookmarked = false, String sponsored}) {
 
-	var imgWidget;
-	
-	if (img == null || img == "") {
-		// default image
-		imgWidget = new AssetImage('images/cardphoto.png');
-	} else if (!img.startsWith("/static/")) {
-		imgWidget = new AssetImage('images/'+img);
-	} else {
-		imgWidget = new NetworkImage(domain + img);
-	}
+	var imgWidget = imgDefault(img, "cardphoto.png");
 	
 	return new GestureDetector(
 		onTap: (){
@@ -2443,16 +2436,7 @@ class _SearchState extends State<Search> {
 
 void placeCard(txt, img, stars, distance, context, { featured = false, bookmarked = false }) {
 	
-	var imgWidget;
-	
-	if (img == null || img == "") {
-		// default image
-		imgWidget = new AssetImage('images/misssaigon.jpg');
-	} else if (!img.startsWith("/static/")) {
-		imgWidget = new AssetImage('images/'+img);
-	} else {
-		imgWidget = new NetworkImage(domain + img);
-	}
+	var imgWidget = imgDefault(img, "misssaigon.jpg");
 	
 	// stars code goes here
 
