@@ -1876,25 +1876,12 @@ class _YourListState extends State<YourList> {
 						// Popular
 						new CustomScrollView(
 							primary: false,
-							slivers: <Widget>[
-								new SliverPadding(
-									padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-									sliver: new SliverGrid.count(
-										crossAxisSpacing: 10.0,
-										mainAxisSpacing: 10.0,
-										crossAxisCount: 1,
-										childAspectRatio: 1.2,
-										children: <Widget>[
-											listGroupImage('Back to school essentials', 7, null, context),
-										]
-									),
-								),
-							],
+							slivers: parseItems(userData[0]["todo"], context),
 						),
 						// Metro
 						new CustomScrollView(
 							primary: false,
-							slivers: parseItems(userData[0]["todo"], context),
+							slivers: parseItems(userData[0]["organization"]["discover_items"], context),
 						),
 					],
 				),
