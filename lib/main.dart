@@ -48,13 +48,13 @@ class MyApp extends StatelessWidget {
 				'/onboarding': (BuildContext context) => new Onboarding(),
 				'/landing': (BuildContext context) => new Landing(),
 				'/yourlist': (BuildContext context) => new YourList(),
-				'/listitems': (BuildContext context) => new ListItems(),
+				// '/listitems': (BuildContext context) => new ListItems(),
 				'/discover': (BuildContext context) => new Discover(),
 				'/search': (BuildContext context) => new Search(),
 				'/searchresults': (BuildContext context) => new SearchResults(),
 				'/bookmarks': (BuildContext context) => new Bookmarks(),
 				'/account': (BuildContext context) => new Account(),
-				'/article': (BuildContext context) => new Article(),
+				// '/article': (BuildContext context) => new Article(2),
 				'/place': (BuildContext context) => new Place(),
 				'/org': (BuildContext context) => new Organization(),
 			},
@@ -1016,13 +1016,15 @@ void imgDefault(img, defaultImg) {
 }
 
 
-void discoverItem(txt, img, context, { String sponsored = null, bool bookmarked = false }) {
+void discoverItem(id, txt, img, context, { String sponsored = null, bool bookmarked = false }) {
 	
 	var imgWidget = imgDefault(img, "misssaigon.jpg");
 		
 	return new GestureDetector(
 		onTap: () {
-			Navigator.of(context).pushNamed('/article');
+			Navigator.push(context, new MaterialPageRoute(
+				builder: (BuildContext context) => new Article(id),
+			));
 		},
 		child: new Card(
 			elevation: 3.0,
@@ -1125,7 +1127,7 @@ class _LandingState extends State<Landing> {
 	List<Widget> _carouselItems = [];
 	List<Widget> _discoverItems = [];
 	double _carouselProgress = 1 / userData[0]["todo"].length;
-
+	
 	@override
 	Widget build(BuildContext context) {
 	  
@@ -1309,7 +1311,7 @@ class _LandingState extends State<Landing> {
 	
 		// set up discover items
 		_discoverItems = [];
-		userData[0]["organization"]["discover_items"].forEach( (item) => _discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["name"], item["image"], context) ) ) );
+		userData[0]["organization"]["discover_items"].forEach( (item) => _discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context) ) ) );
 
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
@@ -1530,10 +1532,12 @@ void listCardGesture(String txt, context, {bookmarked = false}) {
 }
 
 
-void listGroup(String txt, amount, context, {bookmarked = false, String sponsored}) {
+void listGroup(int id, String txt, amount, context, {bookmarked = false, String sponsored}) {
 	return new GestureDetector(
 		onTap: () {
-			Navigator.of(context).pushNamed('/listitems');
+			Navigator.push(context, new MaterialPageRoute(
+				builder: (BuildContext context) => new Group(id),
+			));
 		},
 		child: new Card(
 			elevation: 3.0,
@@ -1612,14 +1616,15 @@ void listGroup(String txt, amount, context, {bookmarked = false, String sponsore
 }
 
 
-void listGroupImage(String txt, amount, img, context, {bookmarked = false, String sponsored}) {
+void listGroupImage(int id, String txt, amount, img, context, {bookmarked = false, String sponsored}) {
 
 	var imgWidget = imgDefault(img, "cardphoto.png");
 	
 	return new GestureDetector(
-		onTap: (){
-			// go to list view
-			Navigator.of(context).pushNamed('/listitems');
+		onTap: () {
+			Navigator.push(context, new MaterialPageRoute(
+				builder: (BuildContext context) => new Group(id),
+			));
 		},
 		child: new Stack(
 			fit: StackFit.expand,
@@ -1733,7 +1738,7 @@ void parseItems(list, context, {bookmarked = false}) {
 							crossAxisCount: 1,
 							childAspectRatio: 1.2,
 							children: <Widget>[
-								listGroupImage(item["name"], item["items"], item["image"], context, sponsored: item["sponsored"], bookmarked: bookmarked),
+								listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsored"], bookmarked: bookmarked),
 							]
 						),
 					)
@@ -1749,7 +1754,7 @@ void parseItems(list, context, {bookmarked = false}) {
 							crossAxisCount: 1,
 							childAspectRatio: 1.0,
 							children: <Widget>[
-								discoverItem(item["name"], item["image"], context, sponsored: item["sponsored"], bookmarked: bookmarked),
+								discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsored"], bookmarked: bookmarked),
 							]
 						)
 					)
@@ -1766,7 +1771,7 @@ void parseItems(list, context, {bookmarked = false}) {
 						crossAxisCount: 1,
 						childAspectRatio: 2.75,
 						children: <Widget>[
-							listGroup(item["name"], item["items"], context, sponsored: item["sponsored"], bookmarked: bookmarked),
+							listGroup(item["id"], item["name"], item["items"], context, sponsored: item["sponsored"], bookmarked: bookmarked),
 						],
 					),
 				)
@@ -1899,99 +1904,151 @@ class _YourListState extends State<YourList> {
 }
 
 
-class ListItems extends StatefulWidget {
-	ListItems({Key key, this.title}) : super(key: key);
-	final String title;
-	@override
-	_ListItemsState createState() => new _ListItemsState();
+void getGroupData(id) async {
+	
+	// get stored token
+	final prefs = await SharedPreferences.getInstance();
+	final String token = prefs.getString('token') ?? null;
+	var groupData;
+
+	final response = await http.get(
+		domain + 'api/group/' + id.toString() + '/',
+		headers: {
+			HttpHeaders.AUTHORIZATION: "JWT " + token
+		},
+	);
+	
+	if (response.statusCode == 200) {
+		// If server returns an OK response, parse the JSON
+		groupData = json.decode(response.body);
+		return groupData;
+	} else {
+		// If that response was not OK, throw an error.
+		// fail(response.statusCode);
+		return null;
+	}
+	
 }
 
 
-class _ListItemsState extends State<ListItems> {
+class Group extends StatelessWidget {
+	
+	Group(this.id);
+	final int id;
+	List<Widget> _widgetList = [];
 	
 	@override
 	Widget build(BuildContext context) {
-	  
-		// SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-		
+
 		return new Scaffold(
 			backgroundColor: const Color(0xFFF3F3F7),
-			body: new CustomScrollView(
-				primary: false,
-				slivers: <Widget>[
-					new SliverAppBar(
-						backgroundColor: const Color(0xFFF3F3F7),
-						pinned: false,
-						expandedHeight: 230.0,
-						floating: true,
-						leading: new Container(),
-						actions: <Widget>[
-							new IconButton(
-								icon: new Icon(Icons.close ),
-								tooltip: 'Close',
-								onPressed: () => Navigator.pop(context,true)
-							),
-						],
-						flexibleSpace: const FlexibleSpaceBar(
-							background: const Image(
-								image: const AssetImage('images/cardphoto.png'),
-								fit: BoxFit.cover,
-							)
-						),
-					),
-					new SliverPadding(
-						padding: const EdgeInsets.all(20.0),
-						sliver: new SliverGrid.count(
-							crossAxisSpacing: 10.0,
-							mainAxisSpacing: 10.0,
-							crossAxisCount: 1,
-							childAspectRatio: 8.0,
-							children: <Widget>[
-								new Text(
-									'Back to school essentials'.toUpperCase(),
-									textAlign: TextAlign.left,
-									style: new TextStyle(
-										color: const Color(0xFF000000),
-										fontWeight: FontWeight.w800,
-										fontSize: 28.0,
-										height: 0.9,
+			body: new FutureBuilder(
+				future: getGroupData(this.id),
+				builder: (BuildContext context, AsyncSnapshot snapshot) {
+					if (snapshot.hasData) {
+						if (snapshot.data!=null) {
+							
+							print(snapshot.data);
+							
+							_widgetList = [
+								new SliverAppBar(
+									backgroundColor: const Color(0xFFF3F3F7),
+									pinned: false,
+									expandedHeight: 230.0,
+									floating: true,
+									leading: new Container(),
+									actions: <Widget>[
+										new IconButton(
+											icon: new Icon(Icons.close ),
+											tooltip: 'Close',
+											onPressed: () => Navigator.pop(context,true)
+										),
+									],
+									flexibleSpace: new FlexibleSpaceBar(
+										background: new Image(
+											image: imgDefault(snapshot.data["image"], "cardphoto.png"),
+											fit: BoxFit.cover,
+										)
+									),
+								),
+								new SliverPadding(
+									padding: const EdgeInsets.all(20.0),
+									sliver: new SliverGrid.count(
+										crossAxisSpacing: 10.0,
+										mainAxisSpacing: 10.0,
+										crossAxisCount: 1,
+										childAspectRatio: 8.0,
+										children: <Widget>[
+											new Text(
+												snapshot.data["name"].toUpperCase(),
+												textAlign: TextAlign.left,
+												style: new TextStyle(
+													color: const Color(0xFF000000),
+													fontWeight: FontWeight.w800,
+													fontSize: 28.0,
+													height: 0.9,
+												),
+											),
+										]
+									),
+								),
+							];
+							
+							_widgetList.addAll(parseItems(snapshot.data["items"], context));
+																					
+							return new CustomScrollView(
+								primary: false,
+								slivers: _widgetList,
+							);
+							
+						} else {
+							return new CustomScrollView(
+								primary: false,
+								slivers: [
+									new SliverPadding(
+										padding: const EdgeInsets.all(20.0),
+										sliver: new SliverGrid.count(
+											crossAxisSpacing: 10.0,
+											mainAxisSpacing: 10.0,
+											crossAxisCount: 1,
+											childAspectRatio: 8.0,
+											children: <Widget>[
+												new Text(
+													'Loading Error'.toUpperCase(),
+													style: new TextStyle( fontWeight: FontWeight.w800 ),
+												),
+											]
+										),
+									),
+								]
+							);
+						}
+					} else {
+						return new CustomScrollView(
+							primary: false,
+							slivers: [
+								new SliverPadding(
+									padding: const EdgeInsets.all(20.0),
+									sliver: new SliverGrid.count(
+										crossAxisSpacing: 10.0,
+										mainAxisSpacing: 10.0,
+										crossAxisCount: 1,
+										childAspectRatio: 8.0,
+										children: <Widget>[
+											new Container(
+												alignment: Alignment.center,
+												child: new CircularProgressIndicator()
+											),
+										]
 									),
 								),
 							]
-						),
-					),
-					new SliverPadding(
-						padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-						sliver: new SliverGrid.count(
-							crossAxisSpacing: 10.0,
-							mainAxisSpacing: 10.0,
-							crossAxisCount: 2,
-							childAspectRatio: 1.1,
-							children: <Widget>[
-								listCardGesture("Tell your friends your new address", context),
-								listCardGesture("Set up your email and student accounts", context),
-								listCardGesture("Check in and get your welcome packet", context),
-								listCardGesture("Buy books for your classes", context),
-							],
-						),
-					),
-					new SliverPadding(
-						padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-						sliver: new SliverGrid.count(
-							crossAxisSpacing: 10.0,
-							mainAxisSpacing: 10.0,
-							crossAxisCount: 1,
-							childAspectRatio: 1.0,
-							children: <Widget>[
-								discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context, sponsored: "UWM"),
-							]
-						)
-					),
-
-				]
+						);
+					}
+				}
 			),
 		);
-		
+
 	}
 
 }
@@ -2137,13 +2194,13 @@ class _DiscoverState extends State<Discover> {
 														width: 278.0,
 														height: 278.0,
 														margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
-														child: discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context),
+														child: discoverItem(4, 'Create the Perfect Dorm Room', 'cardphoto.png', context),
 													),
 													new Container(
 														width: 278.0,
 														height: 278.0,
 														margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
-														child: discoverItem('Get to know Amherst', 'background.png', context),
+														child: discoverItem(4, 'Get to know Amherst', 'background.png', context),
 													),
 												],
 											)
@@ -2772,137 +2829,190 @@ class _AccountState extends State<Account> {
 }
 
 
-class Article extends StatefulWidget {
-	Article({Key key, this.title}) : super(key: key);
-	final String title;
-	@override
-	_ArticleState createState() => new _ArticleState();
+void getArticleData(id) async {
+	
+	// get stored token
+	final prefs = await SharedPreferences.getInstance();
+	final String token = prefs.getString('token') ?? null;
+	var articleData;
+
+	final response = await http.get(
+		domain + 'api/item/' + id.toString() + '/',
+		headers: {
+			HttpHeaders.AUTHORIZATION: "JWT " + token
+		},
+	);
+	
+	if (response.statusCode == 200) {
+		// If server returns an OK response, parse the JSON
+		articleData = json.decode(response.body);
+		return articleData;
+	} else {
+		// If that response was not OK, throw an error.
+		// fail(response.statusCode);
+		return null;
+	}
+	
 }
 
 
-class _ArticleState extends State<Article> {
+class Article extends StatelessWidget {
+	
+	// Article({Key key, @required this.id}) : super(key: key);
+	Article(this.id);
+	final int id;
+	List<Widget> _widgetList = [];
 	
 	@override
 	Widget build(BuildContext context) {
-	  
+		
 		return new Scaffold(
 			backgroundColor: const Color(0xFFFFFFFF),
 			body: new SingleChildScrollView(
 				scrollDirection: Axis.vertical,
-				child: new Column(
-					children: <Widget>[
-						new Container(
-							height: 324.0,
-							decoration: new BoxDecoration(
-								image: new DecorationImage(
-									image: new AssetImage('images/cardphoto.png'),
-									fit: BoxFit.cover,
-								),
-							),
-							child: new Column(
-								mainAxisSize: MainAxisSize.min,
-								children: <Widget>[
-									new BackdropFilter(
-										filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-										child: new Container(
-											padding: new EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 15.0),
-											child: new SafeArea(
-												child: new Row(
-													crossAxisAlignment: CrossAxisAlignment.start,
-													children: <Widget>[
-														new Expanded(
+				child: new FutureBuilder(
+					future: getArticleData(this.id),
+					builder: (BuildContext context, AsyncSnapshot snapshot) {
+						if (snapshot.hasData) {
+							if (snapshot.data!=null) {
+
+								_widgetList = [
+									new Container(
+										height: 324.0,
+										decoration: new BoxDecoration(
+											image: new DecorationImage(
+												image: imgDefault(snapshot.data["image"], "misssaigon.jpg"),
+												fit: BoxFit.cover,
+											),
+										),
+										child: new Column(
+											mainAxisSize: MainAxisSize.min,
+											children: <Widget>[
+												new BackdropFilter(
+													filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+													child: new Container(
+														padding: new EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 15.0),
+														child: new SafeArea(
+															child: new Row(
+																crossAxisAlignment: CrossAxisAlignment.start,
+																children: <Widget>[
+																	new Expanded(
+																		child: new Text(
+																			snapshot.data["name"].toUpperCase(),
+																			textAlign: TextAlign.left,
+																			style: new TextStyle(
+																				color: const Color(0xFF000000),
+																				fontWeight: FontWeight.w800,
+																				fontSize: 28.0,
+																				height: 0.9,
+																			),
+																		),
+																	),
+																	new IconButton(
+																		icon: new Icon(Icons.close, color: const Color(0xFF000000)),
+																		padding: new EdgeInsets.all(0.0),
+																		alignment: Alignment.topCenter,
+																		onPressed: () => Navigator.pop(context,true),
+																	),
+																]
+															),
+														),
+														decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+													),
+												),
+												new Expanded(
+													child: new Container(
+														decoration: new BoxDecoration(
+															image: new DecorationImage(
+																image: imgDefault(snapshot.data["image"], "misssaigon.jpg"),
+																fit: BoxFit.cover,
+																alignment: Alignment.bottomCenter,
+															),
+														), 
+													),
+												),															
+											],
+										),
+									),
+									( snapshot.data["sponsor"] != "" ?
+										new Row(
+											children: [
+												new Container(
+													padding: new EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+													child: new Text(
+														'Sponsor'.toUpperCase(),
+														textAlign: TextAlign.left,
+														style: new TextStyle(
+															color: const Color(0xFF000000),
+															fontWeight: FontWeight.w800,
+															fontSize: 12.0,
+														),
+													),
+													decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
+												),
+												new Expanded(
+													child: Container( decoration: BoxDecoration(color: const Color(0xFFFFFFFF) ) )
+												),
+											]
+										) : new Container()
+									),
+									new Container(
+										padding: new EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 15.0),
+										child:  new Text(
+											snapshot.data["content"],
+											textAlign: TextAlign.left,
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontWeight: FontWeight.w300,
+												fontSize: 14.0,
+												height: 1.15,
+											),
+										),
+									),
+								];
+								
+								for (var cta in snapshot.data["ctas"]) {
+									_widgetList.add(
+										new Container(
+											padding: new EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 30.0),
+											child:  new Row(children: <Widget>[
+												new Expanded(
+													child: new RaisedButton(
+															onPressed: () => Navigator.pop(context,true),
+															padding: new EdgeInsets.all(14.0),  
+															color: const Color(0xFF1033FF),
+															textColor: const Color(0xFFFFFFFF),
 															child: new Text(
-																'Create the Perfect Dorm Room'.toUpperCase(),
-																textAlign: TextAlign.left,
+																cta["name"].toUpperCase(),
 																style: new TextStyle(
-																	color: const Color(0xFF000000),
 																	fontWeight: FontWeight.w800,
-																	fontSize: 28.0,
-																	height: 0.9,
 																),
 															),
 														),
-														new IconButton(
-															icon: new Icon(Icons.close, color: const Color(0xFF000000)),
-															padding: new EdgeInsets.all(0.0),
-															alignment: Alignment.topCenter,
-															onPressed: () => Navigator.pop(context,true),
-														),
-													]
-												),
-																							),
-
-												decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-										),
-									),
-									new Expanded(
-										child: new Container(
-											decoration: new BoxDecoration(
-												image: new DecorationImage(
-													image: new AssetImage('images/cardphoto.png'),
-													fit: BoxFit.cover,
-													alignment: Alignment.bottomCenter,
-												),
-											), 
-										),
-									),															
-								],
-							),
-						),
-						new Row(
-							children: [
-								new Container(
-									padding: new EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-									child: new Text(
-										'Sponsor'.toUpperCase(),
-										textAlign: TextAlign.left,
-										style: new TextStyle(
-											color: const Color(0xFF000000),
-											fontWeight: FontWeight.w800,
-											fontSize: 12.0,
-										),
-									),
-									decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
-								),
-								new Expanded(
-									child: Container( decoration: BoxDecoration(color: const Color(0xFFFFFFFF) ) )
-								),
-							]
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 15.0),
-							child:  new Text(
-								"It will be seen that this mere painstaking burrower and grub-worm of a poor devil of a Sub-Sub appears to have gone through the long Vaticans and street-stalls of the earth, picking up whatever random allusions to whales he could anyways find in any book whatsoever, sacred or profane. Therefore you must not, in every case at least, take the higgledy-piggledy whale statements, however authentic, in these extracts, for veritable gospel cetology. Far from it. As touching the ancient authors generally, as well as the poets here appearing, these extracts are solely valuable or entertaining, as affording a glancing bird's eye view of what has been promiscuously said, thought, fancied, and sung of Leviathan, by many nations and generations, including our own. It will be seen that this mere painstaking burrower and grub-worm of a poor devil of a Sub-Sub appears to have gone through the long Vaticans and street-stalls of the earth, picking up whatever random allusions to whales he could anyways find in any book whatsoever, sacred or profane. Therefore you must not, in every case at least, take the higgledy-piggledy whale statements, however authentic, in these extracts, for veritable gospel cetology. Far from it. As touching the ancient authors generally, as well as the poets here appearing, these extracts are solely valuable or entertaining, as affording a glancing bird's eye view of what has been promiscuously said, thought, fancied, and sung of Leviathan, by many nations and generations, including our own.",
-								textAlign: TextAlign.left,
-								style: new TextStyle(
-									color: const Color(0xFF000000),
-									fontWeight: FontWeight.w300,
-									fontSize: 14.0,
-									height: 1.15,
-								),
-							),
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 30.0),
-							child:  new Row(children: <Widget>[
-								new Expanded(
-									child: new RaisedButton(
-											onPressed: () => Navigator.pop(context,true),
-											padding: new EdgeInsets.all(14.0),  
-											color: const Color(0xFF1033FF),
-											textColor: const Color(0xFFFFFFFF),
-											child: new Text(
-												'Shop Now'.toUpperCase(),
-												style: new TextStyle(
-													fontWeight: FontWeight.w800,
-												),
+													)
+												]
 											),
 										),
-									)
-								]
-							),
-						),
-					],
+									);
+								}
+								
+								return new Column(
+									children: _widgetList,
+								);
+								
+							} else {
+								return new Text(
+									'Loading Error'.toUpperCase(),
+									style: new TextStyle( fontWeight: FontWeight.w800 ),
+								);
+							}
+						} else {
+							return new Container(
+								alignment: Alignment.center,
+								child: new CircularProgressIndicator()
+							);
+						}
+					}
 				)
 			),
 			persistentFooterButtons: <Widget>[
