@@ -1302,8 +1302,13 @@ class _LandingState extends State<Landing> {
 				]
 			);
 		}
-
+		
+		// set up carousel items
+		_carouselItems = [];
 		userData[0]["todo"].forEach( (item) => _carouselItems.add(carouselItem(item)) );
+	
+		// set up discover items
+		_discoverItems = [];
 		userData[0]["organization"]["discover_items"].forEach( (item) => _discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["name"], item["image"], context) ) ) );
 
 		return new Scaffold(
@@ -1876,7 +1881,7 @@ class _YourListState extends State<YourList> {
 						// Popular
 						new CustomScrollView(
 							primary: false,
-							slivers: parseItems(userData[0]["todo"], context),
+							slivers: parseItems(userData[0]["organization"]["popular"], context),
 						),
 						// Metro
 						new CustomScrollView(
