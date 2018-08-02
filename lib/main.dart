@@ -1011,7 +1011,7 @@ class _OnboardingState extends State<Onboarding> {
 }
 
 
-void discoverItem(txt, img, context, { bool sponsored = false, bool bookmarked = false }) {
+void discoverItem(txt, img, context, { String sponsored = null, bool bookmarked = false }) {
 	
 	var imgWidget;
 	
@@ -1078,7 +1078,7 @@ void discoverItem(txt, img, context, { bool sponsored = false, bool bookmarked =
 										alignment: Alignment.bottomCenter,
 									),
 								),
-								child: ( sponsored
+								child: ( sponsored != null
 									? new Column(
 										mainAxisSize: MainAxisSize.min,
 										children: <Widget>[
@@ -1552,16 +1552,29 @@ void listGroup(String txt, amount, context, {bookmarked = false, String sponsore
 				children: <Widget>[
 					new Expanded(
 						child: new Container(
-							padding: const EdgeInsets.fromLTRB(20.0, 15.0, 10.0, 7.5),
-							child: new Text(
-								txt.toUpperCase(),
-								textAlign: TextAlign.left,
-								style: new TextStyle(
-									color: const Color(0xFF000000),
-									fontWeight: FontWeight.w800,
-									fontSize: 24.0,
-								),
+							padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 7.5),
+							child: new Row(
+								crossAxisAlignment: CrossAxisAlignment.start,
+								children: <Widget>[
+									new Expanded(
+										child: new Text(
+											txt.toUpperCase(),
+											textAlign: TextAlign.left,
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontWeight: FontWeight.w800,
+												fontSize: 24.0,
+											),
+										),
+									),
+									( bookmarked
+										? new Container(
+											child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
+										) : new SizedBox(width: 0.0)
+									)
+								]
 							),
+							decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
 						),
 					),
 					new Container(
@@ -1709,7 +1722,7 @@ class _YourListState extends State<YourList> {
 										crossAxisCount: 1,
 										childAspectRatio: 1.0,
 										children: <Widget>[
-											discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context, sponsored: true),
+											discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context, sponsored: "UWM"),
 										]
 									)
 								),
@@ -1965,7 +1978,7 @@ class _ListItemsState extends State<ListItems> {
 							crossAxisCount: 1,
 							childAspectRatio: 1.0,
 							children: <Widget>[
-								discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context, sponsored: true),
+								discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context, sponsored: "UWM"),
 							]
 						)
 					),
@@ -2410,6 +2423,18 @@ class _SearchState extends State<Search> {
 
 
 void placeCard(txt, img, stars, distance, context, { featured = false, bookmarked = false }) {
+	
+	var imgWidget;
+	
+	if (img == null || img == "") {
+		// default image
+		imgWidget = new AssetImage('images/misssaigon.jpg');
+	} else if (!img.startsWith("/static/")) {
+		imgWidget = new AssetImage('images/'+img);
+	} else {
+		imgWidget = new NetworkImage(domain + img);
+	}
+
 	return new GestureDetector(
 		onTap: () {
 			Navigator.of(context).pushNamed('/place');
@@ -2512,7 +2537,7 @@ void placeCard(txt, img, stars, distance, context, { featured = false, bookmarke
 								),
 								decoration: new BoxDecoration(
 									image: new DecorationImage(
-										image: new AssetImage('images/'+img),
+										image: imgWidget,
 										fit: BoxFit.cover,
 									),
 								),
@@ -2590,7 +2615,108 @@ class _BookmarksState extends State<Bookmarks> {
 	@override
 	Widget build(BuildContext context) {
 	
-		userData[0]["bookmarks"].forEach( (item) => print(item) );
+		List<Widget> _bookmarkItems = [];
+		List _bookmarkTodos = [];
+		
+		for (var item in userData[0]["bookmarks"]) {
+			if (item["place"] != null && item["place"] != "" && item["place"] != "false" && item["place"] != false) {
+				// it's a place
+				_bookmarkItems.add(
+					new SliverPadding(
+						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+						sliver: new SliverGrid.count(
+							crossAxisSpacing: 10.0,
+							mainAxisSpacing: 10.0,
+							crossAxisCount: 1,
+							childAspectRatio: 2.25,
+							// fix this nonsense ^
+							children: <Widget>[
+								placeCard(item["name"], item["image"], item["rating"], item["distance"], context, bookmarked: true),
+							],
+						),
+					)
+				);
+			} else if (item["image"] != null && item["image"] != "") {
+				// it's got an image we can feature
+				_bookmarkItems.add(
+					new SliverPadding(
+						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+						sliver: new SliverGrid.count(
+							crossAxisSpacing: 10.0,
+							mainAxisSpacing: 10.0,
+							crossAxisCount: 1,
+							childAspectRatio: 1.0,
+							children: <Widget>[
+								discoverItem(item["name"], item["image"], context, sponsored: item["sponsored"], bookmarked: true),
+							]
+						)
+					)
+				);
+			}  else if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
+				// if it's a group
+				_bookmarkItems.add(
+					new SliverPadding(
+						padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+						sliver: new SliverGrid.count(
+							crossAxisSpacing: 10.0,
+							mainAxisSpacing: 10.0,
+							crossAxisCount: 1,
+							childAspectRatio: 2.75,
+							children: <Widget>[
+								listGroup(item["name"], item["items"], context, sponsored: item["sponsored"], bookmarked: true),
+							],
+						),
+					)
+				);
+			} else {
+				// if it's a todo
+				_bookmarkTodos.add(item);
+				if (_bookmarkTodos.length > 1) {
+					_bookmarkItems.add(
+						new SliverPadding(
+							padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
+							sliver: new SliverGrid.count(
+								crossAxisSpacing: 10.0,
+								mainAxisSpacing: 10.0,
+								crossAxisCount: 2,
+								childAspectRatio: 1.1,
+								children: <Widget>[
+									listCardGesture(_bookmarkTodos[0]["name"], context, bookmarked: true),																
+									listCardGesture(_bookmarkTodos[1]["name"], context, bookmarked: true),																
+								],
+							),
+						)
+					);
+					_bookmarkTodos = [];
+				}
+			}
+						
+		}
+		
+		// cleanup any remaining todo bookmarks
+		if (_bookmarkTodos.length > 0) {
+			_bookmarkItems.add(
+				new SliverPadding(
+					padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+					sliver: new SliverGrid.count(
+						crossAxisSpacing: 10.0,
+						mainAxisSpacing: 10.0,
+						crossAxisCount: 2,
+						childAspectRatio: 1.1,
+						children: <Widget>[
+							listCardGesture(_bookmarkTodos[0]["name"], context, bookmarked: true),																
+						],
+					),
+				)
+			);
+		}
+		
+		// bottom padding
+		_bookmarkItems.add(
+			new SliverPadding(
+				padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
+			)
+		);
 
 		return new Scaffold(
 			backgroundColor: const Color(0xFFF3F3F7),
@@ -2616,46 +2742,7 @@ class _BookmarksState extends State<Bookmarks> {
 			),
 			body: new CustomScrollView(
 				primary: false,
-				slivers: <Widget>[
-					new SliverPadding(
-						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-						sliver: new SliverGrid.count(
-							crossAxisSpacing: 10.0,
-							mainAxisSpacing: 10.0,
-							crossAxisCount: 2,
-							childAspectRatio: 1.1,
-							children: <Widget>[
-								listCardGesture("Find your doctor, dentist, eye care, pharmacy", context, bookmarked: true),																
-								listCardGesture("Find the nearest grocery store", context, bookmarked: true),																
-							],
-						),
-					),
-					new SliverPadding(
-						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
-						sliver: new SliverGrid.count(
-							crossAxisSpacing: 10.0,
-							mainAxisSpacing: 10.0,
-							crossAxisCount: 1,
-							childAspectRatio: 2.25,
-							// fix this nonsense ^
-							children: <Widget>[
-								placeCard('Aldi', 'cardphoto.png', 5.0, 2.7, context, bookmarked: true),
-							],
-						),
-					),
-					new SliverPadding(
-						padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-						sliver: new SliverGrid.count(
-							crossAxisSpacing: 10.0,
-							mainAxisSpacing: 10.0,
-							crossAxisCount: 1,
-							childAspectRatio: 1.0,
-							children: <Widget>[
-								discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context, sponsored: true, bookmarked: true),
-							]
-						)
-					),
-				],
+				slivers: _bookmarkItems,
 			),
 			bottomNavigationBar: bottomBar(context, 3),
 		);
