@@ -1630,10 +1630,97 @@ class YourList extends StatefulWidget {
 
 
 class _YourListState extends State<YourList> {
-	
+
 	@override
 	Widget build(BuildContext context) {
-		  		
+		
+		List<Widget> _yourlistItems = [];
+		List _yourlistTodos = [];
+		
+		for (var item in userData[0]["todo"]) {
+			if (item["image"] != null && item["image"] != "") {
+				// it's got an image we can feature
+				_yourlistItems.add(
+					new SliverPadding(
+						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+						sliver: new SliverGrid.count(
+							crossAxisSpacing: 10.0,
+							mainAxisSpacing: 10.0,
+							crossAxisCount: 1,
+							childAspectRatio: 1.0,
+							children: <Widget>[
+								discoverItem(item["name"], item["image"], context, sponsored: item["sponsored"]),
+							]
+						)
+					)
+				);
+			}  else if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
+				// if it's a group
+				_yourlistItems.add(
+					new SliverPadding(
+						padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+						sliver: new SliverGrid.count(
+							crossAxisSpacing: 10.0,
+							mainAxisSpacing: 10.0,
+							crossAxisCount: 1,
+							childAspectRatio: 2.75,
+							children: <Widget>[
+								listGroup(item["name"], item["items"], context, sponsored: item["sponsored"]),
+							],
+						),
+					)
+				);
+			} else {
+				// if it's a todo
+				_yourlistTodos.add(item);
+				if (_yourlistTodos.length > 1) {
+					_yourlistItems.add(
+						new SliverPadding(
+							padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+							sliver: new SliverGrid.count(
+								crossAxisSpacing: 10.0,
+								mainAxisSpacing: 10.0,
+								crossAxisCount: 2,
+								childAspectRatio: 1.1,
+								children: <Widget>[
+									listCardGesture(_yourlistTodos[0]["name"], context),																
+									listCardGesture(_yourlistTodos[1]["name"], context),																
+								],
+							),
+						),
+						
+					);
+					_yourlistTodos = [];
+				}
+			}
+						
+		}
+		
+		// cleanup any remaining todo list items
+		if (_yourlistTodos.length > 0) {
+			_yourlistItems.add(
+				new SliverPadding(
+					padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+					sliver: new SliverGrid.count(
+						crossAxisSpacing: 10.0,
+						mainAxisSpacing: 10.0,
+						crossAxisCount: 2,
+						childAspectRatio: 1.1,
+						children: <Widget>[
+							listCardGesture(_yourlistTodos[0]["name"], context),																
+						],
+					),
+				)
+			);
+		}
+		
+		// bottom padding
+		_yourlistItems.add(
+			new SliverPadding(
+				padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
+			)
+		);
+
 	    return new DefaultTabController(
 	        length: 3,
 	        child: new Scaffold(
@@ -1672,101 +1759,7 @@ class _YourListState extends State<YourList> {
 						// Your List
 						new CustomScrollView(
 							primary: false,
-							slivers: <Widget>[
-								new SliverPadding(
-									padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-									sliver: new SliverGrid.count(
-										crossAxisSpacing: 10.0,
-										mainAxisSpacing: 10.0,
-										crossAxisCount: 2,
-										childAspectRatio: 1.1,
-										children: <Widget>[
-											listCardGesture("Tell your friends your new address", context),																
-											listCardGesture("Plan how you're going to get around campus", context),																	
-											listCardGesture("Find Your Doctor, Dentist, Eye care, Pharmacy", context),																	
-											listCardGesture("Find the nearest grocery store", context),																	
-										],
-									),
-								),
-								new SliverPadding(
-									padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-									sliver: new SliverGrid.count(
-										crossAxisSpacing: 10.0,
-										mainAxisSpacing: 10.0,
-										crossAxisCount: 1,
-										childAspectRatio: 2.75,
-										children: <Widget>[
-											listGroup("Popular Activity Name Title Group", 4, context, sponsored: "UWWM"),
-											listGroup("Another Group", 3, context),
-										],
-									),
-								),
-								new SliverPadding(
-									padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-									sliver: new SliverGrid.count(
-										crossAxisSpacing: 10.0,
-										mainAxisSpacing: 10.0,
-										crossAxisCount: 2,
-										childAspectRatio: 1.1,
-										children: <Widget>[
-											listCardGesture("Find the nearest convenience store", context),																	
-											listCardGesture("Buy books for your class", context),																	
-										],
-									),
-								),
-								new SliverPadding(
-									padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-									sliver: new SliverGrid.count(
-										crossAxisSpacing: 10.0,
-										mainAxisSpacing: 10.0,
-										crossAxisCount: 1,
-										childAspectRatio: 1.0,
-										children: <Widget>[
-											discoverItem('Create the Perfect Dorm Room', 'cardphoto.png', context, sponsored: "UWM"),
-										]
-									)
-								),
-								new SliverPadding(
-									padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
-									sliver: new SliverGrid.count(
-										crossAxisSpacing: 10.0,
-										mainAxisSpacing: 10.0,
-										crossAxisCount: 1,
-										childAspectRatio: 4.0,
-										children: <Widget>[
-											new Row(
-												children: <Widget>[
-													new Expanded( child: new Container() ),
-													new Container(
-														decoration: new BoxDecoration (
-															borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
-															color: const Color(0xFF1033FF),
-														),
-														padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-														child: new Row(
-															children: <Widget>[
-																new Container(
-																	padding: const EdgeInsets.fromLTRB(20.0, 12.0, 20.0, 12.0),
-																	child: const Icon(Icons.add, size: 18.0),
-																),
-																new Container(
-																	padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-																	child: const Icon(Icons.create, size: 18.0),
-																),
-																new Container(
-																	padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-																	child: const Icon(Icons.more_horiz, size: 18.0),
-																),
-															],
-														),
-													),
-													new Expanded( child: new Container() ),
-												]
-											)
-										]
-									)
-								),
-							],
+							slivers: _yourlistItems,
 						),
 						// Popular
 						new CustomScrollView(
