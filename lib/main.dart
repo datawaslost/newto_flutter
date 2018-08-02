@@ -2425,7 +2425,11 @@ void placeCard(txt, img, stars, distance, context, { featured = false, bookmarke
 	
 	var imgWidget = imgDefault(img, "misssaigon.jpg");
 	
-	// stars code goes here
+	// calculate stars
+	List<Widget> _starsList = [ new SizedBox( width: 20.0 ) ];
+	for (var i = 0; i < stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)) );
+	for (var i = 0; i < 5-stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)) );
+	_starsList.add( new SizedBox( width: 20.0 ) );
 
 	return new GestureDetector(
 		onTap: () {
@@ -2460,15 +2464,7 @@ void placeCard(txt, img, stars, distance, context, { featured = false, bookmarke
 										),
 										new Expanded(
 											child: new Row(
-												children: [
-													new SizedBox( width: 20.0 ),
-													new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
-													new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
-													new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)),
-													new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
-													new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)),
-													new SizedBox( width: 20.0 ),
-												],
+												children: _starsList,
 											),
 										),
 										new Row(
