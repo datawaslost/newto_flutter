@@ -275,7 +275,6 @@ class _OnboardingState extends State<Onboarding> {
 	int _organization;
 	var usernameValidator;
 
-
 	void _registerWithCredentials(success, fail) async {
 		
 		final response = await http.post(
@@ -297,7 +296,6 @@ class _OnboardingState extends State<Onboarding> {
 		}
 		
 	}
-
 
 	void _onboarding(success, fail, body) async {
 				
@@ -326,7 +324,6 @@ class _OnboardingState extends State<Onboarding> {
 		}
 		
 	}
-
 
 	void _emailCheck() async {
 		
@@ -363,7 +360,6 @@ class _OnboardingState extends State<Onboarding> {
 		
 	}
 
-	
 	void _createAccount() {
 		Navigator.of(context).push(
 			new MaterialPageRoute(
@@ -750,7 +746,6 @@ class _OnboardingState extends State<Onboarding> {
 		);
 	}
 
-
 	void _loginWithCredentials(success, fail) async {
 		
 		final response = await http.post(
@@ -773,7 +768,6 @@ class _OnboardingState extends State<Onboarding> {
 		}
 		
 	}
-
 
 	void _login() {
 		Navigator.of(context).push(
@@ -924,90 +918,90 @@ class _OnboardingState extends State<Onboarding> {
 	@override
 	Widget build(BuildContext context) {
 	  
-	// SystemChrome.setEnabledSystemUIOverlays([]);
-	  
-    // This method is rerun every time setState is called
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+		// SystemChrome.setEnabledSystemUIOverlays([]);
+		  
+	    // This method is rerun every time setState is called
+	    //
+	    // The Flutter framework has been optimized to make rerunning build methods
+	    // fast, so that you can just rebuild anything that needs updating rather
+	    // than having to individually change instances of widgets.
     
-    return new Scaffold(
-      body: new Container(
-	    padding: new EdgeInsets.all(40.0),
-        decoration: new BoxDecoration(
-          image: new DecorationImage(
-            image: new AssetImage("images/background.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: new Align(
-			alignment: Alignment.bottomCenter,
-			child: new Column(
-				mainAxisSize: MainAxisSize.min,
-				children: <Widget>[
-					new Expanded(
-						child: new Align(
-							alignment: Alignment.topCenter,
-							child: new Container(
-								padding: new EdgeInsets.all(60.0),
-								child: new Image.asset("images/LogoStack-White.png", height: 53.0),
-							)
-						)
+		return new Scaffold(
+			body: new Container(
+				padding: new EdgeInsets.all(40.0),
+				decoration: new BoxDecoration(
+					image: new DecorationImage(
+						image: new AssetImage("images/background.png"),
+						fit: BoxFit.cover,
 					),
-					new Row(
+		        ),
+		        child: new Align(
+					alignment: Alignment.bottomCenter,
+					child: new Column(
+						mainAxisSize: MainAxisSize.min,
 						children: <Widget>[
 							new Expanded(
-								child: new RaisedButton(
-									onPressed: _createAccount,
-									padding: new EdgeInsets.all(14.0),  
-									color: const Color(0xFF1033FF),
-									textColor: const Color(0xFFFFFFFF),
-									child: new Text(
-										'CREATE ACCOUNT',
-										style: new TextStyle(
-											fontWeight: FontWeight.w800,
-										),
-									),
-								),
-							)
-						]
-					),
-					new Container(
-						padding: new EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 10.0),
-						child: new Text(
-							'Already a member?',
-							style: new TextStyle(
-								color: const Color(0xFFFFFFFF),
+								child: new Align(
+									alignment: Alignment.topCenter,
+									child: new Container(
+										padding: new EdgeInsets.all(60.0),
+										child: new Image.asset("images/LogoStack-White.png", height: 53.0),
+									)
+								)
 							),
-						),
-					),
-					new Row(
-						children: <Widget>[
-							new Expanded(
-								child: new RaisedButton(
-									onPressed: _login,
-									padding: new EdgeInsets.all(14.0),  
-									color: const Color(0xFFE3F5FF),
-									textColor: const Color(0xFF2D2D2F),
-									child: new Text(
-										'LOGIN',
-										style: new TextStyle(
-											fontWeight: FontWeight.w800,
+							new Row(
+								children: <Widget>[
+									new Expanded(
+										child: new RaisedButton(
+											onPressed: _createAccount,
+											padding: new EdgeInsets.all(14.0),  
+											color: const Color(0xFF1033FF),
+											textColor: const Color(0xFFFFFFFF),
+											child: new Text(
+												'CREATE ACCOUNT',
+												style: new TextStyle(
+													fontWeight: FontWeight.w800,
+												),
+											),
 										),
+									)
+								]
+							),
+							new Container(
+								padding: new EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 10.0),
+								child: new Text(
+									'Already a member?',
+									style: new TextStyle(
+										color: const Color(0xFFFFFFFF),
 									),
 								),
-							)
+							),
+							new Row(
+								children: <Widget>[
+									new Expanded(
+										child: new RaisedButton(
+											onPressed: _login,
+											padding: new EdgeInsets.all(14.0),  
+											color: const Color(0xFFE3F5FF),
+											textColor: const Color(0xFF2D2D2F),
+											child: new Text(
+												'LOGIN',
+												style: new TextStyle(
+													fontWeight: FontWeight.w800,
+												),
+											),
+										),
+									)
+								]
+							),
 						]
-					),
-				]
-			
-			)
-	    ),
-      ),
-	  
-    );
-  }
+					)
+			    ),
+			),
+		);
+		
+	}
+
 }
 
 
@@ -1129,7 +1123,6 @@ class _LandingState extends State<Landing> {
 	List<Widget> _carouselItems = [];
 	List<Widget> _discoverItems = [];
 	double _carouselProgress = 1 / userData[0]["todo"].length;
-
 
 	@override
 	Widget build(BuildContext context) {
@@ -1368,15 +1361,6 @@ class _LandingState extends State<Landing> {
 							value: _carouselProgress,
 							backgroundColor: const Color(0xFF2D2D2F),
 							valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
-						),
-						// this is overlapped
-						decoration: new BoxDecoration(
-							boxShadow: [
-								new BoxShadow(
-									color: Colors.black,
-									blurRadius: 20.0,
-								),
-							]
 						),
 					),
 					new Container(
@@ -1621,6 +1605,228 @@ void listGroup(String txt, amount, context, {bookmarked = false, String sponsore
 }
 
 
+void listGroupImage(String txt, amount, img, context, {bookmarked = false, String sponsored}) {
+
+	var imgWidget;
+	
+	if (img == null || img == "") {
+		// default image
+		imgWidget = new AssetImage('images/cardphoto.png');
+	} else if (!img.startsWith("/static/")) {
+		imgWidget = new AssetImage('images/'+img);
+	} else {
+		imgWidget = new NetworkImage(domain + img);
+	}
+	
+	return new GestureDetector(
+		onTap: (){
+			// go to list view
+			Navigator.of(context).pushNamed('/listitems');
+		},
+		child: new Stack(
+			fit: StackFit.expand,
+			children: <Widget>[
+				new Container(
+					margin: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+					child: new Card(
+						elevation: 3.0,
+						child: new Container(
+							padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 15.0),
+							child: new Column(
+								children: [
+									new Expanded( child: new Container() ),
+									new Row(
+										crossAxisAlignment: CrossAxisAlignment.end,
+										children: [
+											new Expanded(
+												child: new Text(
+													txt.toUpperCase(),
+													textAlign: TextAlign.left,
+													style: new TextStyle(
+														color: const Color(0xFF000000),
+														fontWeight: FontWeight.w800,
+														fontSize: 24.0,
+													),
+												),
+											),
+											new Text(
+												amount.toString().toUpperCase() + " ",
+												textAlign: TextAlign.left,
+												style: new TextStyle(
+													color: const Color(0xFF838383),
+													fontWeight: FontWeight.w800,
+													fontSize: 10.0,
+												),
+											),
+											new Container(
+												padding: const EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
+												child: new Icon(
+													Icons.filter_none, 
+													color: const Color(0xFF838383), 
+													size: 10.0
+												)
+											),
+										]
+									)
+								]
+							)
+						),														
+					),
+				),
+				new Container(
+					margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 80.0),
+					padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
+					child: new Container(
+						decoration: new BoxDecoration(
+							image: new DecorationImage(
+								image: imgWidget,
+								fit: BoxFit.cover,
+							),
+						),
+					),
+				),
+				( bookmarked
+					? new Container(
+						alignment: Alignment.topRight,
+						margin: const EdgeInsets.fromLTRB(0.0, 10.0, 30.0, 0.0),
+						child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
+					) : new SizedBox(width: 0.0)
+				),
+			],
+		),
+	);
+	
+}
+
+
+void parseItems(list, context, {bookmarked = false}) {
+	
+	List<Widget> _listItems = [];
+	List _listTodos = [];
+
+	for (var item in list) {
+		if (item["place"] != null && item["place"] != "" && item["place"] != "false" && item["place"] != false) {
+			// it's a place
+			_listItems.add(
+				new SliverPadding(
+					padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+					sliver: new SliverGrid.count(
+						crossAxisSpacing: 10.0,
+						mainAxisSpacing: 10.0,
+						crossAxisCount: 1,
+						childAspectRatio: 2.25,
+						// fix this nonsense ^
+						children: <Widget>[
+							placeCard(item["name"], item["image"], item["rating"], item["distance"], context, bookmarked: bookmarked),
+						],
+					),
+				)
+			);
+		} else if (item["image"] != null && item["image"] != "") {
+			// it's got an image we can feature
+			if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
+				// if it's a group with an image
+				_listItems.add(
+					new SliverPadding(
+						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+						sliver: new SliverGrid.count(
+							crossAxisSpacing: 10.0,
+							mainAxisSpacing: 10.0,
+							crossAxisCount: 1,
+							childAspectRatio: 1.2,
+							children: <Widget>[
+								listGroupImage(item["name"], item["items"], item["image"], context, sponsored: item["sponsored"], bookmarked: bookmarked),
+							]
+						),
+					)
+				);
+			} else {
+				// not a group, has an image (probably an article)
+				_listItems.add(
+					new SliverPadding(
+						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+						sliver: new SliverGrid.count(
+							crossAxisSpacing: 10.0,
+							mainAxisSpacing: 10.0,
+							crossAxisCount: 1,
+							childAspectRatio: 1.0,
+							children: <Widget>[
+								discoverItem(item["name"], item["image"], context, sponsored: item["sponsored"], bookmarked: bookmarked),
+							]
+						)
+					)
+				);
+			}
+		}  else if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
+			// if it's a group without an image
+			_listItems.add(
+				new SliverPadding(
+					padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+					sliver: new SliverGrid.count(
+						crossAxisSpacing: 10.0,
+						mainAxisSpacing: 10.0,
+						crossAxisCount: 1,
+						childAspectRatio: 2.75,
+						children: <Widget>[
+							listGroup(item["name"], item["items"], context, sponsored: item["sponsored"], bookmarked: bookmarked),
+						],
+					),
+				)
+			);
+		} else {
+			// if it's a todo
+			_listTodos.add(item);
+			if (_listTodos.length > 1) {
+				_listItems.add(
+					new SliverPadding(
+						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
+						sliver: new SliverGrid.count(
+							crossAxisSpacing: 10.0,
+							mainAxisSpacing: 10.0,
+							crossAxisCount: 2,
+							childAspectRatio: 1.1,
+							children: <Widget>[
+								listCardGesture(_listTodos[0]["name"], context, bookmarked: bookmarked),																
+								listCardGesture(_listTodos[1]["name"], context, bookmarked: bookmarked),																
+							],
+						),
+					)
+				);
+				_listTodos.clear();
+			}
+		}
+	}
+	
+	// cleanup any remaining todo items
+	if (_listTodos.length > 0) {
+		_listItems.add(
+			new SliverPadding(
+				padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+				sliver: new SliverGrid.count(
+					crossAxisSpacing: 10.0,
+					mainAxisSpacing: 10.0,
+					crossAxisCount: 2,
+					childAspectRatio: 1.1,
+					children: <Widget>[
+						listCardGesture(_listTodos[0]["name"], context, bookmarked: bookmarked),																
+					],
+				),
+			)
+		);
+	}
+	
+	// bottom padding
+	_listItems.add(
+		new SliverPadding(
+			padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
+		)
+	);
+	
+	return _listItems;
+
+}
+
+
 class YourList extends StatefulWidget {
 	YourList({Key key, this.title}) : super(key: key);
 	final String title;
@@ -1633,93 +1839,6 @@ class _YourListState extends State<YourList> {
 
 	@override
 	Widget build(BuildContext context) {
-		
-		List<Widget> _yourlistItems = [];
-		List _yourlistTodos = [];
-		
-		for (var item in userData[0]["todo"]) {
-			if (item["image"] != null && item["image"] != "") {
-				// it's got an image we can feature
-				_yourlistItems.add(
-					new SliverPadding(
-						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-						sliver: new SliverGrid.count(
-							crossAxisSpacing: 10.0,
-							mainAxisSpacing: 10.0,
-							crossAxisCount: 1,
-							childAspectRatio: 1.0,
-							children: <Widget>[
-								discoverItem(item["name"], item["image"], context, sponsored: item["sponsored"]),
-							]
-						)
-					)
-				);
-			}  else if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
-				// if it's a group
-				_yourlistItems.add(
-					new SliverPadding(
-						padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-						sliver: new SliverGrid.count(
-							crossAxisSpacing: 10.0,
-							mainAxisSpacing: 10.0,
-							crossAxisCount: 1,
-							childAspectRatio: 2.75,
-							children: <Widget>[
-								listGroup(item["name"], item["items"], context, sponsored: item["sponsored"]),
-							],
-						),
-					)
-				);
-			} else {
-				// if it's a todo
-				_yourlistTodos.add(item);
-				if (_yourlistTodos.length > 1) {
-					_yourlistItems.add(
-						new SliverPadding(
-							padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-							sliver: new SliverGrid.count(
-								crossAxisSpacing: 10.0,
-								mainAxisSpacing: 10.0,
-								crossAxisCount: 2,
-								childAspectRatio: 1.1,
-								children: <Widget>[
-									listCardGesture(_yourlistTodos[0]["name"], context),																
-									listCardGesture(_yourlistTodos[1]["name"], context),																
-								],
-							),
-						),
-						
-					);
-					_yourlistTodos = [];
-				}
-			}
-						
-		}
-		
-		// cleanup any remaining todo list items
-		if (_yourlistTodos.length > 0) {
-			_yourlistItems.add(
-				new SliverPadding(
-					padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-					sliver: new SliverGrid.count(
-						crossAxisSpacing: 10.0,
-						mainAxisSpacing: 10.0,
-						crossAxisCount: 2,
-						childAspectRatio: 1.1,
-						children: <Widget>[
-							listCardGesture(_yourlistTodos[0]["name"], context),																
-						],
-					),
-				)
-			);
-		}
-		
-		// bottom padding
-		_yourlistItems.add(
-			new SliverPadding(
-				padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
-			)
-		);
 
 	    return new DefaultTabController(
 	        length: 3,
@@ -1759,7 +1878,7 @@ class _YourListState extends State<YourList> {
 						// Your List
 						new CustomScrollView(
 							primary: false,
-							slivers: _yourlistItems,
+							slivers: parseItems(userData[0]["todo"], context),
 						),
 						// Popular
 						new CustomScrollView(
@@ -1773,109 +1892,17 @@ class _YourListState extends State<YourList> {
 										crossAxisCount: 1,
 										childAspectRatio: 1.2,
 										children: <Widget>[
-											new GestureDetector(
-												onTap: (){
-													// go to list view
-													Navigator.of(context).pushNamed('/listitems');
-												},
-												child: new Stack(
-													fit: StackFit.expand,
-													children: <Widget>[
-														new Container(
-															margin: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-															child: new Card(
-																elevation: 3.0,
-																child: new Container(
-																	padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 15.0),
-																	child: new Column(
-																		children: [
-																			new Expanded( child: new Container() ),
-																			new Row(
-																				crossAxisAlignment: CrossAxisAlignment.end,
-																				children: [
-																					new Expanded(
-																						child: new Text(
-																							'Back to school essentials'.toUpperCase(),
-																							textAlign: TextAlign.left,
-																							style: new TextStyle(
-																								color: const Color(0xFF000000),
-																								fontWeight: FontWeight.w800,
-																								fontSize: 24.0,
-																							),
-																						),
-																					),
-																					new Text(
-																						'4 '.toUpperCase(),
-																						textAlign: TextAlign.left,
-																						style: new TextStyle(
-																							color: const Color(0xFF838383),
-																							fontWeight: FontWeight.w800,
-																							fontSize: 10.0,
-																						),
-																					),
-																					new Container(
-																						padding: const EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
-																						child: new Icon(
-																							Icons.filter_none, 
-																							color: const Color(0xFF838383), 
-																							size: 10.0
-																						)
-																					),
-																				]
-																			)
-																		]
-																	)
-																),														
-															),
-														),
-														new Container(
-															margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 80.0),
-															padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
-															child: new Container(
-																decoration: new BoxDecoration(
-																	image: new DecorationImage(
-																		image: new AssetImage('images/cardphoto.png'),
-																		fit: BoxFit.cover,
-																	),
-																),
-															),
-														),
-													],
-												),
-											),
+											listGroupImage('Back to school essentials', 7, null, context),
 										]
-									),
-								),
-								new SliverPadding(
-									padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-									sliver: new SliverGrid.count(
-										crossAxisSpacing: 10.0,
-										mainAxisSpacing: 10.0,
-										crossAxisCount: 2,
-										childAspectRatio: 1.1,
-										children: <Widget>[
-											listCardGesture("Tell your friends your new address", context),
-											listCardGesture("Set up your email and student accounts", context),
-											listCardGesture("Check in and get your welcome packet", context),
-											listCardGesture("Buy books for your classes", context),
-										],
-									),
-								),
-								new SliverPadding(
-									padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-									sliver: new SliverGrid.count(
-										crossAxisSpacing: 10.0,
-										mainAxisSpacing: 10.0,
-										crossAxisCount: 1,
-										childAspectRatio: 2.75,
-										children: <Widget>[
-											listGroup("Popular Activity Name Title Group", 4, context, sponsored: "UWWM"),
-										],
 									),
 								),
 							],
 						),
-						new Icon(Icons.directions_bike),
+						// Metro
+						new CustomScrollView(
+							primary: false,
+							slivers: parseItems(userData[0]["todo"], context),
+						),
 					],
 				),
 				bottomNavigationBar: bottomBar(context, 1),
@@ -2196,7 +2223,6 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
 	
-
 	double _distance = 0.0;
 	
 	@override
@@ -2427,6 +2453,8 @@ void placeCard(txt, img, stars, distance, context, { featured = false, bookmarke
 	} else {
 		imgWidget = new NetworkImage(domain + img);
 	}
+	
+	// stars code goes here
 
 	return new GestureDetector(
 		onTap: () {
@@ -2608,109 +2636,6 @@ class _BookmarksState extends State<Bookmarks> {
 	@override
 	Widget build(BuildContext context) {
 	
-		List<Widget> _bookmarkItems = [];
-		List _bookmarkTodos = [];
-		
-		for (var item in userData[0]["bookmarks"]) {
-			if (item["place"] != null && item["place"] != "" && item["place"] != "false" && item["place"] != false) {
-				// it's a place
-				_bookmarkItems.add(
-					new SliverPadding(
-						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-						sliver: new SliverGrid.count(
-							crossAxisSpacing: 10.0,
-							mainAxisSpacing: 10.0,
-							crossAxisCount: 1,
-							childAspectRatio: 2.25,
-							// fix this nonsense ^
-							children: <Widget>[
-								placeCard(item["name"], item["image"], item["rating"], item["distance"], context, bookmarked: true),
-							],
-						),
-					)
-				);
-			} else if (item["image"] != null && item["image"] != "") {
-				// it's got an image we can feature
-				_bookmarkItems.add(
-					new SliverPadding(
-						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-						sliver: new SliverGrid.count(
-							crossAxisSpacing: 10.0,
-							mainAxisSpacing: 10.0,
-							crossAxisCount: 1,
-							childAspectRatio: 1.0,
-							children: <Widget>[
-								discoverItem(item["name"], item["image"], context, sponsored: item["sponsored"], bookmarked: true),
-							]
-						)
-					)
-				);
-			}  else if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
-				// if it's a group
-				_bookmarkItems.add(
-					new SliverPadding(
-						padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-						sliver: new SliverGrid.count(
-							crossAxisSpacing: 10.0,
-							mainAxisSpacing: 10.0,
-							crossAxisCount: 1,
-							childAspectRatio: 2.75,
-							children: <Widget>[
-								listGroup(item["name"], item["items"], context, sponsored: item["sponsored"], bookmarked: true),
-							],
-						),
-					)
-				);
-			} else {
-				// if it's a todo
-				_bookmarkTodos.add(item);
-				if (_bookmarkTodos.length > 1) {
-					_bookmarkItems.add(
-						new SliverPadding(
-							padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
-							sliver: new SliverGrid.count(
-								crossAxisSpacing: 10.0,
-								mainAxisSpacing: 10.0,
-								crossAxisCount: 2,
-								childAspectRatio: 1.1,
-								children: <Widget>[
-									listCardGesture(_bookmarkTodos[0]["name"], context, bookmarked: true),																
-									listCardGesture(_bookmarkTodos[1]["name"], context, bookmarked: true),																
-								],
-							),
-						)
-					);
-					_bookmarkTodos = [];
-				}
-			}
-						
-		}
-		
-		// cleanup any remaining todo bookmarks
-		if (_bookmarkTodos.length > 0) {
-			_bookmarkItems.add(
-				new SliverPadding(
-					padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-					sliver: new SliverGrid.count(
-						crossAxisSpacing: 10.0,
-						mainAxisSpacing: 10.0,
-						crossAxisCount: 2,
-						childAspectRatio: 1.1,
-						children: <Widget>[
-							listCardGesture(_bookmarkTodos[0]["name"], context, bookmarked: true),																
-						],
-					),
-				)
-			);
-		}
-		
-		// bottom padding
-		_bookmarkItems.add(
-			new SliverPadding(
-				padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
-			)
-		);
-
 		return new Scaffold(
 			backgroundColor: const Color(0xFFF3F3F7),
 			appBar: new AppBar(
@@ -2735,7 +2660,7 @@ class _BookmarksState extends State<Bookmarks> {
 			),
 			body: new CustomScrollView(
 				primary: false,
-				slivers: _bookmarkItems,
+				slivers: parseItems(userData[0]["bookmarks"], context, bookmarked: true),
 			),
 			bottomNavigationBar: bottomBar(context, 3),
 		);
