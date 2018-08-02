@@ -116,9 +116,7 @@ void bottomBar(context, _selected) {
 				
 class Home extends StatefulWidget {
 	Home({Key key, this.title}) : super(key: key);
-	
 	final String title;
-	
 	@override
 	_HomeState createState() => new _HomeState();
 }
@@ -150,7 +148,7 @@ void checkIfToken(success, fail) async {
 	// obtain shared preferences
 	final prefs = await SharedPreferences.getInstance();
 	final String token = prefs.getString('token') ?? null;
-	
+		
 	if(token == null) {
 		print("no token stored, must be their first time");
 		fail();
@@ -207,12 +205,10 @@ class _HomeState extends State<Home> {
 
 
 class Onboarding extends StatefulWidget {
-  Onboarding({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _OnboardingState createState() => new _OnboardingState();
+	Onboarding({Key key, this.title}) : super(key: key);
+	final String title;
+	@override
+	_OnboardingState createState() => new _OnboardingState();
 }
 
 
@@ -305,9 +301,7 @@ class _OnboardingState extends State<Onboarding> {
 
 
 	void _onboarding(success, fail, body) async {
-		
-		print("_onboarding");
-		
+				
 		var onboarding_data = {
 			"email": json.decode(body)["user"]["email"],
 			"id": json.decode(body)["user"]["pk"].toString(),
@@ -1120,9 +1114,7 @@ void discoverItem(txt, img, context, { bool sponsored = false, bool bookmarked =
 
 class Landing extends StatefulWidget {
 	Landing({Key key, this.title}) : super(key: key);
-	
 	final String title;
-	
 	@override
 	_LandingState createState() => new _LandingState();
 }
@@ -1616,9 +1608,7 @@ void listGroup(String txt, amount, context, {bookmarked = false, String sponsore
 
 class YourList extends StatefulWidget {
 	YourList({Key key, this.title}) : super(key: key);
-	
 	final String title;
-	
 	@override
 	_YourListState createState() => new _YourListState();
 }
@@ -1891,9 +1881,7 @@ class _YourListState extends State<YourList> {
 
 class ListItems extends StatefulWidget {
 	ListItems({Key key, this.title}) : super(key: key);
-	
 	final String title;
-	
 	@override
 	_ListItemsState createState() => new _ListItemsState();
 }
@@ -1991,9 +1979,7 @@ class _ListItemsState extends State<ListItems> {
 
 class Discover extends StatefulWidget {
 	Discover({Key key, this.title}) : super(key: key);
-	
 	final String title;
-	
 	@override
 	_DiscoverState createState() => new _DiscoverState();
 }
@@ -2194,9 +2180,7 @@ class _DiscoverState extends State<Discover> {
 
 class Search extends StatefulWidget {
 	Search({Key key, this.title}) : super(key: key);
-	
 	final String title;
-	
 	@override
 	_SearchState createState() => new _SearchState();
 }
@@ -2542,9 +2526,7 @@ void placeCard(txt, img, stars, distance, context, { featured = false, bookmarke
 
 class SearchResults extends StatefulWidget {
 	SearchResults({Key key, this.title}) : super(key: key);
-	
 	final String title;
-	
 	@override
 	_SearchResultsState createState() => new _SearchResultsState();
 }
@@ -2595,9 +2577,7 @@ class _SearchResultsState extends State<SearchResults> {
 
 class Bookmarks extends StatefulWidget {
 	Bookmarks({Key key, this.title}) : super(key: key);
-	
 	final String title;
-	
 	@override
 	_BookmarksState createState() => new _BookmarksState();
 }
@@ -2607,7 +2587,9 @@ class _BookmarksState extends State<Bookmarks> {
 	
 	@override
 	Widget build(BuildContext context) {
-	  
+	
+		userData[0]["bookmarks"].forEach( (item) => print(item) );
+
 		return new Scaffold(
 			backgroundColor: const Color(0xFFF3F3F7),
 			appBar: new AppBar(
@@ -2683,9 +2665,7 @@ class _BookmarksState extends State<Bookmarks> {
 
 class Account extends StatefulWidget {
 	Account({Key key, this.title}) : super(key: key);
-	
 	final String title;
-	
 	@override
 	_AccountState createState() => new _AccountState();
 }
@@ -2815,9 +2795,7 @@ class _AccountState extends State<Account> {
 
 class Article extends StatefulWidget {
 	Article({Key key, this.title}) : super(key: key);
-	
 	final String title;
-	
 	@override
 	_ArticleState createState() => new _ArticleState();
 }
@@ -2980,9 +2958,7 @@ class _ArticleState extends State<Article> {
 
 class Place extends StatefulWidget {
 	Place({Key key, this.title}) : super(key: key);
-	
 	final String title;
-	
 	@override
 	_PlaceState createState() => new _PlaceState();
 }
@@ -3231,9 +3207,7 @@ class _PlaceState extends State<Place> {
 
 class Organization extends StatefulWidget {
 	Organization({Key key, this.title}) : super(key: key);
-	
 	final String title;
-	
 	@override
 	_OrganizationState createState() => new _OrganizationState();
 }
