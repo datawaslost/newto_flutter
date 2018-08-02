@@ -150,7 +150,7 @@ void checkIfToken(success, fail) async {
 	final String token = prefs.getString('token') ?? null;
 		
 	if(token == null) {
-		print("no token stored, must be their first time");
+		// no token stored, must be their first time
 		fail();
 	} else {
 		success(token);
@@ -179,18 +179,19 @@ class _HomeState extends State<Home> {
 				getUserData(
 					token, 
 					(data){
-						print("getUserData success callback");
+						// Success
 						print(data);
 						Navigator.of(context).pushNamed("/landing");
 					},
 					(code){
+						// Failure
 						print("getUserData failure callback : " + code);
 						Navigator.of(context).pushNamed("/login");
 					}
 				);
 			}, 
 			(){
-				// if fail : no token
+				// if failure because of no token, go to onboarding
 				Navigator.of(context).pushNamed("/onboarding");
 			}, 
 		);
@@ -277,8 +278,6 @@ class _OnboardingState extends State<Onboarding> {
 
 	void _registerWithCredentials(success, fail) async {
 		
-		print("_registerWithCredentials");
-
 		final response = await http.post(
 			domain + 'rest-auth/registration/',
 			body: {
@@ -309,6 +308,7 @@ class _OnboardingState extends State<Onboarding> {
 			
 		// check if we have a hometown entered
 		if (!_hometownController.text.isEmpty) onboarding_data["hometown"] = _hometownController.text.toString();
+		
 		// check if we have an organization attached to this email
 		if (_organization != null) onboarding_data["organization"] = _organization.toString();
 
@@ -330,8 +330,6 @@ class _OnboardingState extends State<Onboarding> {
 
 	void _emailCheck() async {
 		
-		print("_emailCheck");
-
 		String email = _emailController.text;
 		
 		if (email.isEmpty) {
@@ -720,10 +718,12 @@ class _OnboardingState extends State<Onboarding> {
 													child: new RaisedButton(
 														onPressed: () => _registerWithCredentials(
 															(token) {
+																// Success
 																saveToken(token);
 																Navigator.of(context).pushNamed('/landing');
 															},
 															(error) {
+																// Failure
 																print(error);
 															},
 														),
@@ -887,9 +887,11 @@ class _OnboardingState extends State<Onboarding> {
 																if (_loginFormKey.currentState.validate()) {
 																	_loginWithCredentials(
 																		(data) {
+																			// Success
 																			Navigator.of(context).pushNamed('/landing');
 																		},
 																		(error) {
+																			// Failure
 																			print(error);
 																		},
 																	);
@@ -2734,7 +2736,7 @@ class _AccountState extends State<Account> {
 						trailing: new IconButton(
 							icon: new Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
 						),
-						onTap: () => print("city"),
+						onTap: () => print("hometown"),
 					),
 					new Divider(
 						height: 1.0,
