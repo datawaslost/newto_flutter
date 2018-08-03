@@ -2065,6 +2065,9 @@ class Discover extends StatefulWidget {
 class _DiscoverState extends State<Discover> {
 
 	void searchCategory(txt, img) {
+		
+		var imgWidget = imgDefault(img, "misssaigon.jpg");
+		
 		return new GestureDetector(
 			onTap: () {
 				Navigator.of(context).pushNamed('/search');
@@ -2080,7 +2083,7 @@ class _DiscoverState extends State<Discover> {
 							height: 180.0,
 							decoration: new BoxDecoration(
 								image: new DecorationImage(
-									image: new AssetImage('images/' + img),
+									image: imgWidget,
 									fit: BoxFit.cover,
 								),
 							),
@@ -2100,9 +2103,14 @@ class _DiscoverState extends State<Discover> {
 			),
 		);
 	}
-	
+
 	@override
 	Widget build(BuildContext context) {
+
+		List<Widget> _categoryList = [];
+		_categoryList.add(new SizedBox(width: 15.0));
+		for (var cat in userData[0]["organization"]["categories"]) _categoryList.add( searchCategory(cat["name"], cat["image"]) );
+		_categoryList.add(new SizedBox(width: 15.0));
 	  
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
@@ -2153,13 +2161,7 @@ class _DiscoverState extends State<Discover> {
 										child: new ListView(
 											scrollDirection: Axis.horizontal,
 											shrinkWrap: true,
-											children: <Widget>[
-												new SizedBox(width: 15.0),
-												searchCategory("Restaurants", "cardphoto.png"),
-												searchCategory("Groceries", "cardphoto.png"),
-												searchCategory("Amherst", "cardphoto.png"),
-												new SizedBox(width: 15.0),
-											],
+											children: _categoryList,
 										)
 									)
 								]
