@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
 				'/discover': (BuildContext context) => new Discover(),
 				'/bookmarks': (BuildContext context) => new Bookmarks(),
 				'/account': (BuildContext context) => new Account(),
-				'/place': (BuildContext context) => new Place(),
+				// '/place': (BuildContext context) => new Place(),
 				'/org': (BuildContext context) => new Organization(),
 			},
 		);
@@ -1716,7 +1716,7 @@ void parseItems(list, context, {bookmarked = false}) {
 						childAspectRatio: 2.25,
 						// fix this nonsense ^
 						children: <Widget>[
-							placeCard(item["name"], item["image"], item["rating"], item["distance"], context, bookmarked: bookmarked),
+							placeCard(item["id"], item["name"], item["image"], item["rating"], item["distance"], context, bookmarked: bookmarked),
 						],
 					),
 				)
@@ -2450,7 +2450,7 @@ class _SearchState extends State<Search> {
 }
 
 
-void placeCard(txt, img, stars, distance, context, { featured = false, bookmarked = false }) {
+void placeCard(id, txt, img, stars, distance, context, { featured = false, bookmarked = false }) {
 	
 	var imgWidget = imgDefault(img, "misssaigon.jpg");
 	
@@ -2462,7 +2462,9 @@ void placeCard(txt, img, stars, distance, context, { featured = false, bookmarke
 
 	return new GestureDetector(
 		onTap: () {
-			Navigator.of(context).pushNamed('/place');
+			Navigator.push(context, new MaterialPageRoute(
+				builder: (BuildContext context) => new Place(id),
+			));
 		},
 		child: new Container(
 			height: 150.0,
@@ -2647,7 +2649,7 @@ class _SearchResultsState extends State<SearchResults> {
 							
 							for (var place in snapshot.data) {
 								_placeList.add(
-									placeCard(place["name"], place["image"], place["rating"], place["distance"], context)
+									placeCard(place["id"], place["name"], place["image"], place["rating"], place["distance"], context)
 								);
 							}
 							
@@ -3082,230 +3084,280 @@ class Article extends StatelessWidget {
 }
 
 
-class Place extends StatefulWidget {
-	Place({Key key, this.title}) : super(key: key);
-	final String title;
-	@override
-	_PlaceState createState() => new _PlaceState();
+void getPlaceData(id) async {
+	
+	// get stored token
+	final prefs = await SharedPreferences.getInstance();
+	final String token = prefs.getString('token') ?? null;
+	var placeData;
+
+	final response = await http.get(
+		domain + 'api/place/' + id.toString() + '/',
+		headers: {
+			HttpHeaders.AUTHORIZATION: "JWT " + token
+		},
+	);
+	
+	if (response.statusCode == 200) {
+		// If server returns an OK response, parse the JSON
+		placeData = json.decode(response.body);
+		return placeData;
+	} else {
+		// If that response was not OK, throw an error.
+		// fail(response.statusCode);
+		return null;
+	}
+	
 }
 
 
-class _PlaceState extends State<Place> {
+class Place extends StatelessWidget {
 	
+	Place(this.id);
+	final int id;
+	List<Widget> _widgetList = [];
 	var _staticMapProvider = new StaticMapProvider('AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E');
+	var placeData;
 	
 	@override
 	Widget build(BuildContext context) {
-	  
+				
 		return new Scaffold(
 			backgroundColor: const Color(0xFFFFFFFF),
 			body: new SingleChildScrollView(
 				scrollDirection: Axis.vertical,
-				child: new Column(
-					children: <Widget>[
-						new Container(
-							height: 324.0,
-							decoration: new BoxDecoration(
-								image: new DecorationImage(
-									image: new AssetImage('images/cardphoto.png'),
-									fit: BoxFit.cover,
-								),
-							),
-							child: new Column(
-								mainAxisSize: MainAxisSize.min,
-								children: <Widget>[
-									new BackdropFilter(
-										filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-										child: new Container(
-											padding: new EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 15.0),
-											child: new SafeArea(
-													child: new Row(
-													crossAxisAlignment: CrossAxisAlignment.start,
-													children: <Widget>[
-														new Expanded(
-															child: new Text(
-																'Fresh Market Amherst'.toUpperCase(),
-																textAlign: TextAlign.left,
+				child: new FutureBuilder(
+					future: getPlaceData(this.id),
+					builder: (BuildContext context, AsyncSnapshot snapshot) {
+						if (snapshot.hasData) {
+							if (snapshot.data!=null) {
+								
+								placeData = snapshot.data;
+								
+								print(placeData);
+								
+								var imgWidget = imgDefault(placeData["image"], "misssaigon.jpg");
+								
+								return new Column(
+									children: <Widget>[
+										new Container(
+											height: 324.0,
+											decoration: new BoxDecoration(
+												image: new DecorationImage(
+													image: imgWidget,
+													fit: BoxFit.cover,
+												),
+											),
+											child: new Column(
+												mainAxisSize: MainAxisSize.min,
+												children: <Widget>[
+													new BackdropFilter(
+														filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+														child: new Container(
+															padding: new EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 15.0),
+															child: new SafeArea(
+																	child: new Row(
+																	crossAxisAlignment: CrossAxisAlignment.start,
+																	children: <Widget>[
+																		new Expanded(
+																			child: new Text(
+																				placeData["name"].toUpperCase(),
+																				textAlign: TextAlign.left,
+																				style: new TextStyle(
+																					color: const Color(0xFF000000),
+																					fontWeight: FontWeight.w800,
+																					fontSize: 28.0,
+																					height: 0.9,
+																				),
+																			),
+																		),
+																		new IconButton(
+																			icon: new Icon(Icons.close, color: const Color(0xFF000000)),
+																			padding: new EdgeInsets.all(0.0),
+																			alignment: Alignment.topCenter,
+																			onPressed: () => Navigator.pop(context,true),
+																		),
+																	]
+																),
+															),
+															decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+														),
+													),
+													new Expanded(
+														child: new Container(
+															decoration: new BoxDecoration(
+																image: new DecorationImage(
+																	image: imgWidget,
+																	fit: BoxFit.cover,
+																	alignment: Alignment.bottomCenter,
+																),
+															), 
+														),
+													),															
+												],
+											),
+										),
+										new Container(
+											padding: new EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 15.0),
+											alignment: Alignment.topLeft,
+											child: new Column(
+												crossAxisAlignment: CrossAxisAlignment.start,
+												children: <Widget>[
+													new Text(
+														placeData["address"] + ", " + placeData["city"] + ", " + placeData["state"],
+														textAlign: TextAlign.left,
+														style: new TextStyle(
+															color: const Color(0xFF1033FF),
+															fontWeight: FontWeight.w400,
+															fontSize: 14.0,
+															height: 1.25,
+														),
+													),
+													new Text(
+														placeData["link"],
+														textAlign: TextAlign.left,
+														style: new TextStyle(
+															color: const Color(0xFF1033FF),
+															fontWeight: FontWeight.w400,
+															fontSize: 14.0,
+															height: 1.25,
+														),
+													),
+													new Text(
+														placeData["phone"],
+														textAlign: TextAlign.left,
+														style: new TextStyle(
+															color: const Color(0xFF1033FF),
+															fontWeight: FontWeight.w400,
+															fontSize: 14.0,
+															height: 1.25,
+														),
+													),
+													new Text(
+														"Open Now: 7AM-12AM",
+														style: new TextStyle(
+															color: const Color(0xFF000000),
+															fontWeight: FontWeight.w300,
+															fontSize: 14.0,
+															height: 1.25,
+														),
+													),
+													new Container(
+														padding: new EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 20.0),
+														child: new Image.network(
+															_staticMapProvider.getStaticUriWithMarkers(
+																<Marker>[ new Marker("1", placeData["name"], 45.523970, -122.663081) ],
+																width: 600,
+																height: 400,
+																maptype: StaticMapViewType.roadmap,
+															).toString()
+														),
+													),
+													new Text(
+														"Highlights".toUpperCase(),
+														style: new TextStyle(
+															color: const Color(0xFF000000),
+															fontWeight: FontWeight.w800,
+															fontSize: 14.0,
+															height: 1.25,
+														),
+													),
+													new Container(
+														padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 25.0),
+														child: new Text(
+															placeData["content"],
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontWeight: FontWeight.w300,
+																fontSize: 14.0,
+																height: 1.25,
+															),
+														),								
+													),
+													new Divider(
+														height: 1.0,
+														color: const Color(0xFFE0E1EA),
+													),
+													new SizedBox( height: 20.0 ),
+													new Row(
+														children: [
+															new Text(
+																"What Others Think".toUpperCase(),
 																style: new TextStyle(
 																	color: const Color(0xFF000000),
 																	fontWeight: FontWeight.w800,
-																	fontSize: 28.0,
-																	height: 0.9,
+																	fontSize: 14.0,
+																	height: 1.25,
 																),
 															),
-														),
-														new IconButton(
-															icon: new Icon(Icons.close, color: const Color(0xFF000000)),
-															padding: new EdgeInsets.all(0.0),
-															alignment: Alignment.topCenter,
-															onPressed: () => Navigator.pop(context,true),
-														),
-													]
-												),
-											),
-											decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-										),
-									),
-									new Expanded(
-										child: new Container(
-											decoration: new BoxDecoration(
-												image: new DecorationImage(
-													image: new AssetImage('images/cardphoto.png'),
-													fit: BoxFit.cover,
-													alignment: Alignment.bottomCenter,
-												),
-											), 
-										),
-									),															
-								],
-							),
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 15.0),
-							alignment: Alignment.topLeft,
-							child: new Column(
-								crossAxisAlignment: CrossAxisAlignment.start,
-								children: <Widget>[
-									new Text(
-										"703 University Ave, Madison, WI 53715",
-										textAlign: TextAlign.left,
-										style: new TextStyle(
-											color: const Color(0xFF1033FF),
-											fontWeight: FontWeight.w400,
-											fontSize: 14.0,
-											height: 1.25,
-										),
-									),
-									new Text(
-										"freshmadisonmarket.com",
-										textAlign: TextAlign.left,
-										style: new TextStyle(
-											color: const Color(0xFF1033FF),
-											fontWeight: FontWeight.w400,
-											fontSize: 14.0,
-											height: 1.25,
-										),
-									),
-									new Text(
-										"(608) 287-0000",
-										textAlign: TextAlign.left,
-										style: new TextStyle(
-											color: const Color(0xFF1033FF),
-											fontWeight: FontWeight.w400,
-											fontSize: 14.0,
-											height: 1.25,
-										),
-									),
-									new Text(
-										"Open Now: 7AM-12AM",
-										style: new TextStyle(
-											color: const Color(0xFF000000),
-											fontWeight: FontWeight.w300,
-											fontSize: 14.0,
-											height: 1.25,
-										),
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 20.0),
-										child: new Image.network(
-											_staticMapProvider.getStaticUriWithMarkers(
-												<Marker>[ new Marker("1", "Fresh Market Amherst", 45.523970, -122.663081) ],
-												width: 600,
-												height: 400,
-												maptype: StaticMapViewType.roadmap,
-											).toString()
-										),
-									),
-									new Text(
-										"Highlights".toUpperCase(),
-										style: new TextStyle(
-											color: const Color(0xFF000000),
-											fontWeight: FontWeight.w800,
-											fontSize: 14.0,
-											height: 1.25,
-										),
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 25.0),
-										child: new Text(
-											"Get fresh in our aisles. Oh, behave. We’re so about fresh we can hardly contain ourselves. Fresh produce, fresh sushi, fresh deli, fresh faces, fresh seafood, fresh salads, sandwiches, panini’s and breakfast, lunch and dinner buffets, and a fresh approach to just about everything. We’re not your mother’s grocery store because we’re your grocery store. Come on now, it’s time to get fresh in our aisles.",
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontWeight: FontWeight.w300,
-												fontSize: 14.0,
-												height: 1.25,
-											),
-										),								
-									),
-									new Divider(
-										height: 1.0,
-										color: const Color(0xFFE0E1EA),
-									),
-									new SizedBox( height: 20.0 ),
-									new Row(
-										children: [
-											new Text(
-												"What Others Think".toUpperCase(),
-												style: new TextStyle(
-													color: const Color(0xFF000000),
-													fontWeight: FontWeight.w800,
-													fontSize: 14.0,
-													height: 1.25,
-												),
-											),
-											new SizedBox( width: 20.0 ),
-											new Text(
-												"4.9".toUpperCase(),
-												style: new TextStyle(
-													color: const Color(0xFF1033FF),
-													fontWeight: FontWeight.w800,
-													fontSize: 14.0,
-													height: 1.25,
-												),
-											),
-											new SizedBox( width: 10.0 ),
-											new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
-											new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
-											new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
-											new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
-											new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 20.0)),
-										],
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
-										child: new Row(
-											children: [
-												new SizedBox( width: 30.0 ),
-												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-												new SizedBox( width: 30.0 ),
-											],
-										),
-									),
-									new Row(
-										children: [
-											new Expanded(
-												child: new Text(
-													"What do you think?",
-													textAlign: TextAlign.center,
-													style: new TextStyle(
-														color: const Color(0xFF000000),
-														fontWeight: FontWeight.w300,
-														fontSize: 14.0,
-														height: 1.25,
+															new SizedBox( width: 20.0 ),
+															new Text(
+																placeData["rating"].toString().toUpperCase(),
+																style: new TextStyle(
+																	color: const Color(0xFF1033FF),
+																	fontWeight: FontWeight.w800,
+																	fontSize: 14.0,
+																	height: 1.25,
+																),
+															),
+															new SizedBox( width: 10.0 ),
+															new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
+															new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
+															new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
+															new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
+															new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 20.0)),
+														],
 													),
-												),
+													new Container(
+														padding: new EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
+														child: new Row(
+															children: [
+																new SizedBox( width: 30.0 ),
+																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+																new SizedBox( width: 30.0 ),
+															],
+														),
+													),
+													new Row(
+														children: [
+															new Expanded(
+																child: new Text(
+																	"What do you think?",
+																	textAlign: TextAlign.center,
+																	style: new TextStyle(
+																		color: const Color(0xFF000000),
+																		fontWeight: FontWeight.w300,
+																		fontSize: 14.0,
+																		height: 1.25,
+																	),
+																),
+															),
+														],
+													),
+													new SizedBox( height: 50.0 ),
+												]
 											),
-										],
-									),
-									new SizedBox( height: 50.0 ),
-								]
-							),
-						),
-					],
+										),
+									],
+								);
+								
+							} else {
+								return new Text(
+									'Loading Error'.toUpperCase(),
+									style: new TextStyle( fontWeight: FontWeight.w800 ),
+								);
+							}
+						} else {
+							return new Container(
+								alignment: Alignment.center,
+								child: new CircularProgressIndicator()
+							);
+						}
+					}
 				)
 			),
 			persistentFooterButtons: <Widget>[
@@ -3350,7 +3402,7 @@ class _OrganizationState extends State<Organization> {
 				elevation: 0.0,
 				centerTitle: true,
 				title: new Text(
-					userData[0]["organization"]["metro"]["name"].toString().toUpperCase(),
+					userData[0]["organization"]["name"].toString().toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
 						fontWeight: FontWeight.w800,
