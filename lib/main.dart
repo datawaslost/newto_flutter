@@ -2209,6 +2209,7 @@ class _DiscoverState extends State<Discover> {
 								],
 							),
 						),
+						/*
 						new Container(
 							height: 105.0,
 							decoration: new BoxDecoration(
@@ -2244,6 +2245,7 @@ class _DiscoverState extends State<Discover> {
 								]
 							),
 						),
+						*/
 					]
 				),
 			),
