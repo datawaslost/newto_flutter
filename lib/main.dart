@@ -1865,7 +1865,7 @@ class _YourListState extends State<YourList> {
 						tabs: [
 							new Tab(text: "Your List".toUpperCase()),
 							new Tab(text: "Popular".toUpperCase()),
-							new Tab(text: userData[0]["metro"]["name"].toString().toUpperCase()),
+							new Tab(text: userData[0]["organization"]["metro"]["name"].toString().toUpperCase()),
 						],
 					),
 					actions: <Widget>[
@@ -2110,7 +2110,7 @@ class _DiscoverState extends State<Discover> {
 				backgroundColor: const Color(0xFF000000),
 				centerTitle: true,
 				title: new Text(
-					'Discover '.toUpperCase() + userData[0]["metro"]["name"].toUpperCase(),
+					'Discover '.toUpperCase() + userData[0]["organization"]["metro"]["name"].toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
 						fontWeight: FontWeight.w800,
@@ -3313,7 +3313,7 @@ class _OrganizationState extends State<Organization> {
 				elevation: 0.0,
 				centerTitle: true,
 				title: new Text(
-					userData[0]["metro"]["name"].toString().toUpperCase(),
+					userData[0]["organization"]["metro"]["name"].toString().toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
 						fontWeight: FontWeight.w800,
