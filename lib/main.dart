@@ -48,13 +48,9 @@ class MyApp extends StatelessWidget {
 				'/onboarding': (BuildContext context) => new Onboarding(),
 				'/landing': (BuildContext context) => new Landing(),
 				'/yourlist': (BuildContext context) => new YourList(),
-				// '/listitems': (BuildContext context) => new ListItems(),
 				'/discover': (BuildContext context) => new Discover(),
-				// '/search': (BuildContext context) => new Search(),
-				// '/searchresults': (BuildContext context) => new SearchResults(),
 				'/bookmarks': (BuildContext context) => new Bookmarks(),
 				'/account': (BuildContext context) => new Account(),
-				// '/article': (BuildContext context) => new Article(2),
 				'/place': (BuildContext context) => new Place(),
 				'/org': (BuildContext context) => new Organization(),
 			},
@@ -2425,7 +2421,6 @@ class _SearchState extends State<Search> {
 								children: <Widget>[
 									new Expanded(
 										child: new RaisedButton(
-											// onPressed: () => Navigator.of(context).pushNamed('/searchresults'),
 											onPressed: () {
 												Navigator.push(context, new MaterialPageRoute(
 													builder: (BuildContext context) => new SearchResults({"category": cat}),
@@ -2901,7 +2896,6 @@ void getArticleData(id) async {
 
 class Article extends StatelessWidget {
 	
-	// Article({Key key, @required this.id}) : super(key: key);
 	Article(this.id);
 	final int id;
 	List<Widget> _widgetList = [];
