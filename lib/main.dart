@@ -50,8 +50,8 @@ class MyApp extends StatelessWidget {
 				'/yourlist': (BuildContext context) => new YourList(),
 				// '/listitems': (BuildContext context) => new ListItems(),
 				'/discover': (BuildContext context) => new Discover(),
-				'/search': (BuildContext context) => new Search(),
-				'/searchresults': (BuildContext context) => new SearchResults(),
+				// '/search': (BuildContext context) => new Search(),
+				// '/searchresults': (BuildContext context) => new SearchResults(),
 				'/bookmarks': (BuildContext context) => new Bookmarks(),
 				'/account': (BuildContext context) => new Account(),
 				// '/article': (BuildContext context) => new Article(2),
@@ -2064,13 +2064,15 @@ class Discover extends StatefulWidget {
 
 class _DiscoverState extends State<Discover> {
 
-	void searchCategory(txt, img) {
+	void searchCategory(cat) {
 		
-		var imgWidget = imgDefault(img, "misssaigon.jpg");
+		var imgWidget = imgDefault(cat["image"], "misssaigon.jpg");
 		
 		return new GestureDetector(
 			onTap: () {
-				Navigator.of(context).pushNamed('/search');
+				Navigator.push(context, new MaterialPageRoute(
+					builder: (BuildContext context) => new Search(cat),
+				));
 			},
 			child: new Container(
 				margin: new EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 0.0),
@@ -2089,7 +2091,7 @@ class _DiscoverState extends State<Discover> {
 							),
 						),
 						new Text(
-							txt.toUpperCase(),
+							cat["name"].toUpperCase(),
 							textAlign: TextAlign.left,
 							style: new TextStyle(
 								color: const Color(0xFFFFFFFF),
@@ -2106,10 +2108,11 @@ class _DiscoverState extends State<Discover> {
 
 	@override
 	Widget build(BuildContext context) {
-
+	
+		// get categories from userData
 		List<Widget> _categoryList = [];
 		_categoryList.add(new SizedBox(width: 15.0));
-		for (var cat in userData[0]["organization"]["categories"]) _categoryList.add( searchCategory(cat["name"], cat["image"]) );
+		for (var cat in userData[0]["organization"]["categories"]) _categoryList.add( searchCategory(cat) );
 		_categoryList.add(new SizedBox(width: 15.0));
 	  
 		return new Scaffold(
@@ -2260,20 +2263,44 @@ class _DiscoverState extends State<Discover> {
 
 
 class Search extends StatefulWidget {
-	Search({Key key, this.title}) : super(key: key);
-	final String title;
+	Search(this.cat);
+	final cat;
 	@override
-	_SearchState createState() => new _SearchState();
+	_SearchState createState() => new _SearchState(cat);
 }
 
 
 class _SearchState extends State<Search> {
+
+	_SearchState(this.cat);
+	final cat;
 	
+	List<Widget> _widgetList = [];
 	double _distance = 0.0;
 	
 	@override
 	Widget build(BuildContext context) {
-	  
+				
+		void tagCard(tag) {
+			return new Card(
+				elevation: 3.0,
+				child: new Container(
+					height: 85.0,
+					alignment: Alignment.center,
+					padding: const EdgeInsets.all(10.0),
+					child: new Text(
+						tag["name"].toUpperCase(),
+						textAlign: TextAlign.center,
+						style: new TextStyle(
+							color: const Color(0xFF000000),
+							fontWeight: FontWeight.w800,
+							fontSize: 14.0,
+						),
+					),
+				),
+			);
+		};
+			  
 		return new Scaffold(
 			backgroundColor: const Color(0xFFFFFFFF),
 			appBar: new AppBar(
@@ -2281,7 +2308,7 @@ class _SearchState extends State<Search> {
 				elevation: 0.0,
 				centerTitle: true,
 				title: new Text(
-					'Find a restaurant'.toUpperCase(),
+					'FIND ' + cat["name"].toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
 						fontWeight: FontWeight.w800,
@@ -2355,7 +2382,7 @@ class _SearchState extends State<Search> {
 					new Container(
 						padding: const EdgeInsets.fromLTRB(20.0, 0.0, 10.0, 20.0),
 						child: new Text(
-							'Type of Restaurant',
+							'Type of ' + cat["name"],
 							textAlign: TextAlign.left,
 							style: new TextStyle(
 								color: const Color(0xFF000000),
@@ -2368,43 +2395,11 @@ class _SearchState extends State<Search> {
 						children: <Widget>[
 							new Container( width: 20.0 ),
 							new Expanded(
-								child: new Card(
-									elevation: 3.0,
-									child: new Container(
-										height: 85.0,
-										alignment: Alignment.center,
-										padding: const EdgeInsets.all(10.0),
-										child: new Text(
-											'Familiar and Affordable'.toUpperCase(),
-											textAlign: TextAlign.center,
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontWeight: FontWeight.w800,
-												fontSize: 14.0,
-											),
-										),
-									),
-								),
+								child: ( cat["tags"].length > 0 ? tagCard( cat["tags"][0] ) : new Container() )
 							),
 							new Container( width: 20.0 ),
 							new Expanded(
-								child: new Card(
-									elevation: 3.0,
-									child: new Container(
-										height: 85.0,
-										alignment: Alignment.center,
-										padding: const EdgeInsets.all(10.0),
-										child: new Text(
-											'Hidden Gems'.toUpperCase(),
-											textAlign: TextAlign.center,
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontWeight: FontWeight.w800,
-												fontSize: 14.0,
-											),
-										),
-									),
-								),
+								child: ( cat["tags"].length > 1 ? tagCard( cat["tags"][1] ) : new Container() )
 							),
 							new Container( width: 20.0 ),
 						]
@@ -2414,43 +2409,11 @@ class _SearchState extends State<Search> {
 						children: <Widget>[
 							new Container( width: 20.0 ),
 							new Expanded(
-								child: new Card(
-									elevation: 3.0,
-									child: new Container(
-										height: 85.0,
-										alignment: Alignment.center,
-										padding: const EdgeInsets.all(10.0),
-										child: new Text(
-											'The Finer Things'.toUpperCase(),
-											textAlign: TextAlign.center,
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontWeight: FontWeight.w800,
-												fontSize: 14.0,
-											),
-										),
-									),
-								),
+								child: ( cat["tags"].length > 2 ? tagCard( cat["tags"][2] ) : new Container() )
 							),
 							new Container( width: 20.0 ),
 							new Expanded(
-								child: new Card(
-									elevation: 3.0,
-									child: new Container(
-										height: 85.0,
-										alignment: Alignment.center,
-										padding: const EdgeInsets.all(10.0),
-										child: new Text(
-											'Surprise Me'.toUpperCase(),
-											textAlign: TextAlign.center,
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontWeight: FontWeight.w800,
-												fontSize: 14.0,
-											),
-										),
-									),
-								),
+								child: ( cat["tags"].length > 3 ? tagCard( cat["tags"][3] ) : new Container() )
 							),
 							new Container( width: 20.0 ),
 						]
@@ -2462,7 +2425,12 @@ class _SearchState extends State<Search> {
 								children: <Widget>[
 									new Expanded(
 										child: new RaisedButton(
-											onPressed: () => Navigator.of(context).pushNamed('/searchresults'),
+											// onPressed: () => Navigator.of(context).pushNamed('/searchresults'),
+											onPressed: () {
+												Navigator.push(context, new MaterialPageRoute(
+													builder: (BuildContext context) => new SearchResults({"category": cat}),
+												));
+											},
 											padding: new EdgeInsets.all(20.0),  
 											color: const Color(0xFF1033FF),
 											textColor: const Color(0xFFFFFFFF),
@@ -2605,16 +2573,47 @@ void placeCard(txt, img, stars, distance, context, { featured = false, bookmarke
 }
 
 
+void getPlacesData(filters) async {
+	
+	// get stored token
+	final prefs = await SharedPreferences.getInstance();
+	final String token = prefs.getString('token') ?? null;
+	var placesData;
+
+	final response = await http.get(
+		domain + 'api/place/',
+		headers: {
+			HttpHeaders.AUTHORIZATION: "JWT " + token
+		},
+	);
+	
+	if (response.statusCode == 200) {
+		// If server returns an OK response, parse the JSON
+		placesData = json.decode(response.body);
+		return placesData;
+	} else {
+		// If that response was not OK, throw an error.
+		// fail(response.statusCode);
+		return null;
+	}
+	
+}
+
+
 class SearchResults extends StatefulWidget {
-	SearchResults({Key key, this.title}) : super(key: key);
-	final String title;
+	SearchResults(this.filters);
+	final filters;
 	@override
-	_SearchResultsState createState() => new _SearchResultsState();
+	_SearchResultsState createState() => new _SearchResultsState(filters);
 }
 
 
 class _SearchResultsState extends State<SearchResults> {
-	
+
+	_SearchResultsState(this.filters);
+	final filters;
+	List<Widget> _placeList = [];
+
 	@override
 	Widget build(BuildContext context) {
 	  
@@ -2625,7 +2624,7 @@ class _SearchResultsState extends State<SearchResults> {
 				elevation: 0.0,
 				centerTitle: true,
 				title: new Text(
-					'Restaurants'.toUpperCase(),
+					filters["category"]["name"].toUpperCase(),
 					style: new TextStyle(
 						color: const Color(0xFF838383),
 						fontWeight: FontWeight.w800,
@@ -2641,13 +2640,53 @@ class _SearchResultsState extends State<SearchResults> {
 					),
 				],
 			),
-			body: new ListView(
-				shrinkWrap: true,
-				padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
-				children: <Widget>[
-					 placeCard('Whole Foods', 'cardphoto.png', 5.0, 2.7, context),
-					 placeCard('Fresh Market Amherst', 'background.png', 3.0, 1.3, context, featured: true),
-				],
+			body: new FutureBuilder(
+				future: getPlacesData(filters),
+				builder: (BuildContext context, AsyncSnapshot snapshot) {
+					if (snapshot.hasData) {
+						if (snapshot.data!=null) {
+							
+							// print(snapshot.data);
+							
+							_placeList = [];
+							
+							for (var place in snapshot.data) {
+								_placeList.add(
+									placeCard(place["name"], place["image"], place["rating"], place["distance"], context)
+								);
+							}
+							
+							return new ListView(
+								shrinkWrap: true,
+								padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
+								children: _placeList,
+							);
+							
+						} else {
+							return new ListView(
+								shrinkWrap: true,
+								padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
+								children: [
+									new Text(
+										'Loading Error'.toUpperCase(),
+										style: new TextStyle( fontWeight: FontWeight.w800 ),
+									)
+								],
+							);
+						}
+					} else {
+						return new ListView(
+							shrinkWrap: true,
+							padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
+							children: [
+								new Container(
+									alignment: Alignment.center,
+									child: new CircularProgressIndicator(),
+								)
+							],
+						);
+					}
+				}
 			)
 		);
 
