@@ -3138,6 +3138,33 @@ class Place extends StatelessWidget {
 								
 								var imgWidget = imgDefault(placeData["image"], "misssaigon.jpg");
 								
+								// calculate stars
+								final stars = placeData["rating"];
+								List<Widget> _starsList = [ 
+									new Text(
+										"What Others Think".toUpperCase(),
+										style: new TextStyle(
+											color: const Color(0xFF000000),
+											fontWeight: FontWeight.w800,
+											fontSize: 14.0,
+											height: 1.25,
+										),
+									),
+									new SizedBox( width: 20.0 ),
+									new Text(
+										stars.toString().toUpperCase(),
+										style: new TextStyle(
+											color: const Color(0xFF1033FF),
+											fontWeight: FontWeight.w800,
+											fontSize: 14.0,
+											height: 1.25,
+										),
+									),
+									new SizedBox( width: 10.0 ),
+								];
+								for (var i = 0; i < stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)) );
+								for (var i = 0; i < 5-stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 20.0)) );
+								
 								return new Column(
 									children: <Widget>[
 										new Container(
@@ -3280,33 +3307,7 @@ class Place extends StatelessWidget {
 													),
 													new SizedBox( height: 20.0 ),
 													new Row(
-														children: [
-															new Text(
-																"What Others Think".toUpperCase(),
-																style: new TextStyle(
-																	color: const Color(0xFF000000),
-																	fontWeight: FontWeight.w800,
-																	fontSize: 14.0,
-																	height: 1.25,
-																),
-															),
-															new SizedBox( width: 20.0 ),
-															new Text(
-																placeData["rating"].toString().toUpperCase(),
-																style: new TextStyle(
-																	color: const Color(0xFF1033FF),
-																	fontWeight: FontWeight.w800,
-																	fontSize: 14.0,
-																	height: 1.25,
-																),
-															),
-															new SizedBox( width: 10.0 ),
-															new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
-															new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
-															new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
-															new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)),
-															new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 20.0)),
-														],
+														children: _starsList,
 													),
 													new Container(
 														padding: new EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
