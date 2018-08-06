@@ -3,12 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:validate/validate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'carousel.dart';
 import 'package:map_view/map_view.dart';
 import 'package:http/http.dart' as http;
+
 import "dart:ui";
 import 'dart:convert';
 import 'dart:io';
+
+import 'carousel.dart';
 
 
 final String domain = "http://dev.newto.com/";
@@ -46,12 +48,13 @@ class MyApp extends StatelessWidget {
 			home: new Home(),
 		    routes: <String, WidgetBuilder> {
 				'/onboarding': (BuildContext context) => new Onboarding(),
+				'/login': (BuildContext context) => new Login(),
+				'/create': (BuildContext context) => new CreateEmail(),
 				'/landing': (BuildContext context) => new Landing(),
 				'/yourlist': (BuildContext context) => new YourList(),
 				'/discover': (BuildContext context) => new Discover(),
 				'/bookmarks': (BuildContext context) => new Bookmarks(),
 				'/account': (BuildContext context) => new Account(),
-				// '/place': (BuildContext context) => new Place(),
 				'/org': (BuildContext context) => new Organization(),
 			},
 		);
@@ -200,33 +203,26 @@ class _HomeState extends State<Home> {
 	
 }
 
-
-class Onboarding extends StatefulWidget {
-	Onboarding({Key key, this.title}) : super(key: key);
-	final String title;
-	@override
-	_OnboardingState createState() => new _OnboardingState();
-}
-
-
+// used on both register and login screens
 class PasswordField extends StatefulWidget {
-  const PasswordField({
-    this.onSaved,
-    this.validator,
-    this.onFieldSubmitted,
-    this.controller,
-  });
-
-  final FormFieldSetter<String> onSaved;
-  final FormFieldValidator<String> validator;
-  final ValueChanged<String> onFieldSubmitted;
-  final TextEditingController controller;
-
-  @override
-  _PasswordFieldState createState() => new _PasswordFieldState();
+	const PasswordField({
+		this.onSaved,
+		this.validator,
+		this.onFieldSubmitted,
+		this.controller,
+	});
+	
+	final FormFieldSetter<String> onSaved;
+	final FormFieldValidator<String> validator;
+	final ValueChanged<String> onFieldSubmitted;
+	final TextEditingController controller;
+	
+	@override
+	_PasswordFieldState createState() => new _PasswordFieldState();
 }
 
 
+// used on both register and login screens
 class _PasswordFieldState extends State<PasswordField> {
 	bool _obscureText = true;
 	
@@ -260,32 +256,127 @@ class _PasswordFieldState extends State<PasswordField> {
 }
 
 
+class Onboarding extends StatefulWidget {
+	Onboarding({Key key, this.title}) : super(key: key);
+	final String title;
+	@override
+	_OnboardingState createState() => new _OnboardingState();
+}
+
+
 class _OnboardingState extends State<Onboarding> {
+	
+	@override
+	Widget build(BuildContext context) {
+		    
+		return new Scaffold(
+			body: new Container(
+				padding: new EdgeInsets.all(40.0),
+				decoration: new BoxDecoration(
+					image: new DecorationImage(
+						image: new AssetImage("images/background.png"),
+						fit: BoxFit.cover,
+					),
+		        ),
+		        child: new Align(
+					alignment: Alignment.bottomCenter,
+					child: new Column(
+						mainAxisSize: MainAxisSize.min,
+						children: <Widget>[
+							new Expanded(
+								child: new Align(
+									alignment: Alignment.topCenter,
+									child: new Container(
+										padding: new EdgeInsets.all(60.0),
+										child: new Image.asset("images/LogoStack-White.png", height: 53.0),
+									)
+								)
+							),
+							new Row(
+								children: <Widget>[
+									new Expanded(
+										child: new RaisedButton(
+											onPressed: () => Navigator.of(context).pushNamed('/create'),
+											padding: new EdgeInsets.all(14.0),  
+											color: const Color(0xFF1033FF),
+											textColor: const Color(0xFFFFFFFF),
+											child: new Text(
+												'CREATE ACCOUNT',
+												style: new TextStyle(
+													fontWeight: FontWeight.w800,
+												),
+											),
+										),
+									)
+								]
+							),
+							new Container(
+								padding: new EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 10.0),
+								child: new Text(
+									'Already a member?',
+									style: new TextStyle(
+										color: const Color(0xFFFFFFFF),
+									),
+								),
+							),
+							new Row(
+								children: <Widget>[
+									new Expanded(
+										child: new RaisedButton(
+											onPressed: () => Navigator.of(context).pushNamed('/login'),
+											padding: new EdgeInsets.all(14.0),  
+											color: const Color(0xFFE3F5FF),
+											textColor: const Color(0xFF2D2D2F),
+											child: new Text(
+												'LOGIN',
+												style: new TextStyle(
+													fontWeight: FontWeight.w800,
+												),
+											),
+										),
+									)
+								]
+							),
+						]
+					)
+			    ),
+			),
+		);	
+	}
+}
+
+
+class Login extends StatefulWidget {
+	Login({Key key, this.title}) : super(key: key);
+	final String title;
+	@override
+	_LoginState createState() => new _LoginState();
+}
+
+
+class _LoginState extends State<Login> {
 
 	final TextEditingController _emailController = new TextEditingController();
 	final TextEditingController _passwordController = new TextEditingController();
-	final TextEditingController _hometownController = new TextEditingController();
-	final _emailFormKey = GlobalKey<FormState>();
-	final _passwordFormKey = GlobalKey<FormState>();
 	final _loginFormKey = GlobalKey<FormState>();
-	int _organization;
-	var usernameValidator;
+	
 
-	void _registerWithCredentials(success, fail) async {
+	void _loginWithCredentials(success, fail) async {
 		
 		final response = await http.post(
-			domain + 'rest-auth/registration/',
+			domain + 'rest-auth/login/',
 			body: {
 				"username": _emailController.text,
-				"email": _emailController.text,
-				"password1": _passwordController.text,
-				"password2": _passwordController.text,
+				"password": _passwordController.text
 			}
 		);
-				
-		if (response.statusCode == 201) {
-			// If server returns an OK response, parse the JSON
-			_onboarding(success, fail, response.body);
+		
+		if (response.statusCode == 200) {
+			// If server returns an OK response, save the token
+			final token = json.decode(response.body)["token"];
+			saveToken(token);
+			// get user data before doing anything else
+			getUserData(token, success, fail);
 		} else {
 			// If that response was not OK, throw an error.
 			fail(response.body);
@@ -293,34 +384,168 @@ class _OnboardingState extends State<Onboarding> {
 		
 	}
 
-	void _onboarding(success, fail, body) async {
-				
-		var onboarding_data = {
-			"email": json.decode(body)["user"]["email"],
-			"id": json.decode(body)["user"]["pk"].toString(),
-		};
-			
-		// check if we have a hometown entered
-		if (!_hometownController.text.isEmpty) onboarding_data["hometown"] = _hometownController.text.toString();
-		
-		// check if we have an organization attached to this email
-		if (_organization != null) onboarding_data["organization"] = _organization.toString();
 
-		final response = await http.post(
-			domain + 'api/onboarding/',
-			body: onboarding_data
+	@override
+	Widget build(BuildContext context) {
+	      
+		return new Scaffold(
+			body: new Form(
+				key: _loginFormKey,
+				child: new Column(
+					mainAxisSize: MainAxisSize.min,
+					children: <Widget>[
+						new Row (
+							children: <Widget>[
+								new BackButton(),
+								new Expanded(
+									child: new Container(
+										alignment: Alignment.topRight,
+										child: new FlatButton(
+											onPressed: () => Navigator.of(context).pushNamed('/create'),
+											child: new Text(
+												'Create Account'.toUpperCase(),
+												style: new TextStyle(
+													color: const Color(0xFF1033FF),
+													fontWeight: FontWeight.w800,
+													fontSize: 14.0,
+												),
+											),
+										),
+									),
+								),
+							]
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+							alignment: Alignment.topLeft,
+							child: new Text(
+								'Login'.toUpperCase(),
+								style: new TextStyle(
+									fontWeight: FontWeight.w800,
+									fontSize: 38.0,
+									height: 1.0,
+								),
+							),
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+							alignment: Alignment.topLeft,
+							child: new Text(
+								'Email'.toUpperCase(),
+								style: new TextStyle(
+									color: const Color(0xFF838383),
+									fontWeight: FontWeight.w800,
+									fontSize: 14.0,
+								),
+							),
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+							child: new TextFormField(
+					        	controller: _emailController,
+					        	validator: (value) {
+									if (value.isEmpty) {
+										return 'Please enter your email address.';
+									}
+									return null;
+								},
+								style: new TextStyle(
+									color: const Color(0xFF000000),
+									fontWeight: FontWeight.w800,
+									fontSize: 18.0,
+								),
+								decoration: new InputDecoration(
+					            	fillColor: const Color(0x66E0E1EA),
+									filled: true,
+								),
+								keyboardType: TextInputType.emailAddress,
+					        ),
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+							alignment: Alignment.topLeft,
+							child: new Text(
+								'Password'.toUpperCase(),
+								style: new TextStyle(
+									color: const Color(0xFF838383),
+									fontWeight: FontWeight.w800,
+									fontSize: 14.0,
+								),
+							),
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+							child: new PasswordField(
+						        controller: _passwordController,
+					        	validator: (value) {
+									if (value.isEmpty) {
+										return 'Please enter your password.';
+									}
+									return null;
+								},
+					        ),
+						),
+						new Expanded(
+							child: new Align(
+								alignment: Alignment.bottomCenter,
+								child: new Row(
+									children: <Widget>[
+										new Expanded(
+											child: new RaisedButton(
+												onPressed: () {
+													if (_loginFormKey.currentState.validate()) {
+														_loginWithCredentials(
+															(data) {
+																// Success
+																Navigator.of(context).pushNamed('/landing');
+															},
+															(error) {
+																// Failure
+																print(error);
+															},
+														);
+													}
+												},
+												padding: new EdgeInsets.all(14.0),  
+												color: const Color(0xFF1033FF),
+												textColor: const Color(0xFFFFFFFF),
+												child: new Text(
+													'Login'.toUpperCase(),
+													style: new TextStyle(
+														fontWeight: FontWeight.w800,
+													),
+												),
+											),
+										)
+									]
+								),
+							),
+						),
+				    ],
+				),
+			),
 		);
-				
-		if (response.statusCode == 200 || response.statusCode == 201) {
-			// If server returns an OK response, parse the JSON
-			success(json.decode(body)["token"]);
-		} else {
-			// If that response was not OK, throw an error.
-			fail(response.body);
-		}
-		
+	
 	}
 
+}
+
+
+class CreateEmail extends StatefulWidget {
+	CreateEmail({Key key, this.title}) : super(key: key);
+	final String title;
+	@override
+	_CreateEmailState createState() => new _CreateEmailState();
+}
+
+
+class _CreateEmailState extends State<CreateEmail> {
+
+	final TextEditingController _emailController = new TextEditingController();
+	final _emailFormKey = GlobalKey<FormState>();
+	int _organization;
+	var usernameValidator;
+	
 	void _emailCheck() async {
 		
 		String email = _emailController.text;
@@ -356,408 +581,332 @@ class _OnboardingState extends State<Onboarding> {
 		
 	}
 
-	void _createAccount() {
-		Navigator.of(context).push(
-			new MaterialPageRoute(
-				builder: (context) {
-					return new Scaffold(
-						body: new Form(
-							key: _emailFormKey,
-							child: new Column(
-								mainAxisSize: MainAxisSize.min,
-								children: <Widget>[
-									new LinearProgressIndicator(
-										value: 0.33,
-										backgroundColor: const Color(0xFFFFFFFF),
-									),
-									new Row (
-										children: <Widget>[
-											new BackButton(),
-											new Expanded(
-												child: new Container(
-													alignment: Alignment.topRight,
-													child: new FlatButton(
-														onPressed: _login,
-														child: new Text(
-															'Login'.toUpperCase(),
-															style: new TextStyle(
-																color: const Color(0xFF1033FF),
-																fontWeight: FontWeight.w800,
-																fontSize: 14.0,
-															),
-														),
-													),
-												),
-											),
-										]
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
-										alignment: Alignment.topLeft,
-										child: new Text(
-											'1/3',
-											style: new TextStyle(
-												fontWeight: FontWeight.w800,
-												fontSize: 14.0,
-											),
-										),
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-										alignment: Alignment.topLeft,
-										child: new Text(
-											'Tell us your school email.'.toUpperCase(),
-											style: new TextStyle(
-												fontWeight: FontWeight.w800,
-												fontSize: 38.0,
-												height: 1.0,
-											),
-										),
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-										alignment: Alignment.topLeft,
-										child: new Text(
-											'Email'.toUpperCase(),
-											style: new TextStyle(
-												color: const Color(0xFF838383),
-												fontWeight: FontWeight.w800,
-												fontSize: 14.0,
-											),
-										),
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-								        child: new TextFormField(
-								        	controller: _emailController,
-											validator: (value) {
-												return usernameValidator;
-											},
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontWeight: FontWeight.w800,
-												fontSize: 18.0,
-											),
-											decoration: new InputDecoration(
-								            	fillColor: const Color(0x66E0E1EA),
-												filled: true,
-											),
-											keyboardType: TextInputType.emailAddress,
-								        ),
-									),
-									/*
-									new Container(
-										padding: new EdgeInsets.all(20.0),
-										child: new Text(
-											'We’ll send you a confirmation email to confirm you school account.',
-											style: new TextStyle(
-												color: const Color(0xFF2D2D2F),
-												fontWeight: FontWeight.w300,
-												fontSize: 14.0,
-											),
-										),
-									),
-									*/
-									new Expanded(
-										child: new Align(
-											alignment: Alignment.bottomCenter,
-											child: new Row(
-												children: <Widget>[
-													new Expanded(
-														child: new RaisedButton(
-															onPressed: () async {
-																// asynchronously validate email
-																var response = await _emailCheck();
-																setState(() {
-																	this.usernameValidator = response;
-																});
-																if (_emailFormKey.currentState.validate()) {
-																	// if email is valid, go to the next screen
-																	_createAccount2();
-																}
-															},
-															padding: new EdgeInsets.all(14.0),  
-															color: const Color(0xFF1033FF),
-															textColor: const Color(0xFFFFFFFF),
-															child: new Text(
-																'Next Step'.toUpperCase(),
-																style: new TextStyle(
-																	fontWeight: FontWeight.w800,
-																),
-															),
-														),
-													)
-												]
-											),
-										),
-									),
-							    ],
-							),
+	@override
+	Widget build(BuildContext context) {
+				
+		return new Scaffold(
+			body: new Form(
+				key: _emailFormKey,
+				child: new Column(
+					mainAxisSize: MainAxisSize.min,
+					children: <Widget>[
+						new LinearProgressIndicator(
+							value: 0.33,
+							backgroundColor: const Color(0xFFFFFFFF),
 						),
-				    );
-				},
-			),
-		);
-	}
-
-	void _createAccount2() {
-		Navigator.of(context).push(
-			new MaterialPageRoute(
-				builder: (context) {
-					return new Scaffold(
-						body: new Form(
-							key: _passwordFormKey,
-							child: new Column(
-								mainAxisSize: MainAxisSize.min,
-								children: <Widget>[
-									new LinearProgressIndicator(
-										value: 0.66,
-										backgroundColor: const Color(0xFFFFFFFF),
-									),
-									new Row (
-										children: <Widget>[
-											new BackButton(),
-											new Expanded(
-												child: new Container(
-													alignment: Alignment.topRight,
-													child: new FlatButton(
-														onPressed: _login,
-														child: new Text(
-															'Login'.toUpperCase(),
-															style: new TextStyle(
-																color: const Color(0xFF1033FF),
-																fontWeight: FontWeight.w800,
-																fontSize: 14.0,
-															),
-														),
-													),
-												),
-											),
-										]
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
-										alignment: Alignment.topLeft,
-										child: new Text(
-											'2/3',
-											style: new TextStyle(
-												fontWeight: FontWeight.w800,
-												fontSize: 14.0,
-											),
-										),
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-										alignment: Alignment.topLeft,
-										child: new Text(
-											'Create your password.'.toUpperCase(),
-											style: new TextStyle(
-												fontWeight: FontWeight.w800,
-												fontSize: 38.0,
-												height: 1.0,
-											),
-										),
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-										alignment: Alignment.topLeft,
-										child: new Text(
-											'Password'.toUpperCase(),
-											style: new TextStyle(
-												color: const Color(0xFF838383),
-												fontWeight: FontWeight.w800,
-												fontSize: 14.0,
-											),
-										),
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-								        child: new PasswordField(
-									        controller: _passwordController,
-								        	validator: (value) {
-												if (value.length < 8) {
-													return 'Your password must be at least 8 characters.';
-												}
-												return null;
-											},
-								        ),
-									),
-									new Expanded(
-										child: new Align(
-											alignment: Alignment.bottomCenter,
-											child: new Row(
-												children: <Widget>[
-													new Expanded(
-														child: new RaisedButton(
-															onPressed: () {
-																if (_passwordFormKey.currentState.validate()) {
-																	_createAccount3();
-																}
-															},
-															padding: new EdgeInsets.all(14.0),  
-															color: const Color(0xFF1033FF),
-															textColor: const Color(0xFFFFFFFF),
-															child: new Text(
-																'Next Step'.toUpperCase(),
-																style: new TextStyle(
-																	fontWeight: FontWeight.w800,
-																),
-															),
-														),
-													)
-												]
-											),
-										),
-									),
-								]
-							),
-						),
-					);
-				},
-			),
-		);
-	}
-
-	void _createAccount3() {
-		Navigator.of(context).push(
-			new MaterialPageRoute(
-				builder: (context) {
-					return new Scaffold(
-						body: new Column(
-							mainAxisSize: MainAxisSize.min,
+						new Row (
 							children: <Widget>[
-								new LinearProgressIndicator(
-									value: 1.0,
-									backgroundColor: const Color(0xFFFFFFFF),
-								),
-								new Row (
-									children: <Widget>[
-										new BackButton(),
-										new Expanded(
-											child: new Container(
-												alignment: Alignment.topRight,
-												child: new FlatButton(
-													onPressed: _login,
-													child: new Text(
-														'Login'.toUpperCase(),
-														style: new TextStyle(
-															color: const Color(0xFF1033FF),
-															fontWeight: FontWeight.w800,
-															fontSize: 14.0,
-														),
-													),
+								new BackButton(),
+								new Expanded(
+									child: new Container(
+										alignment: Alignment.topRight,
+										child: new FlatButton(
+											onPressed: () => Navigator.of(context).pushNamed('/login'),
+											child: new Text(
+												'Login'.toUpperCase(),
+												style: new TextStyle(
+													color: const Color(0xFF1033FF),
+													fontWeight: FontWeight.w800,
+													fontSize: 14.0,
 												),
 											),
-										),
-									]
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
-									alignment: Alignment.topLeft,
-									child: new Text(
-										'3/3',
-										style: new TextStyle(
-											fontWeight: FontWeight.w800,
-											fontSize: 14.0,
-										),
-									),
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-									alignment: Alignment.topLeft,
-									child: new Text(
-										'What is your hometown?'.toUpperCase(),
-										style: new TextStyle(
-											fontWeight: FontWeight.w800,
-											fontSize: 38.0,
-											height: 1.0,
-										),
-									),
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-									alignment: Alignment.topLeft,
-									child: new Text(
-										"I'm From".toUpperCase(),
-										style: new TextStyle(
-											color: const Color(0xFF838383),
-											fontWeight: FontWeight.w800,
-											fontSize: 14.0,
-										),
-									),
-								),
-								new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-									child: new TextFormField(
-							        	controller: _hometownController,
-										style: new TextStyle(
-											color: const Color(0xFF000000),
-											fontWeight: FontWeight.w800,
-											fontSize: 18.0,
-										),
-										decoration: new InputDecoration(
-							            	fillColor: const Color(0x66E0E1EA),
-											filled: true,
-										),
-							        ),
-								),
-								new Expanded(
-									child: new Align(
-										alignment: Alignment.bottomCenter,
-										child: new Row(
-											children: <Widget>[
-												new Expanded(
-													child: new RaisedButton(
-														onPressed: () => _registerWithCredentials(
-															(token) {
-																// Success
-																saveToken(token);
-																Navigator.of(context).pushNamed('/landing');
-															},
-															(error) {
-																// Failure
-																print(error);
-															},
-														),
-														padding: new EdgeInsets.all(14.0),  
-														color: const Color(0xFF1033FF),
-														textColor: const Color(0xFFFFFFFF),
-														child: new Text(
-															'Complete Sign Up'.toUpperCase(),
-															style: new TextStyle(
-																fontWeight: FontWeight.w800,
-															),
-														),
-													),
-												)
-											]
 										),
 									),
 								),
 							]
 						),
-					);
-				},
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+							alignment: Alignment.topLeft,
+							child: new Text(
+								'1/3',
+								style: new TextStyle(
+									fontWeight: FontWeight.w800,
+									fontSize: 14.0,
+								),
+							),
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+							alignment: Alignment.topLeft,
+							child: new Text(
+								'Tell us your school email.'.toUpperCase(),
+								style: new TextStyle(
+									fontWeight: FontWeight.w800,
+									fontSize: 38.0,
+									height: 1.0,
+								),
+							),
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+							alignment: Alignment.topLeft,
+							child: new Text(
+								'Email'.toUpperCase(),
+								style: new TextStyle(
+									color: const Color(0xFF838383),
+									fontWeight: FontWeight.w800,
+									fontSize: 14.0,
+								),
+							),
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+					        child: new TextFormField(
+					        	controller: _emailController,
+								validator: (value) {
+									return usernameValidator;
+								},
+								style: new TextStyle(
+									color: const Color(0xFF000000),
+									fontWeight: FontWeight.w800,
+									fontSize: 18.0,
+								),
+								decoration: new InputDecoration(
+					            	fillColor: const Color(0x66E0E1EA),
+									filled: true,
+								),
+								keyboardType: TextInputType.emailAddress,
+					        ),
+						),
+						/*
+						new Container(
+							padding: new EdgeInsets.all(20.0),
+							child: new Text(
+								'We’ll send you a confirmation email to confirm you school account.',
+								style: new TextStyle(
+									color: const Color(0xFF2D2D2F),
+									fontWeight: FontWeight.w300,
+									fontSize: 14.0,
+								),
+							),
+						),
+						*/
+						new Expanded(
+							child: new Align(
+								alignment: Alignment.bottomCenter,
+								child: new Row(
+									children: <Widget>[
+										new Expanded(
+											child: new RaisedButton(
+												onPressed: () async {
+													// asynchronously validate email
+													var response = await _emailCheck();
+													setState(() {
+														this.usernameValidator = response;
+													});
+													if (_emailFormKey.currentState.validate()) {
+														// if email is valid, go to the next screen
+														Navigator.push(context, new MaterialPageRoute(
+															builder: (BuildContext context) => new CreatePassword(_emailController.text, _organization),
+														));
+													}
+												},
+												padding: new EdgeInsets.all(14.0),  
+												color: const Color(0xFF1033FF),
+												textColor: const Color(0xFFFFFFFF),
+												child: new Text(
+													'Next Step'.toUpperCase(),
+													style: new TextStyle(
+														fontWeight: FontWeight.w800,
+													),
+												),
+											),
+										)
+									]
+								),
+							),
+						),
+				    ],
+				),
+			),
+	    );
+
+	}
+
+}
+
+
+class CreatePassword extends StatefulWidget {
+	// CreatePassword({Key key, this.title}) : super(key: key);
+	CreatePassword(this.email, this.organization);
+	final String email;
+	final int organization;
+	@override
+	_CreatePasswordState createState() => new _CreatePasswordState(email, organization);
+}
+
+
+class _CreatePasswordState extends State<CreatePassword> {
+
+	_CreatePasswordState(this.email, this.organization);
+	
+	final String email;
+	final int organization;
+	
+	final TextEditingController _passwordController = new TextEditingController();
+	final _passwordFormKey = GlobalKey<FormState>();
+	
+	@override
+	Widget build(BuildContext context) {
+
+		return new Scaffold(
+			body: new Form(
+				key: _passwordFormKey,
+				child: new Column(
+					mainAxisSize: MainAxisSize.min,
+					children: <Widget>[
+						new LinearProgressIndicator(
+							value: 0.66,
+							backgroundColor: const Color(0xFFFFFFFF),
+						),
+						new Row (
+							children: <Widget>[
+								new BackButton(),
+								new Expanded(
+									child: new Container(
+										alignment: Alignment.topRight,
+										child: new FlatButton(
+											onPressed: () => Navigator.of(context).pushNamed('/login'),
+											child: new Text(
+												'Login'.toUpperCase(),
+												style: new TextStyle(
+													color: const Color(0xFF1033FF),
+													fontWeight: FontWeight.w800,
+													fontSize: 14.0,
+												),
+											),
+										),
+									),
+								),
+							]
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+							alignment: Alignment.topLeft,
+							child: new Text(
+								'2/3',
+								style: new TextStyle(
+									fontWeight: FontWeight.w800,
+									fontSize: 14.0,
+								),
+							),
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+							alignment: Alignment.topLeft,
+							child: new Text(
+								'Create your password.'.toUpperCase(),
+								style: new TextStyle(
+									fontWeight: FontWeight.w800,
+									fontSize: 38.0,
+									height: 1.0,
+								),
+							),
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+							alignment: Alignment.topLeft,
+							child: new Text(
+								'Password'.toUpperCase(),
+								style: new TextStyle(
+									color: const Color(0xFF838383),
+									fontWeight: FontWeight.w800,
+									fontSize: 14.0,
+								),
+							),
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+					        child: new PasswordField(
+						        controller: _passwordController,
+					        	validator: (value) {
+									if (value.length < 8) {
+										return 'Your password must be at least 8 characters.';
+									}
+									return null;
+								},
+					        ),
+						),
+						new Expanded(
+							child: new Align(
+								alignment: Alignment.bottomCenter,
+								child: new Row(
+									children: <Widget>[
+										new Expanded(
+											child: new RaisedButton(
+												onPressed: () {
+													if (_passwordFormKey.currentState.validate()) {
+														Navigator.push(context, new MaterialPageRoute(
+															builder: (BuildContext context) => new CreateFinish(email, _passwordController.text, organization),
+														));
+													}
+												},
+												padding: new EdgeInsets.all(14.0),  
+												color: const Color(0xFF1033FF),
+												textColor: const Color(0xFFFFFFFF),
+												child: new Text(
+													'Next Step'.toUpperCase(),
+													style: new TextStyle(
+														fontWeight: FontWeight.w800,
+													),
+												),
+											),
+										)
+									]
+								),
+							),
+						),
+					]
+				),
 			),
 		);
 	}
+}
 
-	void _loginWithCredentials(success, fail) async {
-		
+
+class CreateFinish extends StatefulWidget {
+	CreateFinish(this.email, this.password, this.organization);
+	final String email;
+	final String password;
+	final int organization;
+	@override
+	_CreateFinishState createState() => new _CreateFinishState(email, password, organization);
+}
+
+
+class _CreateFinishState extends State<CreateFinish> {
+
+	_CreateFinishState(this.email, this.password, this.organization);
+	
+	final String email;
+	final String password;
+	final int organization;
+	
+	List _organizations = [];
+	int _org;
+
+	final TextEditingController _hometownController = new TextEditingController();
+
+	void _registerWithCredentials(success, fail) async {
+
+		// just to make sure, remove tok
+		final prefs = await SharedPreferences.getInstance();
+		prefs.remove('token');
+
 		final response = await http.post(
-			domain + 'rest-auth/login/',
+			domain + 'rest-auth/registration/',
 			body: {
-				"username": _emailController.text,
-				"password": _passwordController.text
+				"username": email,
+				"email": email,
+				"password1": password,
+				"password2": password,
 			}
 		);
-		
-		if (response.statusCode == 200) {
-			// If server returns an OK response, save the token
-			final token = json.decode(response.body)["token"];
-			saveToken(token);
-			// get user data before doing anything else
-			getUserData(token, success, fail);
+				
+		if (response.statusCode == 201) {
+			// If server returns an OK response, parse the JSON
+			_onboarding(success, fail, json.decode(response.body));
 		} else {
 			// If that response was not OK, throw an error.
 			fail(response.body);
@@ -765,196 +914,239 @@ class _OnboardingState extends State<Onboarding> {
 		
 	}
 
-	void _login() {
-		Navigator.of(context).push(
-			new MaterialPageRoute(
-				builder: (context) {
-					return new Scaffold(
-						body: new Form(
-							key: _loginFormKey,
-							child: new Column(
-								mainAxisSize: MainAxisSize.min,
-								children: <Widget>[
-									new Row (
-										children: <Widget>[
-											new BackButton(),
-											new Expanded(
-												child: new Container(
-													alignment: Alignment.topRight,
-													child: new FlatButton(
-														onPressed: _createAccount,
-														child: new Text(
-															'Create Account'.toUpperCase(),
-															style: new TextStyle(
-																color: const Color(0xFF1033FF),
-																fontWeight: FontWeight.w800,
-																fontSize: 14.0,
-															),
-														),
-													),
-												),
-											),
-										]
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-										alignment: Alignment.topLeft,
+	void _onboarding(success, fail, body) async {
+		
+		// save the token we got from registering
+		final token = body["token"];
+		saveToken(token);
+		
+		// send email + id for onbboarding
+		var onboarding_data = {
+			"email": body["user"]["email"],
+			"id": body["user"]["pk"].toString(),
+		};
+			
+		// check if we have a hometown entered
+		if (!_hometownController.text.isEmpty) onboarding_data["hometown"] = _hometownController.text.toString();
+		
+		if (organization != null) {
+			// if we have an organization attached to this email
+			onboarding_data["organization"] = organization.toString();
+		} else if (_org != null) {		
+			// if they chose an organization
+			onboarding_data["organization"] = _org.toString();
+		}
+
+		final response = await http.post(
+			domain + 'api/onboarding/',
+			body: onboarding_data
+		);
+				
+		if (response.statusCode == 200 || response.statusCode == 201) {
+			// get user data before doing anything else
+			getUserData(token, success, fail);
+
+		} else {
+			// If that response was not OK, throw an error.
+			fail(response.body);
+		}
+		
+	}
+
+	void _getOrganizations() async {
+		
+		if (_organizations.length > 0) {
+			return _organizations;
+		} else {
+			final response = await http.get( domain + 'api/organization/' );
+			if (response.statusCode == 200) {
+				// If we get organization data back
+				print(json.decode(response.body));
+				_organizations = json.decode(response.body);
+				return json.decode(response.body);
+			} else {
+				// If there was a problem
+				return "There was a problem communicating with the servers : " + response.statusCode.toString();
+			}
+		}
+	}
+	
+	@override
+	Widget build(BuildContext context) {
+
+		return new Scaffold(
+			body: new Column(
+				mainAxisSize: MainAxisSize.min,
+				children: <Widget>[
+					new LinearProgressIndicator(
+						value: 1.0,
+						backgroundColor: const Color(0xFFFFFFFF),
+					),
+					new Row (
+						children: <Widget>[
+							new BackButton(),
+							new Expanded(
+								child: new Container(
+									alignment: Alignment.topRight,
+									child: new FlatButton(
+										onPressed: () => Navigator.of(context).pushNamed('/login'),
 										child: new Text(
 											'Login'.toUpperCase(),
 											style: new TextStyle(
-												fontWeight: FontWeight.w800,
-												fontSize: 38.0,
-												height: 1.0,
-											),
-										),
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-										alignment: Alignment.topLeft,
-										child: new Text(
-											'Email'.toUpperCase(),
-											style: new TextStyle(
-												color: const Color(0xFF838383),
+												color: const Color(0xFF1033FF),
 												fontWeight: FontWeight.w800,
 												fontSize: 14.0,
 											),
 										),
 									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-										child: new TextFormField(
-								        	controller: _emailController,
-								        	validator: (value) {
-												if (value.isEmpty) {
-													return 'Please enter your email address.';
-												}
-												return null;
-											},
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontWeight: FontWeight.w800,
-												fontSize: 18.0,
-											),
-											decoration: new InputDecoration(
-								            	fillColor: const Color(0x66E0E1EA),
-												filled: true,
-											),
-											keyboardType: TextInputType.emailAddress,
-								        ),
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-										alignment: Alignment.topLeft,
-										child: new Text(
-											'Password'.toUpperCase(),
-											style: new TextStyle(
-												color: const Color(0xFF838383),
-												fontWeight: FontWeight.w800,
-												fontSize: 14.0,
-											),
-										),
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-										child: new PasswordField(
-									        controller: _passwordController,
-								        	validator: (value) {
-												if (value.isEmpty) {
-													return 'Please enter your password.';
-												}
-												return null;
-											},
-								        ),
-									),
-									new Expanded(
-										child: new Align(
-											alignment: Alignment.bottomCenter,
-											child: new Row(
-												children: <Widget>[
-													new Expanded(
-														child: new RaisedButton(
-															onPressed: () {
-																if (_loginFormKey.currentState.validate()) {
-																	_loginWithCredentials(
-																		(data) {
-																			// Success
-																			Navigator.of(context).pushNamed('/landing');
-																		},
-																		(error) {
-																			// Failure
-																			print(error);
-																		},
-																	);
-																}
-															},
-															padding: new EdgeInsets.all(14.0),  
-															color: const Color(0xFF1033FF),
-															textColor: const Color(0xFFFFFFFF),
-															child: new Text(
-																'Login'.toUpperCase(),
-																style: new TextStyle(
-																	fontWeight: FontWeight.w800,
-																),
-															),
-														),
-													)
-												]
-											),
-										),
-									),
-							    ],
+								),
+							),
+						]
+					),
+					new Container(
+						padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+						alignment: Alignment.topLeft,
+						child: new Text(
+							'3/3',
+							style: new TextStyle(
+								fontWeight: FontWeight.w800,
+								fontSize: 14.0,
 							),
 						),
-					);
-				},
-			),
-		);
-	}
-
-	@override
-	Widget build(BuildContext context) {
-	  
-		// SystemChrome.setEnabledSystemUIOverlays([]);
-		  
-	    // This method is rerun every time setState is called
-	    //
-	    // The Flutter framework has been optimized to make rerunning build methods
-	    // fast, so that you can just rebuild anything that needs updating rather
-	    // than having to individually change instances of widgets.
-    
-		return new Scaffold(
-			body: new Container(
-				padding: new EdgeInsets.all(40.0),
-				decoration: new BoxDecoration(
-					image: new DecorationImage(
-						image: new AssetImage("images/background.png"),
-						fit: BoxFit.cover,
 					),
-		        ),
-		        child: new Align(
-					alignment: Alignment.bottomCenter,
-					child: new Column(
-						mainAxisSize: MainAxisSize.min,
-						children: <Widget>[
-							new Expanded(
-								child: new Align(
-									alignment: Alignment.topCenter,
-									child: new Container(
-										padding: new EdgeInsets.all(60.0),
-										child: new Image.asset("images/LogoStack-White.png", height: 53.0),
-									)
-								)
+					new Container(
+						padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+						alignment: Alignment.topLeft,
+						child: new Text(
+							'What is your hometown?'.toUpperCase(),
+							style: new TextStyle(
+								fontWeight: FontWeight.w800,
+								fontSize: 38.0,
+								height: 1.0,
 							),
-							new Row(
+						),
+					),
+					new Container(
+						padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+						alignment: Alignment.topLeft,
+						child: new Text(
+							"I'm From".toUpperCase(),
+							style: new TextStyle(
+								color: const Color(0xFF838383),
+								fontWeight: FontWeight.w800,
+								fontSize: 14.0,
+							),
+						),
+					),
+					new Container(
+						padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+						child: new TextFormField(
+				        	controller: _hometownController,
+							style: new TextStyle(
+								color: const Color(0xFF000000),
+								fontWeight: FontWeight.w800,
+								fontSize: 18.0,
+							),
+							decoration: new InputDecoration(
+				            	fillColor: const Color(0x66E0E1EA),
+								filled: true,
+							),
+				        ),
+					),
+					( organization == null
+						? new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+							alignment: Alignment.topLeft,
+							child: new Text(
+								"I'm with".toUpperCase(),
+								style: new TextStyle(
+									color: const Color(0xFF838383),
+									fontWeight: FontWeight.w800,
+									fontSize: 14.0,
+								),
+							),
+						) : new SizedBox(width: 0.0)
+					),
+					( organization == null ?
+						new FutureBuilder(
+							future: _getOrganizations(),
+							builder: (BuildContext context, AsyncSnapshot snapshot) {
+								if (snapshot.hasData) {
+									if (snapshot.data!=null) {
+										
+										// default to first item
+										if (_org == null) _org = snapshot.data[0]["id"];
+	
+										return new Container(
+											padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+											child: new Theme(
+												data: Theme.of(context).copyWith(
+													canvasColor: Colors.white,
+												),
+												child: new FractionallySizedBox(
+													widthFactor: 1.0,
+													child: new DropdownButton<int>(
+														items: snapshot.data.map((org) {
+															return new DropdownMenuItem<int>(
+																value: org["id"],
+																child: new Text(
+																	org["name"],
+																	style: new TextStyle(
+																		color: const Color(0xFF000000),
+																		fontWeight: FontWeight.w800,
+																		fontSize: 18.0,
+																	),
+																),
+															);
+														}).toList().cast<DropdownMenuItem<int>>(),
+														value: _org,
+														onChanged: (Object newVal) {
+															setState(() {
+																_org = newVal;
+															});
+														},
+														style: new TextStyle(
+															color: const Color(0xFF000000),
+															fontWeight: FontWeight.w800,
+															fontSize: 18.0,
+														),		
+													),
+													),
+											),
+										);
+															
+									} else {
+										return new Container();
+									}
+								} else {
+									return new Container();
+								}
+							}
+						) : new SizedBox(width: 0.0)
+					),
+						
+					new Expanded(
+						child: new Align(
+							alignment: Alignment.bottomCenter,
+							child: new Row(
 								children: <Widget>[
 									new Expanded(
 										child: new RaisedButton(
-											onPressed: _createAccount,
+											onPressed: () => _registerWithCredentials(
+												(userData) {
+													// Success
+													Navigator.of(context).pushNamed('/landing');
+												},
+												(error) {
+													// Failure
+													print(error);
+												},
+											),
 											padding: new EdgeInsets.all(14.0),  
 											color: const Color(0xFF1033FF),
 											textColor: const Color(0xFFFFFFFF),
 											child: new Text(
-												'CREATE ACCOUNT',
+												'Complete Sign Up'.toUpperCase(),
 												style: new TextStyle(
 													fontWeight: FontWeight.w800,
 												),
@@ -963,42 +1155,14 @@ class _OnboardingState extends State<Onboarding> {
 									)
 								]
 							),
-							new Container(
-								padding: new EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 10.0),
-								child: new Text(
-									'Already a member?',
-									style: new TextStyle(
-										color: const Color(0xFFFFFFFF),
-									),
-								),
-							),
-							new Row(
-								children: <Widget>[
-									new Expanded(
-										child: new RaisedButton(
-											onPressed: _login,
-											padding: new EdgeInsets.all(14.0),  
-											color: const Color(0xFFE3F5FF),
-											textColor: const Color(0xFF2D2D2F),
-											child: new Text(
-												'LOGIN',
-												style: new TextStyle(
-													fontWeight: FontWeight.w800,
-												),
-											),
-										),
-									)
-								]
-							),
-						]
-					)
-			    ),
+						),
+					),
+				]
 			),
 		);
-		
 	}
-
 }
+
 
 void imgDefault(img, defaultImg) {
 	if (img == null || img == "") {
@@ -1353,13 +1517,15 @@ class _LandingState extends State<Landing> {
 				mainAxisSize: MainAxisSize.min,
 				children: <Widget>[
 					new Expanded(
-						child: new Carousel(
-							onCarouselChange: (i, t) => setState(() { 
-								_carouselProgress = (i+1)/t;
-							}),
-							displayDuration: new Duration(seconds: 200000),
-							children: _carouselItems,
-						),
+						child: ( _carouselItems.length > 0 ?
+							new Carousel(
+								onCarouselChange: (i, t) => setState(() { 
+									_carouselProgress = (i+1)/t;
+								}),
+								displayDuration: new Duration(seconds: 200000),
+								children: _carouselItems,
+							) : new Container()
+						)
 					),
 					new Container(
 						child: new LinearProgressIndicator(
@@ -1368,36 +1534,38 @@ class _LandingState extends State<Landing> {
 							valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
 						),
 					),
-					new Container(
-						height: 365.0,
-						decoration: new BoxDecoration(
-							color: const Color(0xFFFFFFFF),
-						),
-						child: new Column(
-							mainAxisSize: MainAxisSize.min,
-							children: <Widget>[
-								new SizedBox(height: 25.0, ),
-								new Text(
-									'Discover'.toUpperCase(),
-									textAlign: TextAlign.center,
-									style: new TextStyle(
-										color: const Color(0xFF838383),
-										fontWeight: FontWeight.w800,
-										fontSize: 14.0,
+					( _discoverItems.length > 0 ?
+						new Container(
+							height: 365.0,
+							decoration: new BoxDecoration(
+								color: const Color(0xFFFFFFFF),
+							),
+							child: new Column(
+								mainAxisSize: MainAxisSize.min,
+								children: <Widget>[
+									new SizedBox(height: 25.0, ),
+									new Text(
+										'Discover'.toUpperCase(),
+										textAlign: TextAlign.center,
+										style: new TextStyle(
+											color: const Color(0xFF838383),
+											fontWeight: FontWeight.w800,
+											fontSize: 14.0,
+										),
 									),
-								),
-								new Expanded(
-									child: new Container(
-										margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-										child: new ListView(
-											scrollDirection: Axis.horizontal,
-											shrinkWrap: true,
-											children: _discoverItems,
+									new Expanded(
+										child: new Container(
+											margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+											child: new ListView(
+												scrollDirection: Axis.horizontal,
+												shrinkWrap: true,
+												children: _discoverItems,
+											)
 										)
 									)
-								)
-							],
-						),
+								],
+							),
+						) : new Container()
 					)
 				]
 			),
