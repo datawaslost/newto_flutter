@@ -130,6 +130,8 @@ void getUserData(token, success, fail) async {
 		},
 	);
 	
+	print(response.body);
+	
 	if (response.statusCode == 200) {
 		// If server returns an OK response, parse the JSON
 		userData = json.decode(response.body);
@@ -184,7 +186,7 @@ class _HomeState extends State<Home> {
 					},
 					(code){
 						// Failure
-						print("getUserData failure callback : " + code);
+						print("getUserData failure callback : " + code.toString());
 						Navigator.of(context).pushNamed("/login");
 					}
 				);
@@ -3373,17 +3375,20 @@ class Place extends StatelessWidget {
 															height: 1.25,
 														),
 													),
-													new Container(
-														padding: new EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 20.0),
-														child: new Image.network(
-															_staticMapProvider.getStaticUriWithMarkers(
-																<Marker>[ new Marker("1", placeData["name"], 45.523970, -122.663081) ],
-																width: 600,
-																height: 400,
-																maptype: StaticMapViewType.roadmap,
-															).toString()
-														),
+													( placeData["location"] != null ?
+														new Container(
+															padding: new EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 20.0),
+															child: new Image.network(
+																_staticMapProvider.getStaticUriWithMarkers(
+																	<Marker>[ new Marker("1", placeData["name"], placeData["location"]["longitude"], placeData["location"]["latitude"]) ],
+																	width: 600,
+																	height: 400,
+																	maptype: StaticMapViewType.roadmap,
+																).toString()
+															),
+														) : new Container()
 													),
+													new SizedBox( height: 20.0 ),
 													new Text(
 														"Highlights".toUpperCase(),
 														style: new TextStyle(
