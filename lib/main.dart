@@ -4,7 +4,9 @@ import 'package:flutter/scheduler.dart';
 import 'package:validate/validate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:map_view/map_view.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
+
 
 import "dart:ui";
 import 'dart:convert';
@@ -3346,14 +3348,34 @@ class Place extends StatelessWidget {
 															height: 1.25,
 														),
 													),
-													new Text(
-														placeData["link"],
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF1033FF),
-															fontWeight: FontWeight.w400,
-															fontSize: 14.0,
-															height: 1.25,
+													new GestureDetector(
+														onTap: () {
+															Navigator.push(context, new MaterialPageRoute(
+																builder: (BuildContext context) => new WebviewScaffold(
+																	url: placeData["link"],
+																	appBar: new AppBar(
+																		title: new Text(
+																			placeData["name"].toUpperCase(),
+																			overflow: TextOverflow.fade,
+																			style: new TextStyle(
+																				fontWeight: FontWeight.w800,
+																				fontSize: 28.0,
+																				height: 0.9,
+																			),
+																		),
+																	),
+																),
+															));
+														},
+														child: new Text(
+															placeData["link"].replaceFirst("https://www.", "").replaceFirst("http://www.", "").replaceFirst("http://", "").replaceFirst("https://", ""),
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFF1033FF),
+																fontWeight: FontWeight.w400,
+																fontSize: 14.0,
+																height: 1.25,
+															),
 														),
 													),
 													new Text(
