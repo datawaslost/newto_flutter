@@ -2228,6 +2228,8 @@ class Discover extends StatefulWidget {
 
 class _DiscoverState extends State<Discover> {
 
+	List<Widget> _discoverItems = [];
+
 	void searchCategory(cat) {
 		
 		var imgWidget = imgDefault(cat["image"], "misssaigon.jpg");
@@ -2278,7 +2280,11 @@ class _DiscoverState extends State<Discover> {
 		_categoryList.add(new SizedBox(width: 15.0));
 		for (var cat in userData[0]["organization"]["categories"]) _categoryList.add( searchCategory(cat) );
 		_categoryList.add(new SizedBox(width: 15.0));
-	  
+
+		// set up discover items
+		_discoverItems = [];
+		userData[0]["organization"]["discover_items"].forEach( (item) => _discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context) ) ) );
+
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
 			appBar: new AppBar(
@@ -2334,87 +2340,39 @@ class _DiscoverState extends State<Discover> {
 								]
 							),
 						),
-						new Container(
-							height: 365.0,
-							decoration: new BoxDecoration(
-								color: const Color(0xFFF3F3F7),
-							),
-							child: new Column(
-								mainAxisSize: MainAxisSize.min,
-								children: <Widget>[
-									new SizedBox(height: 25.0),
-									new Text(
-										'Featured'.toUpperCase(),
-										textAlign: TextAlign.center,
-										style: new TextStyle(
-											color: const Color(0xFF838383),
-											fontWeight: FontWeight.w800,
-											fontSize: 14.0,
+						( _discoverItems.length > 0 ?
+							new Container(
+								height: 365.0,
+								decoration: new BoxDecoration(
+									color: const Color(0xFFF3F3F7),
+								),
+								child: new Column(
+									mainAxisSize: MainAxisSize.min,
+									children: <Widget>[
+										new SizedBox(height: 25.0),
+										new Text(
+											'Featured'.toUpperCase(),
+											textAlign: TextAlign.center,
+											style: new TextStyle(
+												color: const Color(0xFF838383),
+												fontWeight: FontWeight.w800,
+												fontSize: 14.0,
+											),
 										),
-									),
-									new Expanded(
-										child: new Container(
-											margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-											child: new ListView(
-												scrollDirection: Axis.horizontal,
-												shrinkWrap: true,
-												children: <Widget>[
-													new Container(
-														width: 278.0,
-														height: 278.0,
-														margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
-														child: discoverItem(4, 'Create the Perfect Dorm Room', 'cardphoto.png', context),
-													),
-													new Container(
-														width: 278.0,
-														height: 278.0,
-														margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0),
-														child: discoverItem(4, 'Get to know Amherst', 'background.png', context),
-													),
-												],
+										new Expanded(
+											child: new Container(
+												margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+												child: new ListView(
+													scrollDirection: Axis.horizontal,
+													shrinkWrap: true,
+													children: _discoverItems,
+												)
 											)
 										)
-									)
-								],
-							),
+									],
+								)
+							) : new Container()
 						),
-						/*
-						new Container(
-							height: 105.0,
-							decoration: new BoxDecoration(
-								color: const Color(0xFFF3F3F7),
-							),
-							child: new Row(
-								children: <Widget>[
-									new Expanded( child: new Container() ),
-									new Container(
-										decoration: new BoxDecoration (
-											borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
-											color: const Color(0xFF1033FF),
-										),
-										padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-										child: new FlatButton.icon(
-											onPressed: () => Navigator.of(context).pushNamed('/search'),
-											icon: new Icon(
-												Icons.search, 
-												color: const Color(0xFFFFFFFF),
-												size: 12.0,
-											),
-											label: new Text(
-												'Search'.toUpperCase(),
-												style: new TextStyle(
-													color: const Color(0xFFFFFFFF),
-													fontWeight: FontWeight.w800,
-													fontSize: 12.0,
-												),
-											),
-										),
-									),
-									new Expanded( child: new Container() ),
-								]
-							),
-						),
-						*/
 					]
 				),
 			),
