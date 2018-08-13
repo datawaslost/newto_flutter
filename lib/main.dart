@@ -71,9 +71,9 @@ void bottomBar(context, _selected) {
 		["yourlist", "list"],
 		["discover", "compass"],
 		["bookmarks", "bookmark"],
-		["org", "amherst"],
+		["org", userData[0]["organization"]["nav_image"]],
 	];
-	
+
 	List<Widget> _navItems = [];
 	
 	for (var i = 0; i < _navOptions.length; i++) {
@@ -91,7 +91,12 @@ void bottomBar(context, _selected) {
 		        child: new GestureDetector(
 					onTap: () { if (i != _selected) { Navigator.of(context).pushNamed("/" + _navOptions[i][0]);}},
 					child: new Container(
-						child: new ImageIcon(new AssetImage("images/icon_" + _navOptions[i][1] + _selectedName + ".png"), color: const Color(0xFFFFFFFF), size: 39.0),
+						child: new ImageIcon(
+							( _navOptions[i][0] == "org" ? imgDefault(_navOptions[i][1], "icon_compass_selected.png") : new AssetImage("images/icon_" + _navOptions[i][1] + _selectedName + ".png") ),
+							color: const Color(0xFFFFFFFF),
+							size: 39.0
+						),
+						// child: new ImageIcon(new AssetImage("images/icon_" + _navOptions[i][1] + _selectedName + ".png"), color: const Color(0xFFFFFFFF), size: 39.0),
 						decoration: new BoxDecoration( border: new Border( bottom: new BorderSide( width: 3.0, color: _borderColor ), ), ),
 						padding: new EdgeInsets.all(8.0),
 					),
