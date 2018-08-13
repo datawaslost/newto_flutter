@@ -3127,17 +3127,6 @@ class Article extends StatelessWidget {
 														decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
 													),
 												),
-												new Expanded(
-													child: new Container(
-														decoration: new BoxDecoration(
-															image: new DecorationImage(
-																image: imgDefault(snapshot.data["image"], "misssaigon.jpg"),
-																fit: BoxFit.cover,
-																alignment: Alignment.bottomCenter,
-															),
-														), 
-													),
-												),															
 											],
 										),
 									),
@@ -3378,17 +3367,6 @@ class Place extends StatelessWidget {
 															decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
 														),
 													),
-													new Expanded(
-														child: new Container(
-															decoration: new BoxDecoration(
-																image: new DecorationImage(
-																	image: imgWidget,
-																	fit: BoxFit.cover,
-																	alignment: Alignment.bottomCenter,
-																),
-															), 
-														),
-													),															
 												],
 											),
 										),
