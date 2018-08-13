@@ -3179,6 +3179,7 @@ class Article extends StatelessWidget {
 				)
 			),
 			persistentFooterButtons: <Widget>[
+				/*
 				new FlatButton(
 					onPressed: () => Navigator.pop(context,true),
 					child: new Icon(
@@ -3193,6 +3194,7 @@ class Article extends StatelessWidget {
 						color: const Color(0xFF2D2D2F),
 					),
 				),
+				*/
 				new FlatButton(
 					onPressed: () => Navigator.pop(context,true),
 					child: new Icon(
@@ -3498,6 +3500,7 @@ class Place extends StatelessWidget {
 				)
 			),
 			persistentFooterButtons: <Widget>[
+				/*
 				new FlatButton(
 					onPressed: () => Navigator.pop(context,true),
 					child: new Icon(
@@ -3505,6 +3508,7 @@ class Place extends StatelessWidget {
 						color: const Color(0xFF2D2D2F),
 					),
 				),
+				*/
 				new FlatButton(
 					onPressed: () => Navigator.pop(context,true),
 					child: new Icon(
