@@ -129,6 +129,12 @@ class Home extends StatefulWidget {
 
 void getUserData(token, success, fail) async {
 	
+	if (token == null) {
+		// get stored token
+		final prefs = await SharedPreferences.getInstance();
+		token = prefs.getString('token') ?? null;
+	}
+	
 	final response = await http.get(
 		domain + 'api/me/',
 		headers: {
@@ -2825,8 +2831,25 @@ class Bookmarks extends StatefulWidget {
 class _BookmarksState extends State<Bookmarks> {
 	
 	@override
+	void initState() {
+		super.initState();
+		getUserData(
+			null, 
+			(data){
+				// Success
+				print(data);
+			},
+			(code){
+				// Failure
+				print("getUserData failure callback : " + code.toString());
+			}
+		);
+	}
+
+	@override
 	Widget build(BuildContext context) {
-	
+			
+
 		return new Scaffold(
 			backgroundColor: const Color(0xFFF3F3F7),
 			appBar: new AppBar(
@@ -2998,7 +3021,7 @@ void setBookmark(id, addremove, success, fail) async {
 	final String token = prefs.getString('token') ?? null;
 	
 	// add or remove bookmark
-	String bookmarktype = (addremove ? "addbookmark" : "removebookmark");
+	String bookmarktype = (addremove ? "addbookmark/" : "removebookmark/");
 
 	final response = await http.post(
 		domain + 'api/' + bookmarktype,
@@ -3006,22 +3029,23 @@ void setBookmark(id, addremove, success, fail) async {
 			HttpHeaders.AUTHORIZATION: "JWT " + token
 		},
 		body: {
-			"id": id,
+			"id": id.toString(),
 		}
 	);
 	
 	if (response.statusCode == 200) {
 		// If server returns an OK response
-		success = json.decode(response.body)["success"];
-		if (success) {
+		final s = json.decode(response.body)["success"];
+		if (s) {
 			success();
 		} else {
-			fail(response.statusCode);
+			print(response.body);
+			fail();
 		}
 	} else {
 		// If that response was not OK, throw an error.
 		print(response.body);
-		fail(response.statusCode);
+		fail();
 	}
 	
 }
@@ -3532,7 +3556,11 @@ class Place extends StatelessWidget {
 								placeData = snapshot.data;
 								if ( placeData["bookmarked"] == true ) {
 									return new FlatButton(
-										onPressed: () => Navigator.pop(context,true),
+										onPressed: () => setBookmark(placeData["id"], false, (){
+											print("success!");
+										}, () {
+											print("failure!");
+										}),
 										child: new Icon(
 											Icons.bookmark,
 											color: const Color(0xFF2D2D2F),
@@ -3540,7 +3568,11 @@ class Place extends StatelessWidget {
 									);
 								} else {
 									return new FlatButton(
-										onPressed: () => Navigator.pop(context,true),
+										onPressed: () => setBookmark(placeData["id"], true, (){
+											print("success!");
+										}, () {
+											print("failure!");
+										}),
 										child: new Icon(
 											Icons.bookmark_border,
 											color: const Color(0xFF2D2D2F),
