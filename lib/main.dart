@@ -1298,9 +1298,100 @@ class _LandingState extends State<Landing> {
 	@override
 	Widget build(BuildContext context) {
 	  
-		// SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-		
-		void _dialog() {
+		void _dialog(item) {
+			
+			List<Widget> _widgetList = [
+				new Row(
+					crossAxisAlignment: CrossAxisAlignment.start,
+					children: <Widget>[
+						new Expanded(
+							child: new Text(
+								item["name"].toUpperCase(),
+								textAlign: TextAlign.left,
+								style: new TextStyle(
+									color: const Color(0xFF000000),
+									fontWeight: FontWeight.w800,
+									fontSize: 28.0,
+									height: 0.9,
+								),
+							),
+						),
+						new Container(
+							width: 20.0,
+							child: new IconButton(
+								alignment: Alignment.topRight,
+								padding: const EdgeInsets.all(0.0),
+								icon: new Icon(Icons.close, color: const Color(0xFF000000) ),
+								tooltip: 'Close',
+								onPressed: () => Navigator.pop(context,true)
+							),
+						),
+					]
+				),
+				new SizedBox( height: 20.0 ),
+				( item["content"] != "" && item["content"] !=null ?
+					new Text(
+						item["content"],
+						textAlign: TextAlign.left,
+						style: new TextStyle(
+							color: const Color(0xFF000000),
+							fontWeight: FontWeight.w300,
+							fontSize: 14.0,
+							height: 1.15,
+						),
+					) : new SizedBox( height: 0.0 )
+				),
+				new SizedBox( height: 25.0 ),
+			];
+			
+			for (var cta in item["ctas"]) {
+				_widgetList.add(
+					new Row(
+						children: <Widget>[
+							new Expanded(
+								child: new RaisedButton(
+									onPressed: () => Navigator.pop(context,true),
+									padding: new EdgeInsets.all(14.0),  
+									color: const Color(0xFF1033FF),
+									// color: const Color(0xFFE3F5FF),
+									textColor: const Color(0xFFFFFFFF),
+									child: new Text(
+										cta["name"].toUpperCase(),
+										style: new TextStyle(
+											fontWeight: FontWeight.w800,
+										),
+									),
+								),
+							)
+						]
+					)
+				);
+			}
+			
+			if (item["ctas"].length == 0) {
+				_widgetList.add(
+					new Row(
+						children: <Widget>[
+							new Expanded(
+								child: new RaisedButton(
+									onPressed: () => Navigator.pop(context,true),
+									padding: new EdgeInsets.all(14.0),  
+									color: const Color(0xFF1033FF),
+									// color: const Color(0xFFE3F5FF),
+									textColor: const Color(0xFFFFFFFF),
+									child: new Text(
+										"Complete".toUpperCase(),
+										style: new TextStyle(
+											fontWeight: FontWeight.w800,
+										),
+									),
+								),
+							)
+						]
+					)
+				);
+			}
+
 			showDialog(
 				context: context,
 				child: new AlertDialog(
@@ -1309,84 +1400,7 @@ class _LandingState extends State<Landing> {
 						scrollDirection: Axis.vertical,
 						child: new Column(
 							mainAxisSize: MainAxisSize.min,
-							children: <Widget>[
-								new Row(
-									crossAxisAlignment: CrossAxisAlignment.start,
-									children: <Widget>[
-										new Expanded(
-											child: new Text(
-												'Turn in your housing insurance forms'.toUpperCase(),
-												textAlign: TextAlign.left,
-												style: new TextStyle(
-													color: const Color(0xFF000000),
-													fontWeight: FontWeight.w800,
-													fontSize: 28.0,
-													height: 0.9,
-												),
-											),
-										),
-										new Container(
-											width: 20.0,
-											child: new IconButton(
-												alignment: Alignment.topRight,
-												padding: const EdgeInsets.all(0.0),
-												icon: new Icon(Icons.close, color: const Color(0xFF000000) ),
-												tooltip: 'Close',
-												onPressed: () => Navigator.pop(context,true)
-											),
-										),
-									]
-								),
-								new SizedBox( height: 20.0 ),
-								new Text(
-									"Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam quis risus eget urna mollis ornare vel eu leo. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.",
-									textAlign: TextAlign.left,
-									style: new TextStyle(
-										color: const Color(0xFF000000),
-										fontWeight: FontWeight.w300,
-										fontSize: 14.0,
-										height: 1.15,
-									),
-								),
-								new SizedBox( height: 25.0 ),
-								new Row(
-									children: <Widget>[
-										new Expanded(
-											child: new RaisedButton(
-												onPressed: () => Navigator.pop(context,true),
-												padding: new EdgeInsets.all(14.0),  
-												color: const Color(0xFF1033FF),
-												textColor: const Color(0xFFFFFFFF),
-												child: new Text(
-													'Do it online'.toUpperCase(),
-													style: new TextStyle(
-														fontWeight: FontWeight.w800,
-													),
-												),
-											),
-										)
-									]
-								),
-								new SizedBox( height: 10.0 ),
-								new Row(
-									children: <Widget>[
-										new Expanded(
-											child: new RaisedButton(
-												onPressed: () => Navigator.pop(context,true),
-												padding: new EdgeInsets.all(14.0),  
-												color: const Color(0xFFE3F5FF),
-												textColor: const Color(0xFF000000),
-												child: new Text(
-													'Download Forms'.toUpperCase(),
-													style: new TextStyle(
-														fontWeight: FontWeight.w800,
-													),
-												),
-											),
-										)
-									]
-								),
-							],
+							children: _widgetList,
 						),
 					),
 				)
@@ -1397,7 +1411,7 @@ class _LandingState extends State<Landing> {
 			return new Stack(
 				children: [
 				    new GestureDetector(
-						onTap: _dialog,
+						onTap: () => _dialog(item),
 						onLongPress: () => setState(() { _details = true; }),
 						child: new Container(
 							padding: new EdgeInsets.fromLTRB(60.0, 0.0, 60.0, 0.0),
@@ -1426,7 +1440,8 @@ class _LandingState extends State<Landing> {
 										),
 									),
 									new FlatButton(
-										onPressed: () => Navigator.of(context).pushNamed('/yourlist'),
+										// onPressed: () => Navigator.of(context).pushNamed('/yourlist'),
+										onPressed: () => _dialog(item),
 										child: new Icon(
 											Icons.arrow_forward,
 											color: const Color(0xFFFFFFFF),
@@ -2686,7 +2701,7 @@ class _BookmarksState extends State<Bookmarks> {
 			(data){
 				// Success
 				setState(() {
-					// print(data);
+					print(data);
 				});		
 			},
 			(code){
