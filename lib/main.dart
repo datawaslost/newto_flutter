@@ -2093,6 +2093,7 @@ void getGroupData(id) async {
 	if (response.statusCode == 200) {
 		// If server returns an OK response, parse the JSON
 		groupData = json.decode(response.body);
+		print(groupData);
 		return groupData;
 	} else {
 		// If that response was not OK, print the error and return null
@@ -2112,6 +2113,8 @@ class Group extends StatelessWidget {
 	
 	@override
 	Widget build(BuildContext context) {
+		
+		print("building this group");
 
 		return new Scaffold(
 			backgroundColor: const Color(0xFFF3F3F7),
@@ -3258,7 +3261,7 @@ class Article extends StatelessWidget {
 }
 
 
-void getPlaceData(id) async {
+getPlaceData(id) async {
 	
 	// get stored token
 	final prefs = await SharedPreferences.getInstance();
@@ -3287,35 +3290,216 @@ void getPlaceData(id) async {
 }
 
 
-class Place extends StatelessWidget {
-	
+class Place extends StatefulWidget {
 	Place(this.id);
+	final int id;
+	@override
+	_PlaceState createState() => new _PlaceState(this.id);
+}
+
+
+class _PlaceState extends State<Place> {
+
+	_PlaceState(this.id);
+
 	final int id;
 	List<Widget> _widgetList = [];
 	var _staticMapProvider = new StaticMapProvider('AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E');
 	var placeData;
-	
+
+    @override
+    void initState() {
+        // This is the proper place to make the async calls
+        // This way they only get called once
+
+        // During development, if you change this code,
+        // you will need to do a full restart instead of just a hot reload
+        
+        // You can't use async/await here,
+        // We can't mark this method as async because of the @override
+        getPlaceData(id).then((result) {
+            // If we need to rebuild the widget with the resulting data,
+            // make sure to use `setState`
+            setState(() {
+                placeData = result;
+            });
+        });
+    }
+
 	@override
 	Widget build(BuildContext context) {
+
+        if (placeData == null) {
+            // This is what we show while we're loading
+			return new Container(
+				alignment: Alignment.center,
+				child: new CircularProgressIndicator()
+			);
+        }
+
+		var imgWidget = imgDefault(placeData["image"], "misssaigon.jpg");
+
+		// calculate stars
+		final stars = placeData["rating"];
+		List<Widget> _starsList = [ 
+			new Text(
+				"What Others Think".toUpperCase(),
+				style: new TextStyle(
+					color: const Color(0xFF000000),
+					fontWeight: FontWeight.w800,
+					fontSize: 14.0,
+					height: 1.25,
+				),
+			),
+			new SizedBox( width: 20.0 ),
+			new Text(
+				stars.toString().toUpperCase(),
+				style: new TextStyle(
+					color: const Color(0xFF1033FF),
+					fontWeight: FontWeight.w800,
+					fontSize: 14.0,
+					height: 1.25,
+				),
+			),
+			new SizedBox( width: 10.0 ),
+		];
 		
+		for (var i = 0; i < stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)) );
+		for (var i = 0; i < 5-stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 20.0)) );
+
 		return new Scaffold(
 			backgroundColor: const Color(0xFFFFFFFF),
 			body: new SingleChildScrollView(
 				scrollDirection: Axis.vertical,
-				child: new FutureBuilder(
-					future: getPlaceData(this.id),
-					builder: (BuildContext context, AsyncSnapshot snapshot) {
-						if (snapshot.hasData) {
-							if (snapshot.data!=null) {
-								
-								placeData = snapshot.data;
-								var imgWidget = imgDefault(placeData["image"], "misssaigon.jpg");
-								
-								// calculate stars
-								final stars = placeData["rating"];
-								List<Widget> _starsList = [ 
+				child:  new Column(
+					children: <Widget>[
+						new Container(
+							height: 324.0,
+							decoration: new BoxDecoration(
+								image: new DecorationImage(
+									image: imgWidget,
+									fit: BoxFit.cover,
+								),
+							),
+							child: new Column(
+								mainAxisSize: MainAxisSize.min,
+								children: <Widget>[
+									new BackdropFilter(
+										filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+										child: new Container(
+											padding: new EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 15.0),
+											child: new SafeArea(
+													child: new Row(
+													crossAxisAlignment: CrossAxisAlignment.start,
+													children: <Widget>[
+														new Expanded(
+															child: new Text(
+																placeData["name"].toUpperCase(),
+																textAlign: TextAlign.left,
+																style: new TextStyle(
+																	color: const Color(0xFF000000),
+																	fontWeight: FontWeight.w800,
+																	fontSize: 28.0,
+																	height: 0.9,
+																),
+															),
+														),
+														new IconButton(
+															icon: new Icon(Icons.close, color: const Color(0xFF000000)),
+															padding: new EdgeInsets.all(0.0),
+															alignment: Alignment.topCenter,
+															onPressed: () => Navigator.pop(context,true),
+														),
+													]
+												),
+											),
+											decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+										),
+									),
+								],
+							),
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 15.0),
+							alignment: Alignment.topLeft,
+							child: new Column(
+								crossAxisAlignment: CrossAxisAlignment.start,
+								children: <Widget>[
 									new Text(
-										"What Others Think".toUpperCase(),
+										placeData["address"] + ", " + placeData["city"] + ", " + placeData["state"],
+										textAlign: TextAlign.left,
+										style: new TextStyle(
+											color: const Color(0xFF1033FF),
+											fontWeight: FontWeight.w400,
+											fontSize: 14.0,
+											height: 1.25,
+										),
+									),
+									new GestureDetector(
+										onTap: () {
+											Navigator.push(context, new MaterialPageRoute(
+												builder: (BuildContext context) => new WebviewScaffold(
+													url: placeData["link"],
+													appBar: new AppBar(
+														title: new Text(
+															placeData["name"].toUpperCase(),
+															overflow: TextOverflow.fade,
+															style: new TextStyle(
+																fontWeight: FontWeight.w800,
+																fontSize: 28.0,
+																height: 0.9,
+															),
+														),
+													),
+												),
+											));
+										},
+										child: new Text(
+											placeData["link"].replaceFirst("https://www.", "").replaceFirst("http://www.", "").replaceFirst("http://", "").replaceFirst("https://", ""),
+											textAlign: TextAlign.left,
+											style: new TextStyle(
+												color: const Color(0xFF1033FF),
+												fontWeight: FontWeight.w400,
+												fontSize: 14.0,
+												height: 1.25,
+											),
+										),
+									),
+									new Text(
+										placeData["phone"],
+										textAlign: TextAlign.left,
+										style: new TextStyle(
+											color: const Color(0xFF1033FF),
+											fontWeight: FontWeight.w400,
+											fontSize: 14.0,
+											height: 1.25,
+										),
+									),
+									new Text(
+										"Open Now: 7AM-12AM",
+										style: new TextStyle(
+											color: const Color(0xFF000000),
+											fontWeight: FontWeight.w300,
+											fontSize: 14.0,
+											height: 1.25,
+										),
+									),
+									( placeData["location"] != null ?
+										new Container(
+											padding: new EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 20.0),
+											child: new Image.network(
+												_staticMapProvider.getStaticUriWithMarkers(
+													<Marker>[ new Marker("1", placeData["name"], placeData["location"]["longitude"], placeData["location"]["latitude"]) ],
+													width: 600,
+													height: 400,
+													maptype: StaticMapViewType.roadmap,
+												).toString()
+											),
+										) : new Container()
+									),
+									new SizedBox( height: 20.0 ),
+									new Text(
+										"Highlights".toUpperCase(),
 										style: new TextStyle(
 											color: const Color(0xFF000000),
 											fontWeight: FontWeight.w800,
@@ -3323,275 +3507,89 @@ class Place extends StatelessWidget {
 											height: 1.25,
 										),
 									),
-									new SizedBox( width: 20.0 ),
-									new Text(
-										stars.toString().toUpperCase(),
-										style: new TextStyle(
-											color: const Color(0xFF1033FF),
-											fontWeight: FontWeight.w800,
-											fontSize: 14.0,
-											height: 1.25,
+									new Container(
+										padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 25.0),
+										child: new Text(
+											placeData["content"],
+											style: new TextStyle(
+												color: const Color(0xFF000000),
+												fontWeight: FontWeight.w300,
+												fontSize: 14.0,
+												height: 1.25,
+											),
+										),								
+									),
+									new Divider(
+										height: 1.0,
+										color: const Color(0xFFE0E1EA),
+									),
+									new SizedBox( height: 20.0 ),
+									new Row(
+										children: _starsList,
+									),
+									new Container(
+										padding: new EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
+										child: new Row(
+											children: [
+												new SizedBox( width: 30.0 ),
+												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
+												new SizedBox( width: 30.0 ),
+											],
 										),
 									),
-									new SizedBox( width: 10.0 ),
-								];
-								
-								for (var i = 0; i < stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)) );
-								for (var i = 0; i < 5-stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 20.0)) );
-								
-								return new Column(
-									children: <Widget>[
-										new Container(
-											height: 324.0,
-											decoration: new BoxDecoration(
-												image: new DecorationImage(
-													image: imgWidget,
-													fit: BoxFit.cover,
+									new Row(
+										children: [
+											new Expanded(
+												child: new Text(
+													"What do you think?",
+													textAlign: TextAlign.center,
+													style: new TextStyle(
+														color: const Color(0xFF000000),
+														fontWeight: FontWeight.w300,
+														fontSize: 14.0,
+														height: 1.25,
+													),
 												),
 											),
-											child: new Column(
-												mainAxisSize: MainAxisSize.min,
-												children: <Widget>[
-													new BackdropFilter(
-														filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-														child: new Container(
-															padding: new EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 15.0),
-															child: new SafeArea(
-																	child: new Row(
-																	crossAxisAlignment: CrossAxisAlignment.start,
-																	children: <Widget>[
-																		new Expanded(
-																			child: new Text(
-																				placeData["name"].toUpperCase(),
-																				textAlign: TextAlign.left,
-																				style: new TextStyle(
-																					color: const Color(0xFF000000),
-																					fontWeight: FontWeight.w800,
-																					fontSize: 28.0,
-																					height: 0.9,
-																				),
-																			),
-																		),
-																		new IconButton(
-																			icon: new Icon(Icons.close, color: const Color(0xFF000000)),
-																			padding: new EdgeInsets.all(0.0),
-																			alignment: Alignment.topCenter,
-																			onPressed: () => Navigator.pop(context,true),
-																		),
-																	]
-																),
-															),
-															decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-														),
-													),
-												],
-											),
-										),
-										new Container(
-											padding: new EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 15.0),
-											alignment: Alignment.topLeft,
-											child: new Column(
-												crossAxisAlignment: CrossAxisAlignment.start,
-												children: <Widget>[
-													new Text(
-														placeData["address"] + ", " + placeData["city"] + ", " + placeData["state"],
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF1033FF),
-															fontWeight: FontWeight.w400,
-															fontSize: 14.0,
-															height: 1.25,
-														),
-													),
-													new GestureDetector(
-														onTap: () {
-															Navigator.push(context, new MaterialPageRoute(
-																builder: (BuildContext context) => new WebviewScaffold(
-																	url: placeData["link"],
-																	appBar: new AppBar(
-																		title: new Text(
-																			placeData["name"].toUpperCase(),
-																			overflow: TextOverflow.fade,
-																			style: new TextStyle(
-																				fontWeight: FontWeight.w800,
-																				fontSize: 28.0,
-																				height: 0.9,
-																			),
-																		),
-																	),
-																),
-															));
-														},
-														child: new Text(
-															placeData["link"].replaceFirst("https://www.", "").replaceFirst("http://www.", "").replaceFirst("http://", "").replaceFirst("https://", ""),
-															textAlign: TextAlign.left,
-															style: new TextStyle(
-																color: const Color(0xFF1033FF),
-																fontWeight: FontWeight.w400,
-																fontSize: 14.0,
-																height: 1.25,
-															),
-														),
-													),
-													new Text(
-														placeData["phone"],
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF1033FF),
-															fontWeight: FontWeight.w400,
-															fontSize: 14.0,
-															height: 1.25,
-														),
-													),
-													new Text(
-														"Open Now: 7AM-12AM",
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontWeight: FontWeight.w300,
-															fontSize: 14.0,
-															height: 1.25,
-														),
-													),
-													( placeData["location"] != null ?
-														new Container(
-															padding: new EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 20.0),
-															child: new Image.network(
-																_staticMapProvider.getStaticUriWithMarkers(
-																	<Marker>[ new Marker("1", placeData["name"], placeData["location"]["longitude"], placeData["location"]["latitude"]) ],
-																	width: 600,
-																	height: 400,
-																	maptype: StaticMapViewType.roadmap,
-																).toString()
-															),
-														) : new Container()
-													),
-													new SizedBox( height: 20.0 ),
-													new Text(
-														"Highlights".toUpperCase(),
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontWeight: FontWeight.w800,
-															fontSize: 14.0,
-															height: 1.25,
-														),
-													),
-													new Container(
-														padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 25.0),
-														child: new Text(
-															placeData["content"],
-															style: new TextStyle(
-																color: const Color(0xFF000000),
-																fontWeight: FontWeight.w300,
-																fontSize: 14.0,
-																height: 1.25,
-															),
-														),								
-													),
-													new Divider(
-														height: 1.0,
-														color: const Color(0xFFE0E1EA),
-													),
-													new SizedBox( height: 20.0 ),
-													new Row(
-														children: _starsList,
-													),
-													new Container(
-														padding: new EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
-														child: new Row(
-															children: [
-																new SizedBox( width: 30.0 ),
-																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-																new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-																new SizedBox( width: 30.0 ),
-															],
-														),
-													),
-													new Row(
-														children: [
-															new Expanded(
-																child: new Text(
-																	"What do you think?",
-																	textAlign: TextAlign.center,
-																	style: new TextStyle(
-																		color: const Color(0xFF000000),
-																		fontWeight: FontWeight.w300,
-																		fontSize: 14.0,
-																		height: 1.25,
-																	),
-																),
-															),
-														],
-													),
-													new SizedBox( height: 50.0 ),
-												]
-											),
-										),
-									],
-								);
-								
-							} else {
-								return new Text(
-									'Loading Error'.toUpperCase(),
-									style: new TextStyle( fontWeight: FontWeight.w800 ),
-								);
-							}
-						} else {
-							return new Container(
-								alignment: Alignment.center,
-								child: new CircularProgressIndicator()
-							);
-						}
-					}
-				)
+										],
+									),
+									new SizedBox( height: 50.0 ),
+								]
+							),
+						),
+					],
+				),
 			),
 			persistentFooterButtons: <Widget>[
-				new FutureBuilder(
-					future: getPlaceData(this.id),
-					builder: (BuildContext context, AsyncSnapshot snapshot) {
-						if (snapshot.hasData) {
-							if (snapshot.data!=null) {								
-								placeData = snapshot.data;
-								if ( placeData["bookmarked"] == true ) {
-									return new FlatButton(
-										onPressed: () => setBookmark(placeData["id"], false, (){
-											print("success!");
-										}, () {
-											print("failure!");
-										}),
-										child: new Icon(
-											Icons.bookmark,
-											color: const Color(0xFF2D2D2F),
-										),
-									);
-								} else {
-									return new FlatButton(
-										onPressed: () => setBookmark(placeData["id"], true, (){
-											print("success!");
-										}, () {
-											print("failure!");
-										}),
-										child: new Icon(
-											Icons.bookmark_border,
-											color: const Color(0xFF2D2D2F),
-										),
-									);
-								}
-							} else {
-								return new Text(
-									'Loading Error'.toUpperCase(),
-									style: new TextStyle( fontWeight: FontWeight.w800 ),
-								);
-							}
-						} else {
-							return new Container(
-								alignment: Alignment.center,
-								child: new CircularProgressIndicator()
-							);
-						}
-					}
+				( placeData["bookmarked"] == true ?
+					new FlatButton(
+						onPressed: () => setBookmark(placeData["id"], false, (){
+							// update icon on success
+							setState(() {
+								placeData["bookmarked"] = false;
+							});
+						}, () { print("failure!"); }),
+						child: new Icon(
+							Icons.bookmark,
+							color: const Color(0xFF2D2D2F),
+						),
+					) :
+					new FlatButton(
+						onPressed: () => setBookmark(placeData["id"], true, (){
+							// update icon on success
+							setState(() {
+								placeData["bookmarked"] = true;
+							});
+						}, () { print("failure!"); }),
+						child: new Icon(
+							Icons.bookmark_border,
+							color: const Color(0xFF2D2D2F),
+						),
+					)
 				)
 			],
 		);
