@@ -7,7 +7,6 @@ import 'package:map_view/map_view.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
 
-
 import "dart:ui";
 import 'dart:convert';
 import 'dart:io';
