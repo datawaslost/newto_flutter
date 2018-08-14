@@ -3054,7 +3054,7 @@ void setBookmark(id, addremove, success, fail) async {
 }
 
 
-void getArticleData(id) async {
+getArticleData(id) async {
 	
 	// get stored token
 	final prefs = await SharedPreferences.getInstance();
@@ -3082,152 +3082,168 @@ void getArticleData(id) async {
 }
 
 
-class Article extends StatelessWidget {
-	
+class Article extends StatefulWidget {
 	Article(this.id);
 	final int id;
+	@override
+	_ArticleState createState() => new _ArticleState(this.id);
+}
+
+
+class _ArticleState extends State<Article> {
+
+	_ArticleState(this.id);
+
+	final int id;
 	List<Widget> _widgetList = [];
-	
+	var articleData;
+
+    @override
+    void initState() {
+        // This is the proper place to make the async calls
+        // This way they only get called once
+
+        // During development, if you change this code,
+        // you will need to do a full restart instead of just a hot reload
+        
+        // You can't use async/await here,
+        // We can't mark this method as async because of the @override
+        getArticleData(id).then((result) {
+            // If we need to rebuild the widget with the resulting data,
+            // make sure to use `setState`
+            setState(() {
+                articleData = result;
+            });
+        });
+    }
+
 	@override
 	Widget build(BuildContext context) {
+
+        if (articleData == null) {
+            // This is what we show while we're loading
+			return new Container(
+				alignment: Alignment.center,
+				child: new CircularProgressIndicator()
+			);
+        }
+
+		_widgetList = [
+			new Container(
+				height: 324.0,
+				decoration: new BoxDecoration(
+					image: new DecorationImage(
+						image: imgDefault(articleData["image"], "misssaigon.jpg"),
+						fit: BoxFit.cover,
+					),
+				),
+				child: new Column(
+					mainAxisSize: MainAxisSize.min,
+					children: <Widget>[
+						new BackdropFilter(
+							filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+							child: new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 15.0),
+								child: new SafeArea(
+									child: new Row(
+										crossAxisAlignment: CrossAxisAlignment.start,
+										children: <Widget>[
+											new Expanded(
+												child: new Text(
+													articleData["name"].toUpperCase(),
+													textAlign: TextAlign.left,
+													style: new TextStyle(
+														color: const Color(0xFF000000),
+														fontWeight: FontWeight.w800,
+														fontSize: 28.0,
+														height: 0.9,
+													),
+												),
+											),
+											new IconButton(
+												icon: new Icon(Icons.close, color: const Color(0xFF000000)),
+												padding: new EdgeInsets.all(0.0),
+												alignment: Alignment.topCenter,
+												onPressed: () => Navigator.pop(context,true),
+											),
+										]
+									),
+								),
+								decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+							),
+						),
+					],
+				),
+			),
+			( articleData["sponsor"] != "" ?
+				new Row(
+					children: [
+						new Container(
+							padding: new EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+							child: new Text(
+								'Sponsor'.toUpperCase(),
+								textAlign: TextAlign.left,
+								style: new TextStyle(
+									color: const Color(0xFF000000),
+									fontWeight: FontWeight.w800,
+									fontSize: 12.0,
+								),
+							),
+							decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
+						),
+						new Expanded(
+							child: Container( decoration: BoxDecoration(color: const Color(0xFFFFFFFF) ) )
+						),
+					]
+				) : new Container()
+			),
+			new Container(
+				padding: new EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 15.0),
+				child:  new Text(
+					articleData["content"],
+					textAlign: TextAlign.left,
+					style: new TextStyle(
+						color: const Color(0xFF000000),
+						fontWeight: FontWeight.w300,
+						fontSize: 14.0,
+						height: 1.15,
+					),
+				),
+			),
+		];
 		
+		for (var cta in articleData["ctas"]) {
+			_widgetList.add(
+				new Container(
+					padding: new EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 30.0),
+					child:  new Row(children: <Widget>[
+						new Expanded(
+							child: new RaisedButton(
+									onPressed: () => Navigator.pop(context,true),
+									padding: new EdgeInsets.all(14.0),  
+									color: const Color(0xFF1033FF),
+									textColor: const Color(0xFFFFFFFF),
+									child: new Text(
+										cta["name"].toUpperCase(),
+										style: new TextStyle(
+											fontWeight: FontWeight.w800,
+										),
+									),
+								),
+							)
+						]
+					),
+				),
+			);
+		}
+
 		return new Scaffold(
 			backgroundColor: const Color(0xFFFFFFFF),
 			body: new SingleChildScrollView(
 				scrollDirection: Axis.vertical,
-				child: new FutureBuilder(
-					future: getArticleData(this.id),
-					builder: (BuildContext context, AsyncSnapshot snapshot) {
-						if (snapshot.hasData) {
-							if (snapshot.data!=null) {
-
-								_widgetList = [
-									new Container(
-										height: 324.0,
-										decoration: new BoxDecoration(
-											image: new DecorationImage(
-												image: imgDefault(snapshot.data["image"], "misssaigon.jpg"),
-												fit: BoxFit.cover,
-											),
-										),
-										child: new Column(
-											mainAxisSize: MainAxisSize.min,
-											children: <Widget>[
-												new BackdropFilter(
-													filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-													child: new Container(
-														padding: new EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 15.0),
-														child: new SafeArea(
-															child: new Row(
-																crossAxisAlignment: CrossAxisAlignment.start,
-																children: <Widget>[
-																	new Expanded(
-																		child: new Text(
-																			snapshot.data["name"].toUpperCase(),
-																			textAlign: TextAlign.left,
-																			style: new TextStyle(
-																				color: const Color(0xFF000000),
-																				fontWeight: FontWeight.w800,
-																				fontSize: 28.0,
-																				height: 0.9,
-																			),
-																		),
-																	),
-																	new IconButton(
-																		icon: new Icon(Icons.close, color: const Color(0xFF000000)),
-																		padding: new EdgeInsets.all(0.0),
-																		alignment: Alignment.topCenter,
-																		onPressed: () => Navigator.pop(context,true),
-																	),
-																]
-															),
-														),
-														decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-													),
-												),
-											],
-										),
-									),
-									( snapshot.data["sponsor"] != "" ?
-										new Row(
-											children: [
-												new Container(
-													padding: new EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-													child: new Text(
-														'Sponsor'.toUpperCase(),
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontWeight: FontWeight.w800,
-															fontSize: 12.0,
-														),
-													),
-													decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
-												),
-												new Expanded(
-													child: Container( decoration: BoxDecoration(color: const Color(0xFFFFFFFF) ) )
-												),
-											]
-										) : new Container()
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 15.0),
-										child:  new Text(
-											snapshot.data["content"],
-											textAlign: TextAlign.left,
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontWeight: FontWeight.w300,
-												fontSize: 14.0,
-												height: 1.15,
-											),
-										),
-									),
-								];
-								
-								for (var cta in snapshot.data["ctas"]) {
-									_widgetList.add(
-										new Container(
-											padding: new EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 30.0),
-											child:  new Row(children: <Widget>[
-												new Expanded(
-													child: new RaisedButton(
-															onPressed: () => Navigator.pop(context,true),
-															padding: new EdgeInsets.all(14.0),  
-															color: const Color(0xFF1033FF),
-															textColor: const Color(0xFFFFFFFF),
-															child: new Text(
-																cta["name"].toUpperCase(),
-																style: new TextStyle(
-																	fontWeight: FontWeight.w800,
-																),
-															),
-														),
-													)
-												]
-											),
-										),
-									);
-								}
-								
-								return new Column(
-									children: _widgetList,
-								);
-								
-							} else {
-								return new Text(
-									'Loading Error'.toUpperCase(),
-									style: new TextStyle( fontWeight: FontWeight.w800 ),
-								);
-							}
-						} else {
-							return new Container(
-								alignment: Alignment.center,
-								child: new CircularProgressIndicator()
-							);
-						}
-					}
-				)
+				child: new Column(
+					children: _widgetList,
+				),
 			),
 			persistentFooterButtons: <Widget>[
 				/*
@@ -3246,13 +3262,32 @@ class Article extends StatelessWidget {
 					),
 				),
 				*/
-				new FlatButton(
-					onPressed: () => Navigator.pop(context,true),
-					child: new Icon(
-						Icons.bookmark_border,
-						color: const Color(0xFF2D2D2F),
-					),
-				),
+				( articleData["bookmarked"] == true ?
+					new FlatButton(
+						onPressed: () => setBookmark(articleData["id"], false, (){
+							// update icon on success
+							setState(() {
+								articleData["bookmarked"] = false;
+							});
+						}, () { print("failure!"); }),
+						child: new Icon(
+							Icons.bookmark,
+							color: const Color(0xFF2D2D2F),
+						),
+					) :
+					new FlatButton(
+						onPressed: () => setBookmark(articleData["id"], true, (){
+							// update icon on success
+							setState(() {
+								articleData["bookmarked"] = true;
+							});
+						}, () { print("failure!"); }),
+						child: new Icon(
+							Icons.bookmark_border,
+							color: const Color(0xFF2D2D2F),
+						),
+					)
+				)
 			],
 		);
 
