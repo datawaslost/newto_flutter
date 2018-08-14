@@ -96,7 +96,6 @@ void bottomBar(context, _selected) {
 							color: const Color(0xFFFFFFFF),
 							size: 39.0
 						),
-						// child: new ImageIcon(new AssetImage("images/icon_" + _navOptions[i][1] + _selectedName + ".png"), color: const Color(0xFFFFFFFF), size: 39.0),
 						decoration: new BoxDecoration( border: new Border( bottom: new BorderSide( width: 3.0, color: _borderColor ), ), ),
 						padding: new EdgeInsets.all(8.0),
 					),
@@ -136,9 +135,7 @@ void getUserData(token, success, fail) async {
 			HttpHeaders.AUTHORIZATION: "JWT " + token
 		},
 	);
-	
-	print(response.body);
-	
+		
 	if (response.statusCode == 200) {
 		// If server returns an OK response, parse the JSON
 		userData = json.decode(response.body);
@@ -368,7 +365,6 @@ class _LoginState extends State<Login> {
 	final TextEditingController _emailController = new TextEditingController();
 	final TextEditingController _passwordController = new TextEditingController();
 	final _loginFormKey = GlobalKey<FormState>();
-	
 
 	void _loginWithCredentials(success, fail) async {
 		
@@ -737,7 +733,6 @@ class _CreateEmailState extends State<CreateEmail> {
 
 
 class CreatePassword extends StatefulWidget {
-	// CreatePassword({Key key, this.title}) : super(key: key);
 	CreatePassword(this.email, this.organization);
 	final String email;
 	final int organization;
@@ -891,15 +886,13 @@ class _CreateFinishState extends State<CreateFinish> {
 	final String email;
 	final String password;
 	final int organization;
-	
 	List _organizations = [];
 	int _org;
-
 	final TextEditingController _hometownController = new TextEditingController();
 
 	void _registerWithCredentials(success, fail) async {
 
-		// just to make sure, remove tok
+		// just to make sure, remove token
 		final prefs = await SharedPreferences.getInstance();
 		prefs.remove('token');
 
@@ -2096,8 +2089,9 @@ void getGroupData(id) async {
 		groupData = json.decode(response.body);
 		return groupData;
 	} else {
-		// If that response was not OK, throw an error.
-		// fail(response.statusCode);
+		// If that response was not OK, print the error and return null
+		print(response.statusCode);
+		print(response.body);
 		return null;
 	}
 	
@@ -2404,8 +2398,8 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
 
 	_SearchState(this.cat);
+
 	final cat;
-	
 	List<Widget> _widgetList = [];
 	double _distance = 0.0;
 	
@@ -2525,13 +2519,9 @@ class _SearchState extends State<Search> {
 					new Row(
 						children: <Widget>[
 							new Container( width: 20.0 ),
-							new Expanded(
-								child: ( cat["tags"].length > 0 ? tagCard( cat["tags"][0] ) : new Container() )
-							),
+							new Expanded( child: ( cat["tags"].length > 0 ? tagCard( cat["tags"][0] ) : new Container() ) ),
 							new Container( width: 20.0 ),
-							new Expanded(
-								child: ( cat["tags"].length > 1 ? tagCard( cat["tags"][1] ) : new Container() )
-							),
+							new Expanded( child: ( cat["tags"].length > 1 ? tagCard( cat["tags"][1] ) : new Container() ) ),
 							new Container( width: 20.0 ),
 						]
 					),
@@ -2539,13 +2529,9 @@ class _SearchState extends State<Search> {
 					new Row(
 						children: <Widget>[
 							new Container( width: 20.0 ),
-							new Expanded(
-								child: ( cat["tags"].length > 2 ? tagCard( cat["tags"][2] ) : new Container() )
-							),
+							new Expanded( child: ( cat["tags"].length > 2 ? tagCard( cat["tags"][2] ) : new Container() ) ),
 							new Container( width: 20.0 ),
-							new Expanded(
-								child: ( cat["tags"].length > 3 ? tagCard( cat["tags"][3] ) : new Container() )
-							),
+							new Expanded( child: ( cat["tags"].length > 3 ? tagCard( cat["tags"][3] ) : new Container() ) ),
 							new Container( width: 20.0 ),
 						]
 					),
@@ -2724,8 +2710,9 @@ void getPlacesData(filters) async {
 		placesData = json.decode(response.body);
 		return placesData;
 	} else {
-		// If that response was not OK, throw an error.
-		// fail(response.statusCode);
+		// If that response was not OK, print the error and return null
+		print(response.statusCode);
+		print(response.body);
 		return null;
 	}
 	
@@ -3023,8 +3010,9 @@ void getArticleData(id) async {
 		articleData = json.decode(response.body);
 		return articleData;
 	} else {
-		// If that response was not OK, throw an error.
-		// fail(response.statusCode);
+		// If that response was not OK, print the error and return null
+		print(response.statusCode);
+		print(response.body);
 		return null;
 	}
 	
@@ -3223,14 +3211,16 @@ void getPlaceData(id) async {
 			HttpHeaders.AUTHORIZATION: "JWT " + token
 		},
 	);
-	
+		
 	if (response.statusCode == 200) {
 		// If server returns an OK response, parse the JSON
 		placeData = json.decode(response.body);
+		print(placeData);
 		return placeData;
 	} else {
-		// If that response was not OK, throw an error.
-		// fail(response.statusCode);
+		// If that response was not OK, print the error and return null
+		print(response.statusCode);
+		print(response.body);
 		return null;
 	}
 	
@@ -3247,7 +3237,7 @@ class Place extends StatelessWidget {
 	
 	@override
 	Widget build(BuildContext context) {
-				
+		
 		return new Scaffold(
 			backgroundColor: const Color(0xFFFFFFFF),
 			body: new SingleChildScrollView(
@@ -3259,9 +3249,6 @@ class Place extends StatelessWidget {
 							if (snapshot.data!=null) {
 								
 								placeData = snapshot.data;
-								
-								print(placeData);
-								
 								var imgWidget = imgDefault(placeData["image"], "misssaigon.jpg");
 								
 								// calculate stars
@@ -3288,6 +3275,7 @@ class Place extends StatelessWidget {
 									),
 									new SizedBox( width: 10.0 ),
 								];
+								
 								for (var i = 0; i < stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)) );
 								for (var i = 0; i < 5-stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 20.0)) );
 								
@@ -3500,22 +3488,43 @@ class Place extends StatelessWidget {
 				)
 			),
 			persistentFooterButtons: <Widget>[
-				/*
-				new FlatButton(
-					onPressed: () => Navigator.pop(context,true),
-					child: new Icon(
-						Icons.check_circle_outline,
-						color: const Color(0xFF2D2D2F),
-					),
-				),
-				*/
-				new FlatButton(
-					onPressed: () => Navigator.pop(context,true),
-					child: new Icon(
-						Icons.bookmark_border,
-						color: const Color(0xFF2D2D2F),
-					),
-				),
+				new FutureBuilder(
+					future: getPlaceData(this.id),
+					builder: (BuildContext context, AsyncSnapshot snapshot) {
+						if (snapshot.hasData) {
+							if (snapshot.data!=null) {								
+								placeData = snapshot.data;
+								if ( placeData["bookmarked"] == true ) {
+									return new FlatButton(
+										onPressed: () => Navigator.pop(context,true),
+										child: new Icon(
+											Icons.bookmark,
+											color: const Color(0xFF2D2D2F),
+										),
+									);
+								} else {
+									return new FlatButton(
+										onPressed: () => Navigator.pop(context,true),
+										child: new Icon(
+											Icons.bookmark_border,
+											color: const Color(0xFF2D2D2F),
+										),
+									);
+								}
+							} else {
+								return new Text(
+									'Loading Error'.toUpperCase(),
+									style: new TextStyle( fontWeight: FontWeight.w800 ),
+								);
+							}
+						} else {
+							return new Container(
+								alignment: Alignment.center,
+								child: new CircularProgressIndicator()
+							);
+						}
+					}
+				)
 			],
 		);
 
