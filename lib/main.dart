@@ -2075,160 +2075,6 @@ class _YourListState extends State<YourList> {
 }
 
 
-void getGroupData(id) async {
-	
-	// get stored token
-	final prefs = await SharedPreferences.getInstance();
-	final String token = prefs.getString('token') ?? null;
-	var groupData;
-
-	final response = await http.get(
-		domain + 'api/group/' + id.toString() + '/',
-		headers: {
-			HttpHeaders.AUTHORIZATION: "JWT " + token
-		},
-	);
-	
-	if (response.statusCode == 200) {
-		// If server returns an OK response, parse the JSON
-		groupData = json.decode(response.body);
-		print(groupData);
-		return groupData;
-	} else {
-		// If that response was not OK, print the error and return null
-		print(response.statusCode);
-		print(response.body);
-		return null;
-	}
-	
-}
-
-
-class Group extends StatelessWidget {
-	
-	Group(this.id);
-	final int id;
-	List<Widget> _widgetList = [];
-	
-	@override
-	Widget build(BuildContext context) {
-		
-		print("building this group");
-
-		return new Scaffold(
-			backgroundColor: const Color(0xFFF3F3F7),
-			body: new FutureBuilder(
-				future: getGroupData(this.id),
-				builder: (BuildContext context, AsyncSnapshot snapshot) {
-					if (snapshot.hasData) {
-						if (snapshot.data!=null) {
-							
-							print(snapshot.data);
-							
-							_widgetList = [
-								new SliverAppBar(
-									backgroundColor: const Color(0xFFF3F3F7),
-									pinned: false,
-									expandedHeight: 230.0,
-									floating: true,
-									leading: new Container(),
-									actions: <Widget>[
-										new IconButton(
-											icon: new Icon(Icons.close ),
-											tooltip: 'Close',
-											onPressed: () => Navigator.pop(context,true)
-										),
-									],
-									flexibleSpace: new FlexibleSpaceBar(
-										background: new Image(
-											image: imgDefault(snapshot.data["image"], "cardphoto.png"),
-											fit: BoxFit.cover,
-										)
-									),
-								),
-								new SliverPadding(
-									padding: const EdgeInsets.all(20.0),
-									sliver: new SliverGrid.count(
-										crossAxisSpacing: 10.0,
-										mainAxisSpacing: 10.0,
-										crossAxisCount: 1,
-										childAspectRatio: 8.0,
-										children: <Widget>[
-											new Text(
-												snapshot.data["name"].toUpperCase(),
-												textAlign: TextAlign.left,
-												style: new TextStyle(
-													color: const Color(0xFF000000),
-													fontWeight: FontWeight.w800,
-													fontSize: 28.0,
-													height: 0.9,
-												),
-											),
-										]
-									),
-								),
-							];
-							
-							_widgetList.addAll(parseItems(snapshot.data["items"], context));
-																					
-							return new CustomScrollView(
-								primary: false,
-								slivers: _widgetList,
-							);
-							
-						} else {
-							return new CustomScrollView(
-								primary: false,
-								slivers: [
-									new SliverPadding(
-										padding: const EdgeInsets.all(20.0),
-										sliver: new SliverGrid.count(
-											crossAxisSpacing: 10.0,
-											mainAxisSpacing: 10.0,
-											crossAxisCount: 1,
-											childAspectRatio: 8.0,
-											children: <Widget>[
-												new Text(
-													'Loading Error'.toUpperCase(),
-													style: new TextStyle( fontWeight: FontWeight.w800 ),
-												),
-											]
-										),
-									),
-								]
-							);
-						}
-					} else {
-						return new CustomScrollView(
-							primary: false,
-							slivers: [
-								new SliverPadding(
-									padding: const EdgeInsets.all(20.0),
-									sliver: new SliverGrid.count(
-										crossAxisSpacing: 10.0,
-										mainAxisSpacing: 10.0,
-										crossAxisCount: 1,
-										childAspectRatio: 8.0,
-										children: <Widget>[
-											new Container(
-												alignment: Alignment.center,
-												child: new CircularProgressIndicator()
-											),
-										]
-									),
-								),
-							]
-						);
-					}
-				}
-			),
-		);
-
-	}
-
-}
-
-
 class Discover extends StatefulWidget {
 	Discover({Key key, this.title}) : super(key: key);
 	final String title;
@@ -3053,15 +2899,14 @@ void setBookmark(id, addremove, success, fail) async {
 }
 
 
-getArticleData(id) async {
+getItemData(itemtype, id) async {
 	
 	// get stored token
 	final prefs = await SharedPreferences.getInstance();
 	final String token = prefs.getString('token') ?? null;
-	var articleData;
 
 	final response = await http.get(
-		domain + 'api/item/' + id.toString() + '/',
+		domain + 'api/' + itemtype + '/' + id.toString() + '/',
 		headers: {
 			HttpHeaders.AUTHORIZATION: "JWT " + token
 		},
@@ -3069,8 +2914,7 @@ getArticleData(id) async {
 	
 	if (response.statusCode == 200) {
 		// If server returns an OK response, parse the JSON
-		articleData = json.decode(response.body);
-		return articleData;
+		return json.decode(response.body);
 	} else {
 		// If that response was not OK, print the error and return null
 		print(response.statusCode);
@@ -3078,6 +2922,103 @@ getArticleData(id) async {
 		return null;
 	}
 	
+}
+
+
+class Group extends StatefulWidget {
+	Group(this.id);
+	final int id;
+	@override
+	_GroupState createState() => new _GroupState(this.id);
+}
+
+
+class _GroupState extends State<Group> {
+
+	_GroupState(this.id);
+
+	final int id;
+	List<Widget> _widgetList = [];
+	var GroupData;
+
+    @override
+    void initState() {        
+        // We can't mark this method as async because of the @override
+        getItemData('group', id).then((result) {
+            // If we need to rebuild the widget with the resulting data, make sure to use `setState`
+            setState(() {
+                GroupData = result;
+            });
+        });
+    }
+
+	@override
+	Widget build(BuildContext context) {
+
+        if (GroupData == null) {
+            // This is what we show while we're loading
+			return new Container(
+				alignment: Alignment.center,
+				child: new CircularProgressIndicator()
+			);
+        }
+
+		_widgetList = [
+			new SliverAppBar(
+				backgroundColor: const Color(0xFFF3F3F7),
+				pinned: false,
+				expandedHeight: 230.0,
+				floating: true,
+				leading: new Container(),
+				actions: <Widget>[
+					new IconButton(
+						icon: new Icon(Icons.close ),
+						tooltip: 'Close',
+						onPressed: () => Navigator.pop(context,true)
+					),
+				],
+				flexibleSpace: new FlexibleSpaceBar(
+					background: new Image(
+						image: imgDefault(GroupData["image"], "cardphoto.png"),
+						fit: BoxFit.cover,
+					)
+				),
+			),
+			new SliverPadding(
+				padding: const EdgeInsets.all(20.0),
+				sliver: new SliverGrid.count(
+					crossAxisSpacing: 10.0,
+					mainAxisSpacing: 10.0,
+					crossAxisCount: 1,
+					childAspectRatio: 8.0,
+					children: <Widget>[
+						new Text(
+							GroupData["name"].toUpperCase(),
+							textAlign: TextAlign.left,
+							style: new TextStyle(
+								color: const Color(0xFF000000),
+								fontWeight: FontWeight.w800,
+								fontSize: 28.0,
+								height: 0.9,
+							),
+						),
+					]
+				),
+			),
+		];
+		
+		_widgetList.addAll(parseItems(GroupData["items"], context));
+
+		return new Scaffold(
+			backgroundColor: const Color(0xFFF3F3F7),
+			body: new CustomScrollView(
+				primary: false,
+				slivers: _widgetList,
+			),
+		);
+
+	}
+
 }
 
 
@@ -3098,18 +3039,10 @@ class _ArticleState extends State<Article> {
 	var articleData;
 
     @override
-    void initState() {
-        // This is the proper place to make the async calls
-        // This way they only get called once
-
-        // During development, if you change this code,
-        // you will need to do a full restart instead of just a hot reload
-        
-        // You can't use async/await here,
+    void initState() {        
         // We can't mark this method as async because of the @override
-        getArticleData(id).then((result) {
-            // If we need to rebuild the widget with the resulting data,
-            // make sure to use `setState`
+        getItemData('item', id).then((result) {
+            // If we need to rebuild the widget with the resulting data, make sure to use `setState`
             setState(() {
                 articleData = result;
             });
@@ -3295,35 +3228,6 @@ class _ArticleState extends State<Article> {
 }
 
 
-getPlaceData(id) async {
-	
-	// get stored token
-	final prefs = await SharedPreferences.getInstance();
-	final String token = prefs.getString('token') ?? null;
-	var placeData;
-
-	final response = await http.get(
-		domain + 'api/place/' + id.toString() + '/',
-		headers: {
-			HttpHeaders.AUTHORIZATION: "JWT " + token
-		},
-	);
-		
-	if (response.statusCode == 200) {
-		// If server returns an OK response, parse the JSON
-		placeData = json.decode(response.body);
-		print(placeData);
-		return placeData;
-	} else {
-		// If that response was not OK, print the error and return null
-		print(response.statusCode);
-		print(response.body);
-		return null;
-	}
-	
-}
-
-
 class Place extends StatefulWidget {
 	Place(this.id);
 	final int id;
@@ -3343,17 +3247,9 @@ class _PlaceState extends State<Place> {
 
     @override
     void initState() {
-        // This is the proper place to make the async calls
-        // This way they only get called once
-
-        // During development, if you change this code,
-        // you will need to do a full restart instead of just a hot reload
-        
-        // You can't use async/await here,
         // We can't mark this method as async because of the @override
-        getPlaceData(id).then((result) {
-            // If we need to rebuild the widget with the resulting data,
-            // make sure to use `setState`
+        getItemData('place', id).then((result) {
+            // If we need to rebuild the widget with the resulting data, make sure to use `setState`
             setState(() {
                 placeData = result;
             });
