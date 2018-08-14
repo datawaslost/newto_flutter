@@ -2685,7 +2685,9 @@ class _BookmarksState extends State<Bookmarks> {
 			null, 
 			(data){
 				// Success
-				print(data);
+				setState(() {
+					// print(data);
+				});		
 			},
 			(code){
 				// Failure
@@ -3015,6 +3017,35 @@ class _GroupState extends State<Group> {
 				primary: false,
 				slivers: _widgetList,
 			),
+			persistentFooterButtons: <Widget>[
+				( GroupData["bookmarked"] == true ?
+					new FlatButton(
+						onPressed: () => setBookmark(GroupData["id"], false, (){
+							// update icon on success
+							setState(() {
+								GroupData["bookmarked"] = false;
+							});
+						}, () { print("failure!"); }),
+						child: new Icon(
+							Icons.bookmark,
+							color: const Color(0xFF2D2D2F),
+						),
+					) :
+					new FlatButton(
+						onPressed: () => setBookmark(GroupData["id"], true, (){
+							// update icon on success
+							setState(() {
+								GroupData["bookmarked"] = true;
+							});
+						}, () { print("failure!"); }),
+						child: new Icon(
+							Icons.bookmark_border,
+							color: const Color(0xFF2D2D2F),
+						),
+					)
+				)
+			],
+
 		);
 
 	}
