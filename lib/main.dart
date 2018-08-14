@@ -2991,6 +2991,42 @@ class _AccountState extends State<Account> {
 }
 
 
+void setBookmark(id, addremove, success, fail) async {
+
+	// get stored token
+	final prefs = await SharedPreferences.getInstance();
+	final String token = prefs.getString('token') ?? null;
+	
+	// add or remove bookmark
+	String bookmarktype = (addremove ? "addbookmark" : "removebookmark");
+
+	final response = await http.post(
+		domain + 'api/' + bookmarktype,
+		headers: {
+			HttpHeaders.AUTHORIZATION: "JWT " + token
+		},
+		body: {
+			"id": id,
+		}
+	);
+	
+	if (response.statusCode == 200) {
+		// If server returns an OK response
+		success = json.decode(response.body)["success"];
+		if (success) {
+			success();
+		} else {
+			fail(response.statusCode);
+		}
+	} else {
+		// If that response was not OK, throw an error.
+		print(response.body);
+		fail(response.statusCode);
+	}
+	
+}
+
+
 void getArticleData(id) async {
 	
 	// get stored token
