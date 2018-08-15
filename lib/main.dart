@@ -1184,9 +1184,7 @@ void imgDefault(img, defaultImg) {
 
 
 void discoverItem(id, txt, img, context, { String sponsored = null, bool bookmarked = false }) {
-	
-	var imgWidget = imgDefault(img, "misssaigon.jpg");
-		
+			
 	return new GestureDetector(
 		onTap: () {
 			Navigator.push(context, new MaterialPageRoute(
@@ -1198,7 +1196,7 @@ void discoverItem(id, txt, img, context, { String sponsored = null, bool bookmar
 			child: new Container(
 				decoration: new BoxDecoration(
 					image: new DecorationImage(
-						image: imgWidget,
+						image: imgDefault(img, "misssaigon.jpg"),
 						fit: BoxFit.cover,
 					),
 				),
@@ -1236,13 +1234,6 @@ void discoverItem(id, txt, img, context, { String sponsored = null, bool bookmar
 						new Expanded(
 							child: new Container(
 								alignment: Alignment.bottomCenter,
-								decoration: new BoxDecoration(
-									image: new DecorationImage(
-										image: imgWidget,
-										fit: BoxFit.cover,
-										alignment: Alignment.bottomCenter,
-									),
-								),
 								child: ( sponsored != null
 									? new Column(
 										mainAxisSize: MainAxisSize.min,
@@ -1867,8 +1858,6 @@ void listGroup(int id, String txt, amount, context, {bookmarked = false, String 
 
 void listGroupImage(int id, String txt, amount, img, context, {bookmarked = false, String sponsored}) {
 
-	var imgWidget = imgDefault(img, "cardphoto.png");
-	
 	return new GestureDetector(
 		onTap: () {
 			Navigator.push(context, new MaterialPageRoute(
@@ -1931,7 +1920,7 @@ void listGroupImage(int id, String txt, amount, img, context, {bookmarked = fals
 					child: new Container(
 						decoration: new BoxDecoration(
 							image: new DecorationImage(
-								image: imgWidget,
+								image: imgDefault(img, "cardphoto.png"),
 								fit: BoxFit.cover,
 							),
 						),
@@ -2167,8 +2156,6 @@ class _DiscoverState extends State<Discover> {
 
 	void searchCategory(cat) {
 		
-		var imgWidget = imgDefault(cat["image"], "misssaigon.jpg");
-		
 		return new GestureDetector(
 			onTap: () {
 				Navigator.push(context, new MaterialPageRoute(
@@ -2186,7 +2173,7 @@ class _DiscoverState extends State<Discover> {
 							height: 180.0,
 							decoration: new BoxDecoration(
 								image: new DecorationImage(
-									image: imgWidget,
+									image: imgDefault(cat["image"], "misssaigon.jpg"),
 									fit: BoxFit.cover,
 								),
 							),
@@ -2511,8 +2498,6 @@ class _SearchState extends State<Search> {
 
 void placeCard(id, txt, img, stars, distance, context, { featured = false, bookmarked = false }) {
 	
-	var imgWidget = imgDefault(img, "misssaigon.jpg");
-	
 	// calculate stars
 	List<Widget> _starsList = [ new SizedBox( width: 20.0 ) ];
 	for (var i = 0; i < stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)) );
@@ -2615,7 +2600,7 @@ void placeCard(id, txt, img, stars, distance, context, { featured = false, bookm
 								),
 								decoration: new BoxDecoration(
 									image: new DecorationImage(
-										image: imgWidget,
+										image: imgDefault(img, "misssaigon.jpg"),
 										fit: BoxFit.cover,
 									),
 								),
@@ -3380,8 +3365,6 @@ class _PlaceState extends State<Place> {
 			);
         }
 
-		var imgWidget = imgDefault(placeData["image"], "misssaigon.jpg");
-
 		// calculate stars
 		final stars = placeData["rating"];
 		List<Widget> _starsList = [ 
@@ -3420,7 +3403,7 @@ class _PlaceState extends State<Place> {
 							height: 324.0,
 							decoration: new BoxDecoration(
 								image: new DecorationImage(
-									image: imgWidget,
+									image: imgDefault(placeData["image"], "misssaigon.jpg"),
 									fit: BoxFit.cover,
 								),
 							),
