@@ -147,6 +147,7 @@ void getUserData(token, success, fail) async {
 		success(userData);
 	} else {
 		// If that response was not OK, throw an error.
+		print(response.body);
 		fail(response.statusCode);
 	}
 	
@@ -1465,11 +1466,36 @@ class _LandingState extends State<Landing> {
 												child: listButton(Icons.check),
 											),
 										),
-										new Expanded(
-											child: new InkWell(
-												onTap: () => setState(() { _details = false; }),
-												child: listButton(Icons.bookmark_border),
-											),
+										(item["bookmarked"] ? 
+											// has bookmark, tap removes
+											new Expanded(
+												child: new InkWell(
+													// remove bookmark
+													onTap: () => setBookmark(item["id"], false, (){
+														setState(() {
+															// update icon and close details on success
+															item["bookmarked"] = false;
+															_details = false;
+														});
+													}, () { print("failure!"); }),
+													child: listButton(Icons.bookmark),
+												),
+											)
+										:
+											// no bookmark, tap adds
+											new Expanded(
+												child: new InkWell(
+													// add bookmark
+													onTap: () => setBookmark(item["id"], true, (){
+														setState(() {
+															// update icon and close details on success
+															item["bookmarked"] = true;
+															_details = false;
+														});
+													}, () { print("failure!"); }),
+													child: listButton(Icons.bookmark_border),
+												),
+											)
 										),
 										new Expanded(
 											child: new InkWell(
