@@ -1184,7 +1184,7 @@ void imgDefault(img, defaultImg) {
 
 
 void discoverItem(id, txt, img, context, { String sponsored = null, bool bookmarked = false }) {
-			
+	
 	return new GestureDetector(
 		onTap: () {
 			Navigator.push(context, new MaterialPageRoute(
@@ -1234,7 +1234,7 @@ void discoverItem(id, txt, img, context, { String sponsored = null, bool bookmar
 						new Expanded(
 							child: new Container(
 								alignment: Alignment.bottomCenter,
-								child: ( sponsored != null
+								child: ( sponsored != null && sponsored != ""
 									? new Column(
 										mainAxisSize: MainAxisSize.min,
 										children: <Widget>[
@@ -1244,7 +1244,7 @@ void discoverItem(id, txt, img, context, { String sponsored = null, bool bookmar
 													new Container(
 														padding: new EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
 														child: new Text(
-															'Sponsor'.toUpperCase(),
+															sponsored.toUpperCase(),
 															textAlign: TextAlign.left,
 															style: new TextStyle(
 																color: const Color(0xFF000000),
@@ -1511,9 +1511,9 @@ class _LandingState extends State<Landing> {
 		_discoverItems = [];
 		for (var item in userData[0]["organization"]["discover_items"]) {
 			if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
-				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsored"] ) ) );
+				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsored"], bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] )  ) ) );
 			} else {
-				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context) ) );
+				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsored"], bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] ) ) ) );
 			}
 		}
 
@@ -1817,9 +1817,9 @@ void listGroup(int id, String txt, amount, context, {bookmarked = false, String 
 						child: new Row(
 							children: [
 								new Expanded(
-									child: (sponsored != null ? 
+									child: (sponsored != null && sponsored != "" ? 
 										new Text(
-											'Sponsored by Amherst'.toUpperCase(),
+											sponsored.toUpperCase(),
 											textAlign: TextAlign.left,
 											style: new TextStyle(
 												color: const Color(0xFF838383),
@@ -1958,7 +1958,7 @@ void parseItems(list, context, {bookmarked = false}) {
 						childAspectRatio: 2.25,
 						// fix this nonsense ^
 						children: <Widget>[
-							placeCard(item["id"], item["name"], item["image"], item["rating"], item["distance"], context, bookmarked: bookmarked),
+							placeCard(item["id"], item["name"], item["image"], item["rating"], item["distance"], context, bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] ) ),
 						],
 					),
 				)
@@ -1976,7 +1976,7 @@ void parseItems(list, context, {bookmarked = false}) {
 							crossAxisCount: 1,
 							childAspectRatio: 1.2,
 							children: <Widget>[
-								listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsored"], bookmarked: bookmarked),
+								listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsored"], bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] ) ),
 							]
 						),
 					)
@@ -1992,7 +1992,7 @@ void parseItems(list, context, {bookmarked = false}) {
 							crossAxisCount: 1,
 							childAspectRatio: 1.0,
 							children: <Widget>[
-								discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsored"], bookmarked: bookmarked),
+								discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsored"], bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] ) ),
 							]
 						)
 					)
@@ -2207,9 +2207,9 @@ class _DiscoverState extends State<Discover> {
 		_discoverItems = [];
 		for (var item in userData[0]["organization"]["discover_items"]) {
 			if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
-				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsored"] ) ) );
+				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsored"], bookmarked: (item["bookmarked"] == null ? false : item["bookmarked"] ) ) ) );
 			} else {
-				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context) ) );
+				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsored"], bookmarked: (item["bookmarked"] == null ? false : item["bookmarked"] ) ) ) );
 			}
 		}
 
@@ -3205,13 +3205,13 @@ class _ArticleState extends State<Article> {
 					],
 				),
 			),
-			( articleData["sponsor"] != "" ?
+			( articleData["sponsor"] != null && articleData["sponsor"] != "" ?
 				new Row(
 					children: [
 						new Container(
 							padding: new EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
 							child: new Text(
-								'Sponsor'.toUpperCase(),
+								articleData["sponsor"].toUpperCase(),
 								textAlign: TextAlign.left,
 								style: new TextStyle(
 									color: const Color(0xFF000000),
