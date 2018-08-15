@@ -1450,11 +1450,36 @@ class _LandingState extends State<Landing> {
 							child: new Center(
 								child: new Row(
 									children: [
-										new Expanded(
-											child: new InkWell(
-												onTap: () => setState(() { _details = false; }),
-												child: listButton(Icons.check),
-											),
+										( item["done"] == true && item["done"] != null ? 
+											// is done, tap removes
+											new Expanded(
+												child: new InkWell(
+													// remove done
+													onTap: () => setDone(item["id"], false, (){
+														setState(() {
+															// update icon and close details on success
+															item["done"] = false;
+															_details = false;
+														});
+													}, () { print("failure!"); }),
+													child: listButton(Icons.remove),
+												),
+											)
+										:
+											// not done, tap adds
+											new Expanded(
+												child: new InkWell(
+													// add done
+													onTap: () => setDone(item["id"], true, (){
+														setState(() {
+															// update icon and close details on success
+															item["done"] = true;
+															_details = false;
+														});
+													}, () { print("failure!"); }),
+													child: listButton(Icons.check),
+												),
+											)
 										),
 										( item["bookmarked"] == true && item["bookmarked"] != null ? 
 											// has bookmark, tap removes
@@ -1720,7 +1745,33 @@ void listCardGesture(item, context, {bookmarked = false}) {
 								            new Row(
 												children: [
 													new SizedBox( width: _offsetx, height: _boxheight),
-													new Expanded( child: listButton(Icons.check) ),
+													( item["done"] == true && item["done"] != null ? 
+														// is done, tap removes
+														new Expanded(
+															child: new GestureDetector(
+																// remove done
+																onTap: () => setDone(item["id"], false, (){
+																	// update icon and close details on success
+																	item["done"] = false;
+																	Navigator.pop(context);
+																}, () { print("failure!"); }),
+																child: listButton(Icons.remove),
+															),
+														)
+													:
+														// not done, tap adds
+														new Expanded(
+															child: new GestureDetector(
+																// add done
+																onTap: () => setDone(item["id"], true, (){
+																	// update icon and close details on success
+																	item["done"] = true;
+																	Navigator.pop(context);
+																}, () { print("failure!"); }),
+																child: listButton(Icons.check),
+															),
+														)
+													),
 													( item["bookmarked"] == true && item["bookmarked"] != null ? 
 														// has bookmark, tap removes
 														new Expanded(
@@ -2968,6 +3019,43 @@ void setBookmark(id, addremove, success, fail) async {
 }
 
 
+void setDone(id, addremove, success, fail) async {
+
+	// get stored token
+	final prefs = await SharedPreferences.getInstance();
+	final String token = prefs.getString('token') ?? null;
+	
+	// add or remove bookmark
+	String donetype = (addremove ? "adddone/" : "removedone/");
+
+	final response = await http.post(
+		domain + 'api/' + donetype,
+		headers: {
+			HttpHeaders.AUTHORIZATION: "JWT " + token
+		},
+		body: {
+			"id": id.toString(),
+		}
+	);
+	
+	if (response.statusCode == 200) {
+		// If server returns an OK response
+		final s = json.decode(response.body)["success"];
+		if (s) {
+			success();
+		} else {
+			print(response.body);
+			fail();
+		}
+	} else {
+		// If that response was not OK, throw an error.
+		print(response.body);
+		fail();
+	}
+	
+}
+
+
 getItemData(itemtype, id) async {
 	
 	// get stored token
@@ -3085,6 +3173,32 @@ class _GroupState extends State<Group> {
 				slivers: _widgetList,
 			),
 			persistentFooterButtons: <Widget>[
+				( GroupData["done"] == true ?
+					new FlatButton(
+						onPressed: () => setDone(GroupData["id"], false, (){
+							// update icon on success
+							setState(() {
+								GroupData["done"] = false;
+							});
+						}, () { print("failure!"); }),
+						child: new Icon(
+							Icons.remove,
+							color: const Color(0xFF2D2D2F),
+						),
+					) :
+					new FlatButton(
+						onPressed: () => setDone(GroupData["id"], true, (){
+							// update icon on success
+							setState(() {
+								GroupData["done"] = true;
+							});
+						}, () { print("failure!"); }),
+						child: new Icon(
+							Icons.check,
+							color: const Color(0xFF2D2D2F),
+						),
+					)
+				),
 				( GroupData["bookmarked"] == true ?
 					new FlatButton(
 						onPressed: () => setBookmark(GroupData["id"], false, (){
@@ -3276,22 +3390,32 @@ class _ArticleState extends State<Article> {
 				),
 			),
 			persistentFooterButtons: <Widget>[
-				/*
-				new FlatButton(
-					onPressed: () => Navigator.pop(context,true),
-					child: new Icon(
-						Icons.add_circle_outline,
-						color: const Color(0xFF2D2D2F),
-					),
+				( articleData["done"] == true ?
+					new FlatButton(
+						onPressed: () => setDone(articleData["id"], false, (){
+							// update icon on success
+							setState(() {
+								articleData["done"] = false;
+							});
+						}, () { print("failure!"); }),
+						child: new Icon(
+							Icons.remove,
+							color: const Color(0xFF2D2D2F),
+						),
+					) :
+					new FlatButton(
+						onPressed: () => setDone(articleData["id"], true, (){
+							// update icon on success
+							setState(() {
+								articleData["done"] = true;
+							});
+						}, () { print("failure!"); }),
+						child: new Icon(
+							Icons.check,
+							color: const Color(0xFF2D2D2F),
+						),
+					)
 				),
-				new FlatButton(
-					onPressed: () => Navigator.pop(context,true),
-					child: new Icon(
-						Icons.check_circle_outline,
-						color: const Color(0xFF2D2D2F),
-					),
-				),
-				*/
 				( articleData["bookmarked"] == true ?
 					new FlatButton(
 						onPressed: () => setBookmark(articleData["id"], false, (){
