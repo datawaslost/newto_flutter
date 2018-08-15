@@ -1493,7 +1493,13 @@ class _LandingState extends State<Landing> {
 	
 		// set up discover items
 		_discoverItems = [];
-		userData[0]["organization"]["discover_items"].forEach( (item) => _discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context) ) ) );
+		for (var item in userData[0]["organization"]["discover_items"]) {
+			if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
+				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsored"] ) ) );
+			} else {
+				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context) ) );
+			}
+		}
 
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
@@ -2155,7 +2161,13 @@ class _DiscoverState extends State<Discover> {
 
 		// set up discover items
 		_discoverItems = [];
-		userData[0]["organization"]["discover_items"].forEach( (item) => _discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context) ) ) );
+		for (var item in userData[0]["organization"]["discover_items"]) {
+			if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
+				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsored"] ) ) );
+			} else {
+				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context) ) );
+			}
+		}
 
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
