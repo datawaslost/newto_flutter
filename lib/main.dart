@@ -88,7 +88,22 @@ void bottomBar(context, _selected) {
 		_navItems.add(
 			new Expanded(
 		        child: new GestureDetector(
-					onTap: () { if (i != _selected) { Navigator.of(context).pushNamed("/" + _navOptions[i][0]);}},
+					onTap: () {
+						if (i != _selected) {
+							getUserData(
+								null, 
+								(data){
+									// Success
+									// print(data);
+								},
+								(code){
+									// Failure
+									print("getUserData failure callback : " + code.toString());
+								}
+							);
+							Navigator.of(context).pushNamed("/" + _navOptions[i][0]);
+						}
+					},
 					child: new Container(
 						child: new ImageIcon(
 							( _navOptions[i][0] == "org" ? imgDefault(_navOptions[i][1], "icon_compass_selected.png") : new AssetImage("images/icon_" + _navOptions[i][1] + _selectedName + ".png") ),
@@ -2796,6 +2811,7 @@ class Bookmarks extends StatefulWidget {
 
 class _BookmarksState extends State<Bookmarks> {
 	
+	/*
 	@override
 	void initState() {
 		super.initState();
@@ -2813,6 +2829,7 @@ class _BookmarksState extends State<Bookmarks> {
 			}
 		);
 	}
+	*/
 
 	@override
 	Widget build(BuildContext context) {
