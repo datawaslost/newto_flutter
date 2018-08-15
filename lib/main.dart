@@ -191,7 +191,7 @@ class _HomeState extends State<Home> {
 					token, 
 					(data){
 						// Success
-						print(data);
+						// print(data);
 						Navigator.of(context).pushNamed("/landing");
 					},
 					(code){
@@ -969,9 +969,8 @@ class _CreateFinishState extends State<CreateFinish> {
 			final response = await http.get( domain + 'api/organization/' );
 			if (response.statusCode == 200) {
 				// If we get organization data back
-				print(json.decode(response.body));
 				_organizations = json.decode(response.body);
-				return json.decode(response.body);
+				return _organizations;
 			} else {
 				// If there was a problem
 				return "There was a problem communicating with the servers : " + response.statusCode.toString();
@@ -1466,7 +1465,7 @@ class _LandingState extends State<Landing> {
 												child: listButton(Icons.check),
 											),
 										),
-										(item["bookmarked"] ? 
+										( item["bookmarked"] == true && item["bookmarked"] != null ? 
 											// has bookmark, tap removes
 											new Expanded(
 												child: new InkWell(
@@ -1680,7 +1679,7 @@ void listCard(String txt, {height, width, key, bookmarked = false}) {
 }
 
 
-void listCardGesture(String txt, context, {bookmarked = false}) {
+void listCardGesture(item, context, {bookmarked = false}) {
 	
 	// create a key so we can specifically reference the original card widget later to get its size, position
 	GlobalKey stickyKey = new GlobalKey();
@@ -1725,13 +1724,39 @@ void listCardGesture(String txt, context, {bookmarked = false}) {
 									            top: 0.0,
 									            right: _rightside ? 20.0 : null,
 									            left: _rightside ? null : 20.0,
-									            child: listCard(txt, height:_boxheight, width:_boxwidth, bookmarked: bookmarked),
+									            child: listCard(item["name"], height:_boxheight, width:_boxwidth, bookmarked: bookmarked),
 											),
 								            new Row(
 												children: [
 													new SizedBox( width: _offsetx, height: _boxheight),
 													new Expanded( child: listButton(Icons.check) ),
-													new Expanded( child: listButton(Icons.bookmark_border) ),
+													( item["bookmarked"] == true && item["bookmarked"] != null ? 
+														// has bookmark, tap removes
+														new Expanded(
+															child: new GestureDetector(
+																// remove bookmark
+																onTap: () => setBookmark(item["id"], false, (){
+																	// update icon and close dialog on success
+																	item["bookmarked"] = false;
+																	Navigator.pop(context);
+																}, () { print("failure!"); }),
+																child: listButton(Icons.bookmark),
+															),
+														)
+													:
+														// no bookmark, tap adds
+														new Expanded(
+															child: new GestureDetector(
+																// add bookmark
+																onTap: () => setBookmark(item["id"], true, (){
+																	// update icon and close dialog on success
+																	item["bookmarked"] = true;
+																	Navigator.pop(context);
+																}, () { print("failure!"); }),
+																child: listButton(Icons.bookmark_border),
+															),
+														)
+													),
 													new Expanded( child: listButton(Icons.close) ),
 													new SizedBox( width: _offsetx2 ),
 												]
@@ -1745,7 +1770,7 @@ void listCardGesture(String txt, context, {bookmarked = false}) {
 				);
 			}
 		},
-		child: listCard(txt, key: stickyKey, bookmarked: bookmarked),
+		child: listCard(item["name"], key: stickyKey, bookmarked: bookmarked),
 	);
 }
 
@@ -2007,8 +2032,8 @@ void parseItems(list, context, {bookmarked = false}) {
 							crossAxisCount: 2,
 							childAspectRatio: 1.1,
 							children: <Widget>[
-								listCardGesture(_listTodos[0]["name"], context, bookmarked: bookmarked),																
-								listCardGesture(_listTodos[1]["name"], context, bookmarked: bookmarked),																
+								listCardGesture(_listTodos[0], context, bookmarked: bookmarked),																
+								listCardGesture(_listTodos[1], context, bookmarked: bookmarked),																
 							],
 						),
 					)
@@ -2029,7 +2054,7 @@ void parseItems(list, context, {bookmarked = false}) {
 					crossAxisCount: 2,
 					childAspectRatio: 1.1,
 					children: <Widget>[
-						listCardGesture(_listTodos[0]["name"], context, bookmarked: bookmarked),																
+						listCardGesture(_listTodos[0], context, bookmarked: bookmarked),																
 					],
 				),
 			)
@@ -2672,8 +2697,6 @@ class _SearchResultsState extends State<SearchResults> {
 					if (snapshot.hasData) {
 						if (snapshot.data!=null) {
 							
-							// print(snapshot.data);
-							
 							_placeList = [];
 							
 							for (var place in snapshot.data) {
@@ -2739,7 +2762,7 @@ class _BookmarksState extends State<Bookmarks> {
 			(data){
 				// Success
 				setState(() {
-					print(data);
+					// print(data);
 				});		
 			},
 			(code){
