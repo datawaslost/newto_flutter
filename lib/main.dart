@@ -1757,7 +1757,13 @@ void listCardGesture(item, context, {bookmarked = false}) {
 															),
 														)
 													),
-													new Expanded( child: listButton(Icons.close) ),
+													new Expanded(
+														child: new GestureDetector(
+															// close dialog
+															onTap: () => Navigator.pop(context),
+															child: listButton(Icons.close),
+														),
+													),
 													new SizedBox( width: _offsetx2 ),
 												]
 											)
