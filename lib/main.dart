@@ -18,6 +18,9 @@ final String domain = "http://dev.newto.com/";
 
 var userData;
 
+// Instance of WebView plugin
+final flutterWebviewPlugin = new FlutterWebviewPlugin();
+
 void main() {
 	MapView.setApiKey("AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E");
 	runApp(new MyApp());
@@ -90,6 +93,10 @@ void bottomBar(context, _selected) {
 		        child: new GestureDetector(
 					onTap: () {
 						if (i != _selected) {
+							
+							// close org webview
+							flutterWebviewPlugin.close();
+							
 							getUserData(
 								null, 
 								(data){
@@ -3779,26 +3786,46 @@ class _OrganizationState extends State<Organization> {
 	@override
 	Widget build(BuildContext context) {
 	  
-		return new Scaffold(
-			appBar: new AppBar(
-				backgroundColor: const Color(0xFFFFFFFF),
-				elevation: 0.0,
-				centerTitle: true,
-				title: new Text(
-					userData[0]["organization"]["name"].toString().toUpperCase(),
-					style: new TextStyle(
-						color: const Color(0xFF838383),
-						fontWeight: FontWeight.w800,
-						fontSize: 14.0,
+		if ( userData[0]["organization"]["link"] == null ) {
+			return new Scaffold(
+				body: new Container(),
+				appBar: new AppBar(
+					backgroundColor: const Color(0xFFFFFFFF),
+					elevation: 0.0,
+					centerTitle: true,
+					title: new Text(
+						userData[0]["organization"]["name"].toString().toUpperCase(),
+						style: new TextStyle(
+							color: const Color(0xFF838383),
+							fontWeight: FontWeight.w800,
+							fontSize: 14.0,
+						),
 					),
+					leading: new Container(),
 				),
-				leading: new Container(),
-			),
-			body: new Container(),
-			bottomNavigationBar: bottomBar(context, 4),
-    	);
+				bottomNavigationBar: bottomBar(context, 4),
+			);
+		} else {
+			return new WebviewScaffold(
+				url: userData[0]["organization"]["link"],
+				appBar: new AppBar(
+					backgroundColor: const Color(0xFFFFFFFF),
+					elevation: 0.0,
+					centerTitle: true,
+					title: new Text(
+						userData[0]["organization"]["name"].toString().toUpperCase(),
+						style: new TextStyle(
+							color: const Color(0xFF838383),
+							fontWeight: FontWeight.w800,
+							fontSize: 14.0,
+						),
+					),
+					leading: new Container(),
+				),
+				bottomNavigationBar: bottomBar(context, 4),
+			);
+		}
 
 	}
 	
 }
-
