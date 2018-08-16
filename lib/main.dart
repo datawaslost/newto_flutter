@@ -1363,7 +1363,32 @@ class _LandingState extends State<Landing> {
 						children: <Widget>[
 							new Expanded(
 								child: new RaisedButton(
-									onPressed: () => Navigator.pop(context,true),
+									onPressed: () {
+										if (cta["link"] != null && cta["link"] != "") {
+											Navigator.push(
+												context,
+												new MaterialPageRoute(
+													builder: (BuildContext context) => new WebviewScaffold(
+														url: cta["link"],
+														appBar: new AppBar(
+															title: new Text(
+																cta["name"].toUpperCase(),
+																overflow: TextOverflow.fade,
+																style: new TextStyle(
+																	fontWeight: FontWeight.w800,
+																	fontSize: 28.0,
+																	height: 0.9,
+																),
+															),
+														),
+													),
+												)
+											);
+										} else {
+											// no link - should just close or also complete?
+											Navigator.pop(context,true);
+										}
+									},
 									padding: new EdgeInsets.all(14.0),  
 									color: const Color(0xFF1033FF),
 									// color: const Color(0xFFE3F5FF),
@@ -3387,7 +3412,32 @@ class _ArticleState extends State<Article> {
 					child:  new Row(children: <Widget>[
 						new Expanded(
 							child: new RaisedButton(
-									onPressed: () => Navigator.pop(context,true),
+									onPressed: () {
+										if (cta["link"] != null && cta["link"] != "") {
+											Navigator.push(
+												context,
+												new MaterialPageRoute(
+													builder: (BuildContext context) => new WebviewScaffold(
+														url: cta["link"],
+														appBar: new AppBar(
+															title: new Text(
+																cta["name"].toUpperCase(),
+																overflow: TextOverflow.fade,
+																style: new TextStyle(
+																	fontWeight: FontWeight.w800,
+																	fontSize: 28.0,
+																	height: 0.9,
+																),
+															),
+														),
+													),
+												)
+											);
+										} else {
+											// no link - should just close or also complete?
+											Navigator.pop(context,true);
+										}
+									},
 									padding: new EdgeInsets.all(14.0),  
 									color: const Color(0xFF1033FF),
 									textColor: const Color(0xFFFFFFFF),
