@@ -3160,7 +3160,7 @@ class _GroupState extends State<Group> {
 
 	final int id;
 	List<Widget> _widgetList = [];
-	var GroupData;
+	var groupData;
 
     @override
     void initState() {        
@@ -3168,7 +3168,7 @@ class _GroupState extends State<Group> {
         getItemData('group', id).then((result) {
             // If we need to rebuild the widget with the resulting data, make sure to use `setState`
             setState(() {
-                GroupData = result;
+                groupData = result;
             });
         });
     }
@@ -3176,7 +3176,7 @@ class _GroupState extends State<Group> {
 	@override
 	Widget build(BuildContext context) {
 
-        if (GroupData == null) {
+        if (groupData == null) {
             // This is what we show while we're loading
 			return new Container(
 				alignment: Alignment.center,
@@ -3200,7 +3200,7 @@ class _GroupState extends State<Group> {
 				],
 				flexibleSpace: new FlexibleSpaceBar(
 					background: new Image(
-						image: imgDefault(GroupData["image"], "cardphoto.png"),
+						image: imgDefault(groupData["image"], "cardphoto.png"),
 						fit: BoxFit.cover,
 					)
 				),
@@ -3214,7 +3214,7 @@ class _GroupState extends State<Group> {
 					childAspectRatio: 8.0,
 					children: <Widget>[
 						new Text(
-							GroupData["name"].toUpperCase(),
+							groupData["name"].toUpperCase(),
 							textAlign: TextAlign.left,
 							style: new TextStyle(
 								color: const Color(0xFF000000),
@@ -3228,7 +3228,7 @@ class _GroupState extends State<Group> {
 			),
 		];
 		
-		_widgetList.addAll(parseItems(GroupData["items"], context));
+		_widgetList.addAll(parseItems(groupData["items"], context));
 
 		return new Scaffold(
 			backgroundColor: const Color(0xFFF3F3F7),
@@ -3237,38 +3237,54 @@ class _GroupState extends State<Group> {
 				slivers: _widgetList,
 			),
 			persistentFooterButtons: <Widget>[
-				( GroupData["done"] == true ?
+				( groupData["done"] != true && groupData["todo"] == true ?
 					new FlatButton(
-						onPressed: () => setThis("done", GroupData["id"], false, (){
+						onPressed: () => setThis("done", groupData["id"], true, (){
 							// update icon on success
 							setState(() {
-								GroupData["done"] = false;
+								groupData["done"] = true;
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
-							Icons.remove,
+							Icons.check_circle_outline,
+							color: const Color(0xFF2D2D2F),
+						),
+					)
+					: new FlatButton()
+				),
+				( groupData["todo"] == true && groupData["done"] != true ?
+					new FlatButton(
+						onPressed: () => setThis("list", groupData["id"], false, (){
+							// update icon on success
+							setState(() {
+								groupData["todo"] = false;
+							});
+						}, () { print("failure!"); }),
+						child: new Icon(
+							Icons.remove_circle_outline,
 							color: const Color(0xFF2D2D2F),
 						),
 					) :
 					new FlatButton(
-						onPressed: () => setThis("done", GroupData["id"], true, (){
+						onPressed: () => setThis("list", groupData["id"], true, (){
 							// update icon on success
 							setState(() {
-								GroupData["done"] = true;
+								groupData["todo"] = true;
+								groupData["done"] = false;
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
-							Icons.check,
+							Icons.add_circle_outline,
 							color: const Color(0xFF2D2D2F),
 						),
 					)
 				),
-				( GroupData["bookmarked"] == true ?
+				( groupData["bookmarked"] == true ?
 					new FlatButton(
-						onPressed: () => setThis("bookmark", GroupData["id"], false, (){
+						onPressed: () => setThis("bookmark", groupData["id"], false, (){
 							// update icon on success
 							setState(() {
-								GroupData["bookmarked"] = false;
+								groupData["bookmarked"] = false;
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
@@ -3277,10 +3293,10 @@ class _GroupState extends State<Group> {
 						),
 					) :
 					new FlatButton(
-						onPressed: () => setThis("bookmark", GroupData["id"], true, (){
+						onPressed: () => setThis("bookmark", groupData["id"], true, (){
 							// update icon on success
 							setState(() {
-								GroupData["bookmarked"] = true;
+								groupData["bookmarked"] = true;
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
@@ -3479,19 +3495,7 @@ class _ArticleState extends State<Article> {
 				),
 			),
 			persistentFooterButtons: <Widget>[
-				( articleData["done"] == true ?
-					new FlatButton(
-						onPressed: () => setThis("done", articleData["id"], false, (){
-							// update icon on success
-							setState(() {
-								articleData["done"] = false;
-							});
-						}, () { print("failure!"); }),
-						child: new Icon(
-							Icons.remove,
-							color: const Color(0xFF2D2D2F),
-						),
-					) :
+				( articleData["done"] != true && articleData["todo"] == true ?
 					new FlatButton(
 						onPressed: () => setThis("done", articleData["id"], true, (){
 							// update icon on success
@@ -3500,7 +3504,35 @@ class _ArticleState extends State<Article> {
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
-							Icons.check,
+							Icons.check_circle_outline,
+							color: const Color(0xFF2D2D2F),
+						),
+					)
+					: new FlatButton()
+				),
+				( articleData["todo"] == true && articleData["done"] != true ?
+					new FlatButton(
+						onPressed: () => setThis("list", articleData["id"], false, (){
+							// update icon on success
+							setState(() {
+								articleData["todo"] = false;
+							});
+						}, () { print("failure!"); }),
+						child: new Icon(
+							Icons.remove_circle_outline,
+							color: const Color(0xFF2D2D2F),
+						),
+					) :
+					new FlatButton(
+						onPressed: () => setThis("list", articleData["id"], true, (){
+							// update icon on success
+							setState(() {
+								articleData["todo"] = true;
+								articleData["done"] = false;
+							});
+						}, () { print("failure!"); }),
+						child: new Icon(
+							Icons.add_circle_outline,
 							color: const Color(0xFF2D2D2F),
 						),
 					)
