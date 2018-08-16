@@ -1521,6 +1521,8 @@ class _LandingState extends State<Landing> {
 														setState(() {
 															// update icon and close details on success
 															item["done"] = true;
+															// remove item from todo list
+															userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
 															_details = false;
 														});
 													}, () { print("failure!"); }),
@@ -1537,6 +1539,8 @@ class _LandingState extends State<Landing> {
 														setState(() {
 															// update icon and close details on success
 															item["bookmarked"] = false;
+															// remove item from bookmarks list
+															userData[0]["bookmarks"].removeWhere((i) => i["id"] == item["id"]);
 															_details = false;
 														});
 													}, () { print("failure!"); }),
@@ -1552,6 +1556,9 @@ class _LandingState extends State<Landing> {
 														setState(() {
 															// update icon and close details on success
 															item["bookmarked"] = true;
+															// add item to bookmarks list
+															Map newItemData = JSON.decode(JSON.encode(item));
+															userData[0]["bookmarks"].add(newItemData);
 															_details = false;
 														});
 													}, () { print("failure!"); }),
@@ -1813,6 +1820,8 @@ void listCardGesture(item, context, {bookmarked = false}) {
 																onTap: () => setThis("done", item["id"], true, (){
 																	// update icon and close details on success
 																	item["done"] = true;
+																	// remove item from todo list
+																	userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
 																	Navigator.pop(context);
 																}, () { print("failure!"); }),
 																child: listButton(Icons.check),
@@ -1827,6 +1836,8 @@ void listCardGesture(item, context, {bookmarked = false}) {
 																onTap: () => setThis("bookmark", item["id"], false, (){
 																	// update icon and close dialog on success
 																	item["bookmarked"] = false;
+																	// remove item from bookmarks list
+																	userData[0]["bookmarks"].removeWhere((i) => i["id"] == item["id"]);
 																	Navigator.pop(context);
 																}, () { print("failure!"); }),
 																child: listButton(Icons.bookmark),
@@ -1840,6 +1851,9 @@ void listCardGesture(item, context, {bookmarked = false}) {
 																onTap: () => setThis("bookmark", item["id"], true, (){
 																	// update icon and close dialog on success
 																	item["bookmarked"] = true;
+																	// add item to bookmarks list
+																	Map newItemData = JSON.decode(JSON.encode(item));
+																	userData[0]["bookmarks"].add(newItemData);
 																	Navigator.pop(context);
 																}, () { print("failure!"); }),
 																child: listButton(Icons.bookmark_border),
@@ -3243,6 +3257,8 @@ class _GroupState extends State<Group> {
 							// update icon on success
 							setState(() {
 								groupData["done"] = true;
+								// remove item from todo list
+								userData[0]["todo"].removeWhere((i) => i["id"] == groupData["id"]);
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
@@ -3258,6 +3274,8 @@ class _GroupState extends State<Group> {
 							// update icon on success
 							setState(() {
 								groupData["todo"] = false;
+								// remove item from todo list
+								userData[0]["todo"].removeWhere((i) => i["id"] == groupData["id"]);
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
@@ -3290,6 +3308,8 @@ class _GroupState extends State<Group> {
 							// update icon on success
 							setState(() {
 								groupData["bookmarked"] = false;
+								// remove item from bookmarks list
+								userData[0]["bookmarks"].removeWhere((i) => i["id"] == groupData["id"]);
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
@@ -3511,6 +3531,8 @@ class _ArticleState extends State<Article> {
 							// update icon on success
 							setState(() {
 								articleData["done"] = true;
+								// remove item from todo list
+								userData[0]["todo"].removeWhere((i) => i["id"] == articleData["id"]);
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
@@ -3526,6 +3548,8 @@ class _ArticleState extends State<Article> {
 							// update icon on success
 							setState(() {
 								articleData["todo"] = false;
+								// remove article from todo list
+								userData[0]["todo"].removeWhere((i) => i["id"] == articleData["id"]);
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
@@ -3557,6 +3581,8 @@ class _ArticleState extends State<Article> {
 							// update icon on success
 							setState(() {
 								articleData["bookmarked"] = false;
+								// remove item from bookmarks list
+								userData[0]["bookmarks"].removeWhere((i) => i["id"] == articleData["id"]);
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
@@ -3860,6 +3886,8 @@ class _PlaceState extends State<Place> {
 							// update icon on success
 							setState(() {
 								placeData["bookmarked"] = false;
+								// remove place from bookmarks list
+								userData[0]["bookmarks"].removeWhere((i) => i["id"] == placeData["id"]);
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
@@ -3872,6 +3900,13 @@ class _PlaceState extends State<Place> {
 							// update icon on success
 							setState(() {
 								placeData["bookmarked"] = true;
+								// add place to bookmarks list
+								Map newPlaceData = JSON.decode(JSON.encode(placeData));
+								newPlaceData["order"] = 1;
+								newPlaceData["place"] = true;
+								newPlaceData["group"] = false;
+								newPlaceData["article"] = false;
+								userData[0]["bookmarks"].add(newPlaceData);
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
