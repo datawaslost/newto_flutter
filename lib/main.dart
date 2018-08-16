@@ -2741,10 +2741,21 @@ void getPlacesData(filters) async {
 	// get stored token
 	final prefs = await SharedPreferences.getInstance();
 	final String token = prefs.getString('token') ?? null;
-	var placesData;
+		
+	List tags = [];
+	
+	// parse tags to filter on	
+	for (var tag in filters["category"]["tags"] ) {
+		if (tag["selected"] != null && tag["selected"] == true ) {
+			tags.add(tag["id"]);	
+		}
+	}
+	
+	// build querystring
+	final String qs = '?metro=' + userData[0]["organization"]["metro"]["id"].toString() + '&category=' + filters["category"]["id"].toString() + '&tags=' + tags.join(',');
 	
 	final response = await http.get(
-		domain + 'api/place/?metro=' + userData[0]["organization"]["metro"]["id"].toString() + '&category=' + filters["category"]["id"].toString(),
+		domain + 'api/place/' + qs,
 		headers: {
 			HttpHeaders.AUTHORIZATION: "JWT " + token
 		},
@@ -2752,8 +2763,7 @@ void getPlacesData(filters) async {
 	
 	if (response.statusCode == 200) {
 		// If server returns an OK response, parse the JSON
-		placesData = json.decode(response.body);
-		return placesData;
+		return json.decode(response.body);
 	} else {
 		// If that response was not OK, print the error and return null
 		print(response.statusCode);
@@ -2818,6 +2828,20 @@ class _SearchResultsState extends State<SearchResults> {
 								);
 							}
 							
+							if (_placeList.length == 0) {
+								// if no places returned for this search
+								_placeList.add(
+									new Container(
+										alignment: Alignment.center,
+										padding: const EdgeInsets.fromLTRB(20.0, 80.0, 20.0, 10.0),
+										child: new Text(
+											'No Results Found'.toUpperCase(),
+											style: new TextStyle( fontWeight: FontWeight.w800 ),
+										)
+									)
+								);
+							}
+							
 							return new ListView(
 								shrinkWrap: true,
 								padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
@@ -2843,6 +2867,7 @@ class _SearchResultsState extends State<SearchResults> {
 							children: [
 								new Container(
 									alignment: Alignment.center,
+									padding: const EdgeInsets.fromLTRB(20.0, 80.0, 20.0, 10.0),
 									child: new CircularProgressIndicator(),
 								)
 							],
