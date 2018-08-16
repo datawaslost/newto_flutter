@@ -2424,10 +2424,12 @@ class _SearchState extends State<Search> {
 
 	var cat;
 	List<Widget> _widgetList = [];
-	double _distance = 0.0;
+	double _distance = 8.0;
 	
 	@override
 	Widget build(BuildContext context) {
+		
+		cat["distance"] = _distance.round();
 
 		void toggleTag(tagnum) {
 			setState(() {
@@ -2528,13 +2530,14 @@ class _SearchState extends State<Search> {
 						padding: const EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0),
 						child: new Slider(
 							divisions: 2,
-							max: 2.0,
-							min: 0.0,
-							label: _distance.round().toString(),
+							max: 8.0,
+							min: 2.0,
+							label: "Within " + _distance.round().toString() + " miles",
 							value: _distance.toDouble(),
 							onChanged: (double newValue) {
 								setState(() {
 									_distance = newValue;
+									cat["distance"] = _distance.round();
 								});
 							},
 						),
@@ -2752,7 +2755,7 @@ void getPlacesData(filters) async {
 	}
 	
 	// build querystring
-	final String qs = '?metro=' + userData[0]["organization"]["metro"]["id"].toString() + '&category=' + filters["category"]["id"].toString() + '&tags=' + tags.join(',');
+	final String qs = '?metro=' + userData[0]["organization"]["metro"]["id"].toString() + '&category=' + filters["category"]["id"].toString() + '&maxdistance=' + filters["category"]["distance"].toString() + '&tags=' + tags.join(',');
 	
 	final response = await http.get(
 		domain + 'api/place/' + qs,
