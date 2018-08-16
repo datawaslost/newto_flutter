@@ -1583,9 +1583,9 @@ class _LandingState extends State<Landing> {
 		_discoverItems = [];
 		for (var item in userData[0]["organization"]["discover_items"]) {
 			if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
-				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsored"], bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] )  ) ) );
+				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsor"], bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] )  ) ) );
 			} else {
-				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsored"], bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] ) ) ) );
+				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] ) ) ) );
 			}
 		}
 
@@ -2074,7 +2074,7 @@ void parseItems(list, context, {bookmarked = false}) {
 							crossAxisCount: 1,
 							childAspectRatio: 1.2,
 							children: <Widget>[
-								listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsored"], bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] ) ),
+								listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsor"], bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] ) ),
 							]
 						),
 					)
@@ -2090,7 +2090,7 @@ void parseItems(list, context, {bookmarked = false}) {
 							crossAxisCount: 1,
 							childAspectRatio: 1.0,
 							children: <Widget>[
-								discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsored"], bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] ) ),
+								discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] ) ),
 							]
 						)
 					)
@@ -2107,7 +2107,7 @@ void parseItems(list, context, {bookmarked = false}) {
 						crossAxisCount: 1,
 						childAspectRatio: 2.75,
 						children: <Widget>[
-							listGroup(item["id"], item["name"], item["items"], context, sponsored: item["sponsored"], bookmarked: bookmarked),
+							listGroup(item["id"], item["name"], item["items"], context, sponsored: item["sponsor"], bookmarked: bookmarked),
 						],
 					),
 				)
@@ -2305,9 +2305,9 @@ class _DiscoverState extends State<Discover> {
 		_discoverItems = [];
 		for (var item in userData[0]["organization"]["discover_items"]) {
 			if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
-				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsored"], bookmarked: (item["bookmarked"] == null ? false : item["bookmarked"] ) ) ) );
+				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsor"], bookmarked: (item["bookmarked"] == null ? false : item["bookmarked"] ) ) ) );
 			} else {
-				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsored"], bookmarked: (item["bookmarked"] == null ? false : item["bookmarked"] ) ) ) );
+				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], bookmarked: (item["bookmarked"] == null ? false : item["bookmarked"] ) ) ) );
 			}
 		}
 
@@ -3271,6 +3271,11 @@ class _GroupState extends State<Group> {
 							setState(() {
 								groupData["todo"] = true;
 								groupData["done"] = false;
+								// add group to todo list
+								Map newGroupData = JSON.decode(JSON.encode(groupData));
+								newGroupData["items"] = groupData["items"].length;
+								newGroupData["order"] = 1;
+								userData[0]["todo"].add(newGroupData);
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
@@ -3297,6 +3302,11 @@ class _GroupState extends State<Group> {
 							// update icon on success
 							setState(() {
 								groupData["bookmarked"] = true;
+								// add group to bookmarks list
+								Map newGroupData = JSON.decode(JSON.encode(groupData));
+								newGroupData["items"] = groupData["items"].length;
+								newGroupData["order"] = 1;
+								userData[0]["bookmarks"].add(newGroupData);
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
@@ -3529,6 +3539,10 @@ class _ArticleState extends State<Article> {
 							setState(() {
 								articleData["todo"] = true;
 								articleData["done"] = false;
+								// add article to todo list
+								Map newArticleData = JSON.decode(JSON.encode(articleData));
+								newArticleData["order"] = 1;
+								userData[0]["todo"].add(newArticleData);
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
@@ -3555,6 +3569,10 @@ class _ArticleState extends State<Article> {
 							// update icon on success
 							setState(() {
 								articleData["bookmarked"] = true;
+								// add article to bookmarks list
+								Map newArticleData = JSON.decode(JSON.encode(articleData));
+								newArticleData["order"] = 1;
+								userData[0]["bookmarks"].add(newArticleData);
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
