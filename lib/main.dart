@@ -1502,7 +1502,7 @@ class _LandingState extends State<Landing> {
 											new Expanded(
 												child: new InkWell(
 													// remove done
-													onTap: () => setDone(item["id"], false, (){
+													onTap: () => setThis("done", item["id"], false, (){
 														setState(() {
 															// update icon and close details on success
 															item["done"] = false;
@@ -1517,7 +1517,7 @@ class _LandingState extends State<Landing> {
 											new Expanded(
 												child: new InkWell(
 													// add done
-													onTap: () => setDone(item["id"], true, (){
+													onTap: () => setThis("done", item["id"], true, (){
 														setState(() {
 															// update icon and close details on success
 															item["done"] = true;
@@ -1533,7 +1533,7 @@ class _LandingState extends State<Landing> {
 											new Expanded(
 												child: new InkWell(
 													// remove bookmark
-													onTap: () => setBookmark(item["id"], false, (){
+													onTap: () => setThis("bookmark", item["id"], false, (){
 														setState(() {
 															// update icon and close details on success
 															item["bookmarked"] = false;
@@ -1548,7 +1548,7 @@ class _LandingState extends State<Landing> {
 											new Expanded(
 												child: new InkWell(
 													// add bookmark
-													onTap: () => setBookmark(item["id"], true, (){
+													onTap: () => setThis("bookmark", item["id"], true, (){
 														setState(() {
 															// update icon and close details on success
 															item["bookmarked"] = true;
@@ -1797,7 +1797,7 @@ void listCardGesture(item, context, {bookmarked = false}) {
 														new Expanded(
 															child: new GestureDetector(
 																// remove done
-																onTap: () => setDone(item["id"], false, (){
+																onTap: () => setThis("done", item["id"], false, (){
 																	// update icon and close details on success
 																	item["done"] = false;
 																	Navigator.pop(context);
@@ -1810,7 +1810,7 @@ void listCardGesture(item, context, {bookmarked = false}) {
 														new Expanded(
 															child: new GestureDetector(
 																// add done
-																onTap: () => setDone(item["id"], true, (){
+																onTap: () => setThis("done", item["id"], true, (){
 																	// update icon and close details on success
 																	item["done"] = true;
 																	Navigator.pop(context);
@@ -1824,7 +1824,7 @@ void listCardGesture(item, context, {bookmarked = false}) {
 														new Expanded(
 															child: new GestureDetector(
 																// remove bookmark
-																onTap: () => setBookmark(item["id"], false, (){
+																onTap: () => setThis("bookmark", item["id"], false, (){
 																	// update icon and close dialog on success
 																	item["bookmarked"] = false;
 																	Navigator.pop(context);
@@ -1837,7 +1837,7 @@ void listCardGesture(item, context, {bookmarked = false}) {
 														new Expanded(
 															child: new GestureDetector(
 																// add bookmark
-																onTap: () => setBookmark(item["id"], true, (){
+																onTap: () => setThis("bookmark", item["id"], true, (){
 																	// update icon and close dialog on success
 																	item["bookmarked"] = true;
 																	Navigator.pop(context);
@@ -3083,54 +3083,17 @@ class _AccountState extends State<Account> {
 }
 
 
-void setBookmark(id, addremove, success, fail) async {
+void setThis(settype, id, addremove, success, fail) async {
 
 	// get stored token
 	final prefs = await SharedPreferences.getInstance();
 	final String token = prefs.getString('token') ?? null;
 	
-	// add or remove bookmark
-	String bookmarktype = (addremove ? "addbookmark/" : "removebookmark/");
+	// add or remove
+	String qs = (addremove ? "add" + settype + "/" : "remove" + settype + "/");
 
 	final response = await http.post(
-		domain + 'api/' + bookmarktype,
-		headers: {
-			HttpHeaders.AUTHORIZATION: "JWT " + token
-		},
-		body: {
-			"id": id.toString(),
-		}
-	);
-	
-	if (response.statusCode == 200) {
-		// If server returns an OK response
-		final s = json.decode(response.body)["success"];
-		if (s) {
-			success();
-		} else {
-			print(response.body);
-			fail();
-		}
-	} else {
-		// If that response was not OK, throw an error.
-		print(response.body);
-		fail();
-	}
-	
-}
-
-
-void setDone(id, addremove, success, fail) async {
-
-	// get stored token
-	final prefs = await SharedPreferences.getInstance();
-	final String token = prefs.getString('token') ?? null;
-	
-	// add or remove bookmark
-	String donetype = (addremove ? "adddone/" : "removedone/");
-
-	final response = await http.post(
-		domain + 'api/' + donetype,
+		domain + 'api/' + qs,
 		headers: {
 			HttpHeaders.AUTHORIZATION: "JWT " + token
 		},
@@ -3276,7 +3239,7 @@ class _GroupState extends State<Group> {
 			persistentFooterButtons: <Widget>[
 				( GroupData["done"] == true ?
 					new FlatButton(
-						onPressed: () => setDone(GroupData["id"], false, (){
+						onPressed: () => setThis("done", GroupData["id"], false, (){
 							// update icon on success
 							setState(() {
 								GroupData["done"] = false;
@@ -3288,7 +3251,7 @@ class _GroupState extends State<Group> {
 						),
 					) :
 					new FlatButton(
-						onPressed: () => setDone(GroupData["id"], true, (){
+						onPressed: () => setThis("done", GroupData["id"], true, (){
 							// update icon on success
 							setState(() {
 								GroupData["done"] = true;
@@ -3302,7 +3265,7 @@ class _GroupState extends State<Group> {
 				),
 				( GroupData["bookmarked"] == true ?
 					new FlatButton(
-						onPressed: () => setBookmark(GroupData["id"], false, (){
+						onPressed: () => setThis("bookmark", GroupData["id"], false, (){
 							// update icon on success
 							setState(() {
 								GroupData["bookmarked"] = false;
@@ -3314,7 +3277,7 @@ class _GroupState extends State<Group> {
 						),
 					) :
 					new FlatButton(
-						onPressed: () => setBookmark(GroupData["id"], true, (){
+						onPressed: () => setThis("bookmark", GroupData["id"], true, (){
 							// update icon on success
 							setState(() {
 								GroupData["bookmarked"] = true;
@@ -3518,7 +3481,7 @@ class _ArticleState extends State<Article> {
 			persistentFooterButtons: <Widget>[
 				( articleData["done"] == true ?
 					new FlatButton(
-						onPressed: () => setDone(articleData["id"], false, (){
+						onPressed: () => setThis("done", articleData["id"], false, (){
 							// update icon on success
 							setState(() {
 								articleData["done"] = false;
@@ -3530,7 +3493,7 @@ class _ArticleState extends State<Article> {
 						),
 					) :
 					new FlatButton(
-						onPressed: () => setDone(articleData["id"], true, (){
+						onPressed: () => setThis("done", articleData["id"], true, (){
 							// update icon on success
 							setState(() {
 								articleData["done"] = true;
@@ -3544,7 +3507,7 @@ class _ArticleState extends State<Article> {
 				),
 				( articleData["bookmarked"] == true ?
 					new FlatButton(
-						onPressed: () => setBookmark(articleData["id"], false, (){
+						onPressed: () => setThis("bookmark", articleData["id"], false, (){
 							// update icon on success
 							setState(() {
 								articleData["bookmarked"] = false;
@@ -3556,7 +3519,7 @@ class _ArticleState extends State<Article> {
 						),
 					) :
 					new FlatButton(
-						onPressed: () => setBookmark(articleData["id"], true, (){
+						onPressed: () => setThis("bookmark", articleData["id"], true, (){
 							// update icon on success
 							setState(() {
 								articleData["bookmarked"] = true;
@@ -3843,7 +3806,7 @@ class _PlaceState extends State<Place> {
 			persistentFooterButtons: <Widget>[
 				( placeData["bookmarked"] == true ?
 					new FlatButton(
-						onPressed: () => setBookmark(placeData["id"], false, (){
+						onPressed: () => setThis("bookmark", placeData["id"], false, (){
 							// update icon on success
 							setState(() {
 								placeData["bookmarked"] = false;
@@ -3855,7 +3818,7 @@ class _PlaceState extends State<Place> {
 						),
 					) :
 					new FlatButton(
-						onPressed: () => setBookmark(placeData["id"], true, (){
+						onPressed: () => setThis("bookmark", placeData["id"], true, (){
 							// update icon on success
 							setState(() {
 								placeData["bookmarked"] = true;
