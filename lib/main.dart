@@ -2422,31 +2422,55 @@ class _SearchState extends State<Search> {
 
 	_SearchState(this.cat);
 
-	final cat;
+	var cat;
 	List<Widget> _widgetList = [];
 	double _distance = 0.0;
 	
 	@override
 	Widget build(BuildContext context) {
-				
-		void tagCard(tag) {
-			return new Card(
-				elevation: 3.0,
-				child: new Container(
-					height: 85.0,
-					alignment: Alignment.center,
-					padding: const EdgeInsets.all(10.0),
-					child: new Text(
-						tag["name"].toUpperCase(),
-						textAlign: TextAlign.center,
-						style: new TextStyle(
-							color: const Color(0xFF000000),
-							fontWeight: FontWeight.w800,
-							fontSize: 14.0,
+
+		void toggleTag(tagnum) {
+			setState(() {
+				if (cat["tags"][tagnum]["selected"] != true) {
+					cat["tags"][tagnum]["selected"] = true;
+				} else {
+					cat["tags"][tagnum]["selected"] = null;
+				}
+			});		
+		}
+		
+		void tagCard(tag, selected, tagnum) {
+			
+			var tagColor;
+			
+			if (selected) {
+				tagColor = const Color(0xFFE3F5FF);
+			} else {
+				tagColor = const Color(0xFFFFFFFF);
+			}
+
+			return new GestureDetector(
+				onTap: () => toggleTag(tagnum),
+				child: new Card(
+					elevation: 3.0,
+					child: new Container(
+						color: tagColor,
+						height: 85.0,
+						alignment: Alignment.center,
+						padding: const EdgeInsets.all(10.0),
+						child: new Text(
+							tag["name"].toUpperCase(),
+							textAlign: TextAlign.center,
+							style: new TextStyle(
+								color: const Color(0xFF000000),
+								fontWeight: FontWeight.w800,
+								fontSize: 14.0,
+							),
 						),
 					),
-				),
+				)
 			);
+			
 		};
 			  
 		return new Scaffold(
@@ -2542,9 +2566,9 @@ class _SearchState extends State<Search> {
 					new Row(
 						children: <Widget>[
 							new Container( width: 20.0 ),
-							new Expanded( child: ( cat["tags"].length > 0 ? tagCard( cat["tags"][0] ) : new Container() ) ),
+							new Expanded( child: ( cat["tags"].length > 0 ? tagCard( cat["tags"][0], ( cat["tags"][0]["selected"] != null ), 0 ) : new Container() ) ),
 							new Container( width: 20.0 ),
-							new Expanded( child: ( cat["tags"].length > 1 ? tagCard( cat["tags"][1] ) : new Container() ) ),
+							new Expanded( child: ( cat["tags"].length > 1 ? tagCard( cat["tags"][1], ( cat["tags"][1]["selected"] != null ), 1 ) : new Container() ) ),
 							new Container( width: 20.0 ),
 						]
 					),
@@ -2552,9 +2576,9 @@ class _SearchState extends State<Search> {
 					new Row(
 						children: <Widget>[
 							new Container( width: 20.0 ),
-							new Expanded( child: ( cat["tags"].length > 2 ? tagCard( cat["tags"][2] ) : new Container() ) ),
+							new Expanded( child: ( cat["tags"].length > 2 ? tagCard( cat["tags"][2], ( cat["tags"][2]["selected"] != null ), 2 ) : new Container() ) ),
 							new Container( width: 20.0 ),
-							new Expanded( child: ( cat["tags"].length > 3 ? tagCard( cat["tags"][3] ) : new Container() ) ),
+							new Expanded( child: ( cat["tags"].length > 3 ? tagCard( cat["tags"][3], ( cat["tags"][3]["selected"] != null ), 3 ) : new Container() ) ),
 							new Container( width: 20.0 ),
 						]
 					),
@@ -2718,9 +2742,9 @@ void getPlacesData(filters) async {
 	final prefs = await SharedPreferences.getInstance();
 	final String token = prefs.getString('token') ?? null;
 	var placesData;
-
+	
 	final response = await http.get(
-		domain + 'api/place/',
+		domain + 'api/place/?metro=' + userData[0]["organization"]["metro"]["id"].toString() + '&category=' + filters["category"]["id"].toString(),
 		headers: {
 			HttpHeaders.AUTHORIZATION: "JWT " + token
 		},
