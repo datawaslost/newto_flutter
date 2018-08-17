@@ -424,139 +424,141 @@ class _LoginState extends State<Login> {
 		return new Scaffold(
 			body: new Form(
 				key: _loginFormKey,
-				child: new Column(
-					mainAxisSize: MainAxisSize.min,
-					children: <Widget>[
-						new Row (
-							children: <Widget>[
-								new BackButton(
-									color: const Color(0xFF000000),
-								),
-								new Expanded(
-									child: new Container(
-										alignment: Alignment.topRight,
-										child: new FlatButton(
-											onPressed: () => Navigator.of(context).pushNamed('/create'),
-											child: new Text(
-												'Create Account'.toUpperCase(),
-												style: new TextStyle(
-													color: const Color(0xFF1033FF),
-													fontWeight: FontWeight.w800,
-													fontSize: 14.0,
+				child: SafeArea(
+					child: new Column(
+						mainAxisSize: MainAxisSize.min,
+						children: <Widget>[
+							new Row (
+								children: <Widget>[
+									new BackButton(
+										color: const Color(0xFF000000),
+									),
+									new Expanded(
+										child: new Container(
+											alignment: Alignment.topRight,
+											child: new FlatButton(
+												onPressed: () => Navigator.of(context).pushNamed('/create'),
+												child: new Text(
+													'Create Account'.toUpperCase(),
+													style: new TextStyle(
+														color: const Color(0xFF1033FF),
+														fontWeight: FontWeight.w800,
+														fontSize: 14.0,
+													),
 												),
 											),
 										),
 									),
-								),
-							]
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-							alignment: Alignment.topLeft,
-							child: new Text(
-								'Login'.toUpperCase(),
-								style: new TextStyle(
-									fontWeight: FontWeight.w800,
-									fontSize: 38.0,
-									height: 1.0,
+								]
+							),
+							new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+								alignment: Alignment.topLeft,
+								child: new Text(
+									'Login'.toUpperCase(),
+									style: new TextStyle(
+										fontWeight: FontWeight.w800,
+										fontSize: 38.0,
+										height: 1.0,
+									),
 								),
 							),
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-							alignment: Alignment.topLeft,
-							child: new Text(
-								'Email'.toUpperCase(),
-								style: new TextStyle(
-									color: const Color(0xFF838383),
-									fontWeight: FontWeight.w800,
-									fontSize: 14.0,
+							new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+								alignment: Alignment.topLeft,
+								child: new Text(
+									'Email'.toUpperCase(),
+									style: new TextStyle(
+										color: const Color(0xFF838383),
+										fontWeight: FontWeight.w800,
+										fontSize: 14.0,
+									),
 								),
 							),
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-							child: new TextFormField(
-					        	controller: _emailController,
-					        	validator: (value) {
-									if (value.isEmpty) {
-										return 'Please enter your email address.';
-									}
-									return null;
-								},
-								style: new TextStyle(
-									color: const Color(0xFF000000),
-									fontWeight: FontWeight.w800,
-									fontSize: 18.0,
-								),
-								decoration: new InputDecoration(
-					            	fillColor: const Color(0x66E0E1EA),
-									filled: true,
-								),
-								keyboardType: TextInputType.emailAddress,
-					        ),
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-							alignment: Alignment.topLeft,
-							child: new Text(
-								'Password'.toUpperCase(),
-								style: new TextStyle(
-									color: const Color(0xFF838383),
-									fontWeight: FontWeight.w800,
-									fontSize: 14.0,
+							new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+								child: new TextFormField(
+						        	controller: _emailController,
+						        	validator: (value) {
+										if (value.isEmpty) {
+											return 'Please enter your email address.';
+										}
+										return null;
+									},
+									style: new TextStyle(
+										color: const Color(0xFF000000),
+										fontWeight: FontWeight.w800,
+										fontSize: 18.0,
+									),
+									decoration: new InputDecoration(
+						            	fillColor: const Color(0x66E0E1EA),
+										filled: true,
+									),
+									keyboardType: TextInputType.emailAddress,
+						        ),
+							),
+							new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+								alignment: Alignment.topLeft,
+								child: new Text(
+									'Password'.toUpperCase(),
+									style: new TextStyle(
+										color: const Color(0xFF838383),
+										fontWeight: FontWeight.w800,
+										fontSize: 14.0,
+									),
 								),
 							),
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-							child: new PasswordField(
-						        controller: _passwordController,
-					        	validator: (value) {
-									if (value.isEmpty) {
-										return 'Please enter your password.';
-									}
-									return null;
-								},
-					        ),
-						),
-						new Expanded(
-							child: new Align(
-								alignment: Alignment.bottomCenter,
-								child: new Row(
-									children: <Widget>[
-										new Expanded(
-											child: new RaisedButton(
-												onPressed: () {
-													if (_loginFormKey.currentState.validate()) {
-														_loginWithCredentials(
-															(data) {
-																// Success
-																Navigator.of(context).pushNamed('/landing');
-															},
-															(error) {
-																// Failure
-																print(error);
-															},
-														);
-													}
-												},
-												padding: new EdgeInsets.all(14.0),  
-												color: const Color(0xFF1033FF),
-												textColor: const Color(0xFFFFFFFF),
-												child: new Text(
-													'Login'.toUpperCase(),
-													style: new TextStyle(
-														fontWeight: FontWeight.w800,
+							new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+								child: new PasswordField(
+							        controller: _passwordController,
+						        	validator: (value) {
+										if (value.isEmpty) {
+											return 'Please enter your password.';
+										}
+										return null;
+									},
+						        ),
+							),
+							new Expanded(
+								child: new Align(
+									alignment: Alignment.bottomCenter,
+									child: new Row(
+										children: <Widget>[
+											new Expanded(
+												child: new RaisedButton(
+													onPressed: () {
+														if (_loginFormKey.currentState.validate()) {
+															_loginWithCredentials(
+																(data) {
+																	// Success
+																	Navigator.of(context).pushNamed('/landing');
+																},
+																(error) {
+																	// Failure
+																	print(error);
+																},
+															);
+														}
+													},
+													padding: new EdgeInsets.all(14.0),  
+													color: const Color(0xFF1033FF),
+													textColor: const Color(0xFFFFFFFF),
+													child: new Text(
+														'Login'.toUpperCase(),
+														style: new TextStyle(
+															fontWeight: FontWeight.w800,
+														),
 													),
 												),
-											),
-										)
-									]
+											)
+										]
+									),
 								),
 							),
-						),
-				    ],
+					    ],
+					),
 				),
 			),
 		);
@@ -622,140 +624,142 @@ class _CreateEmailState extends State<CreateEmail> {
 		return new Scaffold(
 			body: new Form(
 				key: _emailFormKey,
-				child: new Column(
-					mainAxisSize: MainAxisSize.min,
-					children: <Widget>[
-						new LinearProgressIndicator(
-							valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF1033FF)),
-							value: 0.33,
-							backgroundColor: const Color(0xFFFFFFFF),
-						),
-						new Row (
-							children: <Widget>[
-								new BackButton(
-									color: const Color(0xFF000000),
-								),
-								new Expanded(
-									child: new Container(
-										alignment: Alignment.topRight,
-										child: new FlatButton(
-											onPressed: () => Navigator.of(context).pushNamed('/login'),
-											child: new Text(
-												'Login'.toUpperCase(),
-												style: new TextStyle(
-													color: const Color(0xFF1033FF),
-													fontWeight: FontWeight.w800,
-													fontSize: 14.0,
+				child: SafeArea(
+					child: new Column(
+						mainAxisSize: MainAxisSize.min,
+						children: <Widget>[
+							new LinearProgressIndicator(
+								valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF1033FF)),
+								value: 0.33,
+								backgroundColor: const Color(0xFFFFFFFF),
+							),
+							new Row (
+								children: <Widget>[
+									new BackButton(
+										color: const Color(0xFF000000),
+									),
+									new Expanded(
+										child: new Container(
+											alignment: Alignment.topRight,
+											child: new FlatButton(
+												onPressed: () => Navigator.of(context).pushNamed('/login'),
+												child: new Text(
+													'Login'.toUpperCase(),
+													style: new TextStyle(
+														color: const Color(0xFF1033FF),
+														fontWeight: FontWeight.w800,
+														fontSize: 14.0,
+													),
 												),
 											),
 										),
 									),
-								),
-							]
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
-							alignment: Alignment.topLeft,
-							child: new Text(
-								'1/3',
-								style: new TextStyle(
-									fontWeight: FontWeight.w800,
-									fontSize: 14.0,
+								]
+							),
+							new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+								alignment: Alignment.topLeft,
+								child: new Text(
+									'1/3',
+									style: new TextStyle(
+										fontWeight: FontWeight.w800,
+										fontSize: 14.0,
+									),
 								),
 							),
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-							alignment: Alignment.topLeft,
-							child: new Text(
-								'Tell us your school email.'.toUpperCase(),
-								style: new TextStyle(
-									fontWeight: FontWeight.w800,
-									fontSize: 38.0,
-									height: 1.0,
+							new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+								alignment: Alignment.topLeft,
+								child: new Text(
+									'Tell us your school email.'.toUpperCase(),
+									style: new TextStyle(
+										fontWeight: FontWeight.w800,
+										fontSize: 38.0,
+										height: 1.0,
+									),
 								),
 							),
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-							alignment: Alignment.topLeft,
-							child: new Text(
-								'Email'.toUpperCase(),
-								style: new TextStyle(
-									color: const Color(0xFF838383),
-									fontWeight: FontWeight.w800,
-									fontSize: 14.0,
+							new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+								alignment: Alignment.topLeft,
+								child: new Text(
+									'Email'.toUpperCase(),
+									style: new TextStyle(
+										color: const Color(0xFF838383),
+										fontWeight: FontWeight.w800,
+										fontSize: 14.0,
+									),
 								),
 							),
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-					        child: new TextFormField(
-					        	controller: _emailController,
-								validator: (value) {
-									return usernameValidator;
-								},
-								style: new TextStyle(
-									color: const Color(0xFF000000),
-									fontWeight: FontWeight.w800,
-									fontSize: 18.0,
-								),
-								decoration: new InputDecoration(
-					            	fillColor: const Color(0x66E0E1EA),
-									filled: true,
-								),
-								keyboardType: TextInputType.emailAddress,
-					        ),
-						),
-						/*
-						new Container(
-							padding: new EdgeInsets.all(20.0),
-							child: new Text(
-								'We’ll send you a confirmation email to confirm you school account.',
-								style: new TextStyle(
-									color: const Color(0xFF2D2D2F),
-									fontWeight: FontWeight.w300,
-									fontSize: 14.0,
+							new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+						        child: new TextFormField(
+						        	controller: _emailController,
+									validator: (value) {
+										return usernameValidator;
+									},
+									style: new TextStyle(
+										color: const Color(0xFF000000),
+										fontWeight: FontWeight.w800,
+										fontSize: 18.0,
+									),
+									decoration: new InputDecoration(
+						            	fillColor: const Color(0x66E0E1EA),
+										filled: true,
+									),
+									keyboardType: TextInputType.emailAddress,
+						        ),
+							),
+							/*
+							new Container(
+								padding: new EdgeInsets.all(20.0),
+								child: new Text(
+									'We’ll send you a confirmation email to confirm you school account.',
+									style: new TextStyle(
+										color: const Color(0xFF2D2D2F),
+										fontWeight: FontWeight.w300,
+										fontSize: 14.0,
+									),
 								),
 							),
-						),
-						*/
-						new Expanded(
-							child: new Align(
-								alignment: Alignment.bottomCenter,
-								child: new Row(
-									children: <Widget>[
-										new Expanded(
-											child: new RaisedButton(
-												onPressed: () async {
-													// asynchronously validate email
-													var response = await _emailCheck();
-													setState(() {
-														this.usernameValidator = response;
-													});
-													if (_emailFormKey.currentState.validate()) {
-														// if email is valid, go to the next screen
-														Navigator.push(context, new MaterialPageRoute(
-															builder: (BuildContext context) => new CreatePassword(_emailController.text, _organization),
-														));
-													}
-												},
-												padding: new EdgeInsets.all(14.0),  
-												color: const Color(0xFF1033FF),
-												textColor: const Color(0xFFFFFFFF),
-												child: new Text(
-													'Next Step'.toUpperCase(),
-													style: new TextStyle(
-														fontWeight: FontWeight.w800,
+							*/
+							new Expanded(
+								child: new Align(
+									alignment: Alignment.bottomCenter,
+									child: new Row(
+										children: <Widget>[
+											new Expanded(
+												child: new RaisedButton(
+													onPressed: () async {
+														// asynchronously validate email
+														var response = await _emailCheck();
+														setState(() {
+															this.usernameValidator = response;
+														});
+														if (_emailFormKey.currentState.validate()) {
+															// if email is valid, go to the next screen
+															Navigator.push(context, new MaterialPageRoute(
+																builder: (BuildContext context) => new CreatePassword(_emailController.text, _organization),
+															));
+														}
+													},
+													padding: new EdgeInsets.all(14.0),  
+													color: const Color(0xFF1033FF),
+													textColor: const Color(0xFFFFFFFF),
+													child: new Text(
+														'Next Step'.toUpperCase(),
+														style: new TextStyle(
+															fontWeight: FontWeight.w800,
+														),
 													),
 												),
-											),
-										)
-									]
+											)
+										]
+									),
 								),
 							),
-						),
-				    ],
+					    ],
+					),
 				),
 			),
 	    );
@@ -788,116 +792,118 @@ class _CreatePasswordState extends State<CreatePassword> {
 	Widget build(BuildContext context) {
 
 		return new Scaffold(
-			body: new Form(
-				key: _passwordFormKey,
-				child: new Column(
-					mainAxisSize: MainAxisSize.min,
-					children: <Widget>[
-						new LinearProgressIndicator(
-							valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF1033FF)),
-							value: 0.66,
-							backgroundColor: const Color(0xFFFFFFFF),
-						),
-						new Row (
-							children: <Widget>[
-								new BackButton(
-									color: const Color(0xFF000000),
-								),
-								new Expanded(
-									child: new Container(
-										alignment: Alignment.topRight,
-										child: new FlatButton(
-											onPressed: () => Navigator.of(context).pushNamed('/login'),
-											child: new Text(
-												'Login'.toUpperCase(),
-												style: new TextStyle(
-													color: const Color(0xFF1033FF),
-													fontWeight: FontWeight.w800,
-													fontSize: 14.0,
+			body: SafeArea(
+				child: new Form(
+					key: _passwordFormKey,
+					child: new Column(
+						mainAxisSize: MainAxisSize.min,
+						children: <Widget>[
+							new LinearProgressIndicator(
+								valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF1033FF)),
+								value: 0.66,
+								backgroundColor: const Color(0xFFFFFFFF),
+							),
+							new Row (
+								children: <Widget>[
+									new BackButton(
+										color: const Color(0xFF000000),
+									),
+									new Expanded(
+										child: new Container(
+											alignment: Alignment.topRight,
+											child: new FlatButton(
+												onPressed: () => Navigator.of(context).pushNamed('/login'),
+												child: new Text(
+													'Login'.toUpperCase(),
+													style: new TextStyle(
+														color: const Color(0xFF1033FF),
+														fontWeight: FontWeight.w800,
+														fontSize: 14.0,
+													),
 												),
 											),
 										),
 									),
-								),
-							]
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
-							alignment: Alignment.topLeft,
-							child: new Text(
-								'2/3',
-								style: new TextStyle(
-									fontWeight: FontWeight.w800,
-									fontSize: 14.0,
+								]
+							),
+							new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+								alignment: Alignment.topLeft,
+								child: new Text(
+									'2/3',
+									style: new TextStyle(
+										fontWeight: FontWeight.w800,
+										fontSize: 14.0,
+									),
 								),
 							),
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-							alignment: Alignment.topLeft,
-							child: new Text(
-								'Create your password.'.toUpperCase(),
-								style: new TextStyle(
-									fontWeight: FontWeight.w800,
-									fontSize: 38.0,
-									height: 1.0,
+							new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+								alignment: Alignment.topLeft,
+								child: new Text(
+									'Create your password.'.toUpperCase(),
+									style: new TextStyle(
+										fontWeight: FontWeight.w800,
+										fontSize: 38.0,
+										height: 1.0,
+									),
 								),
 							),
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-							alignment: Alignment.topLeft,
-							child: new Text(
-								'Password'.toUpperCase(),
-								style: new TextStyle(
-									color: const Color(0xFF838383),
-									fontWeight: FontWeight.w800,
-									fontSize: 14.0,
+							new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+								alignment: Alignment.topLeft,
+								child: new Text(
+									'Password'.toUpperCase(),
+									style: new TextStyle(
+										color: const Color(0xFF838383),
+										fontWeight: FontWeight.w800,
+										fontSize: 14.0,
+									),
 								),
 							),
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-					        child: new PasswordField(
-						        controller: _passwordController,
-					        	validator: (value) {
-									if (value.length < 8) {
-										return 'Your password must be at least 8 characters.';
-									}
-									return null;
-								},
-					        ),
-						),
-						new Expanded(
-							child: new Align(
-								alignment: Alignment.bottomCenter,
-								child: new Row(
-									children: <Widget>[
-										new Expanded(
-											child: new RaisedButton(
-												onPressed: () {
-													if (_passwordFormKey.currentState.validate()) {
-														Navigator.push(context, new MaterialPageRoute(
-															builder: (BuildContext context) => new CreateFinish(email, _passwordController.text, organization),
-														));
-													}
-												},
-												padding: new EdgeInsets.all(14.0),  
-												color: const Color(0xFF1033FF),
-												textColor: const Color(0xFFFFFFFF),
-												child: new Text(
-													'Next Step'.toUpperCase(),
-													style: new TextStyle(
-														fontWeight: FontWeight.w800,
+							new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+						        child: new PasswordField(
+							        controller: _passwordController,
+						        	validator: (value) {
+										if (value.length < 8) {
+											return 'Your password must be at least 8 characters.';
+										}
+										return null;
+									},
+						        ),
+							),
+							new Expanded(
+								child: new Align(
+									alignment: Alignment.bottomCenter,
+									child: new Row(
+										children: <Widget>[
+											new Expanded(
+												child: new RaisedButton(
+													onPressed: () {
+														if (_passwordFormKey.currentState.validate()) {
+															Navigator.push(context, new MaterialPageRoute(
+																builder: (BuildContext context) => new CreateFinish(email, _passwordController.text, organization),
+															));
+														}
+													},
+													padding: new EdgeInsets.all(14.0),  
+													color: const Color(0xFF1033FF),
+													textColor: const Color(0xFFFFFFFF),
+													child: new Text(
+														'Next Step'.toUpperCase(),
+														style: new TextStyle(
+															fontWeight: FontWeight.w800,
+														),
 													),
 												),
-											),
-										)
-									]
+											)
+										]
+									),
 								),
 							),
-						),
-					]
+						]
+					),
 				),
 			),
 		);
@@ -1012,192 +1018,194 @@ class _CreateFinishState extends State<CreateFinish> {
 	Widget build(BuildContext context) {
 
 		return new Scaffold(
-			body: new Column(
-				mainAxisSize: MainAxisSize.min,
-				children: <Widget>[
-					new LinearProgressIndicator(
-						valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF1033FF)),
-						value: 1.0,
-						backgroundColor: const Color(0xFFFFFFFF),
-					),
-					new Row (
-						children: <Widget>[
-							new BackButton(
-								color: const Color(0xFF000000),
-							),
-							new Expanded(
-								child: new Container(
-									alignment: Alignment.topRight,
-									child: new FlatButton(
-										onPressed: () => Navigator.of(context).pushNamed('/login'),
-										child: new Text(
-											'Login'.toUpperCase(),
-											style: new TextStyle(
-												color: const Color(0xFF1033FF),
-												fontWeight: FontWeight.w800,
-												fontSize: 14.0,
+			body: SafeArea(
+				child: new Column(
+					mainAxisSize: MainAxisSize.min,
+					children: <Widget>[
+						new LinearProgressIndicator(
+							valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF1033FF)),
+							value: 1.0,
+							backgroundColor: const Color(0xFFFFFFFF),
+						),
+						new Row (
+							children: <Widget>[
+								new BackButton(
+									color: const Color(0xFF000000),
+								),
+								new Expanded(
+									child: new Container(
+										alignment: Alignment.topRight,
+										child: new FlatButton(
+											onPressed: () => Navigator.of(context).pushNamed('/login'),
+											child: new Text(
+												'Login'.toUpperCase(),
+												style: new TextStyle(
+													color: const Color(0xFF1033FF),
+													fontWeight: FontWeight.w800,
+													fontSize: 14.0,
+												),
 											),
 										),
 									),
 								),
-							),
-						]
-					),
-					new Container(
-						padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
-						alignment: Alignment.topLeft,
-						child: new Text(
-							'3/3',
-							style: new TextStyle(
-								fontWeight: FontWeight.w800,
-								fontSize: 14.0,
-							),
+							]
 						),
-					),
-					new Container(
-						padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-						alignment: Alignment.topLeft,
-						child: new Text(
-							'What is your hometown?'.toUpperCase(),
-							style: new TextStyle(
-								fontWeight: FontWeight.w800,
-								fontSize: 38.0,
-								height: 1.0,
-							),
-						),
-					),
-					new Container(
-						padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-						alignment: Alignment.topLeft,
-						child: new Text(
-							"I'm From".toUpperCase(),
-							style: new TextStyle(
-								color: const Color(0xFF838383),
-								fontWeight: FontWeight.w800,
-								fontSize: 14.0,
-							),
-						),
-					),
-					new Container(
-						padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-						child: new TextFormField(
-				        	controller: _hometownController,
-							style: new TextStyle(
-								color: const Color(0xFF000000),
-								fontWeight: FontWeight.w800,
-								fontSize: 18.0,
-							),
-							decoration: new InputDecoration(
-				            	fillColor: const Color(0x66E0E1EA),
-								filled: true,
-							),
-				        ),
-					),
-					( organization == null
-						? new Container(
+						new Container(
 							padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
 							alignment: Alignment.topLeft,
 							child: new Text(
-								"I'm with".toUpperCase(),
+								'3/3',
+								style: new TextStyle(
+									fontWeight: FontWeight.w800,
+									fontSize: 14.0,
+								),
+							),
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+							alignment: Alignment.topLeft,
+							child: new Text(
+								'What is your hometown?'.toUpperCase(),
+								style: new TextStyle(
+									fontWeight: FontWeight.w800,
+									fontSize: 38.0,
+									height: 1.0,
+								),
+							),
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+							alignment: Alignment.topLeft,
+							child: new Text(
+								"I'm From".toUpperCase(),
 								style: new TextStyle(
 									color: const Color(0xFF838383),
 									fontWeight: FontWeight.w800,
 									fontSize: 14.0,
 								),
 							),
-						) : new SizedBox(width: 0.0)
-					),
-					( organization == null ?
-						new FutureBuilder(
-							future: _getOrganizations(),
-							builder: (BuildContext context, AsyncSnapshot snapshot) {
-								if (snapshot.hasData) {
-									if (snapshot.data!=null) {
-										
-										// default to first item
-										if (_org == null) _org = snapshot.data[0]["id"];
-	
-										return new Container(
-											padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-											child: new Theme(
-												data: Theme.of(context).copyWith(
-													canvasColor: Colors.white,
-												),
-												child: new FractionallySizedBox(
-													widthFactor: 1.0,
-													child: new DropdownButton<int>(
-														items: snapshot.data.map((org) {
-															return new DropdownMenuItem<int>(
-																value: org["id"],
-																child: new Text(
-																	org["name"],
-																	style: new TextStyle(
-																		color: const Color(0xFF000000),
-																		fontWeight: FontWeight.w800,
-																		fontSize: 18.0,
+						),
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+							child: new TextFormField(
+					        	controller: _hometownController,
+								style: new TextStyle(
+									color: const Color(0xFF000000),
+									fontWeight: FontWeight.w800,
+									fontSize: 18.0,
+								),
+								decoration: new InputDecoration(
+					            	fillColor: const Color(0x66E0E1EA),
+									filled: true,
+								),
+					        ),
+						),
+						( organization == null
+							? new Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+								alignment: Alignment.topLeft,
+								child: new Text(
+									"I'm with".toUpperCase(),
+									style: new TextStyle(
+										color: const Color(0xFF838383),
+										fontWeight: FontWeight.w800,
+										fontSize: 14.0,
+									),
+								),
+							) : new SizedBox(width: 0.0)
+						),
+						( organization == null ?
+							new FutureBuilder(
+								future: _getOrganizations(),
+								builder: (BuildContext context, AsyncSnapshot snapshot) {
+									if (snapshot.hasData) {
+										if (snapshot.data!=null) {
+											
+											// default to first item
+											if (_org == null) _org = snapshot.data[0]["id"];
+		
+											return new Container(
+												padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+												child: new Theme(
+													data: Theme.of(context).copyWith(
+														canvasColor: Colors.white,
+													),
+													child: new FractionallySizedBox(
+														widthFactor: 1.0,
+														child: new DropdownButton<int>(
+															items: snapshot.data.map((org) {
+																return new DropdownMenuItem<int>(
+																	value: org["id"],
+																	child: new Text(
+																		org["name"],
+																		style: new TextStyle(
+																			color: const Color(0xFF000000),
+																			fontWeight: FontWeight.w800,
+																			fontSize: 18.0,
+																		),
 																	),
-																),
-															);
-														}).toList().cast<DropdownMenuItem<int>>(),
-														value: _org,
-														onChanged: (Object newVal) {
-															setState(() {
-																_org = newVal;
-															});
-														},
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontWeight: FontWeight.w800,
-															fontSize: 18.0,
-														),		
-													),
-													),
-											),
-										);
-															
+																);
+															}).toList().cast<DropdownMenuItem<int>>(),
+															value: _org,
+															onChanged: (Object newVal) {
+																setState(() {
+																	_org = newVal;
+																});
+															},
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontWeight: FontWeight.w800,
+																fontSize: 18.0,
+															),		
+														),
+														),
+												),
+											);
+																
+										} else {
+											return new Container();
+										}
 									} else {
 										return new Container();
 									}
-								} else {
-									return new Container();
 								}
-							}
-						) : new SizedBox(width: 0.0)
-					),
-						
-					new Expanded(
-						child: new Align(
-							alignment: Alignment.bottomCenter,
-							child: new Row(
-								children: <Widget>[
-									new Expanded(
-										child: new RaisedButton(
-											onPressed: () => _registerWithCredentials(
-												(userData) {
-													// Success
-													Navigator.of(context).pushNamed('/landing');
-												},
-												(error) {
-													// Failure
-													print(error);
-												},
-											),
-											padding: new EdgeInsets.all(14.0),  
-											color: const Color(0xFF1033FF),
-											textColor: const Color(0xFFFFFFFF),
-											child: new Text(
-												'Complete Sign Up'.toUpperCase(),
-												style: new TextStyle(
-													fontWeight: FontWeight.w800,
+							) : new SizedBox(width: 0.0)
+						),
+							
+						new Expanded(
+							child: new Align(
+								alignment: Alignment.bottomCenter,
+								child: new Row(
+									children: <Widget>[
+										new Expanded(
+											child: new RaisedButton(
+												onPressed: () => _registerWithCredentials(
+													(userData) {
+														// Success
+														Navigator.of(context).pushNamed('/landing');
+													},
+													(error) {
+														// Failure
+														print(error);
+													},
+												),
+												padding: new EdgeInsets.all(14.0),  
+												color: const Color(0xFF1033FF),
+												textColor: const Color(0xFFFFFFFF),
+												child: new Text(
+													'Complete Sign Up'.toUpperCase(),
+													style: new TextStyle(
+														fontWeight: FontWeight.w800,
+													),
 												),
 											),
-										),
-									)
-								]
+										)
+									]
+								),
 							),
 						),
-					),
-				]
+					]
+				),
 			),
 		);
 	}
