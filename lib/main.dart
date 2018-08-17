@@ -2136,7 +2136,8 @@ void parseItems(list, context, {bookmarked = false}) {
 						crossAxisSpacing: 10.0,
 						mainAxisSpacing: 10.0,
 						crossAxisCount: 1,
-						childAspectRatio: 2.25,
+						// childAspectRatio: 2.25,
+						childAspectRatio: 2.0,
 						// fix this nonsense ^
 						children: <Widget>[
 							placeCard(item["id"], item["name"], item["image"], item["rating"], item["distance"], context, bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] ) ),
@@ -2981,26 +2982,6 @@ class Bookmarks extends StatefulWidget {
 
 class _BookmarksState extends State<Bookmarks> {
 	
-	/*
-	@override
-	void initState() {
-		super.initState();
-		getUserData(
-			null, 
-			(data){
-				// Success
-				setState(() {
-					// print(data);
-				});		
-			},
-			(code){
-				// Failure
-				print("getUserData failure callback : " + code.toString());
-			}
-		);
-	}
-	*/
-
 	@override
 	Widget build(BuildContext context) {
 			
