@@ -1749,138 +1749,188 @@ void listCard(String txt, {height, width, key, bookmarked = false}) {
 }
 
 
-void listCardGesture(item, context, {bookmarked = false}) {
+// void listCardGesture(item, context, {bookmarked = false}) {
+
+// /*
+
+class listCardGesture extends StatefulWidget {
+	listCardGesture(this.item, this.context, {this.bookmarked = false});
+	var item;
+	var context;
+	bool bookmarked;
+	@override
+	_listCardGestureState createState() => new _listCardGestureState(this.item, this.context, this.bookmarked);
+}
+
+class _listCardGestureState extends State<listCardGesture> {
+
+	_listCardGestureState(this.item, this.context, this.bookmarked);
+	var item;
+	var context;
+	bool bookmarked;
+
+// */
 	
 	// create a key so we can specifically reference the original card widget later to get its size, position
 	GlobalKey stickyKey = new GlobalKey();
+	
+// /*
 
-	return new GestureDetector(
-		onTapUp: (details){
-			var _offsety;
-			var _boxwidth;
-			var _boxheight;
-			var _rightside = false;
-			var _offsetx = 150.0;
-			var _offsetx2 = 25.0;
-			if (details.globalPosition.dx > 200) {
-				_rightside = true;
-				_offsetx = 25.0;
-				_offsetx2 = 150.0;
-			}
-			final keyContext = stickyKey.currentContext;
-			// if box is visible
-	        if (keyContext != null) {
-				final RenderBox box = keyContext.findRenderObject();
-				_offsety = box.localToGlobal(Offset.zero).dy - MediaQuery.of(context).padding.top;
-				_boxwidth = box.size.width - 7.5;
-				_boxheight = box.size.height - 7.5;
-	        }
-	        // if box is partially offscreen
-	        if (_offsety < 0) {
-		        // for now, don't show a dialog
-		        // but we could also just push it down a bit
-		        // _offsety = 0.0;
-	        } else {
-				showDialog(
-					context: context,
-					builder: (BuildContext context) {
-						return new Column(
-				            children: [
-								new SizedBox(height: _offsety ),
-								new Expanded(
-						            child: new Stack(
-							            children: [
-								            new Positioned(
-									            top: 0.0,
-									            right: _rightside ? 20.0 : null,
-									            left: _rightside ? null : 20.0,
-									            child: listCard(item["name"], height:_boxheight, width:_boxwidth, bookmarked: bookmarked),
-											),
-								            new Row(
-												children: [
-													new SizedBox( width: _offsetx, height: _boxheight),
-													( item["done"] == true && item["done"] != null ? 
-														// is done, tap removes
-														new Expanded(
-															child: new GestureDetector(
-																// remove done
-																onTap: () => setThis("done", item["id"], false, (){
-																	// update icon and close details on success
-																	item["done"] = false;
-																	Navigator.pop(context);
-																}, () { print("failure!"); }),
-																child: listButton(Icons.remove),
-															),
-														)
-													:
-														// not done, tap adds
-														new Expanded(
-															child: new GestureDetector(
-																// add done
-																onTap: () => setThis("done", item["id"], true, (){
-																	// update icon and close details on success
-																	item["done"] = true;
-																	// remove item from todo list
-																	userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
-																	Navigator.pop(context);
-																}, () { print("failure!"); }),
-																child: listButton(Icons.check),
-															),
-														)
-													),
-													( item["bookmarked"] == true && item["bookmarked"] != null ? 
-														// has bookmark, tap removes
-														new Expanded(
-															child: new GestureDetector(
-																// remove bookmark
-																onTap: () => setThis("bookmark", item["id"], false, (){
-																	// update icon and close dialog on success
-																	item["bookmarked"] = false;
-																	// remove item from bookmarks list
-																	userData[0]["bookmarks"].removeWhere((i) => i["id"] == item["id"]);
-																	Navigator.pop(context);
-																}, () { print("failure!"); }),
-																child: listButton(Icons.bookmark),
-															),
-														)
-													:
-														// no bookmark, tap adds
-														new Expanded(
-															child: new GestureDetector(
-																// add bookmark
-																onTap: () => setThis("bookmark", item["id"], true, (){
-																	// update icon and close dialog on success
-																	item["bookmarked"] = true;
-																	// add item to bookmarks list
-																	Map newItemData = JSON.decode(JSON.encode(item));
-																	userData[0]["bookmarks"].add(newItemData);
-																	Navigator.pop(context);
-																}, () { print("failure!"); }),
-																child: listButton(Icons.bookmark_border),
-															),
-														)
-													),
-													new Expanded(
-														child: new GestureDetector(
-															// close dialog
-															onTap: () => Navigator.pop(context),
-															child: listButton(Icons.close),
+	@override
+	Widget build(BuildContext context) {
+
+// */
+
+
+		return new GestureDetector(
+			onTapUp: (details){
+				var _offsety;
+				var _boxwidth;
+				var _boxheight;
+				var _rightside = false;
+				var _offsetx = 150.0;
+				var _offsetx2 = 25.0;
+				if (details.globalPosition.dx > 200) {
+					_rightside = true;
+					_offsetx = 25.0;
+					_offsetx2 = 150.0;
+				}
+				final keyContext = stickyKey.currentContext;
+				// if box is visible
+		        if (keyContext != null) {
+					final RenderBox box = keyContext.findRenderObject();
+					_offsety = box.localToGlobal(Offset.zero).dy - MediaQuery.of(context).padding.top - 20;
+					_boxwidth = box.size.width - 7.5;
+					_boxheight = box.size.height - 7.5;
+		        }
+		        // if box is partially offscreen
+		        if (_offsety < 0) {
+			        // for now, don't show a dialog
+			        // but we could also just push it down a bit
+			        // _offsety = 0.0;
+		        } else {
+					showDialog(
+						context: context,
+						builder: (BuildContext context) {
+							return new Column(
+					            children: [
+									new SizedBox(height: _offsety ),
+									new Expanded(
+							            child: new Stack(
+								            children: [
+									            new Positioned(
+										            top: 0.0,
+										            right: _rightside ? 20.0 : null,
+										            left: _rightside ? null : 20.0,
+										            child: listCard(item["name"], height:_boxheight, width:_boxwidth, bookmarked: bookmarked),
+												),
+									            new Row(
+													children: [
+														new SizedBox( width: _offsetx, height: _boxheight),
+														( item["done"] == true && item["done"] != null ? 
+															// is done, tap removes
+															new Expanded(
+																child: new GestureDetector(
+																	// remove done
+																	onTap: () => setThis("done", item["id"], false, (){
+																		// update icon and close details on success
+																		item["done"] = false;
+																		Navigator.pop(context);
+																	}, () { print("failure!"); }),
+																	child: listButton(Icons.remove),
+																),
+															)
+														:
+															// not done, tap adds
+															new Expanded(
+																child: new GestureDetector(
+																	// add done
+																	onTap: () => setThis("done", item["id"], true, (){
+																		
+																		Navigator.pop(context);
+
+																		setState(() {
+																			/*
+																			getUserData(
+																				null, 
+																				(data){
+																					// Success
+																					setState(() {
+																						print(data);
+																						Navigator.pop(context);
+																					});	
+																				},
+																				(code){
+																					// Failure
+																					print("getUserData failure callback : " + code.toString());
+																				}
+																			);
+																			*/
+																				// update icon and close details on success
+																				item["done"] = true;
+																				// remove item from todo list
+																				userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
+
+																		});	
+																	}, () { print("failure!"); }),
+																	child: listButton(Icons.check),
+																),
+															)
 														),
-													),
-													new SizedBox( width: _offsetx2 ),
-												]
-											)
-										]
+														( item["bookmarked"] == true && item["bookmarked"] != null ? 
+															// has bookmark, tap removes
+															new Expanded(
+																child: new GestureDetector(
+																	// remove bookmark
+																	onTap: () => setThis("bookmark", item["id"], false, (){
+																		// update icon and close dialog on success
+																		item["bookmarked"] = false;
+																		// remove item from bookmarks list
+																		userData[0]["bookmarks"].removeWhere((i) => i["id"] == item["id"]);
+																		Navigator.pop(context);
+																	}, () { print("failure!"); }),
+																	child: listButton(Icons.bookmark),
+																),
+															)
+														:
+															// no bookmark, tap adds
+															new Expanded(
+																child: new GestureDetector(
+																	// add bookmark
+																	onTap: () => setThis("bookmark", item["id"], true, (){
+																		// update icon and close dialog on success
+																		item["bookmarked"] = true;
+																		// add item to bookmarks list
+																		Map newItemData = JSON.decode(JSON.encode(item));
+																		userData[0]["bookmarks"].add(newItemData);
+																		Navigator.pop(context);
+																	}, () { print("failure!"); }),
+																	child: listButton(Icons.bookmark_border),
+																),
+															)
+														),
+														new Expanded(
+															child: new GestureDetector(
+																// close dialog
+																onTap: () => Navigator.pop(context),
+																child: listButton(Icons.close),
+															),
+														),
+														new SizedBox( width: _offsetx2 ),
+													]
+												)
+											]
+										)
 									)
-								)
-							]
-						);
-					}
-				);
-			}
-		},
-		child: listCard(item["name"], key: stickyKey, bookmarked: bookmarked),
-	);
+								]
+							);
+						}
+					);
+				}
+			},
+			child: listCard(item["name"], key: stickyKey, bookmarked: bookmarked),
+		);
+	}
 }
 
 
@@ -2208,6 +2258,7 @@ class _YourListState extends State<YourList> {
 						indicatorSize: TabBarIndicatorSize.label,
 						isScrollable: false,
 						labelStyle: new TextStyle(
+							fontFamily: "Montserrat",
 							fontWeight: FontWeight.w800,
 							fontSize: 14.0,
 							height: 2.0,
