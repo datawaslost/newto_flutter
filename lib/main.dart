@@ -2582,121 +2582,123 @@ class _SearchState extends State<Search> {
 					),
 				],
 			),
-			body: new Column(
-				mainAxisSize: MainAxisSize.min,
-				crossAxisAlignment: CrossAxisAlignment.start,
-				children: <Widget>[
-					new Container(
-						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 2.0),
-						child: new Text(
-							'Distance'.toUpperCase(),
-							textAlign: TextAlign.left,
-							style: new TextStyle(
-								color: const Color(0xFF000000),
-								fontWeight: FontWeight.w800,
-								fontSize: 28.0,
+			body: SafeArea(
+				child: new Column(
+					mainAxisSize: MainAxisSize.min,
+					crossAxisAlignment: CrossAxisAlignment.start,
+					children: <Widget>[
+						new Container(
+							padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 2.0),
+							child: new Text(
+								'Distance'.toUpperCase(),
+								textAlign: TextAlign.left,
+								style: new TextStyle(
+									color: const Color(0xFF000000),
+									fontWeight: FontWeight.w800,
+									fontSize: 28.0,
+								),
 							),
 						),
-					),
-					new Container(
-						padding: const EdgeInsets.fromLTRB(20.0, 0.0, 10.0, 0.0),
-						child: new Text(
-							'Average distance in miles',
-							textAlign: TextAlign.left,
-							style: new TextStyle(
-								color: const Color(0xFF000000),
-								fontWeight: FontWeight.w300,
-								fontSize: 14.0,
+						new Container(
+							padding: const EdgeInsets.fromLTRB(20.0, 0.0, 10.0, 0.0),
+							child: new Text(
+								'Average distance in miles',
+								textAlign: TextAlign.left,
+								style: new TextStyle(
+									color: const Color(0xFF000000),
+									fontWeight: FontWeight.w300,
+									fontSize: 14.0,
+								),
 							),
 						),
-					),
-					new Container(
-						padding: const EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0),
-						child: new Slider(
-							divisions: 2,
-							max: 8.0,
-							min: 2.0,
-							label: "Within " + _distance.round().toString() + " miles",
-							value: _distance.toDouble(),
-							onChanged: (double newValue) {
-								setState(() {
-									_distance = newValue;
-									cat["distance"] = _distance.round();
-								});
-							},
-						),
-					),
-					new Container(
-						padding: const EdgeInsets.fromLTRB(20.0, 45.0, 10.0, 2.0),
-						child: new Text(
-							'Selection'.toUpperCase(),
-							textAlign: TextAlign.left,
-							style: new TextStyle(
-								color: const Color(0xFF000000),
-								fontWeight: FontWeight.w800,
-								fontSize: 28.0,
+						new Container(
+							padding: const EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0),
+							child: new Slider(
+								divisions: 2,
+								max: 8.0,
+								min: 2.0,
+								label: "Within " + _distance.round().toString() + " miles",
+								value: _distance.toDouble(),
+								onChanged: (double newValue) {
+									setState(() {
+										_distance = newValue;
+										cat["distance"] = _distance.round();
+									});
+								},
 							),
 						),
-					),
-					new Container(
-						padding: const EdgeInsets.fromLTRB(20.0, 0.0, 10.0, 20.0),
-						child: new Text(
-							'Type of ' + cat["name"],
-							textAlign: TextAlign.left,
-							style: new TextStyle(
-								color: const Color(0xFF000000),
-								fontWeight: FontWeight.w300,
-								fontSize: 14.0,
+						new Container(
+							padding: const EdgeInsets.fromLTRB(20.0, 45.0, 10.0, 2.0),
+							child: new Text(
+								'Selection'.toUpperCase(),
+								textAlign: TextAlign.left,
+								style: new TextStyle(
+									color: const Color(0xFF000000),
+									fontWeight: FontWeight.w800,
+									fontSize: 28.0,
+								),
 							),
 						),
-					),
-					new Row(
-						children: <Widget>[
-							new Container( width: 20.0 ),
-							new Expanded( child: ( cat["tags"].length > 0 ? tagCard( cat["tags"][0], ( cat["tags"][0]["selected"] != null ), 0 ) : new Container() ) ),
-							new Container( width: 20.0 ),
-							new Expanded( child: ( cat["tags"].length > 1 ? tagCard( cat["tags"][1], ( cat["tags"][1]["selected"] != null ), 1 ) : new Container() ) ),
-							new Container( width: 20.0 ),
-						]
-					),
-					new Container( height: 20.0 ),
-					new Row(
-						children: <Widget>[
-							new Container( width: 20.0 ),
-							new Expanded( child: ( cat["tags"].length > 2 ? tagCard( cat["tags"][2], ( cat["tags"][2]["selected"] != null ), 2 ) : new Container() ) ),
-							new Container( width: 20.0 ),
-							new Expanded( child: ( cat["tags"].length > 3 ? tagCard( cat["tags"][3], ( cat["tags"][3]["selected"] != null ), 3 ) : new Container() ) ),
-							new Container( width: 20.0 ),
-						]
-					),
-					new Expanded(
-						child: new Align(
-							alignment: Alignment.bottomCenter,
-							child: new Row(
-								children: <Widget>[
-									new Expanded(
-										child: new RaisedButton(
-											onPressed: () {
-												Navigator.push(context, new MaterialPageRoute(
-													builder: (BuildContext context) => new SearchResults({"category": cat}),
-												));
-											},
-											padding: new EdgeInsets.all(20.0),  
-											color: const Color(0xFF1033FF),
-											textColor: const Color(0xFFFFFFFF),
-											child: new Text(
-												'View Results'.toUpperCase(),
-												style: new TextStyle(
-													fontWeight: FontWeight.w800,
+						new Container(
+							padding: const EdgeInsets.fromLTRB(20.0, 0.0, 10.0, 20.0),
+							child: new Text(
+								'Type of ' + cat["name"],
+								textAlign: TextAlign.left,
+								style: new TextStyle(
+									color: const Color(0xFF000000),
+									fontWeight: FontWeight.w300,
+									fontSize: 14.0,
+								),
+							),
+						),
+						new Row(
+							children: <Widget>[
+								new Container( width: 20.0 ),
+								new Expanded( child: ( cat["tags"].length > 0 ? tagCard( cat["tags"][0], ( cat["tags"][0]["selected"] != null ), 0 ) : new Container() ) ),
+								new Container( width: 20.0 ),
+								new Expanded( child: ( cat["tags"].length > 1 ? tagCard( cat["tags"][1], ( cat["tags"][1]["selected"] != null ), 1 ) : new Container() ) ),
+								new Container( width: 20.0 ),
+							]
+						),
+						new Container( height: 20.0 ),
+						new Row(
+							children: <Widget>[
+								new Container( width: 20.0 ),
+								new Expanded( child: ( cat["tags"].length > 2 ? tagCard( cat["tags"][2], ( cat["tags"][2]["selected"] != null ), 2 ) : new Container() ) ),
+								new Container( width: 20.0 ),
+								new Expanded( child: ( cat["tags"].length > 3 ? tagCard( cat["tags"][3], ( cat["tags"][3]["selected"] != null ), 3 ) : new Container() ) ),
+								new Container( width: 20.0 ),
+							]
+						),
+						new Expanded(
+							child: new Align(
+								alignment: Alignment.bottomCenter,
+								child: new Row(
+									children: <Widget>[
+										new Expanded(
+											child: new RaisedButton(
+												onPressed: () {
+													Navigator.push(context, new MaterialPageRoute(
+														builder: (BuildContext context) => new SearchResults({"category": cat}),
+													));
+												},
+												padding: new EdgeInsets.all(20.0),  
+												color: const Color(0xFF1033FF),
+												textColor: const Color(0xFFFFFFFF),
+												child: new Text(
+													'View Results'.toUpperCase(),
+													style: new TextStyle(
+														fontWeight: FontWeight.w800,
+													),
 												),
 											),
-										),
-									)
-								]
+										)
+									]
+								),
 							),
 						),
-					),
-				]
+					]
+				),
 			),
 		);
 
