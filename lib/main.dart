@@ -429,7 +429,9 @@ class _LoginState extends State<Login> {
 					children: <Widget>[
 						new Row (
 							children: <Widget>[
-								new BackButton(),
+								new BackButton(
+									color: const Color(0xFF000000),
+								),
 								new Expanded(
 									child: new Container(
 										alignment: Alignment.topRight,
@@ -624,12 +626,15 @@ class _CreateEmailState extends State<CreateEmail> {
 					mainAxisSize: MainAxisSize.min,
 					children: <Widget>[
 						new LinearProgressIndicator(
+							valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF1033FF)),
 							value: 0.33,
 							backgroundColor: const Color(0xFFFFFFFF),
 						),
 						new Row (
 							children: <Widget>[
-								new BackButton(),
+								new BackButton(
+									color: const Color(0xFF000000),
+								),
 								new Expanded(
 									child: new Container(
 										alignment: Alignment.topRight,
@@ -789,12 +794,15 @@ class _CreatePasswordState extends State<CreatePassword> {
 					mainAxisSize: MainAxisSize.min,
 					children: <Widget>[
 						new LinearProgressIndicator(
+							valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF1033FF)),
 							value: 0.66,
 							backgroundColor: const Color(0xFFFFFFFF),
 						),
 						new Row (
 							children: <Widget>[
-								new BackButton(),
+								new BackButton(
+									color: const Color(0xFF000000),
+								),
 								new Expanded(
 									child: new Container(
 										alignment: Alignment.topRight,
@@ -1008,12 +1016,15 @@ class _CreateFinishState extends State<CreateFinish> {
 				mainAxisSize: MainAxisSize.min,
 				children: <Widget>[
 					new LinearProgressIndicator(
+						valueColor: new AlwaysStoppedAnimation<Color>(const Color(0xFF1033FF)),
 						value: 1.0,
 						backgroundColor: const Color(0xFFFFFFFF),
 					),
 					new Row (
 						children: <Widget>[
-							new BackButton(),
+							new BackButton(
+								color: const Color(0xFF000000),
+							),
 							new Expanded(
 								child: new Container(
 									alignment: Alignment.topRight,
