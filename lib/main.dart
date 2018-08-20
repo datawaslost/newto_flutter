@@ -2712,6 +2712,7 @@ void placeCard(id, txt, img, stars, distance, context, { featured = false, bookm
 	
 	// calculate stars
 	List<Widget> _starsList = [ new SizedBox( width: 20.0 ) ];
+	if (stars == null) stars = 0;
 	for (var i = 0; i < stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)) );
 	for (var i = 0; i < 5-stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)) );
 	_starsList.add( new SizedBox( width: 20.0 ) );
@@ -3150,7 +3151,7 @@ class _AccountState extends State<Account> {
 }
 
 
-void setThis(settype, id, addremove, success, fail) async {
+void setThis(settype, id, addremove, success, fail, { body }) async {
 
 	// get stored token
 	final prefs = await SharedPreferences.getInstance();
@@ -3159,14 +3160,18 @@ void setThis(settype, id, addremove, success, fail) async {
 	// add or remove
 	String qs = (addremove ? "add" + settype + "/" : "remove" + settype + "/");
 
+	if (body == null) body = json.decode("{ 'id': '0' }");
+	body["id"] = id.toString();
+	
+	print(qs);
+	print(body);
+
 	final response = await http.post(
 		domain + 'api/' + qs,
 		headers: {
 			HttpHeaders.AUTHORIZATION: "JWT " + token
 		},
-		body: {
-			"id": id.toString(),
-		}
+		body: body
 	);
 	
 	if (response.statusCode == 200) {
@@ -3684,6 +3689,8 @@ class _PlaceState extends State<Place> {
 	List<Widget> _widgetList = [];
 	var _staticMapProvider = new StaticMapProvider('AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E');
 	var placeData;
+	double stars = 0.0;
+	int yourstars = 0;
 
     @override
     void initState() {
@@ -3694,6 +3701,20 @@ class _PlaceState extends State<Place> {
                 placeData = result;
             });
         });
+    }
+    
+    void setStars(stars) {
+	    setThis(
+	    	"rating",
+	    	placeData["id"], true, (){
+				// update stars on success
+				setState(() {
+					placeData["yourrating"] = stars;
+				});
+				print("success");
+			}, () { print("failure!"); },
+			body: { "rating": stars.toString() },
+		);
     }
 
 	@override
@@ -3707,8 +3728,9 @@ class _PlaceState extends State<Place> {
 			);
         }
 
-		// calculate stars
-		final stars = placeData["rating"];
+		// calculate stars for average rating
+		if (placeData["rating"] != null) stars = placeData["rating"];
+		
 		List<Widget> _starsList = [ 
 			new Text(
 				"What Others Think".toUpperCase(),
@@ -3734,6 +3756,34 @@ class _PlaceState extends State<Place> {
 		
 		for (var i = 0; i < stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)) );
 		for (var i = 0; i < 5-stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 20.0)) );
+
+		// calculate stars for your rating
+		if (placeData["yourrating"] != null) yourstars = placeData["yourrating"];
+		
+		List<Widget> _yourstarsList = [ 
+			new SizedBox( width: 30.0 ),
+		];
+
+		for (var i = 0; i < yourstars; i++) _yourstarsList.add(
+			new Expanded(
+				child: new GestureDetector(
+					onTap: () => setStars(i+1),
+					child: new Icon(Icons.star, color: const Color(0xFF1033FF), size: 50.0),
+				),
+			)
+		);
+
+
+		for (var i = 0; i < 5-yourstars; i++) _yourstarsList.add(
+			new Expanded(
+				child: new GestureDetector(
+					onTap: () => setStars(i+1+yourstars),
+					child: new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0),
+				),
+			)
+		);
+		
+		_yourstarsList.add( new SizedBox( width: 30.0 ) );
 
 		return new Scaffold(
 			backgroundColor: const Color(0xFFFFFFFF),
@@ -3892,21 +3942,15 @@ class _PlaceState extends State<Place> {
 										color: const Color(0xFFE0E1EA),
 									),
 									new SizedBox( height: 20.0 ),
-									new Row(
-										children: _starsList,
+									( stars == 0 ?
+										new SizedBox( height: 0.0 )
+									:
+										new Row( children: _starsList )
 									),
 									new Container(
 										padding: new EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
 										child: new Row(
-											children: [
-												new SizedBox( width: 30.0 ),
-												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-												new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0)),
-												new SizedBox( width: 30.0 ),
-											],
+											children: _yourstarsList,
 										),
 									),
 									new Row(
