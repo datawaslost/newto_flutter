@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:map_view/map_view.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
+// import 'package:geolocation/geolocation.dart';
 
 import "dart:ui";
 import 'dart:convert';
@@ -2338,6 +2340,42 @@ class _DiscoverState extends State<Discover> {
 
 	List<Widget> _discoverItems = [];
 
+	void getLocation() async {
+		
+		var location = new Loc();
+
+		// Platform messages may fail, so we use a try/catch PlatformException.
+		try {
+			// final currentLocation = await location.getLocation;
+			final currentLocation = location.getLocation();
+			currentLocation.then((loc) {
+				setThis(
+					"location",
+					{
+						"latitude": loc["latitude"].toString(),
+						"longitude": loc["longitude"].toString(),						
+					},
+					(){
+						// success
+					},
+					(){
+						// fail
+						print("geolocation error");
+					}
+				);
+			});
+		} on PlatformException {
+			print("geolocation platform error");
+		}
+
+    }
+
+    @override
+    void initState() {        
+
+		getLocation();		
+    }
+
 	void searchCategory(cat) {
 		
 		return new GestureDetector(
@@ -2761,14 +2799,18 @@ void placeCard(id, txt, img, stars, distance, context, { featured = false, bookm
 												new Expanded(
 													child: new Container(
 														padding: const EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 10.0),
-														child: new Text(
-															distance.toString() + ' mi',
-															textAlign: TextAlign.left,
-															style: new TextStyle(
-																color: const Color(0xFF000000),
-																fontWeight: FontWeight.w300,
-																fontSize: 14.0,
-															),
+														child: ( distance != null ?
+															new Text(
+																distance.toString() + ' mi',
+																textAlign: TextAlign.left,
+																style: new TextStyle(
+																	color: const Color(0xFF000000),
+																	fontWeight: FontWeight.w300,
+																	fontSize: 14.0,
+																),
+															)
+															:
+															new Container()
 														),
 													),
 												),
@@ -3717,7 +3759,7 @@ class _PlaceState extends State<Place> {
 
 	@override
 	Widget build(BuildContext context) {
-
+		
         if (placeData == null) {
             // This is what we show while we're loading
 			return new Container(
