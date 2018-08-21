@@ -3773,7 +3773,6 @@ class _PlaceState extends State<Place> {
 			)
 		);
 
-
 		for (var i = 0; i < 5-yourstars; i++) _yourstarsList.add(
 			new Expanded(
 				child: new GestureDetector(
@@ -3784,7 +3783,7 @@ class _PlaceState extends State<Place> {
 		);
 		
 		_yourstarsList.add( new SizedBox( width: 30.0 ) );
-
+		
 		return new Scaffold(
 			backgroundColor: const Color(0xFFFFFFFF),
 			body: new SingleChildScrollView(
@@ -3894,7 +3893,7 @@ class _PlaceState extends State<Place> {
 										),
 									),
 									new Text(
-										"Open Now: 7AM-12AM",
+										placeData["openhours"],
 										style: new TextStyle(
 											color: const Color(0xFF000000),
 											fontWeight: FontWeight.w300,
