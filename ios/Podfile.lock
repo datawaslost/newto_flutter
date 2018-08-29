@@ -1,4 +1,7 @@
 PODS:
+  - connectivity (0.0.1):
+    - Flutter
+    - Reachability
   - Flutter (1.0.0)
   - flutter_webview_plugin (0.0.1):
     - Flutter
@@ -12,10 +15,12 @@ PODS:
   - map_view (0.0.12):
     - Flutter
     - GoogleMaps
+  - Reachability (3.2)
   - shared_preferences (0.0.1):
     - Flutter
 
 DEPENDENCIES:
+  - connectivity (from `Pods/.symlinks/plugins/connectivity-0.3.1/ios`)
   - Flutter (from `Pods/.symlinks/flutter/ios`)
   - flutter_webview_plugin (from `Pods/.symlinks/plugins/flutter_webview_plugin-0.2.1+2/ios`)
   - location (from `Pods/.symlinks/plugins/flutterlocation-master/ios`)
@@ -23,6 +28,8 @@ DEPENDENCIES:
   - shared_preferences (from `Pods/.symlinks/plugins/shared_preferences-0.4.2/ios`)
 
 EXTERNAL SOURCES:
+  connectivity:
+    :path: Pods/.symlinks/plugins/connectivity-0.3.1/ios
   Flutter:
     :path: Pods/.symlinks/flutter/ios
   flutter_webview_plugin:
@@ -35,11 +42,13 @@ EXTERNAL SOURCES:
     :path: Pods/.symlinks/plugins/shared_preferences-0.4.2/ios
 
 SPEC CHECKSUMS:
+  connectivity: d5992e3758d68b1c4b12d6e012fe0813f1aa1645
   Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
   flutter_webview_plugin: 116575b48572029304775b768e9f15ebfc316274
   GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
   location: 26c90953ad5916331d0d1d913898779910416487
   map_view: 4a71319ae78b6fb4c20813224b8c6e256703ff9b
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
 
 PODFILE CHECKSUM: b6cb852876d2b3d8fefd26f4e66c5365ce2b4844

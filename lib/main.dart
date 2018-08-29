@@ -7,7 +7,7 @@ import 'package:map_view/map_view.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
-// import 'package:geolocation/geolocation.dart';
+import 'package:connectivity/connectivity.dart';
 
 import "dart:ui";
 import 'dart:convert';
@@ -19,17 +19,26 @@ import 'carousel.dart';
 final String domain = "http://dev.newto.com/";
 
 var userData;
+var internetListener;
 
 // Instance of WebView plugin
 final flutterWebviewPlugin = new FlutterWebviewPlugin();
 
 void main() {
 	MapView.setApiKey("AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E");
-	runApp(new MyApp());
+	runApp(new Newto());
 }
 
 
-class MyApp extends StatelessWidget {
+class Newto extends StatefulWidget {
+	Newto();
+	@override
+	_NewtoState createState() => new _NewtoState();
+}
+
+
+class _NewtoState extends State<Newto> {
+	
 	// This widget is the root of your application.
 	@override
 	Widget build(BuildContext context) {
@@ -51,8 +60,10 @@ class MyApp extends StatelessWidget {
 				indicatorColor: const Color(0xFF00C3FF),
 				fontFamily: 'Montserrat',
 			),
-			home: new Home(),
+			// home: new Home(),
+			initialRoute: '/',
 		    routes: <String, WidgetBuilder> {
+				'/': (BuildContext context) => new Home(),
 				'/onboarding': (BuildContext context) => new Onboarding(),
 				'/login': (BuildContext context) => new Login(),
 				'/create': (BuildContext context) => new CreateEmail(),
@@ -62,14 +73,17 @@ class MyApp extends StatelessWidget {
 				'/bookmarks': (BuildContext context) => new Bookmarks(),
 				'/account': (BuildContext context) => new Account(),
 				'/org': (BuildContext context) => new Organization(),
+				'/nointernet': (BuildContext context) => new NoInternet(),
 			},
 		);
 	}
+
 }
 
 
 void bottomBar(context, _selected) {
-	
+
+
 	var _navOptions = [
 		["landing", "home"],
 		["yourlist", "list"],
@@ -141,14 +155,6 @@ void bottomBar(context, _selected) {
     
 }
 
-				
-class Home extends StatefulWidget {
-	Home({Key key, this.title}) : super(key: key);
-	final String title;
-	@override
-	_HomeState createState() => new _HomeState();
-}
-
 
 void getUserData(token, success, fail) async {
 	
@@ -203,41 +209,94 @@ void saveToken(token) async {
 }
 
 
+void initData(context) async {
+	
+	// check for internet connectivity
+	new Connectivity().checkConnectivity().then((result) {
+		if (result == ConnectivityResult.none) {
+			// not connected to the internet
+			print("no internet");
+			Navigator.of(context).pushNamed("/nointernet");
+		} else {
+			checkIfToken(
+				(token){
+					// if token success, use that token to get user data
+					getUserData(
+						token, 
+						(data){
+							// Success
+							// print(data);
+							Navigator.of(context).pushNamed("/landing");
+						},
+						(code){
+							// Failure
+							print("getUserData failure callback : " + code.toString());
+							Navigator.of(context).pushNamed("/login");
+						}
+					);
+				}, 
+				(){
+					// if failure because of no token, go to onboarding
+					Navigator.of(context).pushNamed("/onboarding");
+				}, 
+			);
+		}
+	});
+	
+}
+
+
+class Home extends StatefulWidget {
+	Home();
+	@override
+	_HomeState createState() => new _HomeState();
+}
+
+
 class _HomeState extends State<Home> {
 	
 	@override
 	void initState() {
+		
 		super.initState();
-		checkIfToken(
-			(token){
-				// if token success, use that token to get user data
-				getUserData(
-					token, 
-					(data){
-						// Success
-						// print(data);
-						Navigator.of(context).pushNamed("/landing");
-					},
-					(code){
-						// Failure
-						print("getUserData failure callback : " + code.toString());
-						Navigator.of(context).pushNamed("/login");
-					}
-				);
-			}, 
-			(){
-				// if failure because of no token, go to onboarding
-				Navigator.of(context).pushNamed("/onboarding");
-			}, 
-		);
+		
+		initData(context);
+		
+		// cleanup any existing listeners
+		if (internetListener != null) internetListener.cancel();
+
+		// setup listener for internet connection changes
+		internetListener = new Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+			// when the internet connection changes
+			if (result == ConnectivityResult.none) {
+				// not connected to the internet
+				print("no internet via listener");
+				Navigator.of(context).pushNamed("/nointernet");
+			}
+		});
+
+	}
+
+	@override
+	dispose() {
+		print("disposed");
+		super.dispose();
+		internetListener.cancel();
 	}
 	    
 	@override
 	Widget build(BuildContext context) {
-		return new Scaffold();
+		
+		// if (userData == null) initState();
+		
+		return new Container(
+			alignment: Alignment.center,
+			child: new CircularProgressIndicator()
+		);
 	}
-	
+
 }
+
 
 // used on both register and login screens
 class PasswordField extends StatefulWidget {
@@ -2372,7 +2431,6 @@ class _DiscoverState extends State<Discover> {
 
     @override
     void initState() {        
-
 		getLocation();		
     }
 
@@ -4111,6 +4169,77 @@ class _OrganizationState extends State<Organization> {
 				bottomNavigationBar: bottomBar(context, 4),
 			);
 		}
+
+	}
+	
+}
+
+
+class NoInternet extends StatefulWidget {
+	NoInternet();
+	@override
+	_NoInternetState createState() => new _NoInternetState();
+}
+
+
+class _NoInternetState extends State<NoInternet> {
+
+	@override
+	Widget build(BuildContext context) {
+		return new Scaffold(
+			body: new Container(
+				alignment: Alignment.center,
+				child: new Column(
+					children: [
+						new Expanded(child: new Container()),
+						new Text(
+							"No Internet Connection",
+							style: new TextStyle(
+								color: const Color(0xFF000000),
+								fontWeight: FontWeight.w800,
+								fontSize: 18.0,
+								height: 2.0,
+							),
+						),
+						new Text(
+							"Please connect to the internet to use NewTo",
+							style: new TextStyle(
+								color: const Color(0xFF838383),
+								fontWeight: FontWeight.w400,
+								fontSize: 14.0,	
+							),
+						),
+						new SizedBox(height: 20.0),
+						new RaisedButton(
+							onPressed: () {
+								new Connectivity().checkConnectivity().then((result) {
+									if (result != ConnectivityResult.none) {
+										if (userData == null) {
+											initData(context);
+										} else {
+											Navigator.popUntil(context, (route) {
+												if (route.settings.name == "/" || route.settings.name == "/nointernet") initData(context);
+												return true;
+											});
+										}
+									}
+								});
+							},
+							padding: new EdgeInsets.all(14.0),  
+							color: const Color(0xFF1033FF),
+							textColor: const Color(0xFFFFFFFF),
+							child: new Text(
+								'RETRY',
+								style: new TextStyle(
+									fontWeight: FontWeight.w800,
+								),
+							),
+						),
+						new Expanded(child: new Container()),
+					]
+				),
+			),
+		);
 
 	}
 	
