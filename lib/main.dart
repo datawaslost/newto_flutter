@@ -287,8 +287,6 @@ class _HomeState extends State<Home> {
 	@override
 	Widget build(BuildContext context) {
 		
-		// if (userData == null) initState();
-		
 		return new Container(
 			alignment: Alignment.center,
 			child: new CircularProgressIndicator()
