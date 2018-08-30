@@ -1635,7 +1635,7 @@ class _LandingState extends State<Landing> {
 														setState(() {
 															// update icon and close details on success
 															item["done"] = true;
-															// remove item from todo list
+															// immediately remove item from todo list
 															userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
 															_details = false;
 														});
@@ -1957,8 +1957,9 @@ class _listTodoState extends State<listTodo> {
 					onTap: () => setThis("adddone", { "id": item["id"].toString() }, (){
 						setState(() {
 							item["done"] = true;
-							// immediately remove item from todo list
-							// userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
+							// set done marker in case we see it before the data refreshes
+							int index = userData[0]["todo"].indexWhere((i) => i["id"] == item["id"]);
+							if (index != -1) userData[0]["todo"][index]["done"] = true;
 						});	
 					}, () { print("failure!"); }),
 				);
