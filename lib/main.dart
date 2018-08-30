@@ -8,6 +8,7 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import "dart:ui";
 import 'dart:convert';
@@ -1777,10 +1778,10 @@ class _LandingState extends State<Landing> {
 	
 }
 
-void listButton(icon) {
+void listButton(icon, { double size = 50.0 }) {
 	return new Container(
-		width: 50.0,
-		height: 50.0,
+		width: size,
+		height: size,
 		decoration: new BoxDecoration(
 			shape: BoxShape.circle,
 			color: const Color(0xFFFFFFFF),
@@ -1789,226 +1790,245 @@ void listButton(icon) {
 	            blurRadius: 8.0,
           ),]
 		),
-		child: new Icon( icon, size: 25.0, color: const Color(0xFF000000) ),
+		child: new Icon( icon, size: size/2, color: const Color(0xFF000000) ),
 	);
 }
 
 
-void listCard(String txt, {height, width, key, bookmarked = false}) {
-	return new Card(
-		key: key,
-		elevation: 3.0,
-		child: new Container(
-			height: height,
-			width: width,
-			padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 10.0),
-			child: new Stack(
-				children: [
-					new Text(
-						txt,
-						textAlign: TextAlign.left,
-						style: new TextStyle(
-							color: const Color(0xFF000000),
-							fontWeight: FontWeight.w700,
-							fontSize: 14.0,
-						),
-					),
-					(bookmarked ? 
-						new Positioned(
-							bottom: 10.0,
-							right: 10.0,
-							child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0)
-						) : new Container()
-					)
-				]
-			)
+void todoButton(icon, { double size = 50.0, var color = const Color(0xFFFFFFFF)  }) {
+	return new Container(
+		width: size,
+		height: size,
+		decoration: new BoxDecoration(
+			shape: BoxShape.circle,
+			color: color,
+			boxShadow: [new BoxShadow(
+	            color: const Color(0xFFFFFFFF),
+	            blurRadius: 0.0,
+          ),]
 		),
+		child: new Icon( icon, size: size/1.25, color: const Color(0xFFFFFFFF) ),
 	);
 }
 
 
-// void listCardGesture(item, context, {bookmarked = false}) {
-
-// /*
-
-class listCardGesture extends StatefulWidget {
-	listCardGesture(this.item, this.context, {this.bookmarked = false});
+class listTodo extends StatefulWidget {
+	listTodo(this.item, this.context, {this.bookmarked = false, this.yourlist = false});
 	var item;
 	var context;
 	bool bookmarked;
+	bool yourlist;
 	@override
-	_listCardGestureState createState() => new _listCardGestureState(this.item, this.context, this.bookmarked);
+	_listTodoState createState() => new _listTodoState(this.item, this.context, this.bookmarked, this.yourlist);
 }
 
-class _listCardGestureState extends State<listCardGesture> {
 
-	_listCardGestureState(this.item, this.context, this.bookmarked);
+class _listTodoState extends State<listTodo> {
+
+	_listTodoState(this.item, this.context, this.bookmarked, this.yourlist);
+	
 	var item;
 	var context;
 	bool bookmarked;
-
-// */
-	
-	// create a key so we can specifically reference the original card widget later to get its size, position
-	GlobalKey stickyKey = new GlobalKey();
-	
-// /*
+	bool yourlist;
+	var mainButton;
+	List secondaryButtons = <Widget>[];
 
 	@override
 	Widget build(BuildContext context) {
-
-// */
-
-
-		return new GestureDetector(
-			onTapUp: (details){
-				var _offsety;
-				var _boxwidth;
-				var _boxheight;
-				var _rightside = false;
-				var _offsetx = 150.0;
-				var _offsetx2 = 25.0;
-				if (details.globalPosition.dx > 200) {
-					_rightside = true;
-					_offsetx = 25.0;
-					_offsetx2 = 150.0;
-				}
-				final keyContext = stickyKey.currentContext;
-				// if box is visible
-		        if (keyContext != null) {
-					final RenderBox box = keyContext.findRenderObject();
-					_offsety = box.localToGlobal(Offset.zero).dy - MediaQuery.of(context).padding.top - 20;
-					_boxwidth = box.size.width - 7.5;
-					_boxheight = box.size.height - 7.5;
-		        }
-		        // if box is partially offscreen
-		        if (_offsety < 0) {
-			        // for now, don't show a dialog
-			        // but we could also just push it down a bit
-			        // _offsety = 0.0;
-		        } else {
-					showDialog(
-						context: context,
-						builder: (BuildContext context) {
-							return new Column(
-					            children: [
-									new SizedBox(height: _offsety ),
-									new Expanded(
-							            child: new Stack(
-								            children: [
-									            new Positioned(
-										            top: 0.0,
-										            right: _rightside ? 20.0 : null,
-										            left: _rightside ? null : 20.0,
-										            child: listCard(item["name"], height:_boxheight, width:_boxwidth, bookmarked: bookmarked),
-												),
-									            new Row(
-													children: [
-														new SizedBox( width: _offsetx, height: _boxheight),
-														( item["done"] == true && item["done"] != null ? 
-															// is done, tap removes
-															new Expanded(
-																child: new GestureDetector(
-																	// remove done
-																	onTap: () => setThis("removedone", { "id": item["id"].toString() }, (){
-																		// update icon and close details on success
-																		item["done"] = false;
-																		Navigator.pop(context);
-																	}, () { print("failure!"); }),
-																	child: listButton(Icons.remove),
-																),
-															)
-														:
-															// not done, tap adds
-															new Expanded(
-																child: new GestureDetector(
-																	// add done
-																	onTap: () => setThis("adddone", { "id": item["id"].toString() }, (){
-																		
-																		Navigator.pop(context);
-
-																		setState(() {
-																			/*
-																			getUserData(
-																				null, 
-																				(data){
-																					// Success
-																					setState(() {
-																						print(data);
-																						Navigator.pop(context);
-																					});	
-																				},
-																				(code){
-																					// Failure
-																					print("getUserData failure callback : " + code.toString());
-																				}
-																			);
-																			*/
-																			
-																			// update icon and close details on success
-																			item["done"] = true;
-																			// remove item from todo list
-																			userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
-
-																		});	
-																	}, () { print("failure!"); }),
-																	child: listButton(Icons.check),
-																),
-															)
-														),
-														( item["bookmarked"] == true && item["bookmarked"] != null ? 
-															// has bookmark, tap removes
-															new Expanded(
-																child: new GestureDetector(
-																	// remove bookmark
-																	onTap: () => setThis("removebookmark", { "id": item["id"].toString() }, (){
-																		// update icon and close dialog on success
-																		item["bookmarked"] = false;
-																		// remove item from bookmarks list
-																		userData[0]["bookmarks"].removeWhere((i) => i["id"] == item["id"]);
-																		Navigator.pop(context);
-																	}, () { print("failure!"); }),
-																	child: listButton(Icons.bookmark),
-																),
-															)
-														:
-															// no bookmark, tap adds
-															new Expanded(
-																child: new GestureDetector(
-																	// add bookmark
-																	onTap: () => setThis("addbookmark", { "id": item["id"].toString() }, (){
-																		// update icon and close dialog on success
-																		item["bookmarked"] = true;
-																		// add item to bookmarks list
-																		Map newItemData = JSON.decode(JSON.encode(item));
-																		userData[0]["bookmarks"].add(newItemData);
-																		Navigator.pop(context);
-																	}, () { print("failure!"); }),
-																	child: listButton(Icons.bookmark_border),
-																),
-															)
-														),
-														new Expanded(
-															child: new GestureDetector(
-																// close dialog
-																onTap: () => Navigator.pop(context),
-																child: listButton(Icons.close),
-															),
-														),
-														new SizedBox( width: _offsetx2 ),
-													]
-												)
-											]
-										)
-									)
-								]
-							);
-						}
-					);
-				}
-			},
-			child: listCard(item["name"], key: stickyKey, bookmarked: bookmarked),
+		
+		// set secondary buttons
+		if (bookmarked == true) {
+			// if we're in bookmarks
+			secondaryButtons = <Widget>[
+				( item["done"] != null ?
+					// if item is in our list
+					SlideAction(
+						child: new Icon( Icons.format_list_bulleted, size: 32.0, color: const Color(0xFF000000) ),
+						onTap: () => setThis("removelist", { "id": item["id"].toString() }, (){
+							// update icon on success
+							setState(() {
+								item["done"] = null;
+								// immediately remove item from list
+								userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
+							});	
+						}, () { print("failure!"); }),
+					)
+				:
+					SlideAction(
+						child: new Icon( Icons.format_list_bulleted, size: 32.0, color: const Color(0xFF838383) ),
+						onTap: () => setThis("addlist", { "id": item["id"].toString() }, (){							
+							setState(() {
+								item["done"] = false;
+								// immediately add item to your list
+								Map newItemData = JSON.decode(JSON.encode(item));
+								userData[0]["todo"].add(newItemData);
+							});
+						}, () { print("failure!"); }),
+					)
+				)
+			];
+		} else {
+			// if we're anywhere else but bookmarks
+			secondaryButtons = <Widget>[
+				( item["bookmarked"] == true && item["bookmarked"] != null ? 
+					SlideAction(
+						child: new Icon( Icons.bookmark, size: 32.0, color: const Color(0xFF000000)  ),
+						onTap: () => setThis("removebookmark", { "id": item["id"].toString() }, (){
+							// update icon on success
+							setState(() {
+								item["bookmarked"] = false;
+								// immediately remove item from bookmarks list
+								// userData[0]["bookmarks"].removeWhere((i) => i["id"] == item["id"]);
+							});	
+						}, () { print("failure!"); }),
+					)
+				:
+					SlideAction(
+						child: new Icon( Icons.bookmark_border, size: 32.0, color: const Color(0xFF838383) ),
+						onTap: () => setThis("addbookmark", { "id": item["id"].toString() }, (){
+							setState(() {
+								// update icon and close dialog on success
+								item["bookmarked"] = true;
+								// immediately add item to bookmarks list
+								Map newItemData = JSON.decode(JSON.encode(item));
+								userData[0]["bookmarks"].add(newItemData);
+							});	
+						}, () { print("failure!"); }),
+					)
+				)
+			];
+		}
+	
+		if (yourlist == true) {
+			// if we're in your list
+			if ( item["done"] == true && item["done"] != null) {
+				// if item has been marked done
+				mainButton = GestureDetector(
+					child: todoButton(Icons.check, size: 26.0, color: const Color(0xFFA2EA3A) ),
+					// remove done
+					onTap: () => setThis("removedone", { "id": item["id"].toString() }, (){
+						// update icon and close details on success
+						setState(() {
+							item["done"] = false;
+						});	
+					}, () { print("failure!"); }),
+				);
+			} else {
+				// if item has not been marked done
+				mainButton = GestureDetector(
+					child: todoButton(Icons.check, size: 26.0, color: const Color(0xFFE0E1EA) ),
+					// remove done
+					onTap: () => setThis("adddone", { "id": item["id"].toString() }, (){
+						setState(() {
+							item["done"] = true;
+							// immediately remove item from todo list
+							// userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
+						});	
+					}, () { print("failure!"); }),
+				);
+			}
+		} else if (bookmarked == true) {
+			// if we're in bookmarks
+			if ( item["bookmarked"] == true && item["bookmarked"] != null) {
+				// if item is in our bookmarks
+				mainButton = GestureDetector(
+					child: todoButton(Icons.bookmark, size: 26.0, color: const Color(0xFFA2EA3A) ),
+					// remove bookmark
+					onTap: () => setThis("removebookmark", { "id": item["id"].toString() }, (){
+						// update icon and close details on success
+						setState(() {
+							item["bookmarked"] = false;
+							// immediately remove item from bookmarks list
+							// userData[0]["bookmarks"].removeWhere((i) => i["id"] == item["id"]);
+						});	
+					}, () { print("failure!"); }),
+				);
+			} else {
+				// if item is not in our bookmarks (ie, has just been removed)
+				mainButton = GestureDetector(
+					child: todoButton(Icons.bookmark_border, size: 26.0, color: const Color(0xFFE0E1EA) ),
+					// add bookmark
+					onTap: () => setThis("addbookmark", { "id": item["id"].toString() }, (){
+						setState(() {
+							item["bookmarked"] = true;
+							// immediately add item to bookmarks
+							Map newItemData = JSON.decode(JSON.encode(item));
+							userData[0]["bookmarks"].add(newItemData);
+						});	
+					}, () { print("failure!"); }),
+				);
+			}
+		} else { 
+			// if we're in popular, a group, etc.
+			if ( item["done"] != null ) {
+				// if item is in our list
+				mainButton = GestureDetector(
+					child: todoButton(Icons.format_list_bulleted, size: 26.0, color: const Color(0xFFA2EA3A) ),
+					// remove bookmark
+					onTap: () => setThis("removelist", { "id": item["id"].toString() }, (){
+						// update icon and close details on success
+						setState(() {
+							item["done"] = null;
+							// immediately remove item from list
+							userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
+						});	
+					}, () { print("failure!"); }),
+				);
+			} else {
+				// if item is not in our bookmarks (ie, has just been removed)
+				mainButton = GestureDetector(
+					child: todoButton(Icons.format_list_bulleted, size: 26.0, color: const Color(0xFFE0E1EA) ),
+					// add to list
+					onTap: () => setThis("addlist", { "id": item["id"].toString() }, (){
+						setState(() {
+							item["done"] = false;
+							// immediately add item to your list
+							Map newItemData = JSON.decode(JSON.encode(item));
+							userData[0]["todo"].add(newItemData);
+						});	
+					}, () { print("failure!"); }),
+				);
+			}
+		}
+				
+		return Slidable(
+			delegate: SlidableDrawerDelegate(),
+			actionExtentRatio: 0.25,
+			child: Card(
+				elevation: 3.0,
+				child: Row(
+					mainAxisSize: MainAxisSize.min,
+					crossAxisAlignment: CrossAxisAlignment.center,
+					children: [
+						Container(
+							padding: const EdgeInsets.fromLTRB(20.0, 10.0, 15.0, 10.0),
+							child: mainButton,
+						),
+						Expanded(
+							child: Text(
+								item["name"],
+								textAlign: TextAlign.left,
+								style: TextStyle(
+									color: const Color(0xFF000000),
+									fontWeight: FontWeight.w700,
+									fontSize: 14.0,
+								),
+							),
+						),
+						(bookmarked ? 
+							SizedBox(
+								width: 40.0,
+								child: Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0)
+							) : Container()
+						),
+						Container(),
+					],
+				),
+			),
+			secondaryActions: secondaryButtons,
 		);
+		
 	}
 }
 
@@ -2181,7 +2201,7 @@ void listGroupImage(int id, String txt, amount, img, context, {bookmarked = fals
 }
 
 
-void parseItems(list, context, {bookmarked = false}) {
+void parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 	
 	List<Widget> _listItems = [];
 	List _listTodos = [];
@@ -2200,7 +2220,7 @@ void parseItems(list, context, {bookmarked = false}) {
 						childAspectRatio: 2.0,
 						// fix this nonsense ^
 						children: <Widget>[
-							placeCard(item["id"], item["name"], item["image"], item["rating"], item["distance"], context, bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] ) ),
+							placeCard(item["id"], item["name"], item["image"], item["rating"], item["distance"], context, bookmarked: bookmarked ),
 						],
 					),
 				)
@@ -2218,7 +2238,7 @@ void parseItems(list, context, {bookmarked = false}) {
 							crossAxisCount: 1,
 							childAspectRatio: 1.2,
 							children: <Widget>[
-								listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsor"], bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] ) ),
+								listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsor"], bookmarked: bookmarked ),
 							]
 						),
 					)
@@ -2234,7 +2254,7 @@ void parseItems(list, context, {bookmarked = false}) {
 							crossAxisCount: 1,
 							childAspectRatio: 1.0,
 							children: <Widget>[
-								discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], bookmarked: ( item["bookmarked"] == null ? false : item["bookmarked"] ) ),
+								discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], bookmarked: bookmarked ),
 							]
 						)
 					)
@@ -2258,46 +2278,24 @@ void parseItems(list, context, {bookmarked = false}) {
 			);
 		} else {
 			// if it's a todo
-			_listTodos.add(item);
-			if (_listTodos.length > 1) {
-				_listItems.add(
-					new SliverPadding(
-						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
-						sliver: new SliverGrid.count(
-							crossAxisSpacing: 10.0,
-							mainAxisSpacing: 10.0,
-							crossAxisCount: 2,
-							childAspectRatio: 1.1,
-							children: <Widget>[
-								listCardGesture(_listTodos[0], context, bookmarked: bookmarked),																
-								listCardGesture(_listTodos[1], context, bookmarked: bookmarked),																
-							],
-						),
-					)
-				);
-				_listTodos.clear();
-			}
+			_listItems.add(
+				new SliverPadding(
+					padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+					sliver: new SliverGrid.count(
+						crossAxisSpacing: 10.0,
+						mainAxisSpacing: 10.0,
+						crossAxisCount: 1,
+						childAspectRatio: 4.0,
+						children: <Widget>[
+							listTodo(item, context, bookmarked: bookmarked, yourlist: yourlist),																
+						],
+					),
+				)
+			);
+
 		}
 	}
-	
-	// cleanup any remaining todo items
-	if (_listTodos.length > 0) {
-		_listItems.add(
-			new SliverPadding(
-				padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-				sliver: new SliverGrid.count(
-					crossAxisSpacing: 10.0,
-					mainAxisSpacing: 10.0,
-					crossAxisCount: 2,
-					childAspectRatio: 1.1,
-					children: <Widget>[
-						listCardGesture(_listTodos[0], context, bookmarked: bookmarked),																
-					],
-				),
-			)
-		);
-	}
-	
+		
 	// bottom padding
 	_listItems.add(
 		new SliverPadding(
@@ -2362,7 +2360,7 @@ class _YourListState extends State<YourList> {
 						// Your List
 						new CustomScrollView(
 							primary: false,
-							slivers: parseItems(userData[0]["todo"], context),
+							slivers: parseItems(userData[0]["todo"], context, yourlist: true),
 						),
 						// Popular
 						new CustomScrollView(
