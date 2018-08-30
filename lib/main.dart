@@ -3466,9 +3466,11 @@ class _GroupState extends State<Group> {
 
         if (groupData == null) {
             // This is what we show while we're loading
-			return new Container(
-				alignment: Alignment.center,
-				child: new CircularProgressIndicator()
+			return Scaffold(
+				body: Container(
+					alignment: Alignment.center,
+					child: new CircularProgressIndicator(),
+				)
 			);
         }
 
@@ -3650,9 +3652,11 @@ class _ArticleState extends State<Article> {
 
         if (articleData == null) {
             // This is what we show while we're loading
-			return new Container(
-				alignment: Alignment.center,
-				child: new CircularProgressIndicator()
+			return Scaffold(
+				body: Container(
+					alignment: Alignment.center,
+					child: new CircularProgressIndicator(),
+				)
 			);
         }
 
@@ -3941,9 +3945,11 @@ class _PlaceState extends State<Place> {
 		
         if (placeData == null) {
             // This is what we show while we're loading
-			return new Container(
-				alignment: Alignment.center,
-				child: new CircularProgressIndicator()
+			return Scaffold(
+				body: Container(
+					alignment: Alignment.center,
+					child: new CircularProgressIndicator(),
+				)
 			);
         }
 
