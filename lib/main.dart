@@ -1619,92 +1619,111 @@ class _LandingState extends State<Landing> {
 						),
 					),
 					(_details
-						? new Container(
-							color: const Color(0xFF000000),
-							padding: new EdgeInsets.fromLTRB(80.0, 0.0, 80.0, 0.0),
-							child: new Center(
-								child: new Row(
-									children: [
-										( item["done"] == true && item["done"] != null ? 
-											// is done, tap removes
-											new Expanded(
-												child: new InkWell(
-													// remove done
-													onTap: () => setThis("removedone", { "id": item["id"].toString() }, (){
-														setState(() {
-															// update icon and close details on success
-															item["done"] = false;
-															_details = false;
-														});
-													}, () { print("failure!"); }),
-													child: listButton(Icons.remove),
+						? new Stack(
+							fit: StackFit.expand,
+							children: <Widget>[
+								GestureDetector(
+									onTap: () => setState(() { _details = false; }),
+									child: Container(
+										color: const Color(0xFF000000),
+									),
+								),
+								Container(
+									padding: new EdgeInsets.fromLTRB(80.0, 0.0, 80.0, 0.0),
+									child: new Center(
+										child: new Row(
+											children: [
+												( item["done"] == true && item["done"] != null ? 
+													// is done, tap removes
+													new Expanded(
+														child: new InkWell(
+															// remove done
+															onTap: () => setThis("removedone", { "id": item["id"].toString() }, (){
+																setState(() {
+																	// update icon and close details on success
+																	item["done"] = false;
+																	_details = false;
+																});
+															}, () { print("failure!"); }),
+															child: listButton(Icons.remove),
+														),
+													)
+												:
+													// not done, tap adds
+													new Expanded(
+														child: new InkWell(
+															// add done
+															onTap: () => setThis("adddone", { "id": item["id"].toString() }, (){
+																setState(() {
+																	// update icon and close details on success
+																	item["done"] = true;
+																	// immediately remove item from todo list
+																	userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
+																	_details = false;
+																});
+															}, () { print("failure!"); }),
+															child: listButton(Icons.check),
+														),
+													)
 												),
-											)
-										:
-											// not done, tap adds
-											new Expanded(
-												child: new InkWell(
-													// add done
-													onTap: () => setThis("adddone", { "id": item["id"].toString() }, (){
-														setState(() {
-															// update icon and close details on success
-															item["done"] = true;
-															// immediately remove item from todo list
-															userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
-															_details = false;
-														});
-													}, () { print("failure!"); }),
-													child: listButton(Icons.check),
+												( item["bookmarked"] == true && item["bookmarked"] != null ? 
+													// has bookmark, tap removes
+													new Expanded(
+														child: new InkWell(
+															// remove bookmark
+															onTap: () => setThis("removebookmark", { "id": item["id"].toString() }, (){
+																setState(() {
+																	// update icon and close details on success
+																	item["bookmarked"] = false;
+																	// remove item from bookmarks list
+																	userData[0]["bookmarks"].removeWhere((i) => i["id"] == item["id"]);
+																	_details = false;
+																});
+															}, () { print("failure!"); }),
+															child: listButton(Icons.bookmark),
+														),
+													)
+												:
+													// no bookmark, tap adds
+													new Expanded(
+														child: new InkWell(
+															// add bookmark
+															onTap: () => setThis("addbookmark", { "id": item["id"].toString() }, (){
+																setState(() {
+																	// update icon and close details on success
+																	item["bookmarked"] = true;
+																	// add item to bookmarks list
+																	Map newItemData = JSON.decode(JSON.encode(item));
+																	userData[0]["bookmarks"].add(newItemData);
+																	_details = false;
+																});
+															}, () { print("failure!"); }),
+															child: listButton(Icons.bookmark_border),
+														),
+													)
 												),
-											)
-										),
-										( item["bookmarked"] == true && item["bookmarked"] != null ? 
-											// has bookmark, tap removes
-											new Expanded(
-												child: new InkWell(
-													// remove bookmark
-													onTap: () => setThis("removebookmark", { "id": item["id"].toString() }, (){
-														setState(() {
-															// update icon and close details on success
-															item["bookmarked"] = false;
-															// remove item from bookmarks list
-															userData[0]["bookmarks"].removeWhere((i) => i["id"] == item["id"]);
-															_details = false;
-														});
-													}, () { print("failure!"); }),
-													child: listButton(Icons.bookmark),
+												// no bookmark, tap adds
+												new Expanded(
+													child: new InkWell(
+														// remove from list
+														onTap: () => setThis("removelist", { "id": item["id"].toString() }, (){
+															// update icon on success
+															setState(() {
+																item["done"] = null;
+																// immediately remove item from list
+																userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
+																_details = false;
+															});	
+														}, () { print("failure!"); }),
+														child: listButton(Icons.delete_outline),
+													),
 												),
-											)
-										:
-											// no bookmark, tap adds
-											new Expanded(
-												child: new InkWell(
-													// add bookmark
-													onTap: () => setThis("addbookmark", { "id": item["id"].toString() }, (){
-														setState(() {
-															// update icon and close details on success
-															item["bookmarked"] = true;
-															// add item to bookmarks list
-															Map newItemData = JSON.decode(JSON.encode(item));
-															userData[0]["bookmarks"].add(newItemData);
-															_details = false;
-														});
-													}, () { print("failure!"); }),
-													child: listButton(Icons.bookmark_border),
-												),
-											)
-										),
-										new Expanded(
-											child: new InkWell(
-												onTap: () => setState(() { _details = false; }),
-												child: listButton(Icons.close),
-											),
-										),
-									]
-								)
-							),
-						)
-						: new Container()
+											]
+										)
+									),
+								),
+							]
+						) : new Container()
 					)
 				]
 			);
