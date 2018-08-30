@@ -874,7 +874,6 @@ class _CreatePasswordState extends State<CreatePassword> {
 				return json.decode(response.body)["error"];
 			};
 		} else {
-				print (response.body);
 			// If there was a problem
 			return "There was a problem communicating with the servers : " + response.statusCode.toString();
 		}
