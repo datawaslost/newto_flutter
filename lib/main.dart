@@ -3463,7 +3463,7 @@ class _GroupState extends State<Group> {
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
-							Icons.remove_circle_outline,
+							Icons.delete_outline,
 							color: const Color(0xFF2D2D2F),
 						),
 					) :
@@ -3737,7 +3737,8 @@ class _ArticleState extends State<Article> {
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
-							Icons.remove_circle_outline,
+							// Icons.remove_circle_outline,
+							Icons.delete_outline,
 							color: const Color(0xFF2D2D2F),
 						),
 					) :
