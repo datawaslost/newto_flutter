@@ -844,10 +844,43 @@ class _CreatePasswordState extends State<CreatePassword> {
 	
 	final String email;
 	final int organization;
-	
+	var passwordValidator;
+
 	final TextEditingController _passwordController = new TextEditingController();
 	final _passwordFormKey = GlobalKey<FormState>();
-	
+
+	void _passwordCheck() async {
+		
+		String password = _passwordController.text;
+		
+		if (password.isEmpty) {
+			return 'Please enter a password.';
+		}
+		
+		if (password.length < 8) {
+			return 'Your password must be at least 8 characters.';
+		}
+
+		final response = await http.post(
+			domain + 'api/passwordcheck/',
+			body: { "password": password },
+		);
+				
+		if (response.statusCode == 200) {
+			if (json.decode(response.body)["success"]) {
+				// If password is ok
+				return null;
+			} else {
+				return json.decode(response.body)["error"];
+			};
+		} else {
+				print (response.body);
+			// If there was a problem
+			return "There was a problem communicating with the servers : " + response.statusCode.toString();
+		}
+		
+	}
+
 	@override
 	Widget build(BuildContext context) {
 
@@ -925,11 +958,8 @@ class _CreatePasswordState extends State<CreatePassword> {
 								padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
 						        child: new PasswordField(
 							        controller: _passwordController,
-						        	validator: (value) {
-										if (value.length < 8) {
-											return 'Your password must be at least 8 characters.';
-										}
-										return null;
+							        validator: (value) {
+										return passwordValidator;
 									},
 						        ),
 							),
@@ -940,8 +970,14 @@ class _CreatePasswordState extends State<CreatePassword> {
 										children: <Widget>[
 											new Expanded(
 												child: new RaisedButton(
-													onPressed: () {
+													onPressed: () async {
+														// asynchronously validate email
+														var response = await _passwordCheck();
+														setState(() {
+															this.passwordValidator = response;
+														});
 														if (_passwordFormKey.currentState.validate()) {
+															// if email is valid, go to the next screen
 															Navigator.push(context, new MaterialPageRoute(
 																builder: (BuildContext context) => new CreateFinish(email, _passwordController.text, organization),
 															));
