@@ -1499,13 +1499,12 @@ class _LandingState extends State<Landing> {
 												)
 											);
 										} else {
-											// no link - should just close or also complete?
+											// no url link specified in cta - should just close or also complete?
 											Navigator.pop(context,true);
 										}
 									},
 									padding: new EdgeInsets.all(14.0),  
 									color: const Color(0xFF1033FF),
-									// color: const Color(0xFFE3F5FF),
 									textColor: const Color(0xFFFFFFFF),
 									child: new Text(
 										cta["name"].toUpperCase(),
@@ -1516,47 +1515,66 @@ class _LandingState extends State<Landing> {
 								),
 							)
 						]
+					),
+				);
+				_widgetList.add(
+					SizedBox(height: 10.0),
+				);
+			}
+			
+			_widgetList.add(
+				new Row(
+					children: <Widget>[
+						new Expanded(
+							child: new RaisedButton(
+								onPressed: () => setThis("adddone", { "id": item["id"].toString() }, (){
+									setState(() {
+										// update icon and close details on success
+										item["done"] = true;
+										// immediately remove item from todo list
+										userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
+										_details = false;
+										Navigator.pop(context,true);
+									});
+								}, () { print("failure!"); }),
+								// need to also complete the item here?
+								padding: new EdgeInsets.all(14.0),  
+								color: const Color(0xFFE3F5FF),
+								textColor: const Color(0xFF000000),
+								child: new Text(
+									"Mark as Done".toUpperCase(),
+									style: new TextStyle(
+										fontWeight: FontWeight.w800,
+									),
+								),
+							),
+						)
+					]
+				)
+			);
+			
+			if (item["group"] == true) {
+				// if it's a group, just go to that screen
+				Navigator.push(context, new MaterialPageRoute(
+					builder: (BuildContext context) => new Group(item["id"]),
+				));
+			} else {
+				// show quick content dialog for todo items and articles
+				showDialog(
+					context: context,
+					child: new AlertDialog(
+						contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
+						content: new SingleChildScrollView(
+							scrollDirection: Axis.vertical,
+							child: new Column(
+								mainAxisSize: MainAxisSize.min,
+								children: _widgetList,
+							),
+						),
 					)
 				);
 			}
 			
-			if (item["ctas"].length == 0) {
-				_widgetList.add(
-					new Row(
-						children: <Widget>[
-							new Expanded(
-								child: new RaisedButton(
-									onPressed: () => Navigator.pop(context,true),
-									padding: new EdgeInsets.all(14.0),  
-									color: const Color(0xFF1033FF),
-									// color: const Color(0xFFE3F5FF),
-									textColor: const Color(0xFFFFFFFF),
-									child: new Text(
-										"Complete".toUpperCase(),
-										style: new TextStyle(
-											fontWeight: FontWeight.w800,
-										),
-									),
-								),
-							)
-						]
-					)
-				);
-			}
-
-			showDialog(
-				context: context,
-				child: new AlertDialog(
-					contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
-					content: new SingleChildScrollView(
-						scrollDirection: Axis.vertical,
-						child: new Column(
-							mainAxisSize: MainAxisSize.min,
-							children: _widgetList,
-						),
-					),
-				)
-			);
 		}
 	
 		void carouselItem(item) {
@@ -1591,19 +1609,15 @@ class _LandingState extends State<Landing> {
 											height: 0.9,
 										),
 									),
-									new FlatButton(
-										// onPressed: () => Navigator.of(context).pushNamed('/yourlist'),
-										onPressed: () => _dialog(item),
-										child: new Icon(
-											Icons.arrow_forward,
-											color: const Color(0xFFFFFFFF),
-										),
+									new SizedBox(height: 5.0),
+									new Icon(
+										Icons.arrow_forward,
+										color: const Color(0xFFFFFFFF),
 									),
 								],
 							),
 						),
 					),
-					
 					(_details
 						? new Container(
 							color: const Color(0xFF000000),
@@ -1879,7 +1893,7 @@ class _listTodoState extends State<listTodo> {
 				( item["done"] != null ?
 					// if item is in our list
 					SlideAction(
-						child: new Icon( Icons.format_list_bulleted, size: 32.0, color: const Color(0xFF000000) ),
+						child: new Icon( Icons.playlist_play, size: 32.0, color: const Color(0xFF000000) ),
 						onTap: () => setThis("removelist", { "id": item["id"].toString() }, (){
 							// update icon on success
 							setState(() {
@@ -1891,7 +1905,7 @@ class _listTodoState extends State<listTodo> {
 					)
 				:
 					SlideAction(
-						child: new Icon( Icons.format_list_bulleted, size: 32.0, color: const Color(0xFF838383) ),
+						child: new Icon( Icons.playlist_add, size: 32.0, color: const Color(0xFF000000) ),
 						onTap: () => setThis("addlist", { "id": item["id"].toString() }, (){							
 							setState(() {
 								item["done"] = false;
@@ -1903,8 +1917,64 @@ class _listTodoState extends State<listTodo> {
 					)
 				)
 			];
-		} else {
+		} else if (yourlist == true) {
 			// if we're anywhere else but bookmarks
+			secondaryButtons = <Widget>[
+				( item["bookmarked"] == true && item["bookmarked"] != null ? 
+					SlideAction(
+						child: new Icon( Icons.bookmark, size: 32.0, color: const Color(0xFF000000)  ),
+						onTap: () => setThis("removebookmark", { "id": item["id"].toString() }, (){
+							// update icon on success
+							setState(() {
+								item["bookmarked"] = false;
+								// immediately remove item from bookmarks list
+								// userData[0]["bookmarks"].removeWhere((i) => i["id"] == item["id"]);
+							});	
+						}, () { print("failure!"); }),
+					)
+				:
+					SlideAction(
+						child: new Icon( Icons.bookmark_border, size: 32.0, color: const Color(0xFF000000) ),
+						onTap: () => setThis("addbookmark", { "id": item["id"].toString() }, (){
+							setState(() {
+								// update icon and close dialog on success
+								item["bookmarked"] = true;
+								// immediately add item to bookmarks list
+								Map newItemData = JSON.decode(JSON.encode(item));
+								userData[0]["bookmarks"].add(newItemData);
+							});	
+						}, () { print("failure!"); }),
+					)
+				),
+				( item["done"] != null ?
+					// if item is in our list
+					SlideAction(
+						child: new Icon( Icons.delete_outline, size: 32.0, color: const Color(0xFF000000) ),
+						onTap: () => setThis("removelist", { "id": item["id"].toString() }, (){
+							// update icon on success
+							setState(() {
+								item["done"] = null;
+								// immediately remove item from list
+								userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
+							});	
+						}, () { print("failure!"); }),
+					)
+				:
+					SlideAction(
+						child: new Icon( Icons.playlist_add, size: 32.0, color: const Color(0xFF000000) ),
+						onTap: () => setThis("addlist", { "id": item["id"].toString() }, (){							
+							setState(() {
+								item["done"] = false;
+								// immediately add item to your list
+								Map newItemData = JSON.decode(JSON.encode(item));
+								userData[0]["todo"].add(newItemData);
+							});
+						}, () { print("failure!"); }),
+					)
+				)
+			];
+		} else  {
+			// if we're anywhere else but bookmarks or your list
 			secondaryButtons = <Widget>[
 				( item["bookmarked"] == true && item["bookmarked"] != null ? 
 					SlideAction(
@@ -1957,7 +2027,7 @@ class _listTodoState extends State<listTodo> {
 					onTap: () => setThis("adddone", { "id": item["id"].toString() }, (){
 						setState(() {
 							item["done"] = true;
-							// set done marker in case we see it before the data refreshes
+							// set done to true in the user data so that it's persistent until the data refreshes
 							int index = userData[0]["todo"].indexWhere((i) => i["id"] == item["id"]);
 							if (index != -1) userData[0]["todo"][index]["done"] = true;
 						});	
@@ -1975,6 +2045,9 @@ class _listTodoState extends State<listTodo> {
 						// update icon and close details on success
 						setState(() {
 							item["bookmarked"] = false;
+							// set bookmarked to false in the user data so that it's persistent until the data refreshes
+							int index = userData[0]["bookmarks"].indexWhere((i) => i["id"] == item["id"]);
+							if (index != -1) userData[0]["bookmarks"][index]["bookmarked"] = false;
 							// immediately remove item from bookmarks list
 							// userData[0]["bookmarks"].removeWhere((i) => i["id"] == item["id"]);
 						});	
@@ -1988,9 +2061,6 @@ class _listTodoState extends State<listTodo> {
 					onTap: () => setThis("addbookmark", { "id": item["id"].toString() }, (){
 						setState(() {
 							item["bookmarked"] = true;
-							// immediately add item to bookmarks
-							Map newItemData = JSON.decode(JSON.encode(item));
-							userData[0]["bookmarks"].add(newItemData);
 						});	
 					}, () { print("failure!"); }),
 				);
@@ -2000,7 +2070,7 @@ class _listTodoState extends State<listTodo> {
 			if ( item["done"] != null ) {
 				// if item is in our list
 				mainButton = GestureDetector(
-					child: todoButton(Icons.format_list_bulleted, size: 26.0, color: const Color(0xFFA2EA3A) ),
+					child: todoButton(Icons.playlist_play, size: 26.0, color: const Color(0xFFA2EA3A) ),
 					// remove bookmark
 					onTap: () => setThis("removelist", { "id": item["id"].toString() }, (){
 						// update icon and close details on success
@@ -2014,7 +2084,7 @@ class _listTodoState extends State<listTodo> {
 			} else {
 				// if item is not in our bookmarks (ie, has just been removed)
 				mainButton = GestureDetector(
-					child: todoButton(Icons.format_list_bulleted, size: 26.0, color: const Color(0xFFE0E1EA) ),
+					child: todoButton(Icons.playlist_add, size: 26.0, color: const Color(0xFFE0E1EA) ),
 					// add to list
 					onTap: () => setThis("addlist", { "id": item["id"].toString() }, (){
 						setState(() {
@@ -3671,7 +3741,7 @@ class _ArticleState extends State<Article> {
 																overflow: TextOverflow.fade,
 																style: new TextStyle(
 																	fontWeight: FontWeight.w800,
-																	fontSize: 28.0,
+																	fontSize: 14.0,
 																	height: 0.9,
 																),
 															),
@@ -3738,7 +3808,6 @@ class _ArticleState extends State<Article> {
 							});
 						}, () { print("failure!"); }),
 						child: new Icon(
-							// Icons.remove_circle_outline,
 							Icons.delete_outline,
 							color: const Color(0xFF2D2D2F),
 						),
@@ -3994,7 +4063,7 @@ class _PlaceState extends State<Place> {
 															overflow: TextOverflow.fade,
 															style: new TextStyle(
 																fontWeight: FontWeight.w800,
-																fontSize: 28.0,
+																fontSize: 14.0,
 																height: 0.9,
 															),
 														),
