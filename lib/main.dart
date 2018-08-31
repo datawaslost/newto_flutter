@@ -82,7 +82,7 @@ class _NewtoState extends State<Newto> {
 }
 
 
-void bottomBar(context, _selected) {
+dynamic bottomBar(context, _selected) {
 
 
 	var _navOptions = [
@@ -157,7 +157,7 @@ void bottomBar(context, _selected) {
 }
 
 
-void getUserData(token, success, fail) async {
+dynamic getUserData(token, success, fail) async {
 	
 	if (token == null) {
 		// get stored token
@@ -185,7 +185,7 @@ void getUserData(token, success, fail) async {
 }
 
 
-void checkIfToken(success, fail) async {
+dynamic checkIfToken(success, fail) async {
 	
 	// obtain shared preferences
 	final prefs = await SharedPreferences.getInstance();
@@ -201,7 +201,7 @@ void checkIfToken(success, fail) async {
 }
 
 
-void saveToken(token) async {
+dynamic saveToken(token) async {
 	
 	// obtain shared preferences
 	final prefs = await SharedPreferences.getInstance();
@@ -210,7 +210,7 @@ void saveToken(token) async {
 }
 
 
-void initData(context) async {
+dynamic initData(context) async {
 	
 	// check for internet connectivity
 	new Connectivity().checkConnectivity().then((result) {
@@ -643,7 +643,7 @@ class _CreateEmailState extends State<CreateEmail> {
 	int _organization;
 	var usernameValidator;
 	
-	void _emailCheck() async {
+	dynamic _emailCheck() async {
 		
 		String email = _emailController.text;
 		
@@ -849,7 +849,7 @@ class _CreatePasswordState extends State<CreatePassword> {
 	final TextEditingController _passwordController = new TextEditingController();
 	final _passwordFormKey = GlobalKey<FormState>();
 
-	void _passwordCheck() async {
+	dynamic _passwordCheck() async {
 		
 		String password = _passwordController.text;
 		
@@ -1092,7 +1092,7 @@ class _CreateFinishState extends State<CreateFinish> {
 		
 	}
 
-	void _getOrganizations() async {
+	dynamic _getOrganizations() async {
 		
 		if (_organizations.length > 0) {
 			return _organizations;
@@ -1307,7 +1307,7 @@ class _CreateFinishState extends State<CreateFinish> {
 }
 
 
-void imgDefault(img, defaultImg) {
+dynamic imgDefault(img, defaultImg) {
 	if (img == null || img == "") {
 		// default image
 		return new AssetImage('images/' + defaultImg);
@@ -1319,7 +1319,7 @@ void imgDefault(img, defaultImg) {
 }
 
 
-void discoverItem(id, txt, img, context, { String sponsored = null, bool bookmarked = false }) {
+dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool bookmarked = false }) {
 	
 	return new GestureDetector(
 		onTap: () {
@@ -1425,7 +1425,7 @@ class _LandingState extends State<Landing> {
 	@override
 	Widget build(BuildContext context) {
 	  
-		void _dialog(item) {
+		dynamic _dialog(item) {
 			
 			List<Widget> _widgetList = [
 				new Row(
@@ -1577,7 +1577,7 @@ class _LandingState extends State<Landing> {
 			
 		}
 	
-		void carouselItem(item) {
+		dynamic carouselItem(item) {
 			return new Stack(
 				children: [
 				    new GestureDetector(
@@ -1693,7 +1693,7 @@ class _LandingState extends State<Landing> {
 																	// update icon and close details on success
 																	item["bookmarked"] = true;
 																	// add item to bookmarks list
-																	Map newItemData = JSON.decode(JSON.encode(item));
+																	Map newItemData = json.decode(json.encode(item));
 																	userData[0]["bookmarks"].add(newItemData);
 																	_details = false;
 																});
@@ -1846,7 +1846,7 @@ class _LandingState extends State<Landing> {
 	
 }
 
-void listButton(icon, { double size = 50.0 }) {
+dynamic listButton(icon, { double size = 50.0 }) {
 	return new Container(
 		width: size,
 		height: size,
@@ -1863,7 +1863,7 @@ void listButton(icon, { double size = 50.0 }) {
 }
 
 
-void todoButton(icon, { double size = 50.0, var color = const Color(0xFFFFFFFF)  }) {
+dynamic todoButton(icon, { double size = 50.0, var color = const Color(0xFFFFFFFF)  }) {
 	return new Container(
 		width: size,
 		height: size,
@@ -1929,7 +1929,7 @@ class _listTodoState extends State<listTodo> {
 							setState(() {
 								item["done"] = false;
 								// immediately add item to your list
-								Map newItemData = JSON.decode(JSON.encode(item));
+								Map newItemData = json.decode(json.encode(item));
 								userData[0]["todo"].add(newItemData);
 							});
 						}, () { print("failure!"); }),
@@ -1959,7 +1959,7 @@ class _listTodoState extends State<listTodo> {
 								// update icon and close dialog on success
 								item["bookmarked"] = true;
 								// immediately add item to bookmarks list
-								Map newItemData = JSON.decode(JSON.encode(item));
+								Map newItemData = json.decode(json.encode(item));
 								userData[0]["bookmarks"].add(newItemData);
 							});	
 						}, () { print("failure!"); }),
@@ -1985,7 +1985,7 @@ class _listTodoState extends State<listTodo> {
 							setState(() {
 								item["done"] = false;
 								// immediately add item to your list
-								Map newItemData = JSON.decode(JSON.encode(item));
+								Map newItemData = json.decode(json.encode(item));
 								userData[0]["todo"].add(newItemData);
 							});
 						}, () { print("failure!"); }),
@@ -2015,7 +2015,7 @@ class _listTodoState extends State<listTodo> {
 								// update icon and close dialog on success
 								item["bookmarked"] = true;
 								// immediately add item to bookmarks list
-								Map newItemData = JSON.decode(JSON.encode(item));
+								Map newItemData = json.decode(json.encode(item));
 								userData[0]["bookmarks"].add(newItemData);
 							});	
 						}, () { print("failure!"); }),
@@ -2109,14 +2109,15 @@ class _listTodoState extends State<listTodo> {
 						setState(() {
 							item["done"] = false;
 							// immediately add item to your list
-							Map newItemData = JSON.decode(JSON.encode(item));
+							Map newItemData = json.decode(json.encode(item));
 							userData[0]["todo"].add(newItemData);
 						});	
 					}, () { print("failure!"); }),
 				);
 			}
 		}
-				
+		
+		if (item["done"] != null || yourlist != true) {
 		return Slidable(
 			delegate: SlidableDrawerDelegate(),
 			actionExtentRatio: 0.25,
@@ -2153,12 +2154,31 @@ class _listTodoState extends State<listTodo> {
 			),
 			secondaryActions: secondaryButtons,
 		);
+		} else {
+			return RaisedButton(
+				onPressed: () => setThis("addlist", { "id": item["id"].toString() }, (){							
+					setState(() {
+						item["done"] = false;
+					});
+				}, () { print("failure!"); }),
+				padding: new EdgeInsets.all(20.0),  
+				color: const Color(0xFFE3F5FF),
+				textColor: const Color(0xFF000000),
+				child: new Text(
+					'Item removed from list. Tap to undo',
+					style: new TextStyle(
+						fontWeight: FontWeight.w800,
+					),
+				),
+			);
+
+		}
 		
 	}
 }
 
 
-void listGroup(int id, String txt, amount, context, {bookmarked = false, String sponsored}) {
+dynamic listGroup(int id, String txt, amount, context, {bookmarked = false, String sponsored}) {
 	return new GestureDetector(
 		onTap: () {
 			Navigator.push(context, new MaterialPageRoute(
@@ -2242,7 +2262,7 @@ void listGroup(int id, String txt, amount, context, {bookmarked = false, String 
 }
 
 
-void listGroupImage(int id, String txt, amount, img, context, {bookmarked = false, String sponsored}) {
+dynamic listGroupImage(int id, String txt, amount, img, context, {bookmarked = false, String sponsored}) {
 
 	return new GestureDetector(
 		onTap: () {
@@ -2326,7 +2346,163 @@ void listGroupImage(int id, String txt, amount, img, context, {bookmarked = fals
 }
 
 
-void parseItems(list, context, { bookmarked = false, yourlist = false } ) {
+class addButton extends StatefulWidget {
+	addButton();
+	@override
+	_addButtonState createState() => new _addButtonState();
+}
+
+
+class _addButtonState extends State<addButton> {
+
+	_addButtonState();
+	
+	@override
+	Widget build(BuildContext context) {
+
+
+		final TextEditingController _todoController = new TextEditingController();
+		final _todoFormKey = GlobalKey<FormState>();
+
+		return new SliverPadding(
+			padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+			sliver: new SliverGrid.count(
+				crossAxisSpacing: 10.0,
+				mainAxisSpacing: 10.0,
+				crossAxisCount: 1,
+				childAspectRatio: 4.0,
+				children: <Widget>[
+					new Container(
+						height: 105.0,
+						decoration: new BoxDecoration(
+							color: const Color(0xFFF3F3F7),
+						),
+						child: new Row(
+							children: <Widget>[
+								new Expanded( child: new Container() ),
+								new Container(
+									decoration: new BoxDecoration (
+										borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
+										color: const Color(0xFF1033FF),
+									),
+									padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+									child: new FlatButton.icon(
+										onPressed: () => showDialog(
+											context: context,
+											child: new AlertDialog(
+												contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
+												content: new SingleChildScrollView(
+													scrollDirection: Axis.vertical,
+													child: new Column(
+														mainAxisSize: MainAxisSize.min,
+														children: [
+															new Container(
+																padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+																alignment: Alignment.topLeft,
+																child: new Text(
+																	'Add a new Todo Item'.toUpperCase(),
+																	style: new TextStyle(
+																		color: const Color(0xFF838383),
+																		fontWeight: FontWeight.w800,
+																		fontSize: 14.0,
+																	),
+																),
+															),
+															new Form(
+																key: _todoFormKey,
+																child: new Container(
+																	padding: new EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
+																	child: new TextFormField(
+															        	controller: _todoController,
+															        	validator: (value) {
+																			if (value.isEmpty) return 'Please enter text for your todo item.';
+																			return null;
+																		},
+																		style: new TextStyle(
+																			color: const Color(0xFF000000),
+																			fontWeight: FontWeight.w800,
+																			fontSize: 18.0,
+																		),
+																		decoration: new InputDecoration(
+															            	fillColor: const Color(0x66E0E1EA),
+																			filled: true,
+																		),
+																		maxLines: 3,
+															        ),
+																),
+															),
+															
+															new RaisedButton(
+																onPressed: () {
+																	if (_todoFormKey.currentState.validate()) {
+																		print(_todoController.text);
+																		setThis("addtodo", { "name": _todoController.text }, (data){
+																			// on success
+																			print(data);
+																			setState(() {
+																				Map newTodoData = {
+																					"name": _todoController.text,
+																					"id" : data["id"],
+																					"done": false,
+																					"place": false,
+																					"group": false,
+																					"article": false,
+																					"order": 1,
+																				};
+																				userData[0]["todo"].add(newTodoData);
+																			});
+																			Navigator.pop(context,true);
+																		}, (data) { print("failure!"); },
+																		returndata: true,
+																		);
+																	}
+																},
+																padding: new EdgeInsets.all(14.0),  
+																color: const Color(0xFF1033FF),
+																textColor: const Color(0xFFFFFFFF),
+																child: new Text(
+																	'Add Todo Item'.toUpperCase(),
+																	style: new TextStyle(
+																		fontWeight: FontWeight.w800,
+																	),
+																),
+															),
+											
+														],
+													),
+												),
+											)
+										),
+										icon: new Icon(
+											Icons.add, 
+											color: const Color(0xFFFFFFFF),
+											size: 12.0,
+										),
+										label: new Text(
+											'Add Item'.toUpperCase(),
+											style: new TextStyle(
+												color: const Color(0xFFFFFFFF),
+												fontFamily: 'Montserrat',
+												fontWeight: FontWeight.w800,
+												fontSize: 12.0,
+											),
+										),
+									),
+								),
+								new Expanded( child: new Container() ),
+							]
+						),
+					),
+				],
+			),
+		);
+
+	}
+	
+}
+
+
+dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 	
 	List<Widget> _listItems = [];
 	List _listTodos = [];
@@ -2420,7 +2596,9 @@ void parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 
 		}
 	}
-		
+
+	if (yourlist == true) _listItems.add(addButton());
+						
 	// bottom padding
 	_listItems.add(
 		new SliverPadding(
@@ -2555,7 +2733,7 @@ class _DiscoverState extends State<Discover> {
 		getLocation();		
     }
 
-	void searchCategory(cat) {
+	dynamic searchCategory(cat) {
 		
 		return new GestureDetector(
 			onTap: () {
@@ -2744,7 +2922,7 @@ class _SearchState extends State<Search> {
 			});		
 		}
 		
-		void tagCard(tag, selected, tagnum) {
+		dynamic tagCard(tag, selected, tagnum) {
 			
 			var tagColor;
 			
@@ -2926,7 +3104,7 @@ class _SearchState extends State<Search> {
 }
 
 
-void placeCard(id, txt, img, stars, distance, context, { featured = false, bookmarked = false }) {
+dynamic placeCard(id, txt, img, stars, distance, context, { featured = false, bookmarked = false }) {
 	
 	// calculate stars
 	List<Widget> _starsList = [ new SizedBox( width: 20.0 ) ];
@@ -3049,7 +3227,7 @@ void placeCard(id, txt, img, stars, distance, context, { featured = false, bookm
 }
 
 
-void getPlacesData(filters) async {
+dynamic getPlacesData(filters) async {
 	
 	// get stored token
 	final prefs = await SharedPreferences.getInstance();
@@ -3373,7 +3551,7 @@ class _AccountState extends State<Account> {
 }
 
 
-void setThis(settype, body, success, fail) async {
+void setThis(settype, body, success, fail, { returndata = false }) async {
 
 	// get stored token
 	final prefs = await SharedPreferences.getInstance();
@@ -3394,10 +3572,17 @@ void setThis(settype, body, success, fail) async {
 	if (response.statusCode == 200) {
 		// If server returns an OK response
 		if (json.decode(response.body)["success"]) {
+			if (returndata){
+				success(json.decode(response.body));
+			} else {
 			success();
+			}
 		} else {
-			print(response.body);
-			fail();
+			if (returndata){
+				fail(json.decode(response.body));
+			} else {
+				fail();
+			}
 		}
 	} else {
 		// If that response was not OK, throw an error.
@@ -3566,7 +3751,7 @@ class _GroupState extends State<Group> {
 								groupData["todo"] = true;
 								groupData["done"] = false;
 								// add group to todo list
-								Map newGroupData = JSON.decode(JSON.encode(groupData));
+								Map newGroupData = json.decode(json.encode(groupData));
 								newGroupData["items"] = groupData["items"].length;
 								newGroupData["order"] = 1;
 								userData[0]["todo"].add(newGroupData);
@@ -3599,7 +3784,7 @@ class _GroupState extends State<Group> {
 							setState(() {
 								groupData["bookmarked"] = true;
 								// add group to bookmarks list
-								Map newGroupData = JSON.decode(JSON.encode(groupData));
+								Map newGroupData = json.decode(json.encode(groupData));
 								newGroupData["items"] = groupData["items"].length;
 								newGroupData["order"] = 1;
 								userData[0]["bookmarks"].add(newGroupData);
@@ -3842,7 +4027,7 @@ class _ArticleState extends State<Article> {
 								articleData["todo"] = true;
 								articleData["done"] = false;
 								// add article to todo list
-								Map newArticleData = JSON.decode(JSON.encode(articleData));
+								Map newArticleData = json.decode(json.encode(articleData));
 								newArticleData["order"] = 1;
 								userData[0]["todo"].add(newArticleData);
 							});
@@ -3874,7 +4059,7 @@ class _ArticleState extends State<Article> {
 							setState(() {
 								articleData["bookmarked"] = true;
 								// add article to bookmarks list
-								Map newArticleData = JSON.decode(JSON.encode(articleData));
+								Map newArticleData = json.decode(json.encode(articleData));
 								newArticleData["order"] = 1;
 								userData[0]["bookmarks"].add(newArticleData);
 							});
@@ -4222,7 +4407,7 @@ class _PlaceState extends State<Place> {
 							setState(() {
 								placeData["bookmarked"] = true;
 								// add place to bookmarks list
-								Map newPlaceData = JSON.decode(JSON.encode(placeData));
+								Map newPlaceData = json.decode(json.encode(placeData));
 								newPlaceData["order"] = 1;
 								newPlaceData["place"] = true;
 								newPlaceData["group"] = false;
