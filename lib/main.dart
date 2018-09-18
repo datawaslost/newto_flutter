@@ -2380,6 +2380,7 @@ dynamic addItem(context) {
 							child: new Container(
 								padding: new EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
 								child: new TextFormField(
+									autofocus: true,
 						        	controller: _todoController,
 						        	validator: (value) {
 										if (value.isEmpty) return 'Please enter text for your todo item.';
