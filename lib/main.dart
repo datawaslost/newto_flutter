@@ -1902,7 +1902,7 @@ class _listTodoState extends State<listTodo> {
 	bool yourlist;
 	var mainButton;
 	List secondaryButtons = <Widget>[];
-
+	
 	@override
 	Widget build(BuildContext context) {
 		
@@ -2102,12 +2102,13 @@ class _listTodoState extends State<listTodo> {
 					}, () { print("failure!"); }),
 				);
 			} else {
-				// if item is not in our bookmarks (ie, has just been removed)
+				// if item is not in our todo list
 				mainButton = GestureDetector(
 					child: todoButton(Icons.playlist_add, size: 26.0, color: const Color(0xFFE0E1EA) ),
 					// add to list
 					onTap: () => setThis("addlist", { "id": item["id"].toString() }, (){
 						setState(() {
+							// this setstate isn't updating the data for the other tab
 							item["done"] = false;
 							// immediately add item to your list
 							Map newItemData = json.decode(json.encode(item));
@@ -2347,6 +2348,103 @@ dynamic listGroupImage(int id, String txt, amount, img, context, {bookmarked = f
 }
 
 
+
+dynamic addItem(context) {
+
+	final TextEditingController _todoController = new TextEditingController();
+	final _todoFormKey = GlobalKey<FormState>();
+
+	showDialog(
+		context: context,
+		child: new AlertDialog(
+			contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
+			content: new SingleChildScrollView(
+				scrollDirection: Axis.vertical,
+				child: new Column(
+					mainAxisSize: MainAxisSize.min,
+					children: [
+						new Container(
+							padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+							alignment: Alignment.topLeft,
+							child: new Text(
+								'Add a new Todo Item'.toUpperCase(),
+								style: new TextStyle(
+									color: const Color(0xFF838383),
+									fontWeight: FontWeight.w800,
+									fontSize: 14.0,
+								),
+							),
+						),
+						new Form(
+							key: _todoFormKey,
+							child: new Container(
+								padding: new EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
+								child: new TextFormField(
+						        	controller: _todoController,
+						        	validator: (value) {
+										if (value.isEmpty) return 'Please enter text for your todo item.';
+										return null;
+									},
+									style: new TextStyle(
+										color: const Color(0xFF000000),
+										fontWeight: FontWeight.w800,
+										fontSize: 18.0,
+									),
+									decoration: new InputDecoration(
+						            	fillColor: const Color(0x66E0E1EA),
+										filled: true,
+									),
+									maxLines: 3,
+						        ),
+							),
+						),
+						
+						new RaisedButton(
+							onPressed: () {
+								if (_todoFormKey.currentState.validate()) {
+									print(_todoController.text);
+									setThis("addtodo", { "name": _todoController.text }, (data){
+										// on success
+										print(data);
+										// setState(() {
+											Map newTodoData = {
+												"name": _todoController.text,
+												"id" : data["id"],
+												"done": false,
+												"place": false,
+												"group": false,
+												"article": false,
+												"order": 1,
+											};
+											userData[0]["todo"].add(newTodoData);
+										// });
+										Navigator.pop(context,true);
+									}, (data) { print("failure!"); },
+									returndata: true,
+									);
+								}
+							},
+							padding: new EdgeInsets.all(14.0),  
+							color: const Color(0xFF1033FF),
+							textColor: const Color(0xFFFFFFFF),
+							child: new Text(
+								'Add Todo Item'.toUpperCase(),
+								style: new TextStyle(
+									fontWeight: FontWeight.w800,
+								),
+							),
+						),
+		
+					],
+				),
+			),
+		)
+	);
+
+}
+
+
+/*
 class addButton extends StatefulWidget {
 	addButton();
 	@override
@@ -2360,7 +2458,6 @@ class _addButtonState extends State<addButton> {
 	
 	@override
 	Widget build(BuildContext context) {
-
 
 		final TextEditingController _todoController = new TextEditingController();
 		final _todoFormKey = GlobalKey<FormState>();
@@ -2501,7 +2598,7 @@ class _addButtonState extends State<addButton> {
 	}
 	
 }
-
+*/
 
 dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 	
@@ -2598,7 +2695,7 @@ dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 		}
 	}
 
-	if (yourlist == true) _listItems.add(addButton());
+	// if (yourlist == true) _listItems.add(addButton());
 						
 	// bottom padding
 	_listItems.add(
@@ -2662,10 +2759,24 @@ class _YourListState extends State<YourList> {
 				body: new TabBarView(
 					children: [
 						// Your List
+						/*
 						new CustomScrollView(
-							primary: false,
+							primary: true,
 							slivers: parseItems(userData[0]["todo"], context, yourlist: true),
 						),
+						*/
+						
+						new Scaffold(
+							body: new CustomScrollView(
+								slivers: parseItems(userData[0]["todo"], context, yourlist: true),
+							),
+							floatingActionButton: new FloatingActionButton(
+								child: new Icon(Icons.add),
+								onPressed: () => addItem(context),
+								backgroundColor: const Color(0xFF1033FF),
+							),
+						),
+
 						// Popular
 						new CustomScrollView(
 							primary: false,

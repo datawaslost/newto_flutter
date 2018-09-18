@@ -21,7 +21,7 @@ PODS:
 
 DEPENDENCIES:
   - connectivity (from `Pods/.symlinks/plugins/connectivity-0.3.1/ios`)
-  - Flutter (from `Pods/.symlinks/flutter/ios-release`)
+  - Flutter (from `Pods/.symlinks/flutter/ios`)
   - flutter_webview_plugin (from `Pods/.symlinks/plugins/flutter_webview_plugin-0.2.1+2/ios`)
   - location (from `Pods/.symlinks/plugins/flutterlocation-master/ios`)
   - map_view (from `Pods/.symlinks/plugins/flutter_google_map_view-master/ios`)
@@ -31,7 +31,7 @@ EXTERNAL SOURCES:
   connectivity:
     :path: Pods/.symlinks/plugins/connectivity-0.3.1/ios
   Flutter:
-    :path: Pods/.symlinks/flutter/ios-release
+    :path: Pods/.symlinks/flutter/ios
   flutter_webview_plugin:
     :path: Pods/.symlinks/plugins/flutter_webview_plugin-0.2.1+2/ios
   location:
