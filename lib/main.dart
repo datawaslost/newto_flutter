@@ -2601,7 +2601,11 @@ class _addButtonState extends State<addButton> {
 }
 */
 
+
 dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
+	
+	print("parseItems()");
+	// print(list);
 	
 	List<Widget> _listItems = [];
 	List _listTodos = [];
@@ -2710,6 +2714,52 @@ dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 }
 
 
+class listScreen extends StatefulWidget {
+	listScreen(this.list, this.context, this.yourlist);
+	var list;
+	var context;
+	bool yourlist;
+	@override
+	_listScreenState createState() => new _listScreenState(this.list, this.context, this.yourlist);
+}
+
+
+class _listScreenState extends State<listScreen> {
+
+	_listScreenState(this.list, this.context, this.yourlist);
+	
+	var list;
+	var context;
+	bool yourlist;
+	
+	@override
+	Widget build(BuildContext context) {
+		
+		print("list build");
+		print(list[list.length-1]);
+
+		if (yourlist) {
+			return new Scaffold(
+				body: new CustomScrollView(
+					slivers: parseItems(userData[0]["todo"], context, yourlist: true),
+				),
+				floatingActionButton: new FloatingActionButton(
+					child: new Icon(Icons.add),
+					onPressed: () => addItem(context),
+					backgroundColor: const Color(0xFF1033FF),
+				),
+			);
+		} else {
+			return new CustomScrollView(
+				primary: false,
+				slivers: parseItems(list, context),
+			);
+		}
+
+	}
+
+}
+
 class YourList extends StatefulWidget {
 	YourList({Key key, this.title}) : super(key: key);
 	final String title;
@@ -2760,34 +2810,9 @@ class _YourListState extends State<YourList> {
 				body: new TabBarView(
 					children: [
 						// Your List
-						/*
-						new CustomScrollView(
-							primary: true,
-							slivers: parseItems(userData[0]["todo"], context, yourlist: true),
-						),
-						*/
-						
-						new Scaffold(
-							body: new CustomScrollView(
-								slivers: parseItems(userData[0]["todo"], context, yourlist: true),
-							),
-							floatingActionButton: new FloatingActionButton(
-								child: new Icon(Icons.add),
-								onPressed: () => addItem(context),
-								backgroundColor: const Color(0xFF1033FF),
-							),
-						),
-
-						// Popular
-						new CustomScrollView(
-							primary: false,
-							slivers: parseItems(userData[0]["organization"]["popular"], context),
-						),
-						// Metro
-						new CustomScrollView(
-							primary: false,
-							slivers: parseItems(userData[0]["organization"]["discover_items"], context),
-						),
+						listScreen(userData[0]["todo"], context, true),
+						listScreen(userData[0]["organization"]["popular"], context, false),
+						listScreen(userData[0]["organization"]["discover_items"], context, false),
 					],
 				),
 				bottomNavigationBar: bottomBar(context, 1),
