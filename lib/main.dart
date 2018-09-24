@@ -2120,42 +2120,42 @@ class _listTodoState extends State<listTodo> {
 		}
 		
 		if (item["done"] != null || yourlist != true) {
-		return Slidable(
-			delegate: SlidableDrawerDelegate(),
-			actionExtentRatio: 0.25,
-			child: Card(
-				elevation: 3.0,
-				child: Row(
-					mainAxisSize: MainAxisSize.min,
-					crossAxisAlignment: CrossAxisAlignment.center,
-					children: [
-						Container(
-							padding: const EdgeInsets.fromLTRB(20.0, 10.0, 15.0, 10.0),
-							child: mainButton,
-						),
-						Expanded(
-							child: Text(
-								item["name"],
-								textAlign: TextAlign.left,
-								style: TextStyle(
-									color: const Color(0xFF000000),
-									fontWeight: FontWeight.w700,
-									fontSize: 14.0,
+			return Slidable(
+				delegate: SlidableDrawerDelegate(),
+				actionExtentRatio: 0.25,
+				child: Card(
+					elevation: 3.0,
+					child: Row(
+						mainAxisSize: MainAxisSize.min,
+						crossAxisAlignment: CrossAxisAlignment.center,
+						children: [
+							Container(
+								padding: const EdgeInsets.fromLTRB(20.0, 10.0, 15.0, 10.0),
+								child: mainButton,
+							),
+							Expanded(
+								child: Text(
+									item["name"],
+									textAlign: TextAlign.left,
+									style: TextStyle(
+										color: const Color(0xFF000000),
+										fontWeight: FontWeight.w700,
+										fontSize: 14.0,
+									),
 								),
 							),
-						),
-						(bookmarked ? 
-							SizedBox(
-								width: 40.0,
-								child: Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0)
-							) : Container()
-						),
-						Container(),
-					],
+							(bookmarked ? 
+								SizedBox(
+									width: 40.0,
+									child: Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0)
+								) : Container()
+							),
+							Container(),
+						],
+					),
 				),
-			),
-			secondaryActions: secondaryButtons,
-		);
+				secondaryActions: secondaryButtons,
+			);
 		} else {
 			return RaisedButton(
 				onPressed: () => setThis("addlist", { "id": item["id"].toString() }, (){							
@@ -2403,10 +2403,7 @@ dynamic addItem(context) {
 						new RaisedButton(
 							onPressed: () {
 								if (_todoFormKey.currentState.validate()) {
-									print(_todoController.text);
 									setThis("addtodo", { "name": _todoController.text }, (data){
-										// on success
-										print(data);
 										// setState(() {
 											Map newTodoData = {
 												"name": _todoController.text,
@@ -2688,7 +2685,7 @@ dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 						crossAxisCount: 1,
 						childAspectRatio: 4.0,
 						children: <Widget>[
-							listTodo(item, context, bookmarked: bookmarked, yourlist: yourlist),																
+							listTodo(item, context, bookmarked: bookmarked, yourlist: yourlist),	
 						],
 					),
 				)
@@ -2737,8 +2734,6 @@ class _listScreenState extends State<listScreen> {
 			var current_todos = parseItems(userData[0]["todo"], context, yourlist: true);
 			var completed_todos = parseItems(userData[0]["complete"], context, yourlist: true);
 			
-			print(completed_todos.length);
-			
 			current_todos.add(
 				
 				new SliverPadding(
@@ -2763,12 +2758,9 @@ class _listScreenState extends State<listScreen> {
 				)
 
 			);
-			
+						
 			var todos = new List<Widget>.from(current_todos)..addAll(completed_todos);
 			
-			print(todos.length);
-
-
 			return new Scaffold(
 				body: new CustomScrollView(
 					slivers: todos,
@@ -2779,6 +2771,7 @@ class _listScreenState extends State<listScreen> {
 					backgroundColor: const Color(0xFF1033FF),
 				),
 			);
+			
 		} else {
 			return new CustomScrollView(
 				primary: false,
