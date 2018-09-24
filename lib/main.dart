@@ -2604,9 +2604,6 @@ class _addButtonState extends State<addButton> {
 
 dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 	
-	print("parseItems()");
-	// print(list);
-	
 	List<Widget> _listItems = [];
 	List _listTodos = [];
 
@@ -2735,13 +2732,46 @@ class _listScreenState extends State<listScreen> {
 	@override
 	Widget build(BuildContext context) {
 		
-		print("list build");
-		print(list[list.length-1]);
-
 		if (yourlist) {
+						
+			var current_todos = parseItems(userData[0]["todo"], context, yourlist: true);
+			var completed_todos = parseItems(userData[0]["complete"], context, yourlist: true);
+			
+			print(completed_todos.length);
+			
+			current_todos.add(
+				
+				new SliverPadding(
+					padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+					sliver: new SliverGrid.count(
+						crossAxisSpacing: 10.0,
+						mainAxisSpacing: 10.0,
+						crossAxisCount: 1,
+						childAspectRatio: 8.0,
+						children: <Widget>[
+							new Text(
+								'Completed'.toUpperCase(),
+								textAlign: TextAlign.center,
+								style: new TextStyle(
+									color: const Color(0xFF000000),
+									fontWeight: FontWeight.w800,
+									fontSize: 28.0,
+								),
+							)
+						],
+					),
+				)
+
+			);
+			
+			var todos = new List<Widget>.from(current_todos)..addAll(completed_todos);
+			
+			print(todos.length);
+
+
 			return new Scaffold(
 				body: new CustomScrollView(
-					slivers: parseItems(userData[0]["todo"], context, yourlist: true),
+					slivers: todos,
 				),
 				floatingActionButton: new FloatingActionButton(
 					child: new Icon(Icons.add),
@@ -2810,7 +2840,7 @@ class _YourListState extends State<YourList> {
 				body: new TabBarView(
 					children: [
 						// Your List
-						listScreen(userData[0]["todo"], context, true),
+						listScreen([], context, true),
 						listScreen(userData[0]["organization"]["popular"], context, false),
 						listScreen(userData[0]["organization"]["discover_items"], context, false),
 					],
@@ -3341,8 +3371,8 @@ dynamic placeCard(id, txt, img, stars, distance, context, { featured = false, bo
 	// calculate stars
 	List<Widget> _starsList = [ new SizedBox( width: 20.0 ) ];
 	if (stars == null) stars = 0;
-	for (var i = 0; i < stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)) );
-	for (var i = 0; i < 5-stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)) );
+	for (var i = 0; i < stars.round(); i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)) );
+	for (var i = 0; i < 5-stars.round(); i++) _starsList.add( new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)) );
 	_starsList.add( new SizedBox( width: 20.0 ) );
 
 	return new GestureDetector(
@@ -4396,8 +4426,8 @@ class _PlaceState extends State<Place> {
 			new SizedBox( width: 10.0 ),
 		];
 		
-		for (var i = 0; i < stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)) );
-		for (var i = 0; i < 5-stars; i++) _starsList.add( new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 20.0)) );
+		for (var i = 0; i < stars.round(); i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)) );
+		for (var i = 0; i < 5-stars.round(); i++) _starsList.add( new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 20.0)) );
 
 		// calculate stars for your rating
 		if (placeData["yourrating"] != null) yourstars = placeData["yourrating"];
