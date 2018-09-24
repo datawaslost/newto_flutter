@@ -2737,7 +2737,7 @@ class _listScreenState extends State<listScreen> {
 			current_todos.add(
 				
 				new SliverPadding(
-					padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+					padding: const EdgeInsets.fromLTRB(20.0, 60.0, 20.0, 0.0),
 					sliver: new SliverGrid.count(
 						crossAxisSpacing: 10.0,
 						mainAxisSpacing: 10.0,
@@ -2761,6 +2761,12 @@ class _listScreenState extends State<listScreen> {
 						
 			var todos = new List<Widget>.from(current_todos)..addAll(completed_todos);
 			
+			todos.add(
+				new SliverPadding(
+					padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
+				)
+			);
+
 			return new Scaffold(
 				body: new CustomScrollView(
 					slivers: todos,
@@ -3051,7 +3057,7 @@ class _DiscoverState extends State<Discover> {
 	
 }
 
-
+/*
 Path _triangle(double size, Offset thumbCenter, {bool invert = false}) {
 	final Path thumbPath = new Path();
 	final double height = math.sqrt(3.0) / 2.0;
@@ -3064,14 +3070,15 @@ Path _triangle(double size, Offset thumbCenter, {bool invert = false}) {
 	thumbPath.close();
 	return thumbPath;
 }
+*/
 
 
 class RoundSliderThumbShape extends SliderComponentShape {
   /// Create a slider thumb that draws a circle.
   const RoundSliderThumbShape();
 
-  static const double _thumbRadius = 6.0;
-  static const double _disabledThumbRadius = 4.0;
+  static const double _thumbRadius = 18.0;
+  static const double _disabledThumbRadius = 16.0;
 
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {
@@ -3096,9 +3103,22 @@ class RoundSliderThumbShape extends SliderComponentShape {
       begin: _disabledThumbRadius,
       end: _thumbRadius,
     );
+    final Tween<double> radiusTweenTwo = new Tween<double>(
+      begin: _disabledThumbRadius,
+      end: _thumbRadius + 3,
+    );
     final ColorTween colorTween = new ColorTween(
       begin: sliderTheme.disabledThumbColor,
       end: sliderTheme.thumbColor,
+    );
+    final ColorTween colorTweenTwo = new ColorTween(
+      begin: sliderTheme.disabledThumbColor,
+      end: sliderTheme.activeTrackColor,
+    );
+    canvas.drawCircle(
+      thumbCenter,
+      radiusTweenTwo.evaluate(enableAnimation),
+      new Paint()..color = colorTweenTwo.evaluate(enableAnimation),
     );
     canvas.drawCircle(
       thumbCenter,
@@ -3126,7 +3146,6 @@ class _SearchState extends State<Search> {
 	var cat;
 	List<Widget> _widgetList = [];
 	double _distance = 8.0;
-	
 	
 	@override
 	Widget build(BuildContext context) {
@@ -3205,9 +3224,9 @@ class _SearchState extends State<Search> {
 					mainAxisSize: MainAxisSize.min,
 					crossAxisAlignment: CrossAxisAlignment.start,
 					children: <Widget>[
-						new Container(
+						Container(
 							padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 2.0),
-							child: new Text(
+							child: Text(
 								'Distance'.toUpperCase(),
 								textAlign: TextAlign.left,
 								style: new TextStyle(
@@ -3217,9 +3236,9 @@ class _SearchState extends State<Search> {
 								),
 							),
 						),
-						new Container(
+						Container(
 							padding: const EdgeInsets.fromLTRB(20.0, 0.0, 10.0, 0.0),
-							child: new Text(
+							child: Text(
 								'Average distance in miles',
 								textAlign: TextAlign.left,
 								style: new TextStyle(
@@ -3229,54 +3248,89 @@ class _SearchState extends State<Search> {
 								),
 							),
 						),
-						new Container(
-							padding: const EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0),
-							/*
-							child: SliderTheme(
-								data: SliderThemeData(
-									
-									activeTrackColor: const Color(0xFFFF0000),
-									inactiveTrackColor: const Color(0xFFFF0000),
-									disabledActiveTrackColor: const Color(0xFF000000),
-									disabledInactiveTrackColor: const Color(0xFF000000),
-									activeTickMarkColor: const Color(0xFFFFFFFF),
-									inactiveTickMarkColor: const Color(0xFFFF0000),
-									disabledActiveTickMarkColor: const Color(0xFFFFFFFF),
-									disabledInactiveTickMarkColor: const Color(0xFF000000),
-									thumbColor: const Color(0xFFFF0000),
-									disabledThumbColor: const Color(0xFF000000),
-									overlayColor: const Color(0xFFFF0000),
-									valueIndicatorColor: const Color(0xFFFF0000),
-									showValueIndicator: ShowValueIndicator.always,
-
-									thumbShape: RoundSliderThumbShape(),
-									valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-
-									valueIndicatorTextStyle: TextStyle(
-										color: const Color(0xFF000000),
-										fontWeight: FontWeight.w800,
-										fontSize: 14.0,
+						Container(
+							padding: const EdgeInsets.fromLTRB(20.0, 55.0, 20.0, 10.0),
+							child: Stack(
+								fit: StackFit.loose,
+								children: [
+									SliderTheme(
+										data: SliderThemeData(
+											activeTrackColor: const Color(0xFF1033FF),
+											inactiveTrackColor: const Color(0x66E0E1EA),
+											disabledActiveTrackColor: const Color(0xFF000000),
+											disabledInactiveTrackColor: const Color(0xFF000000),
+											activeTickMarkColor: const Color(0xFFFFFFFF),
+											inactiveTickMarkColor: const Color(0xFFFFFFFF),
+											disabledActiveTickMarkColor: const Color(0xFFFFFFFF),
+											disabledInactiveTickMarkColor: const Color(0xFF000000),
+											thumbColor: const Color(0xFFFFFFFF),
+											disabledThumbColor: const Color(0xFF000000),
+											overlayColor: const Color(0x66E0E1EA),
+											valueIndicatorColor: const Color(0x66E0E1EA),
+											showValueIndicator: ShowValueIndicator.always,
+											thumbShape: RoundSliderThumbShape(),
+											valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+											valueIndicatorTextStyle: TextStyle(
+												color: const Color(0xFF000000),
+												fontWeight: FontWeight.w800,
+												fontSize: 14.0,
+											),
+										),
+										
+										child: Slider(
+											divisions: 2,
+											max: 8.0,
+											min: 2.0,
+											label: "Within " + _distance.round().toString() + " miles",
+											value: _distance.toDouble(),
+											onChanged: (double newValue) {
+												setState(() {
+													_distance = newValue;
+													cat["distance"] = _distance.round();
+												});
+											},
+										),
+										
+									),
+									IgnorePointer(
+										child: Container(
+											padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+											child: Row(
+												children: [
+													new CircleAvatar(
+														backgroundColor: const Color(0xFFFFFFFF),
+														maxRadius: 16.0,
+														child: Icon(
+															Icons.directions_run,
+															color: const Color(0xFF838383),
+														),
+													),
+													Expanded(
+														child: new CircleAvatar(
+															backgroundColor: const Color(0xFFFFFFFF),
+															maxRadius: 16.0,
+															child: Icon(
+																Icons.directions_bike,
+																color: const Color(0xFF838383),
+															),
+														),
+													),
+													new CircleAvatar(
+														backgroundColor: const Color(0xFFFFFFFF),
+														maxRadius: 16.0,
+														child: Icon(
+															Icons.directions_car,
+															color: const Color(0xFF838383),
+														),
+													),
+												],
+											),
+										),
 									),
 									
-								),
-								
-							*/
-								
-								child: Slider(
-									divisions: 2,
-									max: 8.0,
-									min: 2.0,
-									label: "Within " + _distance.round().toString() + " miles",
-									value: _distance.toDouble(),
-									onChanged: (double newValue) {
-										setState(() {
-											_distance = newValue;
-											cat["distance"] = _distance.round();
-										});
-									},
-								),
-								
-							// ),
+									
+								]
+							),
 							
 						),
 						new Container(
