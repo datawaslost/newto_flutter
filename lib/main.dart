@@ -1745,44 +1745,37 @@ class _LandingState extends State<Landing> {
 		}
 
 		return new Scaffold(
-			backgroundColor: const Color(0xFF000000),
+			backgroundColor: const Color(0xFFFFFFFF),
 			appBar: new AppBar(
-				backgroundColor: const Color(0xFF000000),
+				brightness: Brightness.light,
+				backgroundColor: const Color(0xFFFFFFFF),
 				centerTitle: true,
-				title: new Container(
-					alignment: Alignment.centerRight,
-					child: new Row(
-						children: <Widget>[
-							new Expanded(
-								child: new Container(
-									alignment: Alignment.centerRight,
-									child: new Image.asset("images/LogoSpan-White.png", height: 12.0),
-								)
-							),
-							new Expanded(
-								child: new Container(
-									alignment: Alignment.centerLeft,
-									child: new Text(
-										userData[0]["organization"]["nav_name"].toString().toUpperCase(),
-										style: new TextStyle(
-											color: const Color(0xFF838383),
-											fontWeight: FontWeight.w300,
-											fontSize: 14.0,
-										),
-									),
+				title: Column(
+					mainAxisAlignment: MainAxisAlignment.end,
+					children: <Widget>[
+						Image.asset("images/LogoSpan-Black.png", height: 12.0),
+						Container(
+							padding: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 5.0),
+							child: Text(
+								userData[0]["organization"]["nav_name"].toString().toUpperCase(),
+								style: new TextStyle(
+									color: const Color(0xFF838383),
+									fontWeight: FontWeight.w300,
+									fontSize: 16.0,
 								),
 							),
-						]
-					)
+						),
+					]
 				),
-				leading: new Container(),
-				actions: <Widget>[
-					new IconButton(
-						icon: new Icon(Icons.account_circle ),
-						tooltip: 'Account',
-						onPressed: () => Navigator.of(context).pushNamed('/account'),
-					),
-				],
+				leading: IconButton(
+					icon: new Icon(Icons.account_circle),
+					// icon: new Icon(Icons.person_outline),
+					color: const Color(0xFF838383),
+					tooltip: 'Account',
+					onPressed: () => Navigator.of(context).pushNamed('/account'),
+					iconSize: 35.0,
+					padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 0.0),
+				),
 			),
 			body: new Column(
 				mainAxisSize: MainAxisSize.min,

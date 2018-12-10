@@ -43,6 +43,7 @@ flutter:
     - images/background.png
     - images/LogoStack-White.png
     - images/LogoSpan-White.png
+    - images/LogoSpan-Black.png
     - images/cardphoto.png
     - images/icon_home.png
     - images/icon_list.png
