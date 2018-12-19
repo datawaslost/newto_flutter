@@ -16,6 +16,7 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'carousel.dart';
+import 'swipeCard.dart';
 
 
 final String domain = "http://dev.newto.com/";
@@ -1748,7 +1749,8 @@ class _LandingState extends State<Landing> {
 			backgroundColor: const Color(0xFFFFFFFF),
 			appBar: new AppBar(
 				brightness: Brightness.light,
-				backgroundColor: const Color(0xFFFFFFFF),
+				backgroundColor: const Color(0x00FFFFFF),
+				elevation: 0.0,
 				centerTitle: true,
 				title: Column(
 					mainAxisAlignment: MainAxisAlignment.end,
@@ -1777,6 +1779,9 @@ class _LandingState extends State<Landing> {
 					padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 0.0),
 				),
 			),
+			body: new swipeCards(userData[0]["organization"]["discover_items"]),
+
+			/*
 			body: new Column(
 				mainAxisSize: MainAxisSize.min,
 				children: <Widget>[
@@ -1833,6 +1838,8 @@ class _LandingState extends State<Landing> {
 					)
 				]
 			),
+			*/
+			
 			bottomNavigationBar: bottomBar(context, 0),
 		);
 

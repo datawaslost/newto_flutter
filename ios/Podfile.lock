@@ -20,16 +20,16 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - connectivity (from `Pods/.symlinks/plugins/connectivity-0.3.1/ios`)
+  - connectivity (from `Pods/.symlinks/plugins/connectivity-0.3.2/ios`)
   - Flutter (from `Pods/.symlinks/flutter/ios`)
   - flutter_webview_plugin (from `Pods/.symlinks/plugins/flutter_webview_plugin-0.2.1+2/ios`)
   - location (from `Pods/.symlinks/plugins/flutterlocation-master/ios`)
   - map_view (from `Pods/.symlinks/plugins/flutter_google_map_view-master/ios`)
-  - shared_preferences (from `Pods/.symlinks/plugins/shared_preferences-0.4.2/ios`)
+  - shared_preferences (from `Pods/.symlinks/plugins/shared_preferences-0.4.3/ios`)
 
 EXTERNAL SOURCES:
   connectivity:
-    :path: Pods/.symlinks/plugins/connectivity-0.3.1/ios
+    :path: Pods/.symlinks/plugins/connectivity-0.3.2/ios
   Flutter:
     :path: Pods/.symlinks/flutter/ios
   flutter_webview_plugin:
@@ -39,7 +39,7 @@ EXTERNAL SOURCES:
   map_view:
     :path: Pods/.symlinks/plugins/flutter_google_map_view-master/ios
   shared_preferences:
-    :path: Pods/.symlinks/plugins/shared_preferences-0.4.2/ios
+    :path: Pods/.symlinks/plugins/shared_preferences-0.4.3/ios
 
 SPEC CHECKSUMS:
   connectivity: d5992e3758d68b1c4b12d6e012fe0813f1aa1645
