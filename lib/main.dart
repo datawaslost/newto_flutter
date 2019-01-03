@@ -881,7 +881,7 @@ class _listTodoState extends State<listTodo> {
 			if ( item["done"] == true && item["done"] != null) {
 				// if item has been marked done
 				mainButton = GestureDetector(
-					child: todoButton(Icons.check, size: 26.0, color: const Color(0xFFA2EA3A) ),
+					child: todoButton(Icons.check_circle_outline, size: 35.0, color: const Color(0xFFA2EA3A) ),
 					// remove done
 					onTap: () => setThis("removedone", { "id": item["id"].toString() }, (){
 						// update icon and close details on success
@@ -893,7 +893,7 @@ class _listTodoState extends State<listTodo> {
 			} else {
 				// if item has not been marked done
 				mainButton = GestureDetector(
-					child: todoButton(Icons.check, size: 26.0, color: const Color(0xFFE0E1EA) ),
+					child: todoButton(Icons.check_circle_outline, size: 35.0, color: const Color(0xFFE0E1EA) ),
 					// remove done
 					onTap: () => setThis("adddone", { "id": item["id"].toString() }, (){
 						setState(() {
@@ -910,7 +910,7 @@ class _listTodoState extends State<listTodo> {
 			if ( item["bookmarked"] == true && item["bookmarked"] != null) {
 				// if item is in our bookmarks
 				mainButton = GestureDetector(
-					child: todoButton(Icons.bookmark, size: 26.0, color: const Color(0xFFA2EA3A) ),
+					child: todoButton(Icons.bookmark, size: 35.0, color: const Color(0xFFA2EA3A) ),
 					// remove bookmark
 					onTap: () => setThis("removebookmark", { "id": item["id"].toString() }, (){
 						// update icon and close details on success
@@ -927,7 +927,7 @@ class _listTodoState extends State<listTodo> {
 			} else {
 				// if item is not in our bookmarks (ie, has just been removed)
 				mainButton = GestureDetector(
-					child: todoButton(Icons.bookmark_border, size: 26.0, color: const Color(0xFFE0E1EA) ),
+					child: todoButton(Icons.bookmark_border, size: 35.0, color: const Color(0xFFE0E1EA) ),
 					// add bookmark
 					onTap: () => setThis("addbookmark", { "id": item["id"].toString() }, (){
 						setState(() {
@@ -941,7 +941,7 @@ class _listTodoState extends State<listTodo> {
 			if ( item["done"] != null ) {
 				// if item is in our list
 				mainButton = GestureDetector(
-					child: todoButton(Icons.playlist_play, size: 26.0, color: const Color(0xFFA2EA3A) ),
+					child: todoButton(Icons.playlist_play, size: 35.0, color: const Color(0xFFA2EA3A) ),
 					// remove bookmark
 					onTap: () => setThis("removelist", { "id": item["id"].toString() }, (){
 						// update icon and close details on success
@@ -955,7 +955,7 @@ class _listTodoState extends State<listTodo> {
 			} else {
 				// if item is not in our todo list
 				mainButton = GestureDetector(
-					child: todoButton(Icons.playlist_add, size: 26.0, color: const Color(0xFFE0E1EA) ),
+					child: todoButton(Icons.playlist_add, size: 35.0, color: const Color(0xFFE0E1EA) ),
 					// add to list
 					onTap: () => setThis("addlist", { "id": item["id"].toString() }, (){
 						setState(() {
@@ -974,36 +974,49 @@ class _listTodoState extends State<listTodo> {
 			return Slidable(
 				delegate: SlidableDrawerDelegate(),
 				actionExtentRatio: 0.25,
-				child: Card(
-					elevation: 3.0,
-					child: Row(
-						mainAxisSize: MainAxisSize.min,
-						crossAxisAlignment: CrossAxisAlignment.center,
-						children: [
-							Container(
-								padding: const EdgeInsets.fromLTRB(20.0, 10.0, 15.0, 10.0),
-								child: mainButton,
-							),
-							Expanded(
+				child: Row(
+					mainAxisSize: MainAxisSize.min,
+					crossAxisAlignment: CrossAxisAlignment.center,
+					children: [
+						Container(
+							padding: const EdgeInsets.fromLTRB(10.0, 10.0, 15.0, 10.0),
+							child: mainButton,
+						),
+						Expanded(
+							child: Container(
+								alignment: Alignment.centerLeft,
+								constraints: BoxConstraints(
+									minHeight: 45.0,
+								),
+								padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+								decoration: BoxDecoration(
+				                    color: const Color(0xFF023cf5),
+				                    borderRadius: new BorderRadius.circular(20.0),
+				                    boxShadow: [new BoxShadow(
+										color: const Color(0x66000000),
+										blurRadius: 10.0,
+										offset: Offset(0.0, 5.0),
+									),]
+								),
 								child: Text(
 									item["name"],
 									textAlign: TextAlign.left,
 									style: TextStyle(
-										color: const Color(0xFF000000),
-										fontWeight: FontWeight.w700,
-										fontSize: 14.0,
+										color: const Color(0xFFFFFFFF),
+										fontWeight: FontWeight.w600,
+										fontSize: 16.0,
 									),
 								),
 							),
-							(bookmarked ? 
-								SizedBox(
-									width: 40.0,
-									child: Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0)
-								) : Container()
-							),
-							Container(),
-						],
-					),
+						),
+						(bookmarked ? 
+							SizedBox(
+								width: 40.0,
+								child: Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0)
+							) : Container()
+						),
+						Container(),
+					],
 				),
 				secondaryActions: secondaryButtons,
 			);
@@ -1619,6 +1632,39 @@ class _listScreenState extends State<listScreen> {
 			);
 
 			return new Scaffold(
+				backgroundColor: const Color(0xFFF7F7F7),
+				appBar: new AppBar(
+					brightness: Brightness.light,
+					backgroundColor: const Color(0x00FFFFFF),
+					elevation: 0.0,
+					centerTitle: true,
+					title: Column(
+						mainAxisAlignment: MainAxisAlignment.end,
+						children: <Widget>[
+							Image.asset("images/LogoSpan-Black.png", height: 12.0),
+							Container(
+								padding: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 5.0),
+								child: Text(
+									userData[0]["organization"]["nav_name"].toString().toUpperCase(),
+									style: new TextStyle(
+										color: const Color(0xFF838383),
+										fontWeight: FontWeight.w300,
+										fontSize: 16.0,
+									),
+								),
+							),
+						]
+					),
+					leading: IconButton(
+						icon: new Icon(Icons.account_circle),
+						// icon: new Icon(Icons.person_outline),
+						color: const Color(0xFF838383),
+						tooltip: 'Account',
+						onPressed: () => Navigator.of(context).pushNamed('/account'),
+						iconSize: 35.0,
+						padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 0.0),
+					),
+				),
 				body: new CustomScrollView(
 					slivers: todos,
 				),
@@ -1652,7 +1698,10 @@ class _YourListState extends State<YourList> {
 
 	@override
 	Widget build(BuildContext context) {
-
+		
+		return listScreen([], context, true);
+		
+		/*
 	    return new DefaultTabController(
 	        length: 3,
 	        child: new Scaffold(
@@ -1698,6 +1747,7 @@ class _YourListState extends State<YourList> {
 				bottomNavigationBar: bottomBar(context, 1),
 			)
 		);
+		*/
 
 	}
 
