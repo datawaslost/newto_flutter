@@ -1863,34 +1863,12 @@ class _DiscoverState extends State<Discover> {
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
 			appBar: topBar(context),
-			/*
-			appBar: new AppBar(
-				backgroundColor: const Color(0xFF000000),
-				centerTitle: true,
-				title: new Text(
-					'Discover '.toUpperCase() + userData[0]["organization"]["metro"]["name"].toUpperCase(),
-					style: new TextStyle(
-						color: const Color(0xFF838383),
-						fontWeight: FontWeight.w800,
-						fontSize: 14.0,
-					),
-				),
-				leading: new Container(),
-				actions: <Widget>[
-					new IconButton(
-						icon: new Icon(Icons.account_circle ),
-						tooltip: 'Account',
-						onPressed: () => Navigator.of(context).pushNamed('/account'),
-					),
-				],
-			),
-			*/			
 			body: new Column(
 				mainAxisSize: MainAxisSize.min,
 				children: <Widget>[
 					Container(
 						margin: new EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 0.0),
-						height: 255.0,
+						height: 260.0,
 						child: new ListView(
 							scrollDirection: Axis.horizontal,
 							shrinkWrap: true,
@@ -1898,19 +1876,20 @@ class _DiscoverState extends State<Discover> {
 						)
 					),
 					( _discoverItems.length > 0 ?
-						Container(
-						height: 345.0,
-							decoration: new BoxDecoration(
-								color: const Color(0xFFF3F3F7),
-							),
-							margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-							child: new ListView(
-								scrollDirection: Axis.horizontal,
-								shrinkWrap: true,
-								children: _discoverItems,
+						Expanded(
+							child: Container(
+								decoration: new BoxDecoration(
+									color: const Color(0xFFF3F3F7),
+								),
+								margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+								child: new ListView(
+									scrollDirection: Axis.horizontal,
+									shrinkWrap: true,
+									children: _discoverItems,
+								)
 							)
 						)
-					: Container()
+					: Expanded( child: Container() )
 					)
 				]
 			),
