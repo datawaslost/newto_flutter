@@ -366,12 +366,6 @@ dynamic todoButton(icon, { double size = 50.0, var color = const Color(0xFFFFFFF
 			BoxDecoration(
 				shape: BoxShape.circle,
 				color: color,
-				/*
-				boxShadow: [new BoxShadow(
-		            color: const Color(0xFFFFFFFF),
-		            blurRadius: 0.0,
-				),]
-				*/
 			)
 		:
 			BoxDecoration(
@@ -675,13 +669,6 @@ class _listTodoState extends State<listTodo> {
 								),
 							),
 						),
-						(bookmarked ? 
-							SizedBox(
-								width: 40.0,
-								child: Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0)
-							) : Container()
-						),
-						Container(),
 					],
 				),
 				secondaryActions: secondaryButtons,
