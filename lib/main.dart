@@ -212,6 +212,10 @@ dynamic imgDefault(img, defaultImg) {
 
 dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool bookmarked = false, int groupitems = 0 }) {
 	
+	var pillColor = const Color(0xFF70F1B2);
+	if (sponsored != null && sponsored != "") pillColor = const Color(0xFF6D6EF6);
+	
+	
 	return new GestureDetector(
 		onTap: () {
 			Navigator.push(context, new MaterialPageRoute(
@@ -244,6 +248,8 @@ dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool book
 				),
 				Column(
 					mainAxisSize: MainAxisSize.min,
+					crossAxisAlignment: CrossAxisAlignment.start,
+
 					children: <Widget>[
 						( sponsored != null && sponsored != ""
 							?
@@ -279,15 +285,12 @@ dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool book
 							child: Row(
 								crossAxisAlignment: CrossAxisAlignment.start,
 								children: <Widget>[
-									( bookmarked
-										? Container(
-											child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
-										) : SizedBox(width: 0.0)
-									),
-									( groupitems > 0
+									( bookmarked )
+										? tagPill("", icon: Icons.bookmark, color: pillColor )
+										: SizedBox(width: 0.0),
+									( groupitems > 0 )
 										? tagPill(groupitems.toString(), icon: Icons.filter_none )
-										: SizedBox(width: 0.0)
-									)
+										: SizedBox(width: 0.0),
 								]
 							),
 						),
@@ -780,7 +783,7 @@ dynamic listGroup(int id, String txt, amount, context, {bookmarked = false, Stri
 	);
 }
 
-
+/*
 dynamic listGroupImage(int id, String txt, amount, img, context, {bookmarked = false, String sponsored}) {
 
 	return new GestureDetector(
@@ -863,7 +866,7 @@ dynamic listGroupImage(int id, String txt, amount, img, context, {bookmarked = f
 	);
 	
 }
-
+*/
 
 
 dynamic addItem(context) {
@@ -1153,7 +1156,8 @@ dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 							crossAxisCount: 1,
 							childAspectRatio: 1.2,
 							children: <Widget>[
-								listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsor"], bookmarked: bookmarked ),
+								// listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsor"], bookmarked: bookmarked ),
+								discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], bookmarked: bookmarked, groupitems: item["items"] ),
 							]
 						),
 					)
@@ -2124,30 +2128,9 @@ class _BookmarksState extends State<Bookmarks> {
 	
 	@override
 	Widget build(BuildContext context) {
-			
 
 		return new Scaffold(
-			backgroundColor: const Color(0xFFF3F3F7),
-			appBar: new AppBar(
-				backgroundColor: const Color(0xFF000000),
-				centerTitle: true,
-				title: new Text(
-					'Saved'.toUpperCase(),
-					style: new TextStyle(
-						color: const Color(0xFF838383),
-						fontWeight: FontWeight.w800,
-						fontSize: 14.0,
-					),
-				),
-				leading: new Container(),
-				actions: <Widget>[
-					new IconButton(
-						icon: new Icon(Icons.account_circle ),
-						tooltip: 'Account',
-						onPressed: () => Navigator.of(context).pushNamed('/account'),
-					),
-				],
-			),
+			appBar: topBar(context),
 			body: new CustomScrollView(
 				primary: false,
 				slivers: parseItems(userData[0]["bookmarks"], context, bookmarked: true),

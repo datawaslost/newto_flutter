@@ -335,11 +335,14 @@ dynamic tagPill(txt, { Color color, double opacity, icon }) {
 		  	children: [
 			  	(icon != null)
 			  	? Container(
-			  		padding: EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0),
+			  		padding: (txt != "")
+			  			? EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0)
+			  			: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
 			  		child: Icon( icon, size: 11.0, color: const Color(0xFFFFFFFF) ), 
 			  	)
 			  	: Container(),
-			    Text(
+			  	(txt != "")
+			  	? Text(
 					txt.toUpperCase(),
 					textAlign: TextAlign.left,
 					style: TextStyle(
@@ -347,8 +350,9 @@ dynamic tagPill(txt, { Color color, double opacity, icon }) {
 						fontWeight: FontWeight.w500,
 						fontSize: 11.0,
 						height: 1,
-					),
-				),
+					)
+				)
+			  	: Container(),
 			]
 		),
 	);
