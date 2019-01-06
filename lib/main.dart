@@ -210,7 +210,7 @@ dynamic imgDefault(img, defaultImg) {
 }
 
 
-dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool bookmarked = false }) {
+dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool bookmarked = false, int groupitems = 0 }) {
 	
 	return new GestureDetector(
 		onTap: () {
@@ -218,80 +218,94 @@ dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool book
 				builder: (BuildContext context) => new Article(id),
 			));
 		},
-		child: new Card(
-			elevation: 3.0,
-			child: new Container(
-				decoration: new BoxDecoration(
-					image: new DecorationImage(
-						image: imgDefault(img, "misssaigon.jpg"),
-						fit: BoxFit.cover,
+		child: Stack(
+			children: [
+				Container(
+					decoration: new BoxDecoration(
+				        borderRadius: new BorderRadius.circular(20.0),
+						image: new DecorationImage(
+							image: imgDefault(img, "misssaigon.jpg"),
+							fit: BoxFit.cover,
+						),
 					),
 				),
-				child: new Column(
+				Container(
+					decoration: new BoxDecoration(
+				        borderRadius: new BorderRadius.circular(20.0),
+						gradient: LinearGradient(
+							begin: FractionalOffset.center,
+							end: FractionalOffset.bottomCenter,
+							colors: [
+								Colors.black.withOpacity(0.0),
+								Colors.black.withOpacity(1.0),
+							],
+						),
+					),
+				),
+				Column(
 					mainAxisSize: MainAxisSize.min,
 					children: <Widget>[
-						new BackdropFilter(
-							filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-							child: new Container(
-								padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-								child: new Row(
-									crossAxisAlignment: CrossAxisAlignment.start,
-									children: <Widget>[
-										new Expanded(
-											child: new Text(
-												txt.toUpperCase(),
-												textAlign: TextAlign.left,
-												style: new TextStyle(
-													color: const Color(0xFF000000),
-													fontWeight: FontWeight.w800,
-													fontSize: 24.0,
-												),
+						( sponsored != null && sponsored != ""
+							?
+							Row(
+								children: [
+									Container(
+										margin: EdgeInsets.fromLTRB(20.0, 30.0, 0.0, 0.0),
+										padding: EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
+										child: Text(
+											sponsored.toUpperCase(),
+											textAlign: TextAlign.left,
+											style: TextStyle(
+												color: const Color(0xFFFFFFFF),
+												fontWeight: FontWeight.w500,
+												fontSize: 12.0,
 											),
 										),
-										( bookmarked
-											? new Container(
-												child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
-											) : new SizedBox(width: 0.0)
-										)
-									]
-								),
-								decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+										decoration: BoxDecoration(
+											color: const Color(0xFF6d6ef6),
+											borderRadius: BorderRadius.circular(20.0),
+										),
+									),
+									Expanded( child: Container() ),
+								]
+							)
+							: Container()
+						),
+						Expanded(
+							child: Container()
+						),
+						Container(
+							padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+							child: Row(
+								crossAxisAlignment: CrossAxisAlignment.start,
+								children: <Widget>[
+									( bookmarked
+										? Container(
+											child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
+										) : SizedBox(width: 0.0)
+									),
+									( groupitems > 0
+										? tagPill(groupitems.toString(), icon: Icons.filter_none )
+										: SizedBox(width: 0.0)
+									)
+								]
 							),
 						),
-						new Expanded(
-							child: new Container(
-								alignment: Alignment.bottomCenter,
-								child: ( sponsored != null && sponsored != ""
-									? new Column(
-										mainAxisSize: MainAxisSize.min,
-										children: <Widget>[
-											new Expanded( child: new Container() ),
-											new Row(
-												children: [
-													new Container(
-														padding: new EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
-														child: new Text(
-															sponsored.toUpperCase(),
-															textAlign: TextAlign.left,
-															style: new TextStyle(
-																color: const Color(0xFF000000),
-																fontWeight: FontWeight.w800,
-																fontSize: 10.0,
-															),
-														),
-														decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
-													),
-													new Expanded( child: new Container() ),
-												]
-											),
-										]
-									) : new Container()
+						Container(
+							padding: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 40.0),
+							child: Text(
+								txt,
+								textAlign: TextAlign.left,
+								style: TextStyle(
+									color: const Color(0xFFFFFFFF),
+									fontWeight: FontWeight.w700,
+									fontSize: 30.0,
 								),
 							),
 						),
 					],
 				),
-			),
+			],
 		),
 	);
 }
@@ -1431,35 +1445,53 @@ class _DiscoverState extends State<Discover> {
 					builder: (BuildContext context) => new Search(cat),
 				));
 			},
-			child: new Container(
-				margin: new EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 0.0),
-				child: new Column(
-					mainAxisSize: MainAxisSize.min,
-					crossAxisAlignment: CrossAxisAlignment.start,
-					children: <Widget>[
-						new Container(
-							width: 150.0,
-							height: 180.0,
-							decoration: new BoxDecoration(
-								image: new DecorationImage(
+			child: Container(
+				width: 150.0,
+				margin: EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 0.0),
+				child: Stack(
+					children: [
+						Container(
+							height: 225.0,
+							decoration: BoxDecoration(
+						        borderRadius: new BorderRadius.circular(20.0),
+								image: DecorationImage(
 									image: imgDefault(cat["image"], "misssaigon.jpg"),
 									fit: BoxFit.cover,
 								),
 							),
 						),
-						new Text(
-							cat["name"].toUpperCase(),
-							textAlign: TextAlign.left,
-							style: new TextStyle(
-								color: const Color(0xFFFFFFFF),
-								fontWeight: FontWeight.w800,
-								fontSize: 14.0,
-								height: 1.8,
+						Container(
+							height: 225.0,
+							decoration: BoxDecoration(
+						        borderRadius: BorderRadius.circular(20.0),
+								gradient: LinearGradient(
+									begin: FractionalOffset.center,
+									end: FractionalOffset.bottomCenter,
+									colors: [
+										Colors.black.withOpacity(0.0),
+										Colors.black.withOpacity(1.0),
+									],
+								),
 							),
 						),
-					],
-				),
-			),
+						Container(
+							height: 200.0,
+							alignment: Alignment.bottomCenter,
+							child: Text(
+								cat["name"].toUpperCase(),
+								textAlign: TextAlign.left,
+								style: TextStyle(
+									color: const Color(0xFFFFFFFF),
+									fontWeight: FontWeight.w800,
+									fontSize: 12.0,
+									letterSpacing: 1.5
+								),
+							),
+						)						
+					]
+				)
+			)
+
 		);
 	}
 
@@ -1474,14 +1506,9 @@ class _DiscoverState extends State<Discover> {
 
 		// set up discover items
 		_discoverItems = [];
-		for (var item in userData[0]["organization"]["discover_items"]) {
-			if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
-				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsor"], bookmarked: (item["bookmarked"] == null ? false : item["bookmarked"] ) ) ) );
-			} else {
-				_discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], bookmarked: (item["bookmarked"] == null ? false : item["bookmarked"] ) ) ) );
-			}
-		}
-
+		for (var item in userData[0]["organization"]["discover_items"]) _discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], groupitems: item["items"], bookmarked: (item["bookmarked"] == null ? false : item["bookmarked"] ) ) ) );
+		_discoverItems.add(SizedBox(width: 15.0));
+		
 		return new Scaffold(
 			backgroundColor: const Color(0xFF000000),
 			appBar: topBar(context),
@@ -1503,7 +1530,7 @@ class _DiscoverState extends State<Discover> {
 								decoration: new BoxDecoration(
 									color: const Color(0xFFF3F3F7),
 								),
-								margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+								padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
 								child: new ListView(
 									scrollDirection: Axis.horizontal,
 									shrinkWrap: true,
@@ -1521,21 +1548,6 @@ class _DiscoverState extends State<Discover> {
 	}
 	
 }
-
-/*
-Path _triangle(double size, Offset thumbCenter, {bool invert = false}) {
-	final Path thumbPath = new Path();
-	final double height = math.sqrt(3.0) / 2.0;
-	final double halfSide = size / 2.0;
-	final double centerHeight = size * height / 3.0;
-	final double sign = invert ? -1.0 : 1.0;
-	thumbPath.moveTo(thumbCenter.dx - halfSide, thumbCenter.dy + sign * centerHeight);
-	thumbPath.lineTo(thumbCenter.dx, thumbCenter.dy - 2.0 * sign * centerHeight);
-	thumbPath.lineTo(thumbCenter.dx + halfSide, thumbCenter.dy + sign * centerHeight);
-	thumbPath.close();
-	return thumbPath;
-}
-*/
 
 
 class RoundSliderThumbShape extends SliderComponentShape {
