@@ -887,13 +887,12 @@ dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 			// it's a place
 			_listItems.add(
 				new SliverPadding(
-					padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+					padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 5.0),
 					sliver: new SliverGrid.count(
 						crossAxisSpacing: 10.0,
 						mainAxisSpacing: 10.0,
 						crossAxisCount: 1,
-						// childAspectRatio: 2.25,
-						childAspectRatio: 2.0,
+						childAspectRatio: 2.75,
 						// fix this nonsense ^
 						children: <Widget>[
 							placeCard(item["id"], item["name"], item["image"], item["rating"], item["distance"], context, bookmarked: bookmarked ),
@@ -1562,9 +1561,9 @@ dynamic placeCard(id, txt, img, stars, distance, context, { featured = false, bo
 	// calculate stars
 	List<Widget> _starsList = [ new SizedBox( width: 20.0 ) ];
 	if (stars == null) stars = 0;
-	for (var i = 0; i < stars.round(); i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 30.0)) );
-	for (var i = 0; i < 5-stars.round(); i++) _starsList.add( new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 30.0)) );
-	_starsList.add( new SizedBox( width: 20.0 ) );
+	for (var i = 0; i < stars.round(); i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 25.0)) );
+	for (var i = 0; i < 5-stars.round(); i++) _starsList.add( new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 25.0)) );
+	_starsList.add( new SizedBox( width: 50.0 ) );
 
 	return new GestureDetector(
 		onTap: () {
@@ -1573,88 +1572,96 @@ dynamic placeCard(id, txt, img, stars, distance, context, { featured = false, bo
 			));
 		},
 		child: new Container(
-			height: 150.0,
-			margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
-			child: new Stack(
+			// height: 120.0,
+			margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+			child: Stack(
 				fit: StackFit.loose,
 				children: <Widget>[
-					new Container(
-						margin: const EdgeInsets.fromLTRB(0.0, 7.5, 0.0, 7.5),
-						child: new Card(
-							elevation: 3.0,
-							child: new Container(
-								padding: const EdgeInsets.fromLTRB(145.0, 0.0, 0.0, 0.0),
-								child: new Column(
-									crossAxisAlignment: CrossAxisAlignment.start,
-									children: <Widget>[
-										new Container(
-											padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 0.0),
-											child: new Text(
-												txt.toUpperCase(),
-												textAlign: TextAlign.left,
-												style: new TextStyle(
-													color: const Color(0xFF000000),
-													fontWeight: FontWeight.w800,
-													fontSize: 14.0,
-												),
+					Container(
+						// margin: const EdgeInsets.fromLTRB(0.0, 7.5, 0.0, 7.5),
+						child: Container(
+							decoration: BoxDecoration(
+					        	borderRadius: BorderRadius.circular(20.0),
+				        		color: const Color(0xFFF7F7F7),
+			                    boxShadow: [new BoxShadow(
+									color: const Color(0x33000000),
+									blurRadius: 8.0,
+									offset: Offset(0.0, 5.0),
+								),]
+					        ),
+							padding: const EdgeInsets.fromLTRB(120.0, 0.0, 10.0, 0.0),
+							child: Column(
+								crossAxisAlignment: CrossAxisAlignment.start,
+								children: <Widget>[
+									Container(
+										padding: const EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 0.0),
+										child: Text(
+											txt,
+											textAlign: TextAlign.left,
+											style: TextStyle(
+												color: const Color(0xFF000000),
+												fontWeight: FontWeight.w600,
+												fontSize: 16.0,
 											),
 										),
-										new Expanded(
-											child: new Row(
-												children: _starsList,
-											),
+									),
+									Expanded(
+										child: Row(
+											crossAxisAlignment: CrossAxisAlignment.start,
+											// mainAxisAlignment: MainAxisAlignment.start,
+											children: _starsList,
 										),
-										new Row(
-											children: <Widget>[
-												new Expanded(
-													child: new Container(
-														padding: const EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 10.0),
-														child: ( distance != null ?
-															new Text(
-																distance.toString() + ' mi',
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFF000000),
-																	fontWeight: FontWeight.w300,
-																	fontSize: 14.0,
-																),
-															)
-															:
-															new Container()
-														),
+									),
+									Row(
+										children: <Widget>[
+											Expanded(
+												child: Container(
+													padding: const EdgeInsets.fromLTRB(20.0, 0.0, 5.0, 10.0),
+													child: ( distance != null ?
+														Text(
+															distance.toString() + ' mi',
+															textAlign: TextAlign.left,
+															style: new TextStyle(
+																color: const Color(0xFF000000),
+																fontWeight: FontWeight.w300,
+																fontSize: 12.0,
+															),
+														)
+														:
+														Container()
 													),
 												),
-												( bookmarked ?
-													new Container(
-														padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 10.0),
-														child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
-													) : new Container()
-												)
-											]
-										),
-									]
-								),	
-							),
+											),
+											( bookmarked ?
+												Container(
+													padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 10.0),
+													child: Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
+												) : Container()
+											)
+										]
+									),
+								]
+							),	
 						),
-					),					
+					),
 					new Container(
-						margin: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+						margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
 						child: new SizedBox(
-							width: 125.0,
-							child: new Container(
+							width: 120.0,
+							child: Container(
 								child: ( featured ? 
-									new Column(
+									Column(
 										crossAxisAlignment: CrossAxisAlignment.start,
 										children: <Widget>[
-											new Expanded( child: new Container() ),
-											new Container(
-												width: 125.0,
+											Expanded( child: Container() ),
+											Container(
+												width: 120.0,
 												padding: const EdgeInsets.fromLTRB(10.0, 7.0, 10.0, 7.0),
 												color: const Color(0xFFFCEE21),
-												child: new Text(
+												child: Text(
 													'Featured'.toUpperCase(),
 													textAlign: TextAlign.left,
-													style: new TextStyle(
+													style: TextStyle(
 														color: const Color(0xFF000000),
 														fontWeight: FontWeight.w800,
 														fontSize: 10.0,
@@ -1662,10 +1669,14 @@ dynamic placeCard(id, txt, img, stars, distance, context, { featured = false, bo
 												),
 											),
 										]
-									) : new Container()
+									) : Container()
 								),
-								decoration: new BoxDecoration(
-									image: new DecorationImage(
+								decoration: BoxDecoration(
+									borderRadius: new BorderRadius.only(
+										topLeft: new Radius.circular(20.0),
+										bottomLeft: new Radius.circular(20.0),
+									),
+									image: DecorationImage(
 										image: imgDefault(img, "misssaigon.jpg"),
 										fit: BoxFit.cover,
 									),
