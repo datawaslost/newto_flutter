@@ -1551,60 +1551,26 @@ class _DiscoverState extends State<Discover> {
 
 
 class RoundSliderThumbShape extends SliderComponentShape {
-  /// Create a slider thumb that draws a circle.
-  const RoundSliderThumbShape();
-
-  static const double _thumbRadius = 18.0;
-  static const double _disabledThumbRadius = 16.0;
-
-  @override
-  Size getPreferredSize(bool isEnabled, bool isDiscrete) {
-    return new Size.fromRadius(isEnabled ? _thumbRadius : _disabledThumbRadius);
-  }
-
-  @override
-  void paint(
-    PaintingContext context,
-    Offset thumbCenter, {
-    Animation<double> activationAnimation,
-    Animation<double> enableAnimation,
-    bool isDiscrete,
-    TextPainter labelPainter,
-    RenderBox parentBox,
-    SliderThemeData sliderTheme,
-    TextDirection textDirection,
-    double value,
-  }) {
-    final Canvas canvas = context.canvas;
-    final Tween<double> radiusTween = new Tween<double>(
-      begin: _disabledThumbRadius,
-      end: _thumbRadius,
-    );
-    final Tween<double> radiusTweenTwo = new Tween<double>(
-      begin: _disabledThumbRadius,
-      end: _thumbRadius + 3,
-    );
-    final ColorTween colorTween = new ColorTween(
-      begin: sliderTheme.disabledThumbColor,
-      end: sliderTheme.thumbColor,
-    );
-    final ColorTween colorTweenTwo = new ColorTween(
-      begin: sliderTheme.disabledThumbColor,
-      end: sliderTheme.activeTrackColor,
-    );
-    canvas.drawCircle(
-      thumbCenter,
-      radiusTweenTwo.evaluate(enableAnimation),
-      new Paint()..color = colorTweenTwo.evaluate(enableAnimation),
-    );
-    canvas.drawCircle(
-      thumbCenter,
-      radiusTween.evaluate(enableAnimation),
-      new Paint()..color = colorTween.evaluate(enableAnimation),
-    );
-    // new Icon(Icons.star, color: sliderTheme.thumbColor, size: 30.0);
-    // print(value);
-  }
+	// Create a slider thumb that draws a circle.
+	const RoundSliderThumbShape();
+	static const double _thumbRadius = 18.0;
+	static const double _disabledThumbRadius = 16.0;
+	
+	@override
+	Size getPreferredSize(bool isEnabled, bool isDiscrete) {
+		return new Size.fromRadius(isEnabled ? _thumbRadius : _disabledThumbRadius);
+	}
+	
+	@override
+	void paint( PaintingContext context, Offset thumbCenter, { Animation<double> activationAnimation, Animation<double> enableAnimation, bool isDiscrete, TextPainter labelPainter, RenderBox parentBox, SliderThemeData sliderTheme, TextDirection textDirection, double value } ) {
+		final Canvas canvas = context.canvas;
+		final Tween<double> radiusTween = new Tween<double>( begin: _disabledThumbRadius, end: _thumbRadius );
+		final Tween<double> radiusTweenTwo = new Tween<double>( begin: _disabledThumbRadius, end: _thumbRadius + 3 );
+		final ColorTween colorTween = new ColorTween( begin: sliderTheme.disabledThumbColor, end: sliderTheme.thumbColor );
+		final ColorTween colorTweenTwo = new ColorTween( begin: sliderTheme.disabledThumbColor, end: sliderTheme.activeTrackColor );
+		canvas.drawCircle( thumbCenter, radiusTweenTwo.evaluate(enableAnimation), new Paint()..color = colorTweenTwo.evaluate(enableAnimation) );
+		canvas.drawCircle( thumbCenter, radiusTween.evaluate(enableAnimation), new Paint()..color = colorTween.evaluate(enableAnimation) );
+	}
 }
 
 
