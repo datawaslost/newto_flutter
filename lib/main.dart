@@ -215,7 +215,6 @@ dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool book
 	var pillColor = const Color(0xFF70F1B2);
 	if (sponsored != null && sponsored != "") pillColor = const Color(0xFF6D6EF6);
 	
-	
 	return new GestureDetector(
 		onTap: () {
 			Navigator.push(context, new MaterialPageRoute(
@@ -224,18 +223,21 @@ dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool book
 		},
 		child: Stack(
 			children: [
-				Container(
-					decoration: new BoxDecoration(
-				        borderRadius: new BorderRadius.circular(20.0),
-						image: new DecorationImage(
-							image: imgDefault(img, "misssaigon.jpg"),
-							fit: BoxFit.cover,
+				Hero(
+					tag: id,
+					child: Container(
+						decoration: new BoxDecoration(
+					        borderRadius: new BorderRadius.circular(20.0),
+							image: new DecorationImage(
+								image: imgDefault(img, "misssaigon.jpg"),
+								fit: BoxFit.cover,
+							),
+							boxShadow: [new BoxShadow(
+								color: const Color(0x66000000),
+								blurRadius: 8.0,
+								offset: Offset(0.0, 5.0),
+							),]
 						),
-						boxShadow: [new BoxShadow(
-							color: const Color(0x66000000),
-							blurRadius: 8.0,
-							offset: Offset(0.0, 5.0),
-						),]
 					),
 				),
 				Container(
@@ -254,7 +256,6 @@ dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool book
 				Column(
 					mainAxisSize: MainAxisSize.min,
 					crossAxisAlignment: CrossAxisAlignment.start,
-
 					children: <Widget>[
 						( sponsored != null && sponsored != ""
 							?
@@ -651,6 +652,7 @@ class _listTodoState extends State<listTodo> {
 						mainButton,
 						Expanded(
 							child: Container(
+								height: 100.0,
 								alignment: Alignment.centerLeft,
 								constraints: BoxConstraints(
 									minHeight: 65.0,
@@ -661,8 +663,8 @@ class _listTodoState extends State<listTodo> {
 				                    color: itemColor,
 				                    borderRadius: new BorderRadius.circular(20.0),
 				                    boxShadow: [new BoxShadow(
-										color: const Color(0x66000000),
-										blurRadius: 10.0,
+										color: const Color(0x55000000),
+										blurRadius: 8.0,
 										offset: Offset(0.0, 5.0),
 									),]
 								),
@@ -891,18 +893,10 @@ dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 		if (item["place"] != null && item["place"] != "" && item["place"] != "false" && item["place"] != false) {
 			// it's a place
 			_listItems.add(
-				new SliverPadding(
-					padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 5.0),
-					sliver: new SliverGrid.count(
-						crossAxisSpacing: 10.0,
-						mainAxisSpacing: 10.0,
-						crossAxisCount: 1,
-						childAspectRatio: 2.75,
-						// fix this nonsense ^
-						children: <Widget>[
-							placeCard(item["id"], item["name"], item["image"], item["rating"], item["distance"], context, bookmarked: bookmarked ),
-						],
-					),
+				Container(
+					height: 140.0,
+					padding: const EdgeInsets.only(top:20.0),
+					child: placeCard(item["id"], item["name"], item["image"], item["rating"], item["distance"], context, bookmarked: bookmarked ),
 				)
 			);
 		} else if (item["image"] != null && item["image"] != "") {
@@ -910,79 +904,44 @@ dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 			if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
 				// if it's a group with an image
 				_listItems.add(
-					new SliverPadding(
-						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-						sliver: new SliverGrid.count(
-							crossAxisSpacing: 10.0,
-							mainAxisSpacing: 10.0,
-							crossAxisCount: 1,
-							childAspectRatio: 1.2,
-							children: <Widget>[
-								// listGroupImage(item["id"], item["name"], item["items"], item["image"], context, sponsored: item["sponsor"], bookmarked: bookmarked ),
-								discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], bookmarked: bookmarked, groupitems: item["items"] ),
-							]
-						),
+					Container(
+						height: 300.0,
+						padding: const EdgeInsets.only(top:20.0),
+						child: discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], bookmarked: bookmarked, groupitems: item["items"] ),
 					)
 				);
 			} else {
 				// not a group, has an image (probably an article)
 				_listItems.add(
-					new SliverPadding(
-						padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-						sliver: new SliverGrid.count(
-							crossAxisSpacing: 10.0,
-							mainAxisSpacing: 10.0,
-							crossAxisCount: 1,
-							childAspectRatio: 1.0,
-							children: <Widget>[
-								discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], bookmarked: bookmarked ),
-							]
-						)
+					Container(
+						height: 300.0,
+						padding: const EdgeInsets.only(top:20.0),
+						child: discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], bookmarked: bookmarked ),
 					)
 				);
 			}
 		}  else if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
 			// if it's a group without an image
 			_listItems.add(
-				new SliverPadding(
-					padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-					sliver: new SliverGrid.count(
-						crossAxisSpacing: 10.0,
-						mainAxisSpacing: 10.0,
-						crossAxisCount: 1,
-						childAspectRatio: 2.75,
-						children: <Widget>[
-							listGroup(item["id"], item["name"], item["items"], context, sponsored: item["sponsor"], bookmarked: bookmarked),
-						],
-					),
-				)
+				listGroup(item["id"], item["name"], item["items"], context, sponsored: item["sponsor"], bookmarked: bookmarked)
 			);
 		} else {
 			// if it's a todo
 			_listItems.add(
-				new SliverPadding(
-					padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
-					sliver: new SliverGrid.count(
-						crossAxisSpacing: 10.0,
-						mainAxisSpacing: 10.0,
-						crossAxisCount: 1,
-						childAspectRatio: 4.0,
-						children: <Widget>[
-							listTodo(item, context, bookmarked: bookmarked, yourlist: yourlist),	
-						],
-					),
+				Container(
+					height: 100.0,
+					padding: const EdgeInsets.only(top:20.0),
+					child: listTodo(item, context, bookmarked: bookmarked, yourlist: yourlist)
 				)
 			);
 
 		}
 	}
-
-	// if (yourlist == true) _listItems.add(addButton());
 						
 	// bottom padding
 	_listItems.add(
-		new SliverPadding(
-			padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
+		SizedBox(
+			height: 20.0,
 		)
 	);
 	
@@ -1012,65 +971,48 @@ class _listScreenState extends State<listScreen> {
 	@override
 	Widget build(BuildContext context) {
 		
-		if (yourlist) {
-						
-			var current_todos = parseItems(userData[0]["todo"], context, yourlist: true);
-			var completed_todos = parseItems(userData[0]["complete"], context, yourlist: true);
-			
-			current_todos.add(
-				
-				new SliverPadding(
-					padding: const EdgeInsets.fromLTRB(35.0, 50.0, 0.0, 0.0),
-					sliver: new SliverGrid.count(
-						crossAxisSpacing: 10.0,
-						mainAxisSpacing: 10.0,
-						crossAxisCount: 1,
-						childAspectRatio: 8.0,
-						children: <Widget>[
-							new Text(
-								'Completed',
-								textAlign: TextAlign.left,
-								style: new TextStyle(
-									color: const Color(0xFFA7A7A7),
-									fontWeight: FontWeight.w500,
-									fontSize: 13.0,
-								),
-							)
-						],
+		var current_todos = parseItems(userData[0]["todo"], context, yourlist: true);
+		var completed_todos = parseItems(userData[0]["complete"], context, yourlist: true);
+		
+		current_todos.add(
+			Container(
+				padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+				child: Text(
+					'Completed',
+					textAlign: TextAlign.left,
+					style: new TextStyle(
+						color: const Color(0xFFA7A7A7),
+						fontWeight: FontWeight.w500,
+						fontSize: 13.0,
 					),
 				)
+			)
+		);
+					
+		var todos = new List<Widget>.from(current_todos)..addAll(completed_todos);
+		
+		todos.add(
+			SizedBox(
+				height: 40.0,
+			)
+		);
 
-			);
-						
-			var todos = new List<Widget>.from(current_todos)..addAll(completed_todos);
-			
-			todos.add(
-				new SliverPadding(
-					padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
-				)
-			);
-
-			return new Scaffold(
-				backgroundColor: const Color(0xFFF7F7F7),
-				appBar: topBar(context),
-				body: new CustomScrollView(
-					slivers: todos,
-				),
-				bottomNavigationBar: bottomBar(context, 1),
-				floatingActionButton: new FloatingActionButton(
-					child: Icon(Icons.add, color: const Color(0xFF1033FF) ),
-					onPressed: () => addItem(context),
-					backgroundColor: const Color(0xFFFFFFFF),
-				),
-			);
-			
-		} else {
-			return new CustomScrollView(
-				primary: false,
-				slivers: parseItems(list, context),
-			);
-		}
-
+		return Scaffold(
+			backgroundColor: const Color(0xFFF7F7F7),
+			appBar: topBar(context),
+			body: ListView(
+				shrinkWrap: true,
+				padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
+				children: todos,
+			),
+			bottomNavigationBar: bottomBar(context, 1),
+			floatingActionButton: new FloatingActionButton(
+				child: Icon(Icons.add, color: const Color(0xFF1033FF) ),
+				onPressed: () => addItem(context),
+				backgroundColor: const Color(0xFFFFFFFF),
+			),
+		);
+		
 	}
 
 }
@@ -1214,7 +1156,7 @@ class _DiscoverState extends State<Discover> {
 		for (var item in userData[0]["organization"]["discover_items"]) _discoverItems.add(new Container( width: 278.0, height: 278.0, margin: new EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 20.0), child: discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], groupitems: item["items"], bookmarked: (item["bookmarked"] == null ? false : item["bookmarked"] ) ) ) );
 		_discoverItems.add(SizedBox(width: 15.0));
 		
-		return new Scaffold(
+		return Scaffold(
 			backgroundColor: const Color(0xFF000000),
 			appBar: topBar(context),
 			body: new Column(
@@ -1344,34 +1286,38 @@ class _SearchState extends State<Search> {
 			
 		};
 			  
-		return new Scaffold(
+		return Scaffold(
 			backgroundColor: const Color(0xFFFFFFFF),
-			appBar: new AppBar(
-				backgroundColor: const Color(0xFFFFFFFF),
-				elevation: 0.0,
-				centerTitle: true,
-				title: new Text(
-					'FIND ' + cat["name"].toUpperCase(),
-					style: new TextStyle(
-						color: const Color(0xFF838383),
-						fontWeight: FontWeight.w800,
-						fontSize: 14.0,
-					),
-				),
-				leading: new Container(),
-				actions: <Widget>[
-					new IconButton(
-						icon: new Icon(Icons.close, color: const Color(0xFF000000) ),
-						tooltip: 'Close',
-						onPressed: () => Navigator.pop(context,true)
-					),
-				],
-			),
+			appBar: topBar(context),
 			body: SafeArea(
-				child: new Column(
+				child: Column(
 					mainAxisSize: MainAxisSize.min,
 					crossAxisAlignment: CrossAxisAlignment.start,
 					children: <Widget>[
+						Row(
+							mainAxisSize: MainAxisSize.min,
+							crossAxisAlignment: CrossAxisAlignment.start,
+							children: <Widget>[
+								Container(
+									padding: const EdgeInsets.fromLTRB(20.0, 15.0, 0.0, 0.0),
+									child: Text(
+										cat["name"].toUpperCase(),
+										style: new TextStyle(
+											color: const Color(0xFF000000),
+											fontWeight: FontWeight.w800,
+											fontSize: 16.0,
+											letterSpacing: 1.5
+										),
+									),
+								),
+								Expanded( child:Container() ),
+								IconButton(
+									icon: new Icon(Icons.close, color: const Color(0xFF000000) ),
+									tooltip: 'Close',
+									onPressed: () => Navigator.pop(context,true)
+								),
+							]
+						),
 						Container(
 							padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 2.0),
 							child: Text(
@@ -1573,12 +1519,12 @@ dynamic placeCard(id, txt, img, stars, distance, context, { featured = false, bo
 	return new GestureDetector(
 		onTap: () {
 			Navigator.push(context, new MaterialPageRoute(
-				builder: (BuildContext context) => new Place(id),
+				builder: (BuildContext context) => new Place(id, img, txt),
 			));
 		},
 		child: new Container(
-			// height: 120.0,
-			margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+			// height: 140.0,
+			// margin: const EdgeInsets.fromLTRB(0.0, 10, 0.0, 10),
 			child: Stack(
 				fit: StackFit.loose,
 				children: <Widget>[
@@ -1613,7 +1559,6 @@ dynamic placeCard(id, txt, img, stars, distance, context, { featured = false, bo
 									Expanded(
 										child: Row(
 											crossAxisAlignment: CrossAxisAlignment.start,
-											// mainAxisAlignment: MainAxisAlignment.start,
 											children: _starsList,
 										),
 									),
@@ -1649,41 +1594,44 @@ dynamic placeCard(id, txt, img, stars, distance, context, { featured = false, bo
 							),	
 						),
 					),
-					new Container(
+					Container(
 						margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
 						child: new SizedBox(
 							width: 120.0,
-							child: Container(
-								child: ( featured ? 
-									Column(
-										crossAxisAlignment: CrossAxisAlignment.start,
-										children: <Widget>[
-											Expanded( child: Container() ),
-											Container(
-												width: 120.0,
-												padding: const EdgeInsets.fromLTRB(10.0, 7.0, 10.0, 7.0),
-												color: const Color(0xFFFCEE21),
-												child: Text(
-													'Featured'.toUpperCase(),
-													textAlign: TextAlign.left,
-													style: TextStyle(
-														color: const Color(0xFF000000),
-														fontWeight: FontWeight.w800,
-														fontSize: 10.0,
+							child: Hero(
+								tag: id,
+								child: Container(
+									child: ( featured ? 
+										Column(
+											crossAxisAlignment: CrossAxisAlignment.start,
+											children: <Widget>[
+												Expanded( child: Container() ),
+												Container(
+													width: 120.0,
+													padding: const EdgeInsets.fromLTRB(10.0, 7.0, 10.0, 7.0),
+													color: const Color(0xFFFCEE21),
+													child: Text(
+														'Featured'.toUpperCase(),
+														textAlign: TextAlign.left,
+														style: TextStyle(
+															color: const Color(0xFF000000),
+															fontWeight: FontWeight.w800,
+															fontSize: 10.0,
+														),
 													),
 												),
-											),
-										]
-									) : Container()
-								),
-								decoration: BoxDecoration(
-									borderRadius: new BorderRadius.only(
-										topLeft: new Radius.circular(20.0),
-										bottomLeft: new Radius.circular(20.0),
+											]
+										) : Container()
 									),
-									image: DecorationImage(
-										image: imgDefault(img, "misssaigon.jpg"),
-										fit: BoxFit.cover,
+									decoration: BoxDecoration(
+										borderRadius: new BorderRadius.only(
+											topLeft: new Radius.circular(20.0),
+											bottomLeft: new Radius.circular(20.0),
+										),
+										image: DecorationImage(
+											image: imgDefault(img, "misssaigon.jpg"),
+											fit: BoxFit.cover,
+										),
 									),
 								),
 							),
@@ -1747,47 +1695,57 @@ class _SearchResultsState extends State<SearchResults> {
 	_SearchResultsState(this.filters);
 	final filters;
 	List<Widget> _placeList = [];
-
+	
 	@override
 	Widget build(BuildContext context) {
-	  
-		return new Scaffold(
-			backgroundColor: const Color(0xFFFFFFFF),
-			appBar: new AppBar(
-				backgroundColor: const Color(0xFFFFFFFF),
-				elevation: 0.0,
-				centerTitle: true,
-				title: new Text(
-					filters["category"]["name"].toUpperCase(),
-					style: new TextStyle(
-						color: const Color(0xFF838383),
-						fontWeight: FontWeight.w800,
-						fontSize: 14.0,
+	
+		var _placeRow = new Row(
+			mainAxisSize: MainAxisSize.min,
+			crossAxisAlignment: CrossAxisAlignment.start,
+			// mainAxisAlignment: MainAxisAlignment.spaceBetween,
+			children: <Widget>[
+				Container(
+					padding: const EdgeInsets.fromLTRB(20.0, 15.0, 0.0, 0.0),
+					child: Text(
+						filters["category"]["name"].toUpperCase(),
+						style: new TextStyle(
+							color: const Color(0xFF000000),
+							fontWeight: FontWeight.w800,
+							fontSize: 16.0,
+							letterSpacing: 1.5
+						),
 					),
 				),
-				leading: new Container(),
-				actions: <Widget>[
-					new IconButton(
-						icon: new Icon(Icons.close, color: const Color(0xFF000000) ),
-						tooltip: 'Close',
-						onPressed: () => Navigator.pop(context,true)
-					),
-				],
-			),
+				Expanded( child:Container() ),
+				IconButton(
+					icon: new Icon(Icons.close, color: const Color(0xFF000000) ),
+					tooltip: 'Close',
+					onPressed: () => Navigator.pop(context,true)
+				),
+			]
+		);
+  
+		return new Scaffold(
+			backgroundColor: const Color(0xFFFFFFFF),
+			appBar: topBar(context),
 			body: new FutureBuilder(
 				future: getPlacesData(filters),
 				builder: (BuildContext context, AsyncSnapshot snapshot) {
 					if (snapshot.hasData) {
 						if (snapshot.data!=null) {
-							
+													
 							_placeList = [];
 							
 							for (var place in snapshot.data) {
 								_placeList.add(
-									placeCard(place["id"], place["name"], place["image"], place["rating"], place["distance"], context)
+									Container(
+										height: 140.0,
+										padding: const EdgeInsets.only(bottom:20.0),
+										child: placeCard(place["id"], place["name"], place["image"], place["rating"], place["distance"], context),
+									)
 								);
 							}
-							
+
 							if (_placeList.length == 0) {
 								// if no places returned for this search
 								_placeList.add(
@@ -1801,37 +1759,64 @@ class _SearchResultsState extends State<SearchResults> {
 									)
 								);
 							}
+
+							// _placeList.add( SizedBox( height: 80.0 ) );
 							
-							return new ListView(
-								shrinkWrap: true,
-								padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
-								children: _placeList,
+							return Column(
+								children: <Widget>[
+									_placeRow,
+									Expanded(
+										child: ListView(
+											shrinkWrap: true,
+											padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
+											children: _placeList,
+										),
+									),
+								],
 							);
 							
 						} else {
-							return new ListView(
-								shrinkWrap: true,
-								padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
-								children: [
-									new Text(
-										'Loading Error'.toUpperCase(),
-										style: new TextStyle( fontWeight: FontWeight.w800 ),
-									)
+							
+							return Column(
+								children: <Widget>[
+									_placeRow,
+									Expanded(
+										child: ListView(
+											shrinkWrap: true,
+											padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
+											children: [
+												Text(
+													'Loading Error'.toUpperCase(),
+													style: TextStyle( fontWeight: FontWeight.w800 ),
+												)
+											],
+										),
+									),
 								],
 							);
+
 						}
 					} else {
-						return new ListView(
-							shrinkWrap: true,
-							padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
-							children: [
-								new Container(
-									alignment: Alignment.center,
-									padding: const EdgeInsets.fromLTRB(20.0, 80.0, 20.0, 10.0),
-									child: new CircularProgressIndicator(),
-								)
+
+						return Column(
+							children: <Widget>[
+								_placeRow,
+								Expanded(
+									child: ListView(
+										shrinkWrap: true,
+										padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
+										children: [
+											Container(
+												alignment: Alignment.center,
+												padding: const EdgeInsets.fromLTRB(20.0, 80.0, 20.0, 10.0),
+												child: CircularProgressIndicator(),
+											)
+										],
+									),
+								),
 							],
 						);
+
 					}
 				}
 			)
@@ -1857,10 +1842,12 @@ class _BookmarksState extends State<Bookmarks> {
 
 		return new Scaffold(
 			appBar: topBar(context),
-			body: new CustomScrollView(
-				primary: false,
-				slivers: parseItems(userData[0]["bookmarks"], context, bookmarked: true),
+			body: ListView(
+				shrinkWrap: true,
+				padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
+				children: parseItems(userData[0]["bookmarks"], context, bookmarked: true),
 			),
+
 			bottomNavigationBar: bottomBar(context, 3),
 		);
 
@@ -2282,62 +2269,90 @@ class _ArticleState extends State<Article> {
 
 	@override
 	Widget build(BuildContext context) {
+		
+		var placeholderImage;
+		List articles = userData[0]["organization"]["discover_items"].where((l) => l["id"] == id).toList();		
+		if (articles.length > 0) placeholderImage = articles[0]["image"];
 
         if (articleData == null) {
             // This is what we show while we're loading
 			return Scaffold(
-				body: Container(
-					alignment: Alignment.center,
-					child: new CircularProgressIndicator(),
-				)
+				body: new SingleChildScrollView(
+					scrollDirection: Axis.vertical,
+					child: new Column(
+						children: [
+							Hero(
+								tag: id, 
+								child: Container(
+									height: 324.0,
+									decoration: new BoxDecoration(
+										image: new DecorationImage(
+											image: imgDefault(placeholderImage, "misssaigon.jpg"),
+											fit: BoxFit.cover,
+										),
+									),
+								),
+							),
+							Container(
+								alignment: Alignment.center,
+								child: new CircularProgressIndicator(),
+							)
+						],
+					),
+				),
+				
 			);
+			
         }
 
 		_widgetList = [
-			new Container(
-				height: 324.0,
-				decoration: new BoxDecoration(
-					image: new DecorationImage(
-						image: imgDefault(articleData["image"], "misssaigon.jpg"),
-						fit: BoxFit.cover,
+			Hero(
+				tag: id, 
+				child: Container(
+					height: 324.0,
+					decoration: new BoxDecoration(
+						image: new DecorationImage(
+							image: imgDefault(articleData["image"], "misssaigon.jpg"),
+							fit: BoxFit.cover,
+						),
 					),
-				),
-				child: new Column(
-					mainAxisSize: MainAxisSize.min,
-					children: <Widget>[
-						new BackdropFilter(
-							filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-							child: new Container(
-								padding: new EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 15.0),
-								child: new SafeArea(
-									child: new Row(
-										crossAxisAlignment: CrossAxisAlignment.start,
-										children: <Widget>[
-											new Expanded(
-												child: new Text(
-													articleData["name"].toUpperCase(),
-													textAlign: TextAlign.left,
-													style: new TextStyle(
-														color: const Color(0xFF000000),
-														fontWeight: FontWeight.w800,
-														fontSize: 28.0,
-														height: 0.9,
+					child: new Column(
+						mainAxisSize: MainAxisSize.min,
+						children: <Widget>[
+							new BackdropFilter(
+								filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+								child: new Container(
+									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 15.0),
+									child: new SafeArea(
+										child: new Row(
+											crossAxisAlignment: CrossAxisAlignment.start,
+											children: <Widget>[
+												new Expanded(
+													child: new Text(
+														articleData["name"].toUpperCase(),
+														textAlign: TextAlign.left,
+														style: new TextStyle(
+															color: const Color(0xFF000000),
+															fontWeight: FontWeight.w800,
+															fontSize: 28.0,
+															height: 0.9,
+														),
 													),
 												),
-											),
-											new IconButton(
-												icon: new Icon(Icons.close, color: const Color(0xFF000000)),
-												padding: new EdgeInsets.all(0.0),
-												alignment: Alignment.topCenter,
-												onPressed: () => Navigator.pop(context,true),
-											),
-										]
+												new IconButton(
+													icon: new Icon(Icons.close, color: const Color(0xFF000000)),
+													padding: new EdgeInsets.all(0.0),
+													alignment: Alignment.topCenter,
+													onPressed: () => Navigator.pop(context,true),
+												),
+											]
+										),
 									),
+									decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
 								),
-								decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
 							),
-						),
-					],
+						],
+					),
 				),
 			),
 			( articleData["sponsor"] != null && articleData["sponsor"] != "" ?
@@ -2527,23 +2542,27 @@ class _ArticleState extends State<Article> {
 
 
 class Place extends StatefulWidget {
-	Place(this.id);
+	Place(this.id, this.tempImage, this.tempName);
 	final int id;
+	final String tempImage;
+	final String tempName;
 	@override
-	_PlaceState createState() => new _PlaceState(this.id);
+	_PlaceState createState() => new _PlaceState(this.id, this.tempImage, this.tempName);
 }
 
 
 class _PlaceState extends State<Place> {
 
-	_PlaceState(this.id);
+	_PlaceState(this.id, this.tempImage, this.tempName);
 
 	final int id;
+	final String tempImage;
+	final String tempName;
 	List<Widget> _widgetList = [];
 	var _staticMapProvider = new StaticMapProvider('AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E');
 	var placeData;
 	double stars = 0.0;
-	int yourstars = 0;
+	var starcolor = const Color(0xFFFFFFFF);
 
     @override
     void initState() {
@@ -2579,9 +2598,103 @@ class _PlaceState extends State<Place> {
         if (placeData == null) {
             // This is what we show while we're loading
 			return Scaffold(
+				backgroundColor: const Color(0xFFFFFFFF),
+				appBar: topBar(context),
+				bottomNavigationBar: bottomBar(context, 2),
 				body: Container(
-					alignment: Alignment.center,
-					child: new CircularProgressIndicator(),
+					margin: new EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
+					alignment: Alignment.topCenter,
+					decoration: BoxDecoration(
+		                color: const Color(0xFFF7F7F7),
+		                borderRadius: new BorderRadius.circular(20.0),
+		                boxShadow: [new BoxShadow(
+							color: const Color(0x33000000),
+							blurRadius: 8.0,
+							offset: Offset(0.0, 5.0),
+						),]
+		            ),
+		            child: ListView(
+						shrinkWrap: true,
+						children: <Widget>[
+							Stack(
+								children: [
+									Hero(
+										tag: id,
+										child: Container(
+											height: 315.0,
+											decoration: new BoxDecoration(
+												image: new DecorationImage(
+													image: imgDefault(tempImage, "misssaigon.jpg"),
+													fit: BoxFit.cover,
+												),
+												borderRadius: BorderRadius.only(
+													topLeft: Radius.circular(20.0),
+													topRight: Radius.circular(20.0),
+												),
+											),
+										),
+									),
+									Container(
+										height: 315.0,
+										decoration: new BoxDecoration(
+											borderRadius: BorderRadius.only(
+												topLeft: Radius.circular(20.0),
+												topRight: Radius.circular(20.0),
+											),
+											gradient: LinearGradient(
+												begin: FractionalOffset.center,
+												end: FractionalOffset.bottomCenter,
+												colors: [
+													Colors.black.withOpacity(0.0),
+													Colors.black.withOpacity(1.0),
+												],
+											),
+										),
+									),
+									Container(
+										height: 315.0,
+										child: Column(
+											crossAxisAlignment: CrossAxisAlignment.start,
+											mainAxisAlignment: MainAxisAlignment.start,
+											children: [
+												Expanded(
+													child: Container()
+												),
+												Container(
+													padding: EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 20.0),
+													child: Text(
+														tempName,
+														textAlign: TextAlign.left,
+														style: TextStyle(
+															color: const Color(0xFFFFFFFF),
+															fontWeight: FontWeight.w700,
+															fontSize: 40.0,
+															height: 0.9,
+														),
+													),
+												),
+											]
+										),
+									),
+									Positioned(
+										top: 15.0,
+										right: 0.0,
+										child: IconButton(
+											icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
+											padding: EdgeInsets.all(0.0),
+											alignment: Alignment.topCenter,
+											onPressed: () => Navigator.pop(context,true),
+										),
+									),
+								]
+							),
+							Container(
+								margin: new EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 0.0),
+								alignment: Alignment.center,
+								child: CircularProgressIndicator(),
+							)
+						],
+					),
 				)
 			);
         }
@@ -2612,230 +2725,37 @@ class _PlaceState extends State<Place> {
 			new SizedBox( width: 10.0 ),
 		];
 		
-		for (var i = 0; i < stars.round(); i++) _starsList.add( new Expanded(child:new Icon(Icons.star, color: const Color(0xFF1033FF), size: 20.0)) );
-		for (var i = 0; i < 5-stars.round(); i++) _starsList.add( new Expanded(child:new Icon(Icons.star_border, color: const Color(0xFF838383), size: 20.0)) );
-
-		// calculate stars for your rating
-		if (placeData["yourrating"] != null) yourstars = placeData["yourrating"];
+		// if you've rated this place
+		if (placeData["yourrating"] != null) {
+			// calculate stars for your rating, set star color to blue
+			stars = placeData["yourrating"].toDouble();
+			starcolor = const Color(0xFF70f1b2);
+		}
 		
-		List<Widget> _yourstarsList = [ 
-			new SizedBox( width: 30.0 ),
-		];
+		// make stars
+		List<Widget> _yourstarsList = [ ];
 
-		for (var i = 0; i < yourstars; i++) _yourstarsList.add(
-			new Expanded(
-				child: new GestureDetector(
-					onTap: () => setStars(i+1),
-					child: new Icon(Icons.star, color: const Color(0xFF1033FF), size: 50.0),
-				),
+		for (var i = 0; i < stars.round(); i++) _yourstarsList.add(
+			GestureDetector(
+				onTap: () => setStars(i+1),
+				child: Icon(Icons.star, color: starcolor, size: 25.0),
 			)
 		);
 
-		for (var i = 0; i < 5-yourstars; i++) _yourstarsList.add(
-			new Expanded(
-				child: new GestureDetector(
-					onTap: () => setStars(i+1+yourstars),
-					child: new Icon(Icons.star_border, color: const Color(0xFF838383), size: 50.0),
-				),
+		for (var i = 0; i < 5-stars.round(); i++) _yourstarsList.add(
+			GestureDetector(
+				onTap: () => setStars(i+1+stars.toInt()),
+				child: Icon(Icons.star_border, color: const Color(0xFFFFFFFF), size: 25.0),
 			)
 		);
-		
-		_yourstarsList.add( new SizedBox( width: 30.0 ) );
 		
 		return new Scaffold(
 			backgroundColor: const Color(0xFFFFFFFF),
-			body: new SingleChildScrollView(
-				scrollDirection: Axis.vertical,
-				child:  new Column(
-					children: <Widget>[
-						new Container(
-							height: 324.0,
-							decoration: new BoxDecoration(
-								image: new DecorationImage(
-									image: imgDefault(placeData["image"], "misssaigon.jpg"),
-									fit: BoxFit.cover,
-								),
-							),
-							child: new Column(
-								mainAxisSize: MainAxisSize.min,
-								children: <Widget>[
-									new BackdropFilter(
-										filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-										child: new Container(
-											padding: new EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 15.0),
-											child: new SafeArea(
-													child: new Row(
-													crossAxisAlignment: CrossAxisAlignment.start,
-													children: <Widget>[
-														new Expanded(
-															child: new Text(
-																placeData["name"].toUpperCase(),
-																textAlign: TextAlign.left,
-																style: new TextStyle(
-																	color: const Color(0xFF000000),
-																	fontWeight: FontWeight.w800,
-																	fontSize: 28.0,
-																	height: 0.9,
-																),
-															),
-														),
-														new IconButton(
-															icon: new Icon(Icons.close, color: const Color(0xFF000000)),
-															padding: new EdgeInsets.all(0.0),
-															alignment: Alignment.topCenter,
-															onPressed: () => Navigator.pop(context,true),
-														),
-													]
-												),
-											),
-											decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-										),
-									),
-								],
-							),
-						),
-						new Container(
-							padding: new EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 15.0),
-							alignment: Alignment.topLeft,
-							child: new Column(
-								crossAxisAlignment: CrossAxisAlignment.start,
-								children: <Widget>[
-									new Text(
-										placeData["address"] + ", " + placeData["city"] + ", " + placeData["state"],
-										textAlign: TextAlign.left,
-										style: new TextStyle(
-											color: const Color(0xFF1033FF),
-											fontWeight: FontWeight.w400,
-											fontSize: 14.0,
-											height: 1.25,
-										),
-									),
-									new GestureDetector(
-										onTap: () {
-											Navigator.push(context, new MaterialPageRoute(
-												builder: (BuildContext context) => new WebviewScaffold(
-													url: placeData["link"],
-													appBar: new AppBar(
-														title: new Text(
-															placeData["name"].toUpperCase(),
-															overflow: TextOverflow.fade,
-															style: new TextStyle(
-																fontWeight: FontWeight.w800,
-																fontSize: 14.0,
-																height: 0.9,
-															),
-														),
-													),
-												),
-											));
-										},
-										child: new Text(
-											placeData["link"].replaceFirst("https://www.", "").replaceFirst("http://www.", "").replaceFirst("http://", "").replaceFirst("https://", ""),
-											textAlign: TextAlign.left,
-											style: new TextStyle(
-												color: const Color(0xFF1033FF),
-												fontWeight: FontWeight.w400,
-												fontSize: 14.0,
-												height: 1.25,
-											),
-										),
-									),
-									new Text(
-										placeData["phone"],
-										textAlign: TextAlign.left,
-										style: new TextStyle(
-											color: const Color(0xFF1033FF),
-											fontWeight: FontWeight.w400,
-											fontSize: 14.0,
-											height: 1.25,
-										),
-									),
-									new Text(
-										placeData["openhours"],
-										style: new TextStyle(
-											color: const Color(0xFF000000),
-											fontWeight: FontWeight.w300,
-											fontSize: 14.0,
-											height: 1.25,
-										),
-									),
-									( placeData["location"] != null ?
-										new Container(
-											padding: new EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 20.0),
-											child: new Image.network(
-												_staticMapProvider.getStaticUriWithMarkers(
-													<Marker>[ new Marker("1", placeData["name"], placeData["location"]["longitude"], placeData["location"]["latitude"]) ],
-													width: 600,
-													height: 400,
-													maptype: StaticMapViewType.roadmap,
-												).toString()
-											),
-										) : new Container()
-									),
-									new SizedBox( height: 20.0 ),
-									new Text(
-										"Highlights".toUpperCase(),
-										style: new TextStyle(
-											color: const Color(0xFF000000),
-											fontWeight: FontWeight.w800,
-											fontSize: 14.0,
-											height: 1.25,
-										),
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 25.0),
-										child: new Text(
-											placeData["content"],
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontWeight: FontWeight.w300,
-												fontSize: 14.0,
-												height: 1.25,
-											),
-										),								
-									),
-									new Divider(
-										height: 1.0,
-										color: const Color(0xFFE0E1EA),
-									),
-									new SizedBox( height: 20.0 ),
-									( stars == 0 ?
-										new SizedBox( height: 0.0 )
-									:
-										new Row( children: _starsList )
-									),
-									new Container(
-										padding: new EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 10.0),
-										child: new Row(
-											children: _yourstarsList,
-										),
-									),
-									new Row(
-										children: [
-											new Expanded(
-												child: new Text(
-													"What do you think?",
-													textAlign: TextAlign.center,
-													style: new TextStyle(
-														color: const Color(0xFF000000),
-														fontWeight: FontWeight.w300,
-														fontSize: 14.0,
-														height: 1.25,
-													),
-												),
-											),
-										],
-									),
-									new SizedBox( height: 50.0 ),
-								]
-							),
-						),
-					],
-				),
-			),
-			persistentFooterButtons: <Widget>[
-				( placeData["bookmarked"] == true ?
-					new FlatButton(
+			appBar: topBar(context),
+			bottomNavigationBar: bottomBar(context, 2),
+			floatingActionButton: 
+				( placeData["bookmarked"] ) == true ?
+					FloatingActionButton(
 						onPressed: () => setThis("removebookmark", { "id": placeData["id"].toString() }, (){
 							// update icon on success
 							setState(() {
@@ -2844,12 +2764,13 @@ class _PlaceState extends State<Place> {
 								userData[0]["bookmarks"].removeWhere((i) => i["id"] == placeData["id"]);
 							});
 						}, () { print("failure!"); }),
-						child: new Icon(
-							Icons.bookmark,
-							color: const Color(0xFF2D2D2F),
-						),
-					) :
-					new FlatButton(
+						child: Icon(Icons.bookmark),
+						heroTag: "demoValue",
+						foregroundColor: const Color(0xFF023cf5),
+						backgroundColor: Colors.white,
+					)
+				:
+					FloatingActionButton(
 						onPressed: () => setThis("addbookmark", { "id": placeData["id"].toString() }, (){
 							// update icon on success
 							setState(() {
@@ -2863,13 +2784,211 @@ class _PlaceState extends State<Place> {
 								userData[0]["bookmarks"].add(newPlaceData);
 							});
 						}, () { print("failure!"); }),
-						child: new Icon(
-							Icons.bookmark_border,
-							color: const Color(0xFF2D2D2F),
+						child: Icon(Icons.bookmark_border),
+						heroTag: "demoValue",
+						foregroundColor: const Color(0xFF023cf5),
+						backgroundColor: Colors.white,
+		
+					),
+			body: Container(
+				margin: new EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
+				alignment: Alignment.center,
+				decoration: BoxDecoration(
+	                color: const Color(0xFFF7F7F7),
+	                borderRadius: new BorderRadius.circular(20.0),
+	                boxShadow: [new BoxShadow(
+						color: const Color(0x33000000),
+						blurRadius: 8.0,
+						offset: Offset(0.0, 5.0),
+					),]
+	            ),
+	            child: ListView(
+					shrinkWrap: true,
+					children: <Widget>[
+						Stack(
+							children: [
+								Container(
+									height: 315.0,
+									decoration: new BoxDecoration(
+										image: new DecorationImage(
+											image: imgDefault(placeData["image"], "misssaigon.jpg"),
+											fit: BoxFit.cover,
+										),
+										borderRadius: BorderRadius.only(
+											topLeft: Radius.circular(20.0),
+											topRight: Radius.circular(20.0),
+										),
+									),
+								),
+								Container(
+									height: 315.0,
+									decoration: new BoxDecoration(
+										borderRadius: BorderRadius.only(
+											topLeft: Radius.circular(20.0),
+											topRight: Radius.circular(20.0),
+										),
+										gradient: LinearGradient(
+											begin: FractionalOffset.center,
+											end: FractionalOffset.bottomCenter,
+											colors: [
+												Colors.black.withOpacity(0.0),
+												Colors.black.withOpacity(1.0),
+											],
+										),
+									),
+								),
+								Container(
+									height: 315.0,
+									child: Column(
+										crossAxisAlignment: CrossAxisAlignment.start,
+										mainAxisAlignment: MainAxisAlignment.start,
+										children: [
+											Expanded(
+												child: Container()
+											),
+											Container(
+												padding: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+												child: Row(
+													crossAxisAlignment: CrossAxisAlignment.start,
+													mainAxisAlignment: MainAxisAlignment.start,
+													mainAxisSize: MainAxisSize.min,
+													children: _yourstarsList,
+												),
+											),
+											Container(
+												padding: EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 20.0),
+												child: Text(
+													placeData["name"],
+													textAlign: TextAlign.left,
+													style: TextStyle(
+														color: const Color(0xFFFFFFFF),
+														fontWeight: FontWeight.w700,
+														fontSize: 40.0,
+														height: 0.9,
+													),
+												),
+											),
+										]
+									),
+								),
+								Positioned(
+									top: 15.0,
+									right: 0.0,
+									child: IconButton(
+										icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
+										padding: EdgeInsets.all(0.0),
+										alignment: Alignment.topCenter,
+										onPressed: () => Navigator.pop(context,true),
+									),
+								),
+							]
 						),
-					)
-				)
-			],
+						Container(
+							padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 15.0),
+							alignment: Alignment.topLeft,
+							child: Column(
+								crossAxisAlignment: CrossAxisAlignment.start,
+								children: <Widget>[
+									Text(
+										"Highlights".toUpperCase(),
+										style: TextStyle(
+											color: const Color(0xFF000000),
+											fontWeight: FontWeight.w800,
+											fontSize: 12.0,
+											height: 1.25,
+											letterSpacing: 1.5
+										),
+									),
+									Container(
+										padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 25.0),
+										child: Text(
+											placeData["content"],
+											style: TextStyle(
+												color: const Color(0xFF000000),
+												fontWeight: FontWeight.w500,
+												fontSize: 14.0,
+												height: 1.25,
+											),
+										),								
+									),
+									Text(
+										placeData["address"] + ", " + placeData["city"] + ", " + placeData["state"],
+										textAlign: TextAlign.left,
+										style: TextStyle(
+											color: const Color(0xFF1033FF),
+											fontWeight: FontWeight.w500,
+											fontSize: 12.0,
+											height: 1.25,
+										),
+									),
+									GestureDetector(
+										onTap: () {
+											Navigator.push(context, MaterialPageRoute(
+												builder: (BuildContext context) => WebviewScaffold(
+													url: placeData["link"],
+													appBar: AppBar(
+														title: Text(
+															placeData["name"].toUpperCase(),
+															overflow: TextOverflow.fade,
+															style: TextStyle(
+																fontWeight: FontWeight.w800,
+																fontSize: 14.0,
+																height: 0.9,
+															),
+														),
+													),
+												),
+											));
+										},
+										child: Text(
+											placeData["link"].replaceFirst("https://www.", "").replaceFirst("http://www.", "").replaceFirst("http://", "").replaceFirst("https://", ""),
+											textAlign: TextAlign.left,
+											style: TextStyle(
+												color: const Color(0xFF1033FF),
+												fontWeight: FontWeight.w500,
+												fontSize: 12.0,
+												height: 1.25,
+											),
+										),
+									),
+									Text(
+										placeData["phone"],
+										textAlign: TextAlign.left,
+										style: TextStyle(
+											color: const Color(0xFF1033FF),
+											fontWeight: FontWeight.w400,
+											fontSize: 14.0,
+											height: 1.25,
+										),
+									),
+									Text(
+										placeData["openhours"],
+										style: TextStyle(
+											color: const Color(0xFF000000),
+											fontWeight: FontWeight.w300,
+											fontSize: 14.0,
+											height: 1.25,
+										),
+									),
+									( placeData["location"] != null ?
+										Container(
+											padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 20.0),
+											child: Image.network(
+												_staticMapProvider.getStaticUriWithMarkers(
+													<Marker>[ Marker("1", placeData["name"], placeData["location"]["longitude"], placeData["location"]["latitude"]) ],
+													width: 600,
+													height: 400,
+													maptype: StaticMapViewType.roadmap,
+												).toString()
+											),
+										) : Container()
+									),
+								]
+							),
+						),
+					],
+				),
+			),
 		);
 
 	}
