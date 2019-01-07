@@ -231,6 +231,11 @@ dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool book
 							image: imgDefault(img, "misssaigon.jpg"),
 							fit: BoxFit.cover,
 						),
+						boxShadow: [new BoxShadow(
+							color: const Color(0x66000000),
+							blurRadius: 8.0,
+							offset: Offset(0.0, 5.0),
+						),]
 					),
 				),
 				Container(
