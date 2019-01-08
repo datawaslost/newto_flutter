@@ -280,6 +280,7 @@ dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool book
 							:
 							Container()
 						),
+						Expanded( child: Container() ),
 						Container(
 							padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
 							child: Row(
@@ -2536,38 +2537,102 @@ class _ArticleState extends State<Article> {
 			backgroundColor: const Color(0xFFFFFFFF),
 			appBar: topBar(context),
 			bottomNavigationBar: bottomBar(context, 2),
-			floatingActionButton: 
-				( articleData["bookmarked"] ) == true ?
-					FloatingActionButton(
-						onPressed: () => setThis("removebookmark", { "id": articleData["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								articleData["bookmarked"] = false;
-								// remove item from bookmarks list
-								userData[0]["bookmarks"].removeWhere((i) => i["id"] == articleData["id"]);
-							});
-						}, () { print("failure!"); }),
-						child: Icon(Icons.bookmark),
-						foregroundColor: const Color(0xFF023cf5),
-						backgroundColor: Colors.white,
-					)
-				:
-					FloatingActionButton(
-						onPressed: () => setThis("addbookmark", { "id": articleData["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								articleData["bookmarked"] = true;
-								// add article to bookmarks list
-								Map newArticleData = json.decode(json.encode(articleData));
-								newArticleData["order"] = 1;
-								userData[0]["bookmarks"].add(newArticleData);
-							});
-						}, () { print("failure!"); }),
-						child: Icon(Icons.bookmark_border),
-						foregroundColor: const Color(0xFF023cf5),
-						backgroundColor: Colors.white,
-		
-					),
+			floatingActionButton: Container(
+				padding: EdgeInsets.fromLTRB(40.0, 0.0, 10.0, 10.0),
+				child: Row(
+					mainAxisSize: MainAxisSize.max,
+					mainAxisAlignment: MainAxisAlignment.spaceBetween,
+					children: <Widget>[
+						/*
+						( articleData["done"] != true && articleData["todo"] == true
+						?
+							FloatingActionButton(
+								onPressed: () => setThis("adddone", { "id": articleData["id"].toString() }, (){
+									// update icon on success
+									setState(() {
+										articleData["done"] = true;
+										// remove item from todo list
+										userData[0]["todo"].removeWhere((i) => i["id"] == articleData["id"]);
+									});
+								}, () { print("failure!"); }),
+								child: Icon(
+									Icons.check_circle_outline,
+									color: const Color(0xFF2D2D2F),
+								),
+							)
+						:
+						Container()
+						),
+						*/
+						( articleData["todo"] == true && articleData["done"] != true
+						?
+							FloatingActionButton(
+								onPressed: () => setThis("removelist", { "id": articleData["id"].toString() }, (){
+									// update icon on success
+									setState(() {
+										articleData["todo"] = false;
+										// remove article from todo list
+										userData[0]["todo"].removeWhere((i) => i["id"] == articleData["id"]);
+									});
+								}, () { print("failure!"); }),
+								child: Icon(Icons.remove),
+								foregroundColor: const Color(0xFF023cf5),
+								backgroundColor: Colors.white,
+							) 
+						:
+							FloatingActionButton(
+								onPressed: () => setThis("addlist", { "id": articleData["id"].toString() }, (){
+									// update icon on success
+									setState(() {
+										articleData["todo"] = true;
+										articleData["done"] = false;
+										// add article to todo list
+										Map newArticleData = json.decode(json.encode(articleData));
+										newArticleData["order"] = 1;
+										userData[0]["todo"].add(newArticleData);
+									});
+								}, () { print("failure!"); }),
+								child: Icon(Icons.add)
+								foregroundColor: const Color(0xFF023cf5),
+								backgroundColor: Colors.white,
+							)
+						),						
+								
+						( articleData["bookmarked"] == true
+						?
+							FloatingActionButton(
+								onPressed: () => setThis("removebookmark", { "id": articleData["id"].toString() }, (){
+									// update icon on success
+									setState(() {
+										articleData["bookmarked"] = false;
+										// remove item from bookmarks list
+										userData[0]["bookmarks"].removeWhere((i) => i["id"] == articleData["id"]);
+									});
+								}, () { print("failure!"); }),
+								child: Icon(Icons.bookmark),
+								foregroundColor: const Color(0xFF023cf5),
+								backgroundColor: Colors.white,
+							)
+						:
+							FloatingActionButton(
+								onPressed: () => setThis("addbookmark", { "id": articleData["id"].toString() }, (){
+									// update icon on success
+									setState(() {
+										articleData["bookmarked"] = true;
+										// add article to bookmarks list
+										Map newArticleData = json.decode(json.encode(articleData));
+										newArticleData["order"] = 1;
+										userData[0]["bookmarks"].add(newArticleData);
+									});
+								}, () { print("failure!"); }),
+								child: Icon(Icons.bookmark_border),
+								foregroundColor: const Color(0xFF023cf5),
+								backgroundColor: Colors.white,
+							)
+						),
+					],
+				),
+			),
 			body: Container(
 				margin: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
 				alignment: Alignment.topCenter,
@@ -2581,103 +2646,13 @@ class _ArticleState extends State<Article> {
 					)]
 	            ),
 	            child: ListView(
-		            padding: EdgeInsets.only(bottom: 30.0),
+		            padding: EdgeInsets.only(bottom: 60.0),
 					shrinkWrap: true,
 					children: _widgetList,
 				),
 			),
 		);
 		
-		/*
-
-			persistentFooterButtons: <Widget>[
-				( articleData["done"] != true && articleData["todo"] == true ?
-					new FlatButton(
-						onPressed: () => setThis("adddone", { "id": articleData["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								articleData["done"] = true;
-								// remove item from todo list
-								userData[0]["todo"].removeWhere((i) => i["id"] == articleData["id"]);
-							});
-						}, () { print("failure!"); }),
-						child: new Icon(
-							Icons.check_circle_outline,
-							color: const Color(0xFF2D2D2F),
-						),
-					)
-					: new FlatButton()
-				),
-				( articleData["todo"] == true && articleData["done"] != true ?
-					new FlatButton(
-						onPressed: () => setThis("removelist", { "id": articleData["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								articleData["todo"] = false;
-								// remove article from todo list
-								userData[0]["todo"].removeWhere((i) => i["id"] == articleData["id"]);
-							});
-						}, () { print("failure!"); }),
-						child: new Icon(
-							Icons.delete_outline,
-							color: const Color(0xFF2D2D2F),
-						),
-					) :
-					new FlatButton(
-						onPressed: () => setThis("addlist", { "id": articleData["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								articleData["todo"] = true;
-								articleData["done"] = false;
-								// add article to todo list
-								Map newArticleData = json.decode(json.encode(articleData));
-								newArticleData["order"] = 1;
-								userData[0]["todo"].add(newArticleData);
-							});
-						}, () { print("failure!"); }),
-						child: new Icon(
-							Icons.add_circle_outline,
-							color: const Color(0xFF2D2D2F),
-						),
-					)
-				),
-				( articleData["bookmarked"] == true ?
-					new FlatButton(
-						onPressed: () => setThis("removebookmark", { "id": articleData["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								articleData["bookmarked"] = false;
-								// remove item from bookmarks list
-								userData[0]["bookmarks"].removeWhere((i) => i["id"] == articleData["id"]);
-							});
-						}, () { print("failure!"); }),
-						child: new Icon(
-							Icons.bookmark,
-							color: const Color(0xFF2D2D2F),
-						),
-					) :
-					new FlatButton(
-						onPressed: () => setThis("addbookmark", { "id": articleData["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								articleData["bookmarked"] = true;
-								// add article to bookmarks list
-								Map newArticleData = json.decode(json.encode(articleData));
-								newArticleData["order"] = 1;
-								userData[0]["bookmarks"].add(newArticleData);
-							});
-						}, () { print("failure!"); }),
-						child: new Icon(
-							Icons.bookmark_border,
-							color: const Color(0xFF2D2D2F),
-						),
-					)
-				)
-			],
-		);
-		
-		*/
-
 	}
 	
 }
