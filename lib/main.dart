@@ -254,37 +254,31 @@ dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool book
 					),
 				),
 				Column(
-					mainAxisSize: MainAxisSize.min,
+					mainAxisSize: MainAxisSize.max,
 					crossAxisAlignment: CrossAxisAlignment.start,
+					mainAxisAlignment: MainAxisAlignment.spaceBetween,
 					children: <Widget>[
 						( sponsored != null && sponsored != ""
 							?
-							Row(
-								children: [
-									Container(
-										margin: EdgeInsets.fromLTRB(20.0, 30.0, 0.0, 0.0),
-										padding: EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
-										child: Text(
-											sponsored.toUpperCase(),
-											textAlign: TextAlign.left,
-											style: TextStyle(
-												color: const Color(0xFFFFFFFF),
-												fontWeight: FontWeight.w500,
-												fontSize: 12.0,
-											),
-										),
-										decoration: BoxDecoration(
-											color: const Color(0xFF6d6ef6),
-											borderRadius: BorderRadius.circular(20.0),
-										),
+							Container(
+								margin: EdgeInsets.fromLTRB(20.0, 30.0, 0.0, 0.0),
+								padding: EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
+								child: Text(
+									sponsored.toUpperCase(),
+									textAlign: TextAlign.left,
+									style: TextStyle(
+										color: const Color(0xFFFFFFFF),
+										fontWeight: FontWeight.w500,
+										fontSize: 12.0,
 									),
-									Expanded( child: Container() ),
-								]
+								),
+								decoration: BoxDecoration(
+									color: const Color(0xFF6d6ef6),
+									borderRadius: BorderRadius.circular(20.0),
+								),
 							)
-							: Container()
-						),
-						Expanded(
-							child: Container()
+							:
+							Container()
 						),
 						Container(
 							padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
@@ -1702,7 +1696,6 @@ class _SearchResultsState extends State<SearchResults> {
 		var _placeRow = new Row(
 			mainAxisSize: MainAxisSize.min,
 			crossAxisAlignment: CrossAxisAlignment.start,
-			// mainAxisAlignment: MainAxisAlignment.spaceBetween,
 			children: <Widget>[
 				Container(
 					padding: const EdgeInsets.fromLTRB(20.0, 15.0, 0.0, 0.0),
@@ -2337,11 +2330,9 @@ class _ArticleState extends State<Article> {
 										height: 315.0,
 										child: Column(
 											crossAxisAlignment: CrossAxisAlignment.start,
-											mainAxisAlignment: MainAxisAlignment.start,
+											mainAxisAlignment: MainAxisAlignment.spaceBetween,
 											children: [
-												Expanded(
-													child: Container()
-												),
+												Container(),
 												Container(
 													padding: EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 20.0),
 													child: Text(
@@ -2423,10 +2414,29 @@ class _ArticleState extends State<Article> {
 						height: 315.0,
 						child: Column(
 							crossAxisAlignment: CrossAxisAlignment.start,
-							mainAxisAlignment: MainAxisAlignment.start,
+							mainAxisAlignment: MainAxisAlignment.spaceBetween,
 							children: [
-								Expanded(
-									child: Container()
+								( articleData["sponsor"] != null && articleData["sponsor"] != ""
+									? // if sponsored
+									Container(
+										margin: EdgeInsets.fromLTRB(15.0, 15.0, 0.0, 0.0),
+										padding: EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
+										child: Text(
+											articleData["sponsor"].toUpperCase(),
+											textAlign: TextAlign.left,
+											style: TextStyle(
+												color: const Color(0xFFFFFFFF),
+												fontWeight: FontWeight.w500,
+												fontSize: 12.0,
+											),
+										),
+										decoration: BoxDecoration(
+											color: const Color(0xFF6d6ef6),
+											borderRadius: BorderRadius.circular(20.0),
+										),
+									)
+									: // if not sponsored
+									Container()
 								),
 								Container(
 									padding: EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 20.0),
@@ -2456,36 +2466,14 @@ class _ArticleState extends State<Article> {
 					),
 				]
 			),
-			( articleData["sponsor"] != null && articleData["sponsor"] != "" ?
-				Row(
-					children: [
-						Container(
-							padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-							child: Text(
-								articleData["sponsor"].toUpperCase(),
-								textAlign: TextAlign.left,
-								style: TextStyle(
-									color: const Color(0xFF000000),
-									fontWeight: FontWeight.w800,
-									fontSize: 12.0,
-								),
-							),
-							decoration: BoxDecoration(color: const Color(0xFFFCEE21) ),
-						),
-						Expanded(
-							child: Container( decoration: BoxDecoration(color: const Color(0xFFFFFFFF) ) )
-						),
-					]
-				) : Container()
-			),
-			new Container(
+			Container(
 				padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 15.0),
-				child:  Text(
+				child: Text(
 					articleData["content"],
 					textAlign: TextAlign.left,
 					style: TextStyle(
 						color: const Color(0xFF000000),
-						fontWeight: FontWeight.w300,
+						fontWeight: FontWeight.w500,
 						fontSize: 14.0,
 						height: 1.15,
 					),
@@ -2495,23 +2483,24 @@ class _ArticleState extends State<Article> {
 		
 		for (var cta in articleData["ctas"]) {
 			_widgetList.add(
-				new Container(
-					padding: new EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 30.0),
-					child:  new Row(children: <Widget>[
-						new Expanded(
-							child: new RaisedButton(
+				Container(
+					padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 30.0),
+					child: Row(
+						children: <Widget>[
+							Expanded(
+								child: RaisedButton(
 									onPressed: () {
 										if (cta["link"] != null && cta["link"] != "") {
 											Navigator.push(
 												context,
-												new MaterialPageRoute(
-													builder: (BuildContext context) => new WebviewScaffold(
+												MaterialPageRoute(
+													builder: (BuildContext context) => WebviewScaffold(
 														url: cta["link"],
-														appBar: new AppBar(
-															title: new Text(
+														appBar: AppBar(
+															title: Text(
 																cta["name"].toUpperCase(),
 																overflow: TextOverflow.fade,
-																style: new TextStyle(
+																style: TextStyle(
 																	fontWeight: FontWeight.w800,
 																	fontSize: 14.0,
 																	height: 0.9,
@@ -2526,12 +2515,12 @@ class _ArticleState extends State<Article> {
 											Navigator.pop(context,true);
 										}
 									},
-									padding: new EdgeInsets.all(14.0),  
+									padding: EdgeInsets.all(14.0),  
 									color: const Color(0xFF1033FF),
 									textColor: const Color(0xFFFFFFFF),
-									child: new Text(
+									child: Text(
 										cta["name"].toUpperCase(),
-										style: new TextStyle(
+										style: TextStyle(
 											fontWeight: FontWeight.w800,
 										),
 									),
@@ -2542,8 +2531,6 @@ class _ArticleState extends State<Article> {
 				),
 			);
 		}
-
-
 
 		return Scaffold(
 			backgroundColor: const Color(0xFFFFFFFF),
@@ -2586,12 +2573,12 @@ class _ArticleState extends State<Article> {
 				alignment: Alignment.topCenter,
 				decoration: BoxDecoration(
 	                color: const Color(0xFFF7F7F7),
-	                borderRadius: new BorderRadius.circular(20.0),
-	                boxShadow: [new BoxShadow(
+	                borderRadius: BorderRadius.circular(20.0),
+	                boxShadow: [BoxShadow(
 						color: const Color(0x33000000),
 						blurRadius: 8.0,
 						offset: Offset(0.0, 5.0),
-					),]
+					)]
 	            ),
 	            child: ListView(
 		            padding: EdgeInsets.only(bottom: 30.0),
