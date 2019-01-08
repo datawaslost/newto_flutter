@@ -2270,32 +2270,110 @@ class _ArticleState extends State<Article> {
 	@override
 	Widget build(BuildContext context) {
 		
-		var placeholderImage;
+		var tempImage;
+		var tempName;
 		List articles = userData[0]["organization"]["discover_items"].where((l) => l["id"] == id).toList();		
-		if (articles.length > 0) placeholderImage = articles[0]["image"];
+		if (articles.length > 0) {
+			tempImage = articles[0]["image"];
+			tempName = articles[0]["name"];
+		}
 
         if (articleData == null) {
             // This is what we show while we're loading
 			return Scaffold(
-				body: new SingleChildScrollView(
-					scrollDirection: Axis.vertical,
-					child: new Column(
+				appBar: topBar(context),
+				bottomNavigationBar: bottomBar(context, 2),
+				body: Container(
+					margin: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
+					alignment: Alignment.topCenter,
+					decoration: BoxDecoration(
+		                color: const Color(0xFFF7F7F7),
+		                borderRadius: new BorderRadius.circular(20.0),
+		                boxShadow: [BoxShadow(
+							color: const Color(0x33000000),
+							blurRadius: 8.0,
+							offset: Offset(0.0, 5.0),
+						)]
+		            ),
+		            child: ListView(
+						shrinkWrap: true,
 						children: [
-							Hero(
-								tag: id, 
-								child: Container(
-									height: 324.0,
-									decoration: new BoxDecoration(
-										image: new DecorationImage(
-											image: imgDefault(placeholderImage, "misssaigon.jpg"),
-											fit: BoxFit.cover,
+							Stack(
+								children: [
+									Hero(
+										tag: id,
+										child: Container(
+											height: 315.0,
+											decoration: BoxDecoration(
+												image: DecorationImage(
+													image: imgDefault(tempImage, "misssaigon.jpg"),
+													fit: BoxFit.cover,
+												),
+												borderRadius: BorderRadius.only(
+													topLeft: Radius.circular(20.0),
+													topRight: Radius.circular(20.0),
+												),
+											),
 										),
 									),
-								),
+									Container(
+										height: 315.0,
+										decoration: BoxDecoration(
+											borderRadius: BorderRadius.only(
+												topLeft: Radius.circular(20.0),
+												topRight: Radius.circular(20.0),
+											),
+											gradient: LinearGradient(
+												begin: FractionalOffset.center,
+												end: FractionalOffset.bottomCenter,
+												colors: [
+													Colors.black.withOpacity(0.0),
+													Colors.black.withOpacity(1.0),
+												],
+											),
+										),
+									),
+									Container(
+										height: 315.0,
+										child: Column(
+											crossAxisAlignment: CrossAxisAlignment.start,
+											mainAxisAlignment: MainAxisAlignment.start,
+											children: [
+												Expanded(
+													child: Container()
+												),
+												Container(
+													padding: EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 20.0),
+													child: Text(
+														tempName,
+														textAlign: TextAlign.left,
+														style: TextStyle(
+															color: const Color(0xFFFFFFFF),
+															fontWeight: FontWeight.w700,
+															fontSize: 40.0,
+															height: 0.9,
+														),
+													),
+												),
+											]
+										),
+									),
+									Positioned(
+										top: 15.0,
+										right: 0.0,
+										child: IconButton(
+											icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
+											padding: EdgeInsets.all(0.0),
+											alignment: Alignment.topCenter,
+											onPressed: () => Navigator.pop(context,true),
+										),
+									),
+								]
 							),
 							Container(
+								margin: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 0.0),
 								alignment: Alignment.center,
-								child: new CircularProgressIndicator(),
+								child: CircularProgressIndicator(),
 							)
 						],
 					),
@@ -2306,83 +2384,106 @@ class _ArticleState extends State<Article> {
         }
 
 		_widgetList = [
-			Hero(
-				tag: id, 
-				child: Container(
-					height: 324.0,
-					decoration: new BoxDecoration(
-						image: new DecorationImage(
-							image: imgDefault(articleData["image"], "misssaigon.jpg"),
-							fit: BoxFit.cover,
-						),
-					),
-					child: new Column(
-						mainAxisSize: MainAxisSize.min,
-						children: <Widget>[
-							new BackdropFilter(
-								filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-								child: new Container(
-									padding: new EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 15.0),
-									child: new SafeArea(
-										child: new Row(
-											crossAxisAlignment: CrossAxisAlignment.start,
-											children: <Widget>[
-												new Expanded(
-													child: new Text(
-														articleData["name"].toUpperCase(),
-														textAlign: TextAlign.left,
-														style: new TextStyle(
-															color: const Color(0xFF000000),
-															fontWeight: FontWeight.w800,
-															fontSize: 28.0,
-															height: 0.9,
-														),
-													),
-												),
-												new IconButton(
-													icon: new Icon(Icons.close, color: const Color(0xFF000000)),
-													padding: new EdgeInsets.all(0.0),
-													alignment: Alignment.topCenter,
-													onPressed: () => Navigator.pop(context,true),
-												),
-											]
-										),
-									),
-									decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
+			Stack(
+				children: [
+					Hero(
+						tag: id,
+						child: Container(
+							height: 315.0,
+							decoration: BoxDecoration(
+								image: DecorationImage(
+									image: imgDefault(articleData["image"], "misssaigon.jpg"),
+									fit: BoxFit.cover,
+								),
+								borderRadius: BorderRadius.only(
+									topLeft: Radius.circular(20.0),
+									topRight: Radius.circular(20.0),
 								),
 							),
-						],
+						),
 					),
-				),
+					Container(
+						height: 315.0,
+						decoration: BoxDecoration(
+							borderRadius: BorderRadius.only(
+								topLeft: Radius.circular(20.0),
+								topRight: Radius.circular(20.0),
+							),
+							gradient: LinearGradient(
+								begin: FractionalOffset.center,
+								end: FractionalOffset.bottomCenter,
+								colors: [
+									Colors.black.withOpacity(0.0),
+									Colors.black.withOpacity(1.0),
+								],
+							),
+						),
+					),
+					Container(
+						height: 315.0,
+						child: Column(
+							crossAxisAlignment: CrossAxisAlignment.start,
+							mainAxisAlignment: MainAxisAlignment.start,
+							children: [
+								Expanded(
+									child: Container()
+								),
+								Container(
+									padding: EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 20.0),
+									child: Text(
+										articleData["name"],
+										textAlign: TextAlign.left,
+										style: TextStyle(
+											color: const Color(0xFFFFFFFF),
+											fontWeight: FontWeight.w700,
+											fontSize: 40.0,
+											height: 0.9,
+										),
+									),
+								),
+							]
+						),
+					),
+					Positioned(
+						top: 15.0,
+						right: 0.0,
+						child: IconButton(
+							icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
+							padding: EdgeInsets.all(0.0),
+							alignment: Alignment.topCenter,
+							onPressed: () => Navigator.pop(context,true),
+						),
+					),
+				]
 			),
 			( articleData["sponsor"] != null && articleData["sponsor"] != "" ?
-				new Row(
+				Row(
 					children: [
-						new Container(
-							padding: new EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-							child: new Text(
+						Container(
+							padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+							child: Text(
 								articleData["sponsor"].toUpperCase(),
 								textAlign: TextAlign.left,
-								style: new TextStyle(
+								style: TextStyle(
 									color: const Color(0xFF000000),
 									fontWeight: FontWeight.w800,
 									fontSize: 12.0,
 								),
 							),
-							decoration: new BoxDecoration(color: const Color(0xFFFCEE21) ),
+							decoration: BoxDecoration(color: const Color(0xFFFCEE21) ),
 						),
-						new Expanded(
+						Expanded(
 							child: Container( decoration: BoxDecoration(color: const Color(0xFFFFFFFF) ) )
 						),
 					]
-				) : new Container()
+				) : Container()
 			),
 			new Container(
-				padding: new EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 15.0),
-				child:  new Text(
+				padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 15.0),
+				child:  Text(
 					articleData["content"],
 					textAlign: TextAlign.left,
-					style: new TextStyle(
+					style: TextStyle(
 						color: const Color(0xFF000000),
 						fontWeight: FontWeight.w300,
 						fontSize: 14.0,
@@ -2442,14 +2543,66 @@ class _ArticleState extends State<Article> {
 			);
 		}
 
-		return new Scaffold(
+
+
+		return Scaffold(
 			backgroundColor: const Color(0xFFFFFFFF),
-			body: new SingleChildScrollView(
-				scrollDirection: Axis.vertical,
-				child: new Column(
+			appBar: topBar(context),
+			bottomNavigationBar: bottomBar(context, 2),
+			floatingActionButton: 
+				( articleData["bookmarked"] ) == true ?
+					FloatingActionButton(
+						onPressed: () => setThis("removebookmark", { "id": articleData["id"].toString() }, (){
+							// update icon on success
+							setState(() {
+								articleData["bookmarked"] = false;
+								// remove item from bookmarks list
+								userData[0]["bookmarks"].removeWhere((i) => i["id"] == articleData["id"]);
+							});
+						}, () { print("failure!"); }),
+						child: Icon(Icons.bookmark),
+						foregroundColor: const Color(0xFF023cf5),
+						backgroundColor: Colors.white,
+					)
+				:
+					FloatingActionButton(
+						onPressed: () => setThis("addbookmark", { "id": articleData["id"].toString() }, (){
+							// update icon on success
+							setState(() {
+								articleData["bookmarked"] = true;
+								// add article to bookmarks list
+								Map newArticleData = json.decode(json.encode(articleData));
+								newArticleData["order"] = 1;
+								userData[0]["bookmarks"].add(newArticleData);
+							});
+						}, () { print("failure!"); }),
+						child: Icon(Icons.bookmark_border),
+						foregroundColor: const Color(0xFF023cf5),
+						backgroundColor: Colors.white,
+		
+					),
+			body: Container(
+				margin: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
+				alignment: Alignment.topCenter,
+				decoration: BoxDecoration(
+	                color: const Color(0xFFF7F7F7),
+	                borderRadius: new BorderRadius.circular(20.0),
+	                boxShadow: [new BoxShadow(
+						color: const Color(0x33000000),
+						blurRadius: 8.0,
+						offset: Offset(0.0, 5.0),
+					),]
+	            ),
+	            child: ListView(
+		            padding: EdgeInsets.only(bottom: 30.0),
+					shrinkWrap: true,
 					children: _widgetList,
 				),
 			),
+		);
+		
+		/*
+
 			persistentFooterButtons: <Widget>[
 				( articleData["done"] != true && articleData["todo"] == true ?
 					new FlatButton(
@@ -2535,6 +2688,8 @@ class _ArticleState extends State<Article> {
 				)
 			],
 		);
+		
+		*/
 
 	}
 	
@@ -2792,7 +2947,7 @@ class _PlaceState extends State<Place> {
 					),
 			body: Container(
 				margin: new EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
-				alignment: Alignment.center,
+				alignment: Alignment.topCenter,
 				decoration: BoxDecoration(
 	                color: const Color(0xFFF7F7F7),
 	                borderRadius: new BorderRadius.circular(20.0),
