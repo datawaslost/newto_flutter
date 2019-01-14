@@ -2592,7 +2592,7 @@ class _ArticleState extends State<Article> {
 										userData[0]["todo"].add(newArticleData);
 									});
 								}, () { print("failure!"); }),
-								child: Icon(Icons.add)
+								child: Icon(Icons.add),
 								foregroundColor: const Color(0xFF023cf5),
 								backgroundColor: Colors.white,
 							)
