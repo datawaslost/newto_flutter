@@ -330,7 +330,7 @@ class _LandingState extends State<Landing> {
 	List<Widget> _carouselItems = [];
 	List<Widget> _discoverItems = [];
 	double _carouselProgress = 1 / userData[0]["todo"].length;
-	
+
 	@override
 	Widget build(BuildContext context) {
 
