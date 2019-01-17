@@ -5,16 +5,8 @@ PODS:
   - Flutter (1.0.0)
   - flutter_webview_plugin (0.0.1):
     - Flutter
-  - GoogleMaps (2.7.0):
-    - GoogleMaps/Maps (= 2.7.0)
-  - GoogleMaps/Base (2.7.0)
-  - GoogleMaps/Maps (2.7.0):
-    - GoogleMaps/Base
   - location (0.0.1):
     - Flutter
-  - map_view (0.0.12):
-    - Flutter
-    - GoogleMaps
   - Reachability (3.2)
   - shared_preferences (0.0.1):
     - Flutter
@@ -22,9 +14,8 @@ PODS:
 DEPENDENCIES:
   - connectivity (from `Pods/.symlinks/plugins/connectivity-0.3.2/ios`)
   - Flutter (from `Pods/.symlinks/flutter/ios`)
-  - flutter_webview_plugin (from `Pods/.symlinks/plugins/flutter_webview_plugin-0.2.1+2/ios`)
+  - flutter_webview_plugin (from `Pods/.symlinks/plugins/flutter_webview_plugin-0.3.0+2/ios`)
   - location (from `Pods/.symlinks/plugins/flutterlocation-master/ios`)
-  - map_view (from `Pods/.symlinks/plugins/flutter_google_map_view-master/ios`)
   - shared_preferences (from `Pods/.symlinks/plugins/shared_preferences-0.4.3/ios`)
 
 EXTERNAL SOURCES:
@@ -33,21 +24,17 @@ EXTERNAL SOURCES:
   Flutter:
     :path: Pods/.symlinks/flutter/ios
   flutter_webview_plugin:
-    :path: Pods/.symlinks/plugins/flutter_webview_plugin-0.2.1+2/ios
+    :path: Pods/.symlinks/plugins/flutter_webview_plugin-0.3.0+2/ios
   location:
     :path: Pods/.symlinks/plugins/flutterlocation-master/ios
-  map_view:
-    :path: Pods/.symlinks/plugins/flutter_google_map_view-master/ios
   shared_preferences:
     :path: Pods/.symlinks/plugins/shared_preferences-0.4.3/ios
 
 SPEC CHECKSUMS:
   connectivity: d5992e3758d68b1c4b12d6e012fe0813f1aa1645
   Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
-  flutter_webview_plugin: 116575b48572029304775b768e9f15ebfc316274
-  GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
+  flutter_webview_plugin: 0b491d31c34ab5c86a71c9f1a57ac000dd1b75e9
   location: 26c90953ad5916331d0d1d913898779910416487
-  map_view: 4a71319ae78b6fb4c20813224b8c6e256703ff9b
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
 

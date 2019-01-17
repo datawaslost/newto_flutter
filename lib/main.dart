@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:validate/validate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:map_view/map_view.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
@@ -29,7 +29,7 @@ var internetListener;
 final flutterWebviewPlugin = new FlutterWebviewPlugin();
 
 void main() {
-	MapView.setApiKey("AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E");
+	// MapView.setApiKey("AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E");
 	runApp(new Newto());
 }
 
@@ -217,21 +217,35 @@ dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool book
 	
 	return new GestureDetector(
 		onTap: () {
-			Navigator.push(context, new MaterialPageRoute(
-				builder: (BuildContext context) => new Article(id),
-			));
+			if (groupitems > 0){
+				// if it's a group
+				Navigator.push(context, new MaterialPageRoute(
+					builder: (BuildContext context) => new Group(id),
+				));
+			} else {
+				// if it's an article
+				Navigator.push(context, new MaterialPageRoute(
+					builder: (BuildContext context) => new Article(id),
+				));
+			}
 		},
 		child: Stack(
 			children: [
 				Hero(
-					tag: id,
+					tag: id.toString(),
 					child: Container(
-						decoration: new BoxDecoration(
-					        borderRadius: new BorderRadius.circular(20.0),
-							image: new DecorationImage(
+						decoration: BoxDecoration(
+					        borderRadius: BorderRadius.circular(20.0),
+							image: (img != null)
+							? DecorationImage(
 								image: imgDefault(img, "misssaigon.jpg"),
 								fit: BoxFit.cover,
-							),
+							)
+							:
+							null,
+							color: (img == null)
+							? const Color(0xFF71b981)
+							: null,
 							boxShadow: [new BoxShadow(
 								color: const Color(0x66000000),
 								blurRadius: 8.0,
@@ -240,6 +254,8 @@ dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool book
 						),
 					),
 				),
+				(img != null)
+				?
 				Container(
 					decoration: new BoxDecoration(
 				        borderRadius: new BorderRadius.circular(20.0),
@@ -252,7 +268,9 @@ dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool book
 							],
 						),
 					),
-				),
+				)
+				:
+				Container(),
 				Column(
 					mainAxisSize: MainAxisSize.max,
 					crossAxisAlignment: CrossAxisAlignment.start,
@@ -917,9 +935,20 @@ dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 			}
 		}  else if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
 			// if it's a group without an image
-			_listItems.add(
-				listGroup(item["id"], item["name"], item["items"], context, sponsored: item["sponsor"], bookmarked: bookmarked)
-			);
+			
+				print(item["image"]);
+			
+				_listItems.add(
+					Container(
+						height: 300.0,
+						padding: const EdgeInsets.only(top:20.0),
+						child: discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], bookmarked: bookmarked, groupitems: item["items"] ),
+					)
+				);
+
+			// _listItems.add(
+				// listGroup(item["id"], item["name"], item["items"], context, sponsored: item["sponsor"], bookmarked: bookmarked)
+			// );
 		} else {
 			// if it's a todo
 			_listItems.add(
@@ -1591,10 +1620,10 @@ dynamic placeCard(id, txt, img, stars, distance, context, { featured = false, bo
 					),
 					Container(
 						margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-						child: new SizedBox(
+						child: SizedBox(
 							width: 120.0,
 							child: Hero(
-								tag: id,
+								tag: "place" + id.toString(),
 								child: Container(
 									child: ( featured ? 
 										Column(
@@ -1619,9 +1648,9 @@ dynamic placeCard(id, txt, img, stars, distance, context, { featured = false, bo
 										) : Container()
 									),
 									decoration: BoxDecoration(
-										borderRadius: new BorderRadius.only(
-											topLeft: new Radius.circular(20.0),
-											bottomLeft: new Radius.circular(20.0),
+										borderRadius: BorderRadius.only(
+											topLeft: Radius.circular(20.0),
+											bottomLeft: Radius.circular(20.0),
 										),
 										image: DecorationImage(
 											image: imgDefault(img, "misssaigon.jpg"),
@@ -1833,7 +1862,7 @@ class _BookmarksState extends State<Bookmarks> {
 	
 	@override
 	Widget build(BuildContext context) {
-
+		
 		return new Scaffold(
 			appBar: topBar(context),
 			body: ListView(
@@ -1841,7 +1870,6 @@ class _BookmarksState extends State<Bookmarks> {
 				padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
 				children: parseItems(userData[0]["bookmarks"], context, bookmarked: true),
 			),
-
 			bottomNavigationBar: bottomBar(context, 3),
 		);
 
@@ -2087,7 +2115,8 @@ class _GroupState extends State<Group> {
 				)
 			);
         }
-
+		
+		/*
 		_widgetList = [
 			new SliverAppBar(
 				backgroundColor: const Color(0xFFF3F3F7),
@@ -2131,15 +2160,21 @@ class _GroupState extends State<Group> {
 				),
 			),
 		];
+		*/
 		
 		_widgetList.addAll(parseItems(groupData["items"], context));
 
 		return new Scaffold(
-			backgroundColor: const Color(0xFFF3F3F7),
-			body: new CustomScrollView(
-				primary: false,
-				slivers: _widgetList,
+			appBar: topBar(context),
+			body: ListView(
+				shrinkWrap: true,
+				padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
+				children: _widgetList
 			),
+			bottomNavigationBar: bottomBar(context, 3),
+		);
+
+		/*
 			persistentFooterButtons: <Widget>[
 				( groupData["done"] != true && groupData["todo"] == true ?
 					new FlatButton(
@@ -2228,6 +2263,7 @@ class _GroupState extends State<Group> {
 			],
 
 		);
+		*/
 
 	}
 
@@ -2295,7 +2331,7 @@ class _ArticleState extends State<Article> {
 							Stack(
 								children: [
 									Hero(
-										tag: id,
+										tag: id.toString(),
 										child: Container(
 											height: 315.0,
 											decoration: BoxDecoration(
@@ -2378,19 +2414,16 @@ class _ArticleState extends State<Article> {
 		_widgetList = [
 			Stack(
 				children: [
-					Hero(
-						tag: id,
-						child: Container(
-							height: 315.0,
-							decoration: BoxDecoration(
-								image: DecorationImage(
-									image: imgDefault(articleData["image"], "misssaigon.jpg"),
-									fit: BoxFit.cover,
-								),
-								borderRadius: BorderRadius.only(
-									topLeft: Radius.circular(20.0),
-									topRight: Radius.circular(20.0),
-								),
+					Container(
+						height: 315.0,
+						decoration: BoxDecoration(
+							image: DecorationImage(
+								image: imgDefault(articleData["image"], "misssaigon.jpg"),
+								fit: BoxFit.cover,
+							),
+							borderRadius: BorderRadius.only(
+								topLeft: Radius.circular(20.0),
+								topRight: Radius.circular(20.0),
 							),
 						),
 					),
@@ -2676,7 +2709,7 @@ class _PlaceState extends State<Place> {
 	final String tempImage;
 	final String tempName;
 	List<Widget> _widgetList = [];
-	var _staticMapProvider = new StaticMapProvider('AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E');
+	// var _staticMapProvider = new StaticMapProvider('AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E');
 	var placeData;
 	double stars = 0.0;
 	var starcolor = const Color(0xFFFFFFFF);
@@ -2708,6 +2741,19 @@ class _PlaceState extends State<Place> {
 			}, () { print("failure!"); },
 		);
     }
+    
+    
+	/*
+	
+	void _onMapCreated(GoogleMapController controller) {
+		setState(() { mapController = controller; });
+	}
+
+
+	GoogleMapController mapController;
+	
+	*/
+
 
 	@override
 	Widget build(BuildContext context) {
@@ -2736,7 +2782,7 @@ class _PlaceState extends State<Place> {
 							Stack(
 								children: [
 									Hero(
-										tag: id,
+										tag: "place" + id.toString(),
 										child: Container(
 											height: 315.0,
 											decoration: new BoxDecoration(
@@ -2882,7 +2928,6 @@ class _PlaceState extends State<Place> {
 							});
 						}, () { print("failure!"); }),
 						child: Icon(Icons.bookmark),
-						heroTag: "demoValue",
 						foregroundColor: const Color(0xFF023cf5),
 						backgroundColor: Colors.white,
 					)
@@ -2902,7 +2947,6 @@ class _PlaceState extends State<Place> {
 							});
 						}, () { print("failure!"); }),
 						child: Icon(Icons.bookmark_border),
-						heroTag: "demoValue",
 						foregroundColor: const Color(0xFF023cf5),
 						backgroundColor: Colors.white,
 		
@@ -3090,7 +3134,43 @@ class _PlaceState extends State<Place> {
 									( placeData["location"] != null ?
 										Container(
 											padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 20.0),
-											child: Image.network(
+											child: Column(
+												mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+												children: <Widget>[
+													Center(
+														child: SizedBox(
+															width: 300.0,
+															height: 200.0,
+															/*
+															child: GoogleMap(
+																onMapCreated: _onMapCreated,
+															),
+															*/
+														),
+													),
+													/*
+													RaisedButton(
+														child: const Text('Go to London'),
+														onPressed: mapController == null ? null : () {
+															mapController.animateCamera(
+																CameraUpdate.newCameraPosition(
+																	const CameraPosition(
+																		bearing: 270.0,
+																		target: LatLng(51.5160895, -0.1294527),
+																		tilt: 30.0,
+																		zoom: 17.0,
+																	),
+																)
+															);
+														},
+													),
+													*/
+												],
+											),
+											
+											
+											/*
+											Image.network(
 												_staticMapProvider.getStaticUriWithMarkers(
 													<Marker>[ Marker("1", placeData["name"], placeData["location"]["longitude"], placeData["location"]["latitude"]) ],
 													width: 600,
@@ -3098,6 +3178,7 @@ class _PlaceState extends State<Place> {
 													maptype: StaticMapViewType.roadmap,
 												).toString()
 											),
+											*/
 										) : Container()
 									),
 								]

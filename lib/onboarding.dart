@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:validate/validate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:map_view/map_view.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
