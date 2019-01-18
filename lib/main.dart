@@ -811,30 +811,36 @@ dynamic addItem(context) {
 
 	showDialog(
 		context: context,
-		child: new AlertDialog(
-			contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
-			content: new SingleChildScrollView(
-				scrollDirection: Axis.vertical,
-				child: new Column(
+		child: Dialog(
+			shape: RoundedRectangleBorder(
+            	borderRadius: BorderRadius.all(Radius.circular(20.0))
+            ),
+            child: Container(
+				decoration: BoxDecoration(
+					gradient: LinearGradient(
+						begin: FractionalOffset.topCenter,
+						end: FractionalOffset.bottomCenter,
+						colors: [
+							Color(0xFF0E57DC),
+							Color(0xFF1DBF76),
+						],
+					),
+	                borderRadius: new BorderRadius.circular(20.0),
+	                boxShadow: [BoxShadow(
+						color: const Color(0x66000000),
+						blurRadius: 10.0,
+						offset: Offset(0.0, 5.0),
+					),]
+				),
+				
+				child: Column(
 					mainAxisSize: MainAxisSize.min,
 					children: [
-						new Container(
-							padding: new EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-							alignment: Alignment.topLeft,
-							child: new Text(
-								'Add a new Todo Item'.toUpperCase(),
-								style: new TextStyle(
-									color: const Color(0xFF838383),
-									fontWeight: FontWeight.w800,
-									fontSize: 14.0,
-								),
-							),
-						),
-						new Form(
+						Form(
 							key: _todoFormKey,
-							child: new Container(
-								padding: new EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
-								child: new TextFormField(
+							child: Container(
+								padding: new EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
+								child: TextFormField(
 									autofocus: true,
 						        	controller: _todoController,
 						        	validator: (value) {
@@ -842,48 +848,47 @@ dynamic addItem(context) {
 										return null;
 									},
 									style: new TextStyle(
-										color: const Color(0xFF000000),
-										fontWeight: FontWeight.w800,
-										fontSize: 18.0,
+										color: const Color(0xFFFFFFFF),
+										fontWeight: FontWeight.w600,
+										fontSize: 16.0,
 									),
 									decoration: new InputDecoration(
-						            	fillColor: const Color(0x66E0E1EA),
-										filled: true,
+										border: InputBorder.none,
+										hintText: 'Type your custom task here…'
 									),
-									maxLines: 3,
+									maxLines: 5,
 						        ),
 							),
 						),
 						
-						new RaisedButton(
-							onPressed: () {
+						GestureDetector(
+							onTap: () {
 								if (_todoFormKey.currentState.validate()) {
 									setThis("addtodo", { "name": _todoController.text }, (data){
-										// setState(() {
-											Map newTodoData = {
-												"name": _todoController.text,
-												"id" : data["id"],
-												"done": false,
-												"place": false,
-												"group": false,
-												"article": false,
-												"order": 1,
-											};
-											userData[0]["todo"].add(newTodoData);
-										// });
+										Map newTodoData = {
+											"name": _todoController.text,
+											"id" : data["id"],
+											"done": false,
+											"place": false,
+											"group": false,
+											"article": false,
+											"order": 1,
+										};
+										userData[0]["todo"].add(newTodoData);
 										Navigator.pop(context,true);
 									}, (data) { print("failure!"); },
 									returndata: true,
 									);
 								}
 							},
-							padding: new EdgeInsets.all(14.0),  
-							color: const Color(0xFF1033FF),
-							textColor: const Color(0xFFFFFFFF),
-							child: new Text(
-								'Add Todo Item'.toUpperCase(),
-								style: new TextStyle(
-									fontWeight: FontWeight.w800,
+							child: Padding(
+								padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
+								child: Text(
+									'Add Todo'.toUpperCase(),
+									style: new TextStyle(
+										fontWeight: FontWeight.w600,
+										color: Colors.white
+									),
 								),
 							),
 						),
@@ -3138,9 +3143,17 @@ class _PlaceState extends State<Place> {
 												mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 												children: <Widget>[
 													Center(
-														child: SizedBox(
+														child: Container(
 															width: 300.0,
 															height: 200.0,
+															
+															decoration: new BoxDecoration(
+																image: new DecorationImage(
+																	image: imgDefault("fakemap.png", "misssaigon.jpg"),
+																	fit: BoxFit.cover,
+																),
+															),
+
 															/*
 															child: GoogleMap(
 																onMapCreated: _onMapCreated,

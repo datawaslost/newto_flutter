@@ -55,6 +55,7 @@ flutter:
     - images/icon_compass_selected.png
     - images/icon_bookmark_selected.png
     - images/misssaigon.jpg
+    - images/fakemap.png
         
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
