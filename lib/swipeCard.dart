@@ -143,12 +143,12 @@ SlideTransition swipeCard (
 	    if (item["article"] == true) {
 	        // if it's an article
 	        Navigator.push(context, new MyCustomRoute(
-				builder: (BuildContext context) => Article(item["id"]),
+				builder: (BuildContext context) => Article(item["id"], item["image"], item["name"]),
 			));
 		} else if (item["group"] == true) {
 			// if it's a group
-	        Navigator.push(context, new MaterialPageRoute(
-				builder: (BuildContext context) => Group(item["id"]),
+	        Navigator.push(context, new MyCustomRoute(
+				builder: (BuildContext context) => Group(item["id"], item["image"], item["name"]),
 			));
 		}
 	}

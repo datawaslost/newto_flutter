@@ -175,7 +175,7 @@ dynamic topBar(context) {
 					padding: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 5.0),
 					child: Text(
 						userData[0]["organization"]["nav_name"].toString().toUpperCase(),
-						style: new TextStyle(
+						style: TextStyle(
 							color: const Color(0xFF838383),
 							fontWeight: FontWeight.w300,
 							fontSize: 16.0,
@@ -184,14 +184,12 @@ dynamic topBar(context) {
 				),
 			]
 		),
-		leading: IconButton(
-			icon: new Icon(Icons.account_circle),
-			// icon: new Icon(Icons.person_outline),
-			color: const Color(0xFF838383),
-			tooltip: 'Account',
-			onPressed: () => Navigator.of(context).pushNamed('/account'),
-			iconSize: 35.0,
-			padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 0.0),
+		leading: GestureDetector(
+			onTap: () => Navigator.of(context).pushNamed('/account'),
+			child: Container(
+				padding: const EdgeInsets.fromLTRB(5.0, 15.0, 0.0, 7.5),
+				child:Image.asset("images/account_icon.png", height: 5.0),
+			),
 		),
 	);
 
@@ -220,12 +218,12 @@ dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool book
 			if (groupitems > 0){
 				// if it's a group
 				Navigator.push(context, new MaterialPageRoute(
-					builder: (BuildContext context) => new Group(id),
+					builder: (BuildContext context) => new Group(id, img, txt),
 				));
 			} else {
 				// if it's an article
 				Navigator.push(context, new MaterialPageRoute(
-					builder: (BuildContext context) => new Article(id),
+					builder: (BuildContext context) => new Article(id, img, txt),
 				));
 			}
 		},
@@ -720,90 +718,6 @@ class _listTodoState extends State<listTodo> {
 }
 
 
-dynamic listGroup(int id, String txt, amount, context, {bookmarked = false, String sponsored}) {
-	return new GestureDetector(
-		onTap: () {
-			Navigator.push(context, new MaterialPageRoute(
-				builder: (BuildContext context) => new Group(id),
-			));
-		},
-		child: new Card(
-			elevation: 3.0,
-			child: new Column(
-				mainAxisSize: MainAxisSize.min,
-				crossAxisAlignment: CrossAxisAlignment.start,
-				children: <Widget>[
-					new Expanded(
-						child: new Container(
-							padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 7.5),
-							child: new Row(
-								crossAxisAlignment: CrossAxisAlignment.start,
-								children: <Widget>[
-									new Expanded(
-										child: new Text(
-											txt.toUpperCase(),
-											textAlign: TextAlign.left,
-											style: new TextStyle(
-												color: const Color(0xFF000000),
-												fontWeight: FontWeight.w800,
-												fontSize: 24.0,
-											),
-										),
-									),
-									( bookmarked
-										? new Container(
-											child: new Icon(Icons.bookmark, color: const Color(0xFF00C3FF), size: 20.0),
-										) : new SizedBox(width: 0.0)
-									)
-								]
-							),
-							decoration: new BoxDecoration(color: Colors.white.withOpacity(0.5)),
-						),
-					),
-					new Container(
-						padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
-						child: new Row(
-							children: [
-								new Expanded(
-									child: (sponsored != null && sponsored != "" ? 
-										new Text(
-											sponsored.toUpperCase(),
-											textAlign: TextAlign.left,
-											style: new TextStyle(
-												color: const Color(0xFF838383),
-												fontWeight: FontWeight.w800,
-												fontSize: 10.0,
-											),
-										): new Container()
-									)
-								),
-								new Text(
-									amount.toString() + ' '.toUpperCase(),
-									textAlign: TextAlign.left,
-									style: new TextStyle(
-										color: const Color(0xFF838383),
-										fontWeight: FontWeight.w800,
-										fontSize: 10.0,
-									),
-								),
-								new Container(
-									padding: const EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
-									child: new Icon(
-										Icons.filter_none, 
-										color: const Color(0xFF838383), 
-										size: 10.0
-									)
-								),
-							]
-						)
-					),
-				],
-			),
-		),
-	);
-}
-
-
 dynamic addItem(context) {
 
 	final TextEditingController _todoController = new TextEditingController();
@@ -905,7 +819,7 @@ dynamic addItem(context) {
 dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 	
 	List<Widget> _listItems = [];
-	List _listTodos = [];
+	// List _listTodos = [];
 
 	for (var item in list) {
 		if (item["place"] != null && item["place"] != "" && item["place"] != "false" && item["place"] != false) {
@@ -940,9 +854,6 @@ dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 			}
 		}  else if (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) {
 			// if it's a group without an image
-			
-				print(item["image"]);
-			
 				_listItems.add(
 					Container(
 						height: 300.0,
@@ -950,10 +861,6 @@ dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 						child: discoverItem(item["id"], item["name"], item["image"], context, sponsored: item["sponsor"], bookmarked: bookmarked, groupitems: item["items"] ),
 					)
 				);
-
-			// _listItems.add(
-				// listGroup(item["id"], item["name"], item["items"], context, sponsored: item["sponsor"], bookmarked: bookmarked)
-			// );
 		} else {
 			// if it's a todo
 			_listItems.add(
@@ -2055,7 +1962,6 @@ void setThis(settype, body, success, fail, { returndata = false }) async {
 	
 }
 
-
 getItemData(itemtype, id) async {
 	
 	// get stored token
@@ -2082,19 +1988,116 @@ getItemData(itemtype, id) async {
 }
 
 
+dynamic groupItem(id, txt, img, context, { String sponsored = null, bool bookmarked = false, int groupitems = 0 }) {
+	
+	var pillColor = const Color(0xFF70F1B2);
+	if (sponsored != null && sponsored != "") pillColor = const Color(0xFF6D6EF6);
+	
+	return GestureDetector(
+		onTap: () {
+			if (groupitems > 0){
+				// if it's a group
+				Navigator.push(context, new MaterialPageRoute(
+					builder: (BuildContext context) => new Group(id, img, txt),
+				));
+			} else {
+				// if it's an article
+				Navigator.push(context, new MaterialPageRoute(
+					builder: (BuildContext context) => new Article(id, img, txt),
+				));
+			}
+		},
+		child: Stack(
+			children: [
+				Hero(
+					tag: id.toString(),
+					child: Container(
+						decoration: BoxDecoration(
+					        // borderRadius: BorderRadius.circular(20.0),
+							image: (img != null)
+							? DecorationImage(
+								image: imgDefault(img, "misssaigon.jpg"),
+								fit: BoxFit.cover,
+							)
+							:
+							null,
+							color: (img == null)
+							? const Color(0xFF71b981)
+							: null,
+						),
+					),
+				),
+				(img != null)
+				?
+				Container(
+					decoration: BoxDecoration(
+				        // borderRadius: new BorderRadius.circular(20.0),
+						gradient: LinearGradient(
+							begin: FractionalOffset.center,
+							end: FractionalOffset.bottomCenter,
+							colors: [
+								Colors.black.withOpacity(0.0),
+								Colors.black.withOpacity(1.0),
+							],
+						),
+					),
+				)
+				:
+				Container(),
+				Container(
+					alignment: Alignment.center,
+					padding: EdgeInsets.fromLTRB(20.0, 120.0, 20.0, 40.0),
+					child: Text(
+						txt.toUpperCase(),
+						textAlign: TextAlign.center,
+						style: TextStyle(
+							color: const Color(0xFFFFFFFF),
+							fontWeight: FontWeight.w700,
+							fontSize: 14.0,
+							letterSpacing: 1.5,
+						),
+					),
+				),
+			],
+		),
+	);
+}
+
+
+dynamic parseGroupItems(list, context) {
+	
+	List<Widget> _listItems = [];
+
+	for (var item in list) {
+		_listItems.add(
+			Container(
+				height: 300.0,
+				child: groupItem(item["id"], item["name"], item["image"], context),
+			)
+		);
+	}
+	
+	return _listItems;
+}
+
+
 class Group extends StatefulWidget {
-	Group(this.id);
+	Group(this.id, this.tempImage, this.tempName);
 	final int id;
+	final String tempImage;
+	final String tempName;
 	@override
-	_GroupState createState() => new _GroupState(this.id);
+	_GroupState createState() => new _GroupState(this.id, this.tempImage, this.tempName);
 }
 
 
 class _GroupState extends State<Group> {
 
-	_GroupState(this.id);
+	_GroupState(this.id, this.tempImage, this.tempName);
 
 	final int id;
+	final String tempImage;
+	final String tempName;
 	List<Widget> _widgetList = [];
 	var groupData;
 
@@ -2112,164 +2115,337 @@ class _GroupState extends State<Group> {
 	@override
 	Widget build(BuildContext context) {
 
+		Size screenSize = MediaQuery.of(context).size;
+
         if (groupData == null) {
             // This is what we show while we're loading
 			return Scaffold(
+				appBar: topBar(context),
+				bottomNavigationBar: bottomBar(context, 2),
 				body: Container(
-					alignment: Alignment.center,
-					child: new CircularProgressIndicator(),
-				)
+					margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+					alignment: Alignment.topCenter,
+					decoration: BoxDecoration(
+		                color: const Color(0xFFF7F7F7),
+						borderRadius: BorderRadius.only(
+							topLeft: Radius.circular(20.0),
+							topRight: Radius.circular(20.0),
+						),
+		                boxShadow: [BoxShadow(
+							color: const Color(0x33000000),
+							blurRadius: 8.0,
+							offset: Offset(0.0, 5.0),
+						)]
+		            ),
+		            child: ListView(
+						shrinkWrap: true,
+						children: [
+							Stack(
+								children: [
+									Hero(
+										tag: id.toString(),
+										child: Container(
+											// height: 315.0,
+											height: screenSize.height * .65,
+											decoration: BoxDecoration(
+												image: DecorationImage(
+													image: imgDefault(tempImage, "misssaigon.jpg"),
+													fit: BoxFit.cover,
+												),
+												borderRadius: BorderRadius.only(
+													topLeft: Radius.circular(20.0),
+													topRight: Radius.circular(20.0),
+												),
+											),
+										),
+									),
+									Container(
+										// height: 315.0,
+										height: screenSize.height * .65,
+										decoration: BoxDecoration(
+											borderRadius: BorderRadius.only(
+												topLeft: Radius.circular(20.0),
+												topRight: Radius.circular(20.0),
+											),
+											gradient: LinearGradient(
+												begin: FractionalOffset.topCenter,
+												end: FractionalOffset.bottomCenter,
+												colors: [
+													Colors.black.withOpacity(0.0),
+													Colors.black.withOpacity(.75),
+												],
+											),
+										),
+									),
+									Container(
+										height: screenSize.height * .65,
+										child: Column(
+											crossAxisAlignment: CrossAxisAlignment.start,
+											mainAxisAlignment: MainAxisAlignment.spaceBetween,
+											children: [
+												Expanded(
+													child: Container(
+														padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+														alignment: Alignment.center,
+														child: Text(
+															tempName, 
+															style: TextStyle(
+																fontFamily: "Montserrat",
+																fontWeight: FontWeight.w700,
+																color: Colors.white, 
+																fontSize: 45.0,
+																height: 0.85
+															)
+														),
+													),
+												),
+											]
+										),
+									),
+									Positioned(
+										top: 15.0,
+										right: 0.0,
+										child: IconButton(
+											icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
+											padding: EdgeInsets.all(0.0),
+											alignment: Alignment.topCenter,
+											onPressed: () => Navigator.pop(context,true),
+										),
+									),
+								]
+							),
+							Container(
+								margin: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 0.0),
+								alignment: Alignment.center,
+								child: CircularProgressIndicator(),
+							)
+						],
+					),
+				),
+				
 			);
+			
         }
 		
-		/*
 		_widgetList = [
-			new SliverAppBar(
-				backgroundColor: const Color(0xFFF3F3F7),
-				pinned: false,
-				expandedHeight: 230.0,
-				floating: true,
-				leading: new Container(),
-				actions: <Widget>[
-					new IconButton(
-						icon: new Icon(Icons.close ),
-						tooltip: 'Close',
-						onPressed: () => Navigator.pop(context,true)
-					),
-				],
-				flexibleSpace: new FlexibleSpaceBar(
-					background: new Image(
-						image: imgDefault(groupData["image"], "cardphoto.png"),
-						fit: BoxFit.cover,
-					)
-				),
-			),
-			new SliverPadding(
-				padding: const EdgeInsets.all(20.0),
-				sliver: new SliverGrid.count(
-					crossAxisSpacing: 10.0,
-					mainAxisSpacing: 10.0,
-					crossAxisCount: 1,
-					childAspectRatio: 8.0,
-					children: <Widget>[
-						new Text(
-							groupData["name"].toUpperCase(),
-							textAlign: TextAlign.left,
-							style: new TextStyle(
-								color: const Color(0xFF000000),
-								fontWeight: FontWeight.w800,
-								fontSize: 28.0,
-								height: 0.9,
+			Stack(
+				children: [
+					Container(
+						height: screenSize.height * .65,
+						decoration: BoxDecoration(
+							image: DecorationImage(
+								image: imgDefault(groupData["image"], "misssaigon.jpg"),
+								fit: BoxFit.cover,
+							),
+							borderRadius: BorderRadius.only(
+								topLeft: Radius.circular(20.0),
+								topRight: Radius.circular(20.0),
 							),
 						),
-					]
+					),
+					Container(
+						height: screenSize.height * .65,
+						decoration: BoxDecoration(
+							borderRadius: BorderRadius.only(
+								topLeft: Radius.circular(20.0),
+								topRight: Radius.circular(20.0),
+							),
+							gradient: LinearGradient(
+								begin: FractionalOffset.topCenter,
+								end: FractionalOffset.bottomCenter,
+								colors: [
+									Colors.black.withOpacity(0.0),
+									Colors.black.withOpacity(.75),
+								],
+							),
+						),
+					),
+					Container(
+						height: screenSize.height * .65,
+						child: Column(
+							crossAxisAlignment: CrossAxisAlignment.start,
+							mainAxisAlignment: MainAxisAlignment.spaceBetween,
+							children: [
+								( groupData["sponsor"] != null && groupData["sponsor"] != ""
+									? // if sponsored
+									Container(
+										margin: EdgeInsets.fromLTRB(15.0, 15.0, 0.0, 0.0),
+										padding: EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
+										child: Text(
+											groupData["sponsor"].toUpperCase(),
+											textAlign: TextAlign.left,
+											style: TextStyle(
+												color: const Color(0xFFFFFFFF),
+												fontWeight: FontWeight.w500,
+												fontSize: 12.0,
+											),
+										),
+										decoration: BoxDecoration(
+											color: const Color(0xFF6d6ef6),
+											borderRadius: BorderRadius.circular(20.0),
+										),
+									)
+									: // if not sponsored
+									Container()
+								),
+								Expanded(
+									child: Container(
+										padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+										alignment: Alignment.center,
+										child: Text(
+											groupData["name"], 
+											style: TextStyle(
+												fontFamily: "Montserrat",
+												fontWeight: FontWeight.w700,
+												color: Colors.white, 
+												fontSize: 45.0,
+												height: 0.85
+											)
+										),
+									),
+								),
+							]
+						),
+					),
+					Positioned(
+						top: 15.0,
+						right: 0.0,
+						child: IconButton(
+							icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
+							padding: EdgeInsets.all(0.0),
+							alignment: Alignment.topCenter,
+							onPressed: () => Navigator.pop(context,true),
+						),
+					),
+				]
+			),
+			/*
+			Container(
+				padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 15.0),
+				child: Text(
+					groupData["content"],
+					textAlign: TextAlign.left,
+					style: TextStyle(
+						color: const Color(0xFF000000),
+						fontWeight: FontWeight.w500,
+						fontSize: 14.0,
+						height: 1.15,
+					),
 				),
 			),
+			*/
 		];
-		*/
-		
-		_widgetList.addAll(parseItems(groupData["items"], context));
 
-		return new Scaffold(
+		_widgetList.addAll(parseGroupItems(groupData["items"], context));
+
+		return Scaffold(
+			backgroundColor: const Color(0xFFFFFFFF),
 			appBar: topBar(context),
-			body: ListView(
-				shrinkWrap: true,
-				padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
-				children: _widgetList
+			bottomNavigationBar: bottomBar(context, 2),
+			floatingActionButton: Container(
+				padding: EdgeInsets.fromLTRB(40.0, 0.0, 10.0, 10.0),
+				child: Row(
+					mainAxisSize: MainAxisSize.max,
+					mainAxisAlignment: MainAxisAlignment.spaceBetween,
+					children: <Widget>[
+						( groupData["todo"] == true && groupData["done"] != true
+						?
+							FloatingActionButton(
+								onPressed: () => setThis("removelist", { "id": groupData["id"].toString() }, (){
+									// update icon on success
+									setState(() {
+										groupData["todo"] = false;
+										// remove article from todo list
+										userData[0]["todo"].removeWhere((i) => i["id"] == groupData["id"]);
+									});
+								}, () { print("failure!"); }),
+								child: Icon(Icons.remove),
+								foregroundColor: const Color(0xFF023cf5),
+								backgroundColor: Colors.white,
+								heroTag: "removelist" + groupData["id"].toString(),
+							) 
+						:
+							FloatingActionButton(
+								onPressed: () => setThis("addlist", { "id": groupData["id"].toString() }, (){
+									// update icon on success
+									setState(() {
+										groupData["todo"] = true;
+										groupData["done"] = false;
+										// add article to todo list
+										Map newGroupData = json.decode(json.encode(groupData));
+										newGroupData["order"] = 1;
+										userData[0]["todo"].add(newGroupData);
+									});
+								}, () { print("failure!"); }),
+								child: Icon(Icons.add),
+								foregroundColor: const Color(0xFF023cf5),
+								backgroundColor: Colors.white,
+								heroTag: "addlist" + groupData["id"].toString(),
+
+							)
+						),						
+								
+						( groupData["bookmarked"] == true
+						?
+							FloatingActionButton(
+								onPressed: () => setThis("removebookmark", { "id": groupData["id"].toString() }, (){
+									// update icon on success
+									setState(() {
+										groupData["bookmarked"] = false;
+										// remove item from bookmarks list
+										userData[0]["bookmarks"].removeWhere((i) => i["id"] == groupData["id"]);
+									});
+								}, () { print("failure!"); }),
+								child: Icon(Icons.bookmark),
+								foregroundColor: const Color(0xFF023cf5),
+								backgroundColor: Colors.white,
+								heroTag: "removebookmark" + groupData["id"].toString(),
+							)
+						:
+							FloatingActionButton(
+								onPressed: () => setThis("addbookmark", { "id": groupData["id"].toString() }, (){
+									// update icon on success
+									setState(() {
+										groupData["bookmarked"] = true;
+										// add article to bookmarks list
+										Map newGroupData = json.decode(json.encode(groupData));
+										newGroupData["order"] = 1;
+										userData[0]["bookmarks"].add(newGroupData);
+									});
+								}, () { print("failure!"); }),
+								child: Icon(Icons.bookmark_border),
+								foregroundColor: const Color(0xFF023cf5),
+								backgroundColor: Colors.white,
+								heroTag: "addbookmark" + groupData["id"].toString(),
+							)
+						),
+					],
+				),
 			),
-			bottomNavigationBar: bottomBar(context, 3),
-		);
-
-		/*
-			persistentFooterButtons: <Widget>[
-				( groupData["done"] != true && groupData["todo"] == true ?
-					new FlatButton(
-						onPressed: () => setThis("adddone", { "id": groupData["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								groupData["done"] = true;
-								// remove item from todo list
-								userData[0]["todo"].removeWhere((i) => i["id"] == groupData["id"]);
-							});
-						}, () { print("failure!"); }),
-						child: new Icon(
-							Icons.check_circle_outline,
-							color: const Color(0xFF2D2D2F),
-						),
-					)
-					: new FlatButton()
+			
+			
+			body: Container(
+				margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+				alignment: Alignment.topCenter,
+				decoration: BoxDecoration(
+	                color: const Color(0xFFF7F7F7),
+					borderRadius: BorderRadius.only(
+						topLeft: Radius.circular(20.0),
+						topRight: Radius.circular(20.0),
+					),
+	                boxShadow: [BoxShadow(
+						color: const Color(0x33000000),
+						blurRadius: 8.0,
+						offset: Offset(0.0, 5.0),
+					)]
+	            ),
+	            child: ListView(
+		            // padding: EdgeInsets.only(bottom: 60.0),
+					shrinkWrap: true,
+					children: _widgetList,
 				),
-				( groupData["todo"] == true && groupData["done"] != true ?
-					new FlatButton(
-						onPressed: () => setThis("removelist", { "id": groupData["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								groupData["todo"] = false;
-								// remove item from todo list
-								userData[0]["todo"].removeWhere((i) => i["id"] == groupData["id"]);
-							});
-						}, () { print("failure!"); }),
-						child: new Icon(
-							Icons.delete_outline,
-							color: const Color(0xFF2D2D2F),
-						),
-					) :
-					new FlatButton(
-						onPressed: () => setThis("addlist", { "id": groupData["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								groupData["todo"] = true;
-								groupData["done"] = false;
-								// add group to todo list
-								Map newGroupData = json.decode(json.encode(groupData));
-								newGroupData["items"] = groupData["items"].length;
-								newGroupData["order"] = 1;
-								userData[0]["todo"].add(newGroupData);
-							});
-						}, () { print("failure!"); }),
-						child: new Icon(
-							Icons.add_circle_outline,
-							color: const Color(0xFF2D2D2F),
-						),
-					)
-				),
-				( groupData["bookmarked"] == true ?
-					new FlatButton(
-						onPressed: () => setThis("removebookmark", { "id": groupData["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								groupData["bookmarked"] = false;
-								// remove item from bookmarks list
-								userData[0]["bookmarks"].removeWhere((i) => i["id"] == groupData["id"]);
-							});
-						}, () { print("failure!"); }),
-						child: new Icon(
-							Icons.bookmark,
-							color: const Color(0xFF2D2D2F),
-						),
-					) :
-					new FlatButton(
-						onPressed: () => setThis("addbookmark", { "id": groupData["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								groupData["bookmarked"] = true;
-								// add group to bookmarks list
-								Map newGroupData = json.decode(json.encode(groupData));
-								newGroupData["items"] = groupData["items"].length;
-								newGroupData["order"] = 1;
-								userData[0]["bookmarks"].add(newGroupData);
-							});
-						}, () { print("failure!"); }),
-						child: new Icon(
-							Icons.bookmark_border,
-							color: const Color(0xFF2D2D2F),
-						),
-					)
-				)
-			],
-
+			),
 		);
-		*/
 
 	}
 
@@ -2277,18 +2453,22 @@ class _GroupState extends State<Group> {
 
 
 class Article extends StatefulWidget {
-	Article(this.id);
+	Article(this.id, this.tempImage, this.tempName);
 	final int id;
+	final String tempImage;
+	final String tempName;
 	@override
-	_ArticleState createState() => new _ArticleState(this.id);
+	_ArticleState createState() => new _ArticleState(this.id, this.tempImage, this.tempName);
 }
 
 
 class _ArticleState extends State<Article> {
 
-	_ArticleState(this.id);
+	_ArticleState(this.id, this.tempImage, this.tempName);
 
 	final int id;
+	final String tempImage;
+	final String tempName;
 	List<Widget> _widgetList = [];
 	var articleData;
 
@@ -2306,25 +2486,17 @@ class _ArticleState extends State<Article> {
 	@override
 	Widget build(BuildContext context) {
 		
-		var tempImage;
-		var tempName;
-		List articles = userData[0]["organization"]["discover_items"].where((l) => l["id"] == id).toList();		
-		if (articles.length > 0) {
-			tempImage = articles[0]["image"];
-			tempName = articles[0]["name"];
-		}
-
         if (articleData == null) {
             // This is what we show while we're loading
 			return Scaffold(
 				appBar: topBar(context),
 				bottomNavigationBar: bottomBar(context, 2),
 				body: Container(
-					margin: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
+					margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
 					alignment: Alignment.topCenter,
 					decoration: BoxDecoration(
 		                color: const Color(0xFFF7F7F7),
-		                borderRadius: new BorderRadius.circular(20.0),
+		                borderRadius: BorderRadius.circular(20.0),
 		                boxShadow: [BoxShadow(
 							color: const Color(0x33000000),
 							blurRadius: 8.0,
@@ -2678,7 +2850,7 @@ class _ArticleState extends State<Article> {
 				),
 			),
 			body: Container(
-				margin: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
+				margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
 				alignment: Alignment.topCenter,
 				decoration: BoxDecoration(
 	                color: const Color(0xFFF7F7F7),
