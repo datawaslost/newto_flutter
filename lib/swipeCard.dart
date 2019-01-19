@@ -138,6 +138,20 @@ SlideTransition swipeCard (
 			curve: Curves.ease,
 		),
 	);
+	
+	void openItem(item, context) {
+	    if (item["article"] == true) {
+	        // if it's an article
+	        Navigator.push(context, new MyCustomRoute(
+				builder: (BuildContext context) => Article(item["id"]),
+			));
+		} else if (item["group"] == true) {
+			// if it's a group
+	        Navigator.push(context, new MaterialPageRoute(
+				builder: (BuildContext context) => Group(item["id"]),
+			));
+		}
+	}
     
     return SlideTransition(
 	    position: posAnimation,
@@ -150,18 +164,12 @@ SlideTransition swipeCard (
 				child: Hero(
 	            	tag: "img"+Random().nextInt(1000000).toString(),
 					child: GestureDetector(
+						onVerticalDragEnd: (details) {
+							// if swiped up, open item
+							if (details.primaryVelocity < 0) openItem(item, context); 
+						},
 						onTap: () {
-			                if (item["article"] == true) {
-				                // if it's an article
-				                Navigator.push(context, new MyCustomRoute(
-									builder: (BuildContext context) => Article(item["id"]),
-								));
-							} else if (item["group"] == true) {
-								// if it's a group
-				                Navigator.push(context, new MaterialPageRoute(
-									builder: (BuildContext context) => Group(item["id"]),
-								));
-							}
+							openItem(item, context);
 						},
 		                child: Container(
 							alignment: Alignment.center,

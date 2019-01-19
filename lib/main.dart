@@ -1039,6 +1039,7 @@ class _listScreenState extends State<listScreen> {
 				child: Icon(Icons.add, color: const Color(0xFF1033FF) ),
 				onPressed: () => addItem(context),
 				backgroundColor: const Color(0xFFFFFFFF),
+				heroTag: "addnewtodo",
 			),
 		);
 		
@@ -2616,6 +2617,7 @@ class _ArticleState extends State<Article> {
 								child: Icon(Icons.remove),
 								foregroundColor: const Color(0xFF023cf5),
 								backgroundColor: Colors.white,
+								heroTag: "removelist" + articleData["id"].toString(),
 							) 
 						:
 							FloatingActionButton(
@@ -2633,6 +2635,8 @@ class _ArticleState extends State<Article> {
 								child: Icon(Icons.add),
 								foregroundColor: const Color(0xFF023cf5),
 								backgroundColor: Colors.white,
+								heroTag: "addlist" + articleData["id"].toString(),
+
 							)
 						),						
 								
@@ -2650,6 +2654,7 @@ class _ArticleState extends State<Article> {
 								child: Icon(Icons.bookmark),
 								foregroundColor: const Color(0xFF023cf5),
 								backgroundColor: Colors.white,
+								heroTag: "removebookmark" + articleData["id"].toString(),
 							)
 						:
 							FloatingActionButton(
@@ -2666,6 +2671,7 @@ class _ArticleState extends State<Article> {
 								child: Icon(Icons.bookmark_border),
 								foregroundColor: const Color(0xFF023cf5),
 								backgroundColor: Colors.white,
+								heroTag: "addbookmark" + articleData["id"].toString(),
 							)
 						),
 					],
@@ -2935,6 +2941,7 @@ class _PlaceState extends State<Place> {
 						child: Icon(Icons.bookmark),
 						foregroundColor: const Color(0xFF023cf5),
 						backgroundColor: Colors.white,
+						heroTag: "removebookmark" + placeData["id"].toString(),
 					)
 				:
 					FloatingActionButton(
@@ -2954,6 +2961,7 @@ class _PlaceState extends State<Place> {
 						child: Icon(Icons.bookmark_border),
 						foregroundColor: const Color(0xFF023cf5),
 						backgroundColor: Colors.white,
+						heroTag: "addbookmark" + placeData["id"].toString(),
 		
 					),
 			body: Container(
