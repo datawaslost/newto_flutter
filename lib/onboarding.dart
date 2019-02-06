@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/scheduler.dart';
+// import 'package:flutter/scheduler.dart';
 import 'package:validate/validate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+// import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+// import 'package:flutter_slidable/flutter_slidable.dart';
 
 import "dart:ui";
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math' as math;
+// import 'dart:math' as math;
 
 import 'main.dart';
 
@@ -30,7 +30,7 @@ dynamic getUserData(token, success, fail) async {
 	final response = await http.get(
 		domain + 'api/me/',
 		headers: {
-			HttpHeaders.AUTHORIZATION: "JWT " + token
+			HttpHeaders.authorizationHeader: "JWT " + token
 		},
 	);
 		
@@ -533,7 +533,7 @@ class _CreateEmailState extends State<CreateEmail> {
 				// If email does not exist, save organization if there is one.
 				_organization = json.decode(response.body)["organization"];
 				return null;
-			};
+			}
 		} else {
 			// If there was a problem
 			return "There was a problem communicating with the servers : " + response.statusCode.toString();
@@ -735,7 +735,7 @@ class _CreatePasswordState extends State<CreatePassword> {
 				return null;
 			} else {
 				return json.decode(response.body)["error"];
-			};
+			}
 		} else {
 			// If there was a problem
 			return "There was a problem communicating with the servers : " + response.statusCode.toString();
@@ -929,7 +929,7 @@ class _CreateFinishState extends State<CreateFinish> {
 		};
 			
 		// check if we have a hometown entered
-		if (!_hometownController.text.isEmpty) onboarding_data["hometown"] = _hometownController.text.toString();
+		if (_hometownController.text.isNotEmpty) onboarding_data["hometown"] = _hometownController.text.toString();
 		
 		if (organization != null) {
 			// if we have an organization attached to this email

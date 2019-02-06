@@ -1,15 +1,15 @@
-import 'dart:async';
+// import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
-import 'main.dart' show imgDefault, setThis, userData, Article, Group;
+import 'main.dart' show imgDefault, setThis, Article, Group, Todo; // userData, 
 
 
 class swipeCards extends StatefulWidget {
 	swipeCards(this.cardsData);
-	var cardsData;
+	final cardsData;
 	@override
 	swipeCardsState createState() => new swipeCardsState(this.cardsData);
 }
@@ -149,6 +149,10 @@ SlideTransition swipeCard (
 			// if it's a group
 	        Navigator.push(context, new MyCustomRoute(
 				builder: (BuildContext context) => Group(item["id"], item["image"], item["name"]),
+			));
+		} else {
+	        Navigator.push(context, new MyCustomRoute(
+				builder: (BuildContext context) => Todo(item["id"], item["name"]),
 			));
 		}
 	}
@@ -310,9 +314,9 @@ class cardDetails extends StatefulWidget {
 	    this.addItem,
 	);
 	
-	var item;
-    BuildContext context;
-    var addItem;
+	final item;
+    final BuildContext context;
+    final addItem;
 
 	@override
 	cardDetailsState createState() => new cardDetailsState(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:validate/validate.dart';
+// import 'package:flutter/scheduler.dart';
+// import 'package:validate/validate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
@@ -13,9 +13,9 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import "dart:ui";
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math' as math;
+// import 'dart:math' as math;
 
-import 'carousel.dart';
+// import 'carousel.dart';
 import 'swipeCard.dart';
 import 'onboarding.dart';
 
@@ -208,7 +208,7 @@ dynamic imgDefault(img, defaultImg) {
 }
 
 
-dynamic discoverItem(id, txt, img, context, { String sponsored = null, bool bookmarked = false, int groupitems = 0 }) {
+dynamic discoverItem(id, txt, img, context, { String sponsored, bool bookmarked = false, int groupitems = 0 }) {
 	
 	var pillColor = const Color(0xFF70F1B2);
 	if (sponsored != null && sponsored != "") pillColor = const Color(0xFF6D6EF6);
@@ -341,11 +341,11 @@ class Landing extends StatefulWidget {
 
 class _LandingState extends State<Landing> {
 
-	String _response;
-	bool _details = false;
-	List<Widget> _carouselItems = [];
+	// String _response;
+	// bool _details = false;
+	// List<Widget> _carouselItems = [];
 	List<Widget> _discoverItems = [];
-	double _carouselProgress = 1 / userData[0]["todo"].length;
+	// double _carouselProgress = 1 / userData[0]["todo"].length;
 
 	@override
 	Widget build(BuildContext context) {
@@ -402,18 +402,18 @@ dynamic todoButton(icon, { double size = 50.0, var color = const Color(0xFFFFFFF
 }
 
 
-class listTodo extends StatefulWidget {
-	listTodo(this.item, this.context, {this.bookmarked = false, this.yourlist = false});
-	var item;
-	var context;
-	bool bookmarked;
-	bool yourlist;
+class ListTodo extends StatefulWidget {
+	ListTodo(this.item, this.context, {this.bookmarked = false, this.yourlist = false});
+	final item;
+	final context;
+	final bool bookmarked;
+	final bool yourlist;
 	@override
 	_listTodoState createState() => new _listTodoState(this.item, this.context, this.bookmarked, this.yourlist);
 }
 
 
-class _listTodoState extends State<listTodo> {
+class _listTodoState extends State<ListTodo> {
 
 	_listTodoState(this.item, this.context, this.bookmarked, this.yourlist);
 	
@@ -662,30 +662,38 @@ class _listTodoState extends State<listTodo> {
 						SizedBox( width: 10.0 ),
 						mainButton,
 						Expanded(
-							child: Container(
-								height: 100.0,
-								alignment: Alignment.centerLeft,
-								constraints: BoxConstraints(
-									minHeight: 65.0,
+							child: GestureDetector(
+								onLongPress: () => Navigator.push(
+									context,
+									MaterialPageRoute(
+										builder: (BuildContext context) => new Todo(item["id"], item["name"]),
+									)
 								),
-								padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-								margin: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-								decoration: BoxDecoration(
-				                    color: itemColor,
-				                    borderRadius: new BorderRadius.circular(20.0),
-				                    boxShadow: [new BoxShadow(
-										color: const Color(0x55000000),
-										blurRadius: 8.0,
-										offset: Offset(0.0, 5.0),
-									),]
-								),
-								child: Text(
-									item["name"],
-									textAlign: TextAlign.left,
-									style: TextStyle(
-										color: const Color(0xFFFFFFFF),
-										fontWeight: FontWeight.w600,
-										fontSize: 16.0,
+								child: Container(
+									height: 100.0,
+									alignment: Alignment.centerLeft,
+									constraints: BoxConstraints(
+										minHeight: 65.0,
+									),
+									padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+									margin: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+									decoration: BoxDecoration(
+					                    color: itemColor,
+					                    borderRadius: new BorderRadius.circular(20.0),
+					                    boxShadow: [new BoxShadow(
+											color: const Color(0x55000000),
+											blurRadius: 8.0,
+											offset: Offset(0.0, 5.0),
+										),]
+									),
+									child: Text(
+										item["name"],
+										textAlign: TextAlign.left,
+										style: TextStyle(
+											color: const Color(0xFFFFFFFF),
+											fontWeight: FontWeight.w600,
+											fontSize: 16.0,
+										),
 									),
 								),
 							),
@@ -867,7 +875,7 @@ dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 				Container(
 					height: 100.0,
 					padding: const EdgeInsets.only(top:20.0),
-					child: listTodo(item, context, bookmarked: bookmarked, yourlist: yourlist)
+					child: ListTodo(item, context, bookmarked: bookmarked, yourlist: yourlist)
 				)
 			);
 
@@ -888,9 +896,9 @@ dynamic parseItems(list, context, { bookmarked = false, yourlist = false } ) {
 
 class listScreen extends StatefulWidget {
 	listScreen(this.list, this.context, this.yourlist);
-	var list;
-	var context;
-	bool yourlist;
+	final list;
+	final context;
+	final bool yourlist;
 	@override
 	_listScreenState createState() => new _listScreenState(this.list, this.context, this.yourlist);
 }
@@ -1221,7 +1229,7 @@ class _SearchState extends State<Search> {
 				)
 			);
 			
-		};
+		}
 			  
 		return Scaffold(
 			backgroundColor: const Color(0xFFFFFFFF),
@@ -1602,7 +1610,7 @@ dynamic getPlacesData(filters) async {
 	final response = await http.get(
 		domain + 'api/place/' + qs,
 		headers: {
-			HttpHeaders.AUTHORIZATION: "JWT " + token
+			HttpHeaders.authorizationHeader: "JWT " + token
 		},
 	);
 	
@@ -1839,9 +1847,7 @@ class _AccountState extends State<Account> {
 							Icons.mail_outline,
 							color: const Color(0xFF838383),
 						),
-						trailing: new IconButton(
-							icon: new Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
-						),
+						trailing: Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
 						onTap: () => print("email"),
 					),
 					new Divider(
@@ -1859,9 +1865,7 @@ class _AccountState extends State<Account> {
 							Icons.home,
 							color: const Color(0xFF838383),
 						),
-						trailing: new IconButton(
-							icon: new Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
-						),
+						trailing: Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
 						onTap: () => print("hometown"),
 					),
 					new Divider(
@@ -1879,9 +1883,7 @@ class _AccountState extends State<Account> {
 							Icons.lock_outline,
 							color: const Color(0xFF838383),
 						),
-						trailing: new IconButton(
-							icon: new Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
-						),
+						trailing: Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
 						onTap: () => print("change password"),
 					),
 					new Divider(
@@ -1899,9 +1901,7 @@ class _AccountState extends State<Account> {
 							Icons.power_settings_new,
 							color: const Color(0xFF838383),
 						),
-						trailing: new IconButton(
-							icon: new Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
-						),
+						trailing: Icon(Icons.arrow_forward, color: const Color(0xFF000000) ),
 						onTap: () async {
 							final prefs = await SharedPreferences.getInstance();
 							prefs.remove('token');
@@ -1934,7 +1934,7 @@ void setThis(settype, body, success, fail, { returndata = false }) async {
 	final response = await http.post(
 		domain + 'api/' + qs,
 		headers: {
-			HttpHeaders.AUTHORIZATION: "JWT " + token
+			HttpHeaders.authorizationHeader: "JWT " + token
 		},
 		body: body
 	);
@@ -1971,7 +1971,7 @@ getItemData(itemtype, id) async {
 	final response = await http.get(
 		domain + 'api/' + itemtype + '/' + id.toString() + '/',
 		headers: {
-			HttpHeaders.AUTHORIZATION: "JWT " + token
+			HttpHeaders.authorizationHeader: "JWT " + token
 		},
 	);
 	
@@ -1988,10 +1988,10 @@ getItemData(itemtype, id) async {
 }
 
 
-dynamic groupItem(id, txt, img, context, { String sponsored = null, bool bookmarked = false, int groupitems = 0 }) {
+dynamic groupItem(id, txt, img, context, { String sponsored, bool bookmarked = false, int groupitems = 0 }) {
 	
-	var pillColor = const Color(0xFF70F1B2);
-	if (sponsored != null && sponsored != "") pillColor = const Color(0xFF6D6EF6);
+	// var pillColor = const Color(0xFF70F1B2);
+	// if (sponsored != null && sponsored != "") pillColor = const Color(0xFF6D6EF6);
 	
 	return GestureDetector(
 		onTap: () {
@@ -2069,16 +2069,409 @@ dynamic parseGroupItems(list, context) {
 	List<Widget> _listItems = [];
 
 	for (var item in list) {
-		_listItems.add(
-			Container(
-				height: 300.0,
-				child: groupItem(item["id"], item["name"], item["image"], context),
-			)
-		);
+		// for each item in list
+		if ( (item["image"] != null && item["image"] != "") || (item["group"] != null && item["group"] != "" && item["group"] != "false" && item["group"] != false) ) {
+			// if it has an image or is a group, it's not a todo
+			_listItems.add(
+				Container(
+					height: 300.0,
+					child: groupItem(item["id"], item["name"], item["image"], context),
+				)
+			);
+		} else {
+			// if it's a todo
+			_listItems.add(
+				Container(
+					height: 100.0,
+					padding: EdgeInsets.fromLTRB(5.0, 20.0, 10.0, 0.0),
+					child: ListTodo(item, context, yourlist: true)
+				)
+			);
+			
+		}			
 	}
+	
+	_listItems.add(
+		SizedBox( height: 100.0 )
+	);
+
 	
 	return _listItems;
 }
+
+
+class Todo extends StatefulWidget {
+	Todo(this.id, this.tempName);
+	final int id;
+	final String tempName;
+	@override
+	_TodoState createState() => new _TodoState(this.id, this.tempName);
+}
+
+
+class _TodoState extends State<Todo> {
+
+	_TodoState(this.id, this.tempName);
+
+	final int id;
+	final String tempName;
+	List<Widget> _widgetList = [];
+	var todoData;
+
+    @override
+    void initState() {        
+        // We can't mark this method as async because of the @override
+        getItemData('item', id).then((result) {
+            // If we need to rebuild the widget with the resulting data, make sure to use `setState`
+            setState(() {
+                todoData = result;
+            });
+        });
+    }
+
+	@override
+	Widget build(BuildContext context) {
+
+		Size screenSize = MediaQuery.of(context).size;
+
+        if (todoData == null) {
+	        
+			return Scaffold(
+				appBar: topBar(context),
+				bottomNavigationBar: bottomBar(context, 2),
+				body: Container(
+					margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+					alignment: Alignment.topCenter,
+					decoration: BoxDecoration(
+						color: Color(0xFF023cf5),
+						borderRadius: BorderRadius.circular(20.0),
+		                boxShadow: [BoxShadow(
+							color: const Color(0x33000000),
+							blurRadius: 8.0,
+							offset: Offset(0.0, 5.0),
+						)]
+		            ),
+		            child: ListView(
+						shrinkWrap: true,
+						children: [
+							Stack(
+								children: [
+									Container(
+										height: screenSize.height * .65,
+										child: Column(
+											crossAxisAlignment: CrossAxisAlignment.start,
+											mainAxisAlignment: MainAxisAlignment.spaceBetween,
+											children: [
+												Expanded(
+													child: Container(
+														padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+														alignment: Alignment.center,
+														child: Text(
+															tempName, 
+															style: TextStyle(
+																fontFamily: "Montserrat",
+																fontWeight: FontWeight.w700,
+																color: Colors.white, 
+																fontSize: 45.0,
+																height: 0.85
+															)
+														),
+													),
+												),
+											]
+										),
+									),
+									Positioned(
+										top: 15.0,
+										right: 10.0,
+										child: 	Container(
+											width: 25.0,
+											height: 25.0,
+											decoration: new BoxDecoration(
+												shape: BoxShape.circle,
+								                boxShadow: [BoxShadow(
+													color: const Color(0x33000000),
+													blurRadius: 10.0,
+												)]
+											),
+											child: IconButton(
+												icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
+												padding: EdgeInsets.all(0.0),
+												alignment: Alignment.center,
+												onPressed: () => Navigator.pop(context,true),
+											),
+										),
+									),
+								]
+							),
+							Container(
+								margin: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 0.0),
+								alignment: Alignment.center,
+								child: CircularProgressIndicator(),
+							)
+						],
+					),
+				),
+				
+			);
+			
+        }
+		
+		List<Widget> _widgetList = [];
+			
+		for (var cta in todoData["ctas"]) {
+			_widgetList.add(
+				Container(
+					padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+					child: Row(
+						children: <Widget>[
+							Expanded(
+								child: RaisedButton(
+									onPressed: () {
+										if (cta["link"] != null && cta["link"] != "") {
+											Navigator.push(
+												context,
+												MaterialPageRoute(
+													builder: (BuildContext context) => WebviewScaffold(
+														url: cta["link"],
+														appBar: AppBar(
+															title: Text(
+																cta["name"].toUpperCase(),
+																overflow: TextOverflow.fade,
+																style: TextStyle(
+																	fontWeight: FontWeight.w800,
+																	fontSize: 14.0,
+																	height: 0.9,
+																),
+															),
+														),
+													),
+												)
+											);
+										} else {
+											// no link - should just close or also complete?
+											Navigator.pop(context,true);
+										}
+									},
+									padding: EdgeInsets.all(14.0),  
+									textColor: const Color(0xFF1033FF),
+									color: const Color(0xFFFFFFFF),
+									child: Text(
+										cta["name"].toUpperCase(),
+										style: TextStyle(
+											fontWeight: FontWeight.w800,
+										),
+									),
+								),
+							)
+						]
+					),
+				),
+			);
+		}
+
+		return Scaffold(
+			appBar: topBar(context),
+			bottomNavigationBar: bottomBar(context, 2),
+			body: Container(
+				margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+				alignment: Alignment.topCenter,
+				decoration: BoxDecoration(
+					color: Color(0xFF023cf5),
+					borderRadius: BorderRadius.circular(20.0),
+	                boxShadow: [BoxShadow(
+						color: const Color(0x33000000),
+						blurRadius: 8.0,
+						offset: Offset(0.0, 5.0),
+					)]
+	            ),
+	            child: ListView(
+					shrinkWrap: true,
+					children: [
+						Stack(
+							children: [
+								Container(
+									height: screenSize.height * .65,
+									child: Column(
+										crossAxisAlignment: CrossAxisAlignment.start,
+										mainAxisAlignment: MainAxisAlignment.spaceBetween,
+										children: [
+											( todoData["sponsor"] != null && todoData["sponsor"] != ""
+												? // if sponsored
+												Container(
+													margin: EdgeInsets.fromLTRB(15.0, 15.0, 0.0, 0.0),
+													padding: EdgeInsets.fromLTRB(11.0, 8.0, 11.0, 7.0),
+													child: Text(
+														todoData["sponsor"].toUpperCase(),
+														textAlign: TextAlign.left,
+														style: TextStyle(
+															color: const Color(0xFFFFFFFF),
+															fontWeight: FontWeight.w500,
+															fontSize: 12.0,
+														),
+													),
+													decoration: BoxDecoration(
+														color: const Color(0xFF6d6ef6),
+														borderRadius: BorderRadius.circular(20.0),
+													),
+												)
+												: // if not sponsored
+												Container()
+											),
+											Expanded(
+												child: Container(
+													padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+													alignment: Alignment.center,
+													child: Text(
+														todoData["name"], 
+														style: TextStyle(
+															fontFamily: "Montserrat",
+															fontWeight: FontWeight.w700,
+															color: Colors.white, 
+															fontSize: 45.0,
+															height: 0.85
+														)
+													),
+												),
+											),
+											( todoData["content"] != null && todoData["content"] != "")
+											? Container(
+												padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+												alignment: Alignment.center,
+												child: Text(
+													todoData["content"], 
+													style: TextStyle(
+														fontFamily: "Montserrat",
+														fontWeight: FontWeight.w500,
+														color: Colors.white, 
+														fontSize: 16.0
+													)
+												),
+											)
+											: Container(),
+											( _widgetList.length > 0)
+											? Column(
+												crossAxisAlignment: CrossAxisAlignment.start,
+												mainAxisAlignment: MainAxisAlignment.spaceBetween,
+												children: _widgetList,
+											)
+											: Container(),
+										]
+									),
+								),
+								Positioned(
+									top: 15.0,
+									right: 10.0,
+									child: 	Container(
+										width: 25.0,
+										height: 25.0,
+										decoration: new BoxDecoration(
+											shape: BoxShape.circle,
+							                boxShadow: [BoxShadow(
+												color: const Color(0x33000000),
+												blurRadius: 10.0,
+											)]
+										),
+										child: IconButton(
+											icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
+											padding: EdgeInsets.all(0.0),
+											alignment: Alignment.center,
+											onPressed: () => Navigator.pop(context,true),
+										),
+									),
+								),
+							]
+						),
+					]
+				),
+			),
+			floatingActionButton: Container(
+				padding: EdgeInsets.fromLTRB(40.0, 0.0, 10.0, 10.0),
+				child: Row(
+					mainAxisSize: MainAxisSize.max,
+					mainAxisAlignment: MainAxisAlignment.spaceBetween,
+					children: <Widget>[
+						( todoData["todo"] == true && todoData["done"] != true
+						?
+							FloatingActionButton(
+								onPressed: () => setThis("removelist", { "id": todoData["id"].toString() }, (){
+									// update icon on success
+									setState(() {
+										todoData["todo"] = false;
+										// remove article from todo list
+										userData[0]["todo"].removeWhere((i) => i["id"] == todoData["id"]);
+									});
+								}, () { print("failure!"); }),
+								child: Icon(Icons.remove),
+								foregroundColor: const Color(0xFF023cf5),
+								backgroundColor: Colors.white,
+								heroTag: "removelist" + todoData["id"].toString(),
+							) 
+						:
+							FloatingActionButton(
+								onPressed: () => setThis("addlist", { "id": todoData["id"].toString() }, (){
+									// update icon on success
+									setState(() {
+										todoData["todo"] = true;
+										todoData["done"] = false;
+										// add article to todo list
+										Map newTodoData = json.decode(json.encode(todoData));
+										newTodoData["order"] = 1;
+										userData[0]["todo"].add(newTodoData);
+									});
+								}, () { print("failure!"); }),
+								child: Icon(Icons.add),
+								foregroundColor: const Color(0xFF023cf5),
+								backgroundColor: Colors.white,
+								heroTag: "addlist" + todoData["id"].toString(),
+
+							)
+						),						
+								
+						( todoData["bookmarked"] == true
+						?
+							FloatingActionButton(
+								onPressed: () => setThis("removebookmark", { "id": todoData["id"].toString() }, (){
+									// update icon on success
+									setState(() {
+										todoData["bookmarked"] = false;
+										// remove item from bookmarks list
+										userData[0]["bookmarks"].removeWhere((i) => i["id"] == todoData["id"]);
+									});
+								}, () { print("failure!"); }),
+								child: Icon(Icons.bookmark),
+								foregroundColor: const Color(0xFF023cf5),
+								backgroundColor: Colors.white,
+								heroTag: "removebookmark" + todoData["id"].toString(),
+							)
+						:
+							FloatingActionButton(
+								onPressed: () => setThis("addbookmark", { "id": todoData["id"].toString() }, (){
+									// update icon on success
+									setState(() {
+										todoData["bookmarked"] = true;
+										// add article to bookmarks list
+										Map newTodoData = json.decode(json.encode(todoData));
+										newTodoData["order"] = 1;
+										userData[0]["bookmarks"].add(newTodoData);
+									});
+								}, () { print("failure!"); }),
+								child: Icon(Icons.bookmark_border),
+								foregroundColor: const Color(0xFF023cf5),
+								backgroundColor: Colors.white,
+								heroTag: "addbookmark" + todoData["id"].toString(),
+							)
+						),
+					],
+				),
+			),
+		);
+
+	}
+	
+}
+
+
 
 
 class Group extends StatefulWidget {
@@ -2108,6 +2501,7 @@ class _GroupState extends State<Group> {
             // If we need to rebuild the widget with the resulting data, make sure to use `setState`
             setState(() {
                 groupData = result;
+                print(groupData);
             });
         });
     }
@@ -2126,7 +2520,7 @@ class _GroupState extends State<Group> {
 					margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
 					alignment: Alignment.topCenter,
 					decoration: BoxDecoration(
-		                color: const Color(0xFFF7F7F7),
+						color: Color(0xFFf7f7f7),
 						borderRadius: BorderRadius.only(
 							topLeft: Radius.circular(20.0),
 							topRight: Radius.circular(20.0),
@@ -2142,10 +2536,10 @@ class _GroupState extends State<Group> {
 						children: [
 							Stack(
 								children: [
-									Hero(
+									(tempImage != null)
+									? Hero(
 										tag: id.toString(),
 										child: Container(
-											// height: 315.0,
 											height: screenSize.height * .65,
 											decoration: BoxDecoration(
 												image: DecorationImage(
@@ -2158,9 +2552,20 @@ class _GroupState extends State<Group> {
 												),
 											),
 										),
+									)
+									: Container(
+										height: screenSize.height * .65,
+										decoration: BoxDecoration(
+											// color: Color(0xFF023cf5),
+											color: Color(0xFF71b981),
+											borderRadius: BorderRadius.only(
+												topLeft: Radius.circular(20.0),
+												topRight: Radius.circular(20.0),
+											),
+										),
 									),
-									Container(
-										// height: 315.0,
+									(tempImage != null)
+									? Container(
 										height: screenSize.height * .65,
 										decoration: BoxDecoration(
 											borderRadius: BorderRadius.only(
@@ -2176,7 +2581,8 @@ class _GroupState extends State<Group> {
 												],
 											),
 										),
-									),
+									)
+									: Container(),
 									Container(
 										height: screenSize.height * .65,
 										child: Column(
@@ -2204,12 +2610,23 @@ class _GroupState extends State<Group> {
 									),
 									Positioned(
 										top: 15.0,
-										right: 0.0,
-										child: IconButton(
-											icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
-											padding: EdgeInsets.all(0.0),
-											alignment: Alignment.topCenter,
-											onPressed: () => Navigator.pop(context,true),
+										right: 10.0,
+										child: 	Container(
+											width: 25.0,
+											height: 25.0,
+											decoration: new BoxDecoration(
+												shape: BoxShape.circle,
+								                boxShadow: [BoxShadow(
+													color: const Color(0x33000000),
+													blurRadius: 10.0,
+												)]
+											),
+											child: IconButton(
+												icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
+												padding: EdgeInsets.all(0.0),
+												alignment: Alignment.center,
+												onPressed: () => Navigator.pop(context,true),
+											),
 										),
 									),
 								]
@@ -2230,20 +2647,41 @@ class _GroupState extends State<Group> {
 		_widgetList = [
 			Stack(
 				children: [
-					Container(
+					// if there's an image
+					(groupData["image"] != null)
+					// draw the image as background
+					? Hero(
+						tag: id.toString(),
+						child: Container(
+							height: screenSize.height * .65,
+							decoration: BoxDecoration(
+								image: DecorationImage(
+									image: imgDefault(groupData["image"], "misssaigon.jpg"),
+									fit: BoxFit.cover,
+								),
+								borderRadius: BorderRadius.only(
+									topLeft: Radius.circular(20.0),
+									topRight: Radius.circular(20.0),
+								),
+							),
+						),
+					)
+					// if no image, draw the color
+					: Container(
 						height: screenSize.height * .65,
 						decoration: BoxDecoration(
-							image: DecorationImage(
-								image: imgDefault(groupData["image"], "misssaigon.jpg"),
-								fit: BoxFit.cover,
-							),
+							// color: Color(0xFF023cf5),
+							color: Color(0xFF71b981),
 							borderRadius: BorderRadius.only(
 								topLeft: Radius.circular(20.0),
 								topRight: Radius.circular(20.0),
 							),
 						),
 					),
-					Container(
+					// if there's an image
+					(groupData["image"] != null)
+					// draw the gradient
+					? Container(
 						height: screenSize.height * .65,
 						decoration: BoxDecoration(
 							borderRadius: BorderRadius.only(
@@ -2259,7 +2697,8 @@ class _GroupState extends State<Group> {
 								],
 							),
 						),
-					),
+					)
+					: Container(),
 					Container(
 						height: screenSize.height * .65,
 						child: Column(
@@ -2309,18 +2748,30 @@ class _GroupState extends State<Group> {
 					),
 					Positioned(
 						top: 15.0,
-						right: 0.0,
-						child: IconButton(
-							icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
-							padding: EdgeInsets.all(0.0),
-							alignment: Alignment.topCenter,
-							onPressed: () => Navigator.pop(context,true),
+						right: 10.0,
+						child: 	Container(
+							width: 25.0,
+							height: 25.0,
+							decoration: new BoxDecoration(
+								shape: BoxShape.circle,
+				                boxShadow: [BoxShadow(
+									color: const Color(0x33000000),
+									blurRadius: 10.0,
+								)]
+							),
+							child: IconButton(
+								icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
+								padding: EdgeInsets.all(0.0),
+								alignment: Alignment.center,
+								onPressed: () => Navigator.pop(context,true),
+							),
 						),
 					),
 				]
 			),
-			/*
-			Container(
+			// if the group has a description
+			(groupData["content"] != null && groupData["content"] != "")
+			? Container(
 				padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 15.0),
 				child: Text(
 					groupData["content"],
@@ -2332,16 +2783,35 @@ class _GroupState extends State<Group> {
 						height: 1.15,
 					),
 				),
-			),
-			*/
+			)
+			: Container(),
 		];
 
 		_widgetList.addAll(parseGroupItems(groupData["items"], context));
 
 		return Scaffold(
-			backgroundColor: const Color(0xFFFFFFFF),
 			appBar: topBar(context),
 			bottomNavigationBar: bottomBar(context, 2),
+			body: Container(
+				margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+				alignment: Alignment.topCenter,
+				decoration: BoxDecoration(
+					color: Color(0xFFf7f7f7),
+					borderRadius: BorderRadius.only(
+						topLeft: Radius.circular(20.0),
+						topRight: Radius.circular(20.0),
+					),
+	                boxShadow: [BoxShadow(
+						color: const Color(0x33000000),
+						blurRadius: 8.0,
+						offset: Offset(0.0, 5.0),
+					)]
+	            ),
+	            child: ListView(
+					shrinkWrap: true,
+					children: _widgetList,
+				),
+			),
 			floatingActionButton: Container(
 				padding: EdgeInsets.fromLTRB(40.0, 0.0, 10.0, 10.0),
 				child: Row(
@@ -2420,29 +2890,6 @@ class _GroupState extends State<Group> {
 							)
 						),
 					],
-				),
-			),
-			
-			
-			body: Container(
-				margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-				alignment: Alignment.topCenter,
-				decoration: BoxDecoration(
-	                color: const Color(0xFFF7F7F7),
-					borderRadius: BorderRadius.only(
-						topLeft: Radius.circular(20.0),
-						topRight: Radius.circular(20.0),
-					),
-	                boxShadow: [BoxShadow(
-						color: const Color(0x33000000),
-						blurRadius: 8.0,
-						offset: Offset(0.0, 5.0),
-					)]
-	            ),
-	            child: ListView(
-		            // padding: EdgeInsets.only(bottom: 60.0),
-					shrinkWrap: true,
-					children: _widgetList,
 				),
 			),
 		);
@@ -2566,12 +3013,23 @@ class _ArticleState extends State<Article> {
 									),
 									Positioned(
 										top: 15.0,
-										right: 0.0,
-										child: IconButton(
-											icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
-											padding: EdgeInsets.all(0.0),
-											alignment: Alignment.topCenter,
-											onPressed: () => Navigator.pop(context,true),
+										right: 10.0,
+										child: 	Container(
+											width: 25.0,
+											height: 25.0,
+											decoration: new BoxDecoration(
+												shape: BoxShape.circle,
+								                boxShadow: [BoxShadow(
+													color: const Color(0x33000000),
+													blurRadius: 10.0,
+												)]
+											),
+											child: IconButton(
+												icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
+												padding: EdgeInsets.all(0.0),
+												alignment: Alignment.center,
+												onPressed: () => Navigator.pop(context,true),
+											),
 										),
 									),
 								]
@@ -2668,12 +3126,23 @@ class _ArticleState extends State<Article> {
 					),
 					Positioned(
 						top: 15.0,
-						right: 0.0,
-						child: IconButton(
-							icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
-							padding: EdgeInsets.all(0.0),
-							alignment: Alignment.topCenter,
-							onPressed: () => Navigator.pop(context,true),
+						right: 10.0,
+						child: 	Container(
+							width: 25.0,
+							height: 25.0,
+							decoration: new BoxDecoration(
+								shape: BoxShape.circle,
+				                boxShadow: [BoxShadow(
+									color: const Color(0x33000000),
+									blurRadius: 10.0,
+								)]
+							),
+							child: IconButton(
+								icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
+								padding: EdgeInsets.all(0.0),
+								alignment: Alignment.center,
+								onPressed: () => Navigator.pop(context,true),
+							),
 						),
 					),
 				]
@@ -3024,12 +3493,23 @@ class _PlaceState extends State<Place> {
 									),
 									Positioned(
 										top: 15.0,
-										right: 0.0,
-										child: IconButton(
-											icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
-											padding: EdgeInsets.all(0.0),
-											alignment: Alignment.topCenter,
-											onPressed: () => Navigator.pop(context,true),
+										right: 10.0,
+										child: 	Container(
+											width: 25.0,
+											height: 25.0,
+											decoration: new BoxDecoration(
+												shape: BoxShape.circle,
+								                boxShadow: [BoxShadow(
+													color: const Color(0x33000000),
+													blurRadius: 10.0,
+												)]
+											),
+											child: IconButton(
+												icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
+												padding: EdgeInsets.all(0.0),
+												alignment: Alignment.center,
+												onPressed: () => Navigator.pop(context,true),
+											),
 										),
 									),
 								]
@@ -3048,6 +3528,7 @@ class _PlaceState extends State<Place> {
 		// calculate stars for average rating
 		if (placeData["rating"] != null) stars = placeData["rating"];
 		
+		/*
 		List<Widget> _starsList = [ 
 			new Text(
 				"What Others Think".toUpperCase(),
@@ -3070,6 +3551,7 @@ class _PlaceState extends State<Place> {
 			),
 			new SizedBox( width: 10.0 ),
 		];
+		*/
 		
 		// if you've rated this place
 		if (placeData["yourrating"] != null) {
@@ -3219,12 +3701,23 @@ class _PlaceState extends State<Place> {
 								),
 								Positioned(
 									top: 15.0,
-									right: 0.0,
-									child: IconButton(
-										icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
-										padding: EdgeInsets.all(0.0),
-										alignment: Alignment.topCenter,
-										onPressed: () => Navigator.pop(context,true),
+									right: 10.0,
+									child: 	Container(
+										width: 25.0,
+										height: 25.0,
+										decoration: new BoxDecoration(
+											shape: BoxShape.circle,
+							                boxShadow: [BoxShadow(
+												color: const Color(0x33000000),
+												blurRadius: 10.0,
+											)]
+										),
+										child: IconButton(
+											icon: Icon(Icons.close, color: const Color(0xFFFFFFFF)),
+											padding: EdgeInsets.all(0.0),
+											alignment: Alignment.center,
+											onPressed: () => Navigator.pop(context,true),
+										),
 									),
 								),
 							]
