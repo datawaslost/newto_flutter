@@ -545,6 +545,7 @@ class _CreateEmailState extends State<CreateEmail> {
 	Widget build(BuildContext context) {
 				
 		return new Scaffold(
+			resizeToAvoidBottomInset: true,
 			body: new Form(
 				key: _emailFormKey,
 				child: SafeArea(
@@ -597,7 +598,7 @@ class _CreateEmailState extends State<CreateEmail> {
 									'Tell us your school email.'.toUpperCase(),
 									style: new TextStyle(
 										fontWeight: FontWeight.w800,
-										fontSize: 38.0,
+										fontSize: 33.0,
 										height: 1.0,
 									),
 								),
@@ -631,6 +632,7 @@ class _CreateEmailState extends State<CreateEmail> {
 										filled: true,
 									),
 									keyboardType: TextInputType.emailAddress,
+							        autocorrect: false,
 						        ),
 							),
 							/*
@@ -799,7 +801,7 @@ class _CreatePasswordState extends State<CreatePassword> {
 									'Create your password.'.toUpperCase(),
 									style: new TextStyle(
 										fontWeight: FontWeight.w800,
-										fontSize: 38.0,
+										fontSize: 33.0,
 										height: 1.0,
 									),
 								),
@@ -1026,7 +1028,7 @@ class _CreateFinishState extends State<CreateFinish> {
 								'What is your hometown?'.toUpperCase(),
 								style: new TextStyle(
 									fontWeight: FontWeight.w800,
-									fontSize: 38.0,
+									fontSize: 33.0,
 									height: 1.0,
 								),
 							),
@@ -1047,6 +1049,7 @@ class _CreateFinishState extends State<CreateFinish> {
 							padding: new EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
 							child: new TextFormField(
 					        	controller: _hometownController,
+					        	autocorrect: false,
 								style: new TextStyle(
 									color: const Color(0xFF000000),
 									fontWeight: FontWeight.w800,

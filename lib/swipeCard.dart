@@ -344,12 +344,14 @@ class cardDetailsState extends State<cardDetails> {
 	Widget build(BuildContext context) {
 
 	    if (item["group"] != true && item["article"] != true) {
+		    // if it's a todo item
 			return Container(
 				padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
 				alignment: Alignment.bottomCenter,
 				child: Row(
 					mainAxisAlignment: MainAxisAlignment.spaceBetween,
 					children: <Widget>[
+						/*
 						(item["done"] == true)
 						? // if item is already done
 				        GestureDetector(
@@ -375,7 +377,9 @@ class cardDetailsState extends State<cardDetails> {
 								child: Icon( Icons.check, size: 25.0, color: const Color(0xFFFFFFFF) ),
 							)
 						)
-						: // if item isn't in todo list
+						: // if item isn't already done
+						*/
+						// for now, let's always show people the ability to mark something as done in the same way
 				        GestureDetector(
 							onTap: () => setThis("adddone", { "id": item["id"].toString() }, (){
 								// update icon and close details on success
@@ -422,7 +426,7 @@ class cardDetailsState extends State<cardDetails> {
 										),
 									]
 								),
-								child: Icon( Icons.add, size: 25.0, color: const Color(0xFF023cf5) ),
+								child: Icon( Icons.remove, size: 25.0, color: const Color(0xFF023cf5) ),
 							)
 						)
 						: // if item isn't in todo list
@@ -446,7 +450,7 @@ class cardDetailsState extends State<cardDetails> {
 										),
 									]
 								),
-								child: Icon( Icons.remove, size: 25.0, color: const Color(0xFF023cf5) ),
+								child: Icon( Icons.add, size: 25.0, color: const Color(0xFF023cf5) ),
 							)
 						)
 					],
@@ -474,7 +478,7 @@ class cardDetailsState extends State<cardDetails> {
 						height: 50.0,
 						decoration: BoxDecoration(
 							shape: BoxShape.circle,
-							color: const Color(0xFFFF023cf5),
+							color: const Color(0xFFFFFFFF),
 							boxShadow: [
 								BoxShadow(
 					            	color: const Color(0x66000000),
@@ -482,7 +486,7 @@ class cardDetailsState extends State<cardDetails> {
 								),
 							]
 						),
-						child: Icon( Icons.bookmark_border, size: 25.0, color: const Color(0xFFFFFFFF) ),
+						child: Icon( Icons.bookmark, size: 25.0, color: const Color(0xFF023cf5) ),
 					),
 				)
 				: // If item isn't bookmarked

@@ -3,12 +3,13 @@ import 'package:flutter/services.dart';
 // import 'package:flutter/scheduler.dart';
 // import 'package:validate/validate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 
 import "dart:ui";
 import 'dart:convert';
@@ -29,7 +30,6 @@ var internetListener;
 final flutterWebviewPlugin = new FlutterWebviewPlugin();
 
 void main() {
-	// MapView.setApiKey("AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E");
 	runApp(new Newto());
 }
 
@@ -428,65 +428,9 @@ class _listTodoState extends State<ListTodo> {
 	Widget build(BuildContext context) {
 		
 		// set secondary buttons
-		if (bookmarked == true) {
-			// if we're in bookmarks
-			secondaryButtons = <Widget>[
-				( item["done"] != null ?
-					// if item is in our list
-					SlideAction(
-						child: new Icon( Icons.playlist_play, size: 32.0, color: const Color(0xFF000000) ),
-						onTap: () => setThis("removelist", { "id": item["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								item["done"] = null;
-								// immediately remove item from list
-								userData[0]["todo"].removeWhere((i) => i["id"] == item["id"]);
-							});	
-						}, () { print("failure!"); }),
-					)
-				:
-					SlideAction(
-						child: new Icon( Icons.playlist_add, size: 32.0, color: const Color(0xFF000000) ),
-						onTap: () => setThis("addlist", { "id": item["id"].toString() }, (){							
-							setState(() {
-								item["done"] = false;
-								// immediately add item to your list
-								Map newItemData = json.decode(json.encode(item));
-								userData[0]["todo"].add(newItemData);
-							});
-						}, () { print("failure!"); }),
-					)
-				)
-			];
-		} else if (yourlist == true) {
+		if (yourlist == true) {
 			// if we're anywhere else but bookmarks
 			secondaryButtons = <Widget>[
-				( item["bookmarked"] == true && item["bookmarked"] != null ? 
-					SlideAction(
-						child: new Icon( Icons.bookmark, size: 32.0, color: const Color(0xFF000000)  ),
-						onTap: () => setThis("removebookmark", { "id": item["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								item["bookmarked"] = false;
-								// immediately remove item from bookmarks list
-								// userData[0]["bookmarks"].removeWhere((i) => i["id"] == item["id"]);
-							});	
-						}, () { print("failure!"); }),
-					)
-				:
-					SlideAction(
-						child: new Icon( Icons.bookmark_border, size: 32.0, color: const Color(0xFF000000) ),
-						onTap: () => setThis("addbookmark", { "id": item["id"].toString() }, (){
-							setState(() {
-								// update icon and close dialog on success
-								item["bookmarked"] = true;
-								// immediately add item to bookmarks list
-								Map newItemData = json.decode(json.encode(item));
-								userData[0]["bookmarks"].add(newItemData);
-							});	
-						}, () { print("failure!"); }),
-					)
-				),
 				( item["done"] != null ?
 					// if item is in our list
 					SlideAction(
@@ -515,35 +459,8 @@ class _listTodoState extends State<ListTodo> {
 				)
 			];
 		} else  {
-			// if we're anywhere else but bookmarks or your list
-			secondaryButtons = <Widget>[
-				( item["bookmarked"] == true && item["bookmarked"] != null ? 
-					SlideAction(
-						child: new Icon( Icons.bookmark, size: 32.0, color: const Color(0xFF000000)  ),
-						onTap: () => setThis("removebookmark", { "id": item["id"].toString() }, (){
-							// update icon on success
-							setState(() {
-								item["bookmarked"] = false;
-								// immediately remove item from bookmarks list
-								// userData[0]["bookmarks"].removeWhere((i) => i["id"] == item["id"]);
-							});	
-						}, () { print("failure!"); }),
-					)
-				:
-					SlideAction(
-						child: new Icon( Icons.bookmark_border, size: 32.0, color: const Color(0xFF838383) ),
-						onTap: () => setThis("addbookmark", { "id": item["id"].toString() }, (){
-							setState(() {
-								// update icon and close dialog on success
-								item["bookmarked"] = true;
-								// immediately add item to bookmarks list
-								Map newItemData = json.decode(json.encode(item));
-								userData[0]["bookmarks"].add(newItemData);
-							});	
-						}, () { print("failure!"); }),
-					)
-				)
-			];
+			// if we're anywhere else but your list
+			secondaryButtons = <Widget>[];
 		}
 	
 		if (yourlist == true) {
@@ -571,37 +488,6 @@ class _listTodoState extends State<ListTodo> {
 							// set done to true in the user data so that it's persistent until the data refreshes
 							int index = userData[0]["todo"].indexWhere((i) => i["id"] == item["id"]);
 							if (index != -1) userData[0]["todo"][index]["done"] = true;
-						});	
-					}, () { print("failure!"); }),
-				);
-			}
-		} else if (bookmarked == true) {
-			// if we're in bookmarks
-			if ( item["bookmarked"] == true && item["bookmarked"] != null) {
-				// if item is in our bookmarks
-				mainButton = GestureDetector(
-					child: todoButton(Icons.bookmark, size: 35.0, color: const Color(0xFF013CF5), selected: true ),
-					// remove bookmark
-					onTap: () => setThis("removebookmark", { "id": item["id"].toString() }, (){
-						// update icon and close details on success
-						setState(() {
-							item["bookmarked"] = false;
-							// set bookmarked to false in the user data so that it's persistent until the data refreshes
-							int index = userData[0]["bookmarks"].indexWhere((i) => i["id"] == item["id"]);
-							if (index != -1) userData[0]["bookmarks"][index]["bookmarked"] = false;
-							// immediately remove item from bookmarks list
-							// userData[0]["bookmarks"].removeWhere((i) => i["id"] == item["id"]);
-						});	
-					}, () { print("failure!"); }),
-				);
-			} else {
-				// if item is not in our bookmarks (ie, has just been removed)
-				mainButton = GestureDetector(
-					child: todoButton(Icons.bookmark_border, size: 35.0, color: const Color(0xFFA7A7A7) ),
-					// add bookmark
-					onTap: () => setThis("addbookmark", { "id": item["id"].toString() }, (){
-						setState(() {
-							item["bookmarked"] = true;
 						});	
 					}, () { print("failure!"); }),
 				);
@@ -1305,9 +1191,13 @@ class _SearchState extends State<Search> {
 											thumbColor: const Color(0xFFFFFFFF),
 											disabledThumbColor: const Color(0xFF000000),
 											overlayColor: const Color(0x66E0E1EA),
+											overlayShape: RoundSliderOverlayShape(),
 											valueIndicatorColor: const Color(0x66E0E1EA),
 											showValueIndicator: ShowValueIndicator.always,
 											thumbShape: RoundSliderThumbShape(),
+											tickMarkShape: RoundSliderTickMarkShape(),
+											trackHeight: 10.0,
+											trackShape: RectangularSliderTrackShape(),
 											valueIndicatorShape: PaddleSliderValueIndicatorShape(),
 											valueIndicatorTextStyle: TextStyle(
 												color: const Color(0xFF000000),
@@ -1415,33 +1305,30 @@ class _SearchState extends State<Search> {
 								new Container( width: 20.0 ),
 							]
 						),
-						new Expanded(
-							child: new Align(
-								alignment: Alignment.bottomCenter,
-								child: new Row(
-									children: <Widget>[
-										new Expanded(
-											child: new RaisedButton(
-												onPressed: () {
-													Navigator.push(context, new MaterialPageRoute(
-														builder: (BuildContext context) => new SearchResults({"category": cat}),
-													));
-												},
-												padding: new EdgeInsets.all(20.0),  
-												color: const Color(0xFF1033FF),
-												textColor: const Color(0xFFFFFFFF),
-												child: new Text(
-													'View Results'.toUpperCase(),
-													style: new TextStyle(
-														fontWeight: FontWeight.w800,
-													),
-												),
-											),
-										)
-									]
+					]
+				),
+			),
+			bottomNavigationBar: SafeArea(
+				child: Row(
+					children: <Widget>[
+						Expanded(
+							child: RaisedButton(
+								onPressed: () {
+									Navigator.push(context, new MaterialPageRoute(
+										builder: (BuildContext context) => new SearchResults({"category": cat}),
+									));
+								},
+								padding: EdgeInsets.all(20.0),  
+								color: const Color(0xFF1033FF),
+								textColor: const Color(0xFFFFFFFF),
+								child: Text(
+									'View Results'.toUpperCase(),
+									style: new TextStyle(
+										fontWeight: FontWeight.w800,
+									),
 								),
 							),
-						),
+						)
 					]
 				),
 			),
@@ -2386,11 +2273,66 @@ class _TodoState extends State<Todo> {
 				),
 			),
 			floatingActionButton: Container(
-				padding: EdgeInsets.fromLTRB(40.0, 0.0, 10.0, 10.0),
+				padding: EdgeInsets.fromLTRB(30.0, 0.0, 0.0, 0.0),
 				child: Row(
 					mainAxisSize: MainAxisSize.max,
 					mainAxisAlignment: MainAxisAlignment.spaceBetween,
 					children: <Widget>[
+						/*
+						( todoData["done"] == true )
+						? // if item is already done
+				        GestureDetector(
+							onTap: () => setThis("removedone", { "id": todoData["id"].toString() }, (){
+								// update icon and close details on success
+								setState(() {
+									todoData["done"] = false;
+								});	
+							}, () { print("failure!"); }),
+							child: Container(
+								width: 50.0,
+								height: 50.0,
+								decoration: BoxDecoration(
+									shape: BoxShape.circle,
+									color: const Color(0xFF023cf5),
+									boxShadow: [
+										BoxShadow(
+							            	color: const Color(0x66000000),
+											blurRadius: 8.0,
+										),
+									]
+								),
+								child: Icon( Icons.check, size: 25.0, color: const Color(0xFFFFFFFF) ),
+							)
+						)
+						: // if item isn't already done
+						*/
+						// for now, let's always show people the ability to mark something as done in the same way
+				        GestureDetector(
+							onTap: () => setThis("adddone", { "id": todoData["id"].toString() }, (){
+								// update icon and close details on success
+								setState(() {
+									todoData["done"] = true;
+									addItem(todoData);
+								});	
+							}, () { print("failure!"); }),
+							child: Container(
+								width: 50.0,
+								height: 50.0,
+								decoration: BoxDecoration(
+									shape: BoxShape.circle,
+									color: const Color(0xFFFFFFFF),
+									boxShadow: [
+										BoxShadow(
+							            	color: const Color(0x66000000),
+											blurRadius: 8.0,
+										),
+									]
+								),
+								child: Icon( Icons.check, size: 25.0, color: const Color(0xFF023cf5) ),
+							)
+						),
+
+
 						( todoData["todo"] == true && todoData["done"] != true
 						?
 							FloatingActionButton(
@@ -2427,41 +2369,6 @@ class _TodoState extends State<Todo> {
 
 							)
 						),						
-								
-						( todoData["bookmarked"] == true
-						?
-							FloatingActionButton(
-								onPressed: () => setThis("removebookmark", { "id": todoData["id"].toString() }, (){
-									// update icon on success
-									setState(() {
-										todoData["bookmarked"] = false;
-										// remove item from bookmarks list
-										userData[0]["bookmarks"].removeWhere((i) => i["id"] == todoData["id"]);
-									});
-								}, () { print("failure!"); }),
-								child: Icon(Icons.bookmark),
-								foregroundColor: const Color(0xFF023cf5),
-								backgroundColor: Colors.white,
-								heroTag: "removebookmark" + todoData["id"].toString(),
-							)
-						:
-							FloatingActionButton(
-								onPressed: () => setThis("addbookmark", { "id": todoData["id"].toString() }, (){
-									// update icon on success
-									setState(() {
-										todoData["bookmarked"] = true;
-										// add article to bookmarks list
-										Map newTodoData = json.decode(json.encode(todoData));
-										newTodoData["order"] = 1;
-										userData[0]["bookmarks"].add(newTodoData);
-									});
-								}, () { print("failure!"); }),
-								child: Icon(Icons.bookmark_border),
-								foregroundColor: const Color(0xFF023cf5),
-								backgroundColor: Colors.white,
-								heroTag: "addbookmark" + todoData["id"].toString(),
-							)
-						),
 					],
 				),
 			),
@@ -2812,85 +2719,39 @@ class _GroupState extends State<Group> {
 					children: _widgetList,
 				),
 			),
-			floatingActionButton: Container(
-				padding: EdgeInsets.fromLTRB(40.0, 0.0, 10.0, 10.0),
-				child: Row(
-					mainAxisSize: MainAxisSize.max,
-					mainAxisAlignment: MainAxisAlignment.spaceBetween,
-					children: <Widget>[
-						( groupData["todo"] == true && groupData["done"] != true
-						?
-							FloatingActionButton(
-								onPressed: () => setThis("removelist", { "id": groupData["id"].toString() }, (){
-									// update icon on success
-									setState(() {
-										groupData["todo"] = false;
-										// remove article from todo list
-										userData[0]["todo"].removeWhere((i) => i["id"] == groupData["id"]);
-									});
-								}, () { print("failure!"); }),
-								child: Icon(Icons.remove),
-								foregroundColor: const Color(0xFF023cf5),
-								backgroundColor: Colors.white,
-								heroTag: "removelist" + groupData["id"].toString(),
-							) 
-						:
-							FloatingActionButton(
-								onPressed: () => setThis("addlist", { "id": groupData["id"].toString() }, (){
-									// update icon on success
-									setState(() {
-										groupData["todo"] = true;
-										groupData["done"] = false;
-										// add article to todo list
-										Map newGroupData = json.decode(json.encode(groupData));
-										newGroupData["order"] = 1;
-										userData[0]["todo"].add(newGroupData);
-									});
-								}, () { print("failure!"); }),
-								child: Icon(Icons.add),
-								foregroundColor: const Color(0xFF023cf5),
-								backgroundColor: Colors.white,
-								heroTag: "addlist" + groupData["id"].toString(),
-
-							)
-						),						
-								
-						( groupData["bookmarked"] == true
-						?
-							FloatingActionButton(
-								onPressed: () => setThis("removebookmark", { "id": groupData["id"].toString() }, (){
-									// update icon on success
-									setState(() {
-										groupData["bookmarked"] = false;
-										// remove item from bookmarks list
-										userData[0]["bookmarks"].removeWhere((i) => i["id"] == groupData["id"]);
-									});
-								}, () { print("failure!"); }),
-								child: Icon(Icons.bookmark),
-								foregroundColor: const Color(0xFF023cf5),
-								backgroundColor: Colors.white,
-								heroTag: "removebookmark" + groupData["id"].toString(),
-							)
-						:
-							FloatingActionButton(
-								onPressed: () => setThis("addbookmark", { "id": groupData["id"].toString() }, (){
-									// update icon on success
-									setState(() {
-										groupData["bookmarked"] = true;
-										// add article to bookmarks list
-										Map newGroupData = json.decode(json.encode(groupData));
-										newGroupData["order"] = 1;
-										userData[0]["bookmarks"].add(newGroupData);
-									});
-								}, () { print("failure!"); }),
-								child: Icon(Icons.bookmark_border),
-								foregroundColor: const Color(0xFF023cf5),
-								backgroundColor: Colors.white,
-								heroTag: "addbookmark" + groupData["id"].toString(),
-							)
-						),
-					],
-				),
+			floatingActionButton: ( groupData["bookmarked"] == true
+			?
+				FloatingActionButton(
+					onPressed: () => setThis("removebookmark", { "id": groupData["id"].toString() }, (){
+						// update icon on success
+						setState(() {
+							groupData["bookmarked"] = false;
+							// remove item from bookmarks list
+							userData[0]["bookmarks"].removeWhere((i) => i["id"] == groupData["id"]);
+						});
+					}, () { print("failure!"); }),
+					child: Icon(Icons.bookmark),
+					foregroundColor: const Color(0xFF023cf5),
+					backgroundColor: Colors.white,
+					heroTag: "removebookmark" + groupData["id"].toString(),
+				)
+			:
+				FloatingActionButton(
+					onPressed: () => setThis("addbookmark", { "id": groupData["id"].toString() }, (){
+						// update icon on success
+						setState(() {
+							groupData["bookmarked"] = true;
+							// add article to bookmarks list
+							Map newGroupData = json.decode(json.encode(groupData));
+							newGroupData["order"] = 1;
+							userData[0]["bookmarks"].add(newGroupData);
+						});
+					}, () { print("failure!"); }),
+					child: Icon(Icons.bookmark_border),
+					foregroundColor: const Color(0xFF023cf5),
+					backgroundColor: Colors.white,
+					heroTag: "addbookmark" + groupData["id"].toString(),
+				)
 			),
 		);
 
@@ -2918,6 +2779,8 @@ class _ArticleState extends State<Article> {
 	final String tempName;
 	List<Widget> _widgetList = [];
 	var articleData;
+	var videoPlayerController;
+	var chewieController;
 
     @override
     void initState() {        
@@ -2929,6 +2792,13 @@ class _ArticleState extends State<Article> {
             });
         });
     }
+
+	@override
+	void dispose() {
+		videoPlayerController.dispose();
+		chewieController.dispose();
+		super.dispose();
+	}
 
 	@override
 	Widget build(BuildContext context) {
@@ -3045,7 +2915,29 @@ class _ArticleState extends State<Article> {
 				
 			);
 			
-        }
+        } else {
+        
+	        if ( articleData["video"] != null && articleData["video"] != "") {
+		        print(domain.substring(0,domain.length-1) + articleData["video"].toString());
+	        	videoPlayerController = VideoPlayerController.network(domain.substring(0,domain.length-1) + articleData["video"].toString());
+	        	// videoPlayerController = VideoPlayerController.network( 'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4');
+	        	/*
+	        	..initialize().then((_) {
+					// Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+					setState(() {});
+				});
+				*/			
+				chewieController = ChewieController(
+					videoPlayerController: videoPlayerController,
+					aspectRatio: 3 / 2,
+					autoPlay: false,
+					looping: false,
+				);
+			}
+			
+			// should all of this go under "else"?
+			
+		}
 
 		_widgetList = [
 			Stack(
@@ -3147,6 +3039,14 @@ class _ArticleState extends State<Article> {
 					),
 				]
 			),
+			( articleData["video"] != null && articleData["video"] != ""
+			? // if video
+				Chewie(
+					controller: chewieController,
+				)
+			:
+				Container()
+			),
 			Container(
 				padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 15.0),
 				child: Text(
@@ -3217,106 +3117,39 @@ class _ArticleState extends State<Article> {
 			backgroundColor: const Color(0xFFFFFFFF),
 			appBar: topBar(context),
 			bottomNavigationBar: bottomBar(context, 2),
-			floatingActionButton: Container(
-				padding: EdgeInsets.fromLTRB(40.0, 0.0, 10.0, 10.0),
-				child: Row(
-					mainAxisSize: MainAxisSize.max,
-					mainAxisAlignment: MainAxisAlignment.spaceBetween,
-					children: <Widget>[
-						/*
-						( articleData["done"] != true && articleData["todo"] == true
-						?
-							FloatingActionButton(
-								onPressed: () => setThis("adddone", { "id": articleData["id"].toString() }, (){
-									// update icon on success
-									setState(() {
-										articleData["done"] = true;
-										// remove item from todo list
-										userData[0]["todo"].removeWhere((i) => i["id"] == articleData["id"]);
-									});
-								}, () { print("failure!"); }),
-								child: Icon(
-									Icons.check_circle_outline,
-									color: const Color(0xFF2D2D2F),
-								),
-							)
-						:
-						Container()
-						),
-						*/
-						( articleData["todo"] == true && articleData["done"] != true
-						?
-							FloatingActionButton(
-								onPressed: () => setThis("removelist", { "id": articleData["id"].toString() }, (){
-									// update icon on success
-									setState(() {
-										articleData["todo"] = false;
-										// remove article from todo list
-										userData[0]["todo"].removeWhere((i) => i["id"] == articleData["id"]);
-									});
-								}, () { print("failure!"); }),
-								child: Icon(Icons.remove),
-								foregroundColor: const Color(0xFF023cf5),
-								backgroundColor: Colors.white,
-								heroTag: "removelist" + articleData["id"].toString(),
-							) 
-						:
-							FloatingActionButton(
-								onPressed: () => setThis("addlist", { "id": articleData["id"].toString() }, (){
-									// update icon on success
-									setState(() {
-										articleData["todo"] = true;
-										articleData["done"] = false;
-										// add article to todo list
-										Map newArticleData = json.decode(json.encode(articleData));
-										newArticleData["order"] = 1;
-										userData[0]["todo"].add(newArticleData);
-									});
-								}, () { print("failure!"); }),
-								child: Icon(Icons.add),
-								foregroundColor: const Color(0xFF023cf5),
-								backgroundColor: Colors.white,
-								heroTag: "addlist" + articleData["id"].toString(),
-
-							)
-						),						
-								
-						( articleData["bookmarked"] == true
-						?
-							FloatingActionButton(
-								onPressed: () => setThis("removebookmark", { "id": articleData["id"].toString() }, (){
-									// update icon on success
-									setState(() {
-										articleData["bookmarked"] = false;
-										// remove item from bookmarks list
-										userData[0]["bookmarks"].removeWhere((i) => i["id"] == articleData["id"]);
-									});
-								}, () { print("failure!"); }),
-								child: Icon(Icons.bookmark),
-								foregroundColor: const Color(0xFF023cf5),
-								backgroundColor: Colors.white,
-								heroTag: "removebookmark" + articleData["id"].toString(),
-							)
-						:
-							FloatingActionButton(
-								onPressed: () => setThis("addbookmark", { "id": articleData["id"].toString() }, (){
-									// update icon on success
-									setState(() {
-										articleData["bookmarked"] = true;
-										// add article to bookmarks list
-										Map newArticleData = json.decode(json.encode(articleData));
-										newArticleData["order"] = 1;
-										userData[0]["bookmarks"].add(newArticleData);
-									});
-								}, () { print("failure!"); }),
-								child: Icon(Icons.bookmark_border),
-								foregroundColor: const Color(0xFF023cf5),
-								backgroundColor: Colors.white,
-								heroTag: "addbookmark" + articleData["id"].toString(),
-							)
-						),
-					],
-				),
+			floatingActionButton: ( articleData["bookmarked"] == true
+			?
+				FloatingActionButton(
+					onPressed: () => setThis("removebookmark", { "id": articleData["id"].toString() }, (){
+						// update icon on success
+						setState(() {
+							articleData["bookmarked"] = false;
+							// remove item from bookmarks list
+							userData[0]["bookmarks"].removeWhere((i) => i["id"] == articleData["id"]);
+						});
+					}, () { print("failure!"); }),
+					child: Icon(Icons.bookmark),
+					foregroundColor: const Color(0xFF023cf5),
+					backgroundColor: Colors.white,
+					heroTag: "removebookmark" + articleData["id"].toString(),
+				)
+			:
+				FloatingActionButton(
+					onPressed: () => setThis("addbookmark", { "id": articleData["id"].toString() }, (){
+						// update icon on success
+						setState(() {
+							articleData["bookmarked"] = true;
+							// add article to bookmarks list
+							Map newArticleData = json.decode(json.encode(articleData));
+							newArticleData["order"] = 1;
+							userData[0]["bookmarks"].add(newArticleData);
+						});
+					}, () { print("failure!"); }),
+					child: Icon(Icons.bookmark_border),
+					foregroundColor: const Color(0xFF023cf5),
+					backgroundColor: Colors.white,
+					heroTag: "addbookmark" + articleData["id"].toString(),
+				)
 			),
 			body: Container(
 				margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
@@ -3361,7 +3194,6 @@ class _PlaceState extends State<Place> {
 	final String tempImage;
 	final String tempName;
 	List<Widget> _widgetList = [];
-	// var _staticMapProvider = new StaticMapProvider('AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E');
 	var placeData;
 	double stars = 0.0;
 	var starcolor = const Color(0xFFFFFFFF);
@@ -3394,19 +3226,6 @@ class _PlaceState extends State<Place> {
 		);
     }
     
-    
-	/*
-	
-	void _onMapCreated(GoogleMapController controller) {
-		setState(() { mapController = controller; });
-	}
-
-
-	GoogleMapController mapController;
-	
-	*/
-
-
 	@override
 	Widget build(BuildContext context) {
 		
@@ -3816,55 +3635,14 @@ class _PlaceState extends State<Place> {
 												mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 												children: <Widget>[
 													Center(
-														child: Container(
+														child: SizedBox(
 															width: 300.0,
 															height: 200.0,
-															
-															decoration: new BoxDecoration(
-																image: new DecorationImage(
-																	image: imgDefault("fakemap.png", "misssaigon.jpg"),
-																	fit: BoxFit.cover,
-																),
-															),
-
-															/*
-															child: GoogleMap(
-																onMapCreated: _onMapCreated,
-															),
-															*/
+															child: Image.network('https://maps.googleapis.com/maps/api/staticmap?zoom=16&center=' + placeData["location"]["longitude"].toString() + ',' + placeData["location"]["latitude"].toString() + '&zoom=13&size=600x400&maptype=roadmap&markers=color:red%7Clabel:C%7C' + placeData["location"]["longitude"].toString() + ',' + placeData["location"]["latitude"].toString() + '&key=AIzaSyAbhJpKCspO0OX3udKg6shFr5wwHw3yd_E')
 														),
 													),
-													/*
-													RaisedButton(
-														child: const Text('Go to London'),
-														onPressed: mapController == null ? null : () {
-															mapController.animateCamera(
-																CameraUpdate.newCameraPosition(
-																	const CameraPosition(
-																		bearing: 270.0,
-																		target: LatLng(51.5160895, -0.1294527),
-																		tilt: 30.0,
-																		zoom: 17.0,
-																	),
-																)
-															);
-														},
-													),
-													*/
 												],
 											),
-											
-											
-											/*
-											Image.network(
-												_staticMapProvider.getStaticUriWithMarkers(
-													<Marker>[ Marker("1", placeData["name"], placeData["location"]["longitude"], placeData["location"]["latitude"]) ],
-													width: 600,
-													height: 400,
-													maptype: StaticMapViewType.roadmap,
-												).toString()
-											),
-											*/
 										) : Container()
 									),
 								]
